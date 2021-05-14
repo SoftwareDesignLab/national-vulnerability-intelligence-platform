@@ -1,0 +1,2 @@
+https://seclists.org/oss-sec/2012/q2/493
+https://bugzilla.redhat.com/show_bug.cgi?id=1535353

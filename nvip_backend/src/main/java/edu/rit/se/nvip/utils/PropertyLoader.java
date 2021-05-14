@@ -1,0 +1,81 @@
+/**
+ * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * government support under contract 70RSAT19CB0000020 awarded by the United
+ * States Department of Homeland Security.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the “Software”), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package edu.rit.se.nvip.utils;
+
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import edu.rit.se.nvip.model.NvipConstants;
+import edu.rit.se.nvip.model.Product;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+/**
+ * 
+ * Implementation of some commonly used utilities
+ * 
+ * @author axoeec
+ *
+ */
+public class PropertyLoader {
+	Logger logger = LogManager.getLogger(PropertyLoader.class);
+
+	/**
+	 * init NVIP properties
+	 */
+	public MyProperties loadConfigFile(MyProperties propertiesNVIP) {
+		InputStream inputStream = null;
+		try {
+			ClassLoader classLoader = getClass().getClassLoader();
+			inputStream = classLoader.getResourceAsStream("nvip.properties");
+		} catch (Exception e1) {
+			System.err.println("Could not locate NVIP config file at src/main/resources/nvip.properties!");
+			System.exit(1);
+		} finally {
+			try {
+				propertiesNVIP.load(inputStream);
+			} catch (IOException e) {
+				System.err.println("Error! Could not locate NVIP config file!");
+				System.exit(1);
+			}
+		}
+		return propertiesNVIP;
+	}
+
+}

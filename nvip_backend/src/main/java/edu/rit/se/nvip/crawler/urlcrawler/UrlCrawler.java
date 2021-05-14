@@ -1,0 +1,189 @@
+/**
+ * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * government support under contract 70RSAT19CB0000020 awarded by the United
+ * States Department of Homeland Security.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the “Software”), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package edu.rit.se.nvip.crawler.urlcrawler;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
+
+import com.opencsv.CSVWriter;
+
+import org.jsoup.nodes.Document.OutputSettings;
+
+import edu.rit.se.nvip.cvereconcile.CveReconciler;
+import edu.rit.se.nvip.model.UrlCrawlerData;
+import edu.rit.se.nvip.model.Vulnerability;
+import edu.rit.se.nvip.utils.CsvUtils;
+import edu.rit.se.nvip.utils.UtilHelper;
+import edu.uci.ics.crawler4j.crawler.Page;
+import edu.uci.ics.crawler4j.crawler.WebCrawler;
+import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import edu.uci.ics.crawler4j.url.WebURL;
+
+/**
+ * 
+ * NVIP URL Crawler. Just look for URLs that contain a CVE-ID
+ * 
+ * @author axoeec
+ *
+ */
+public class UrlCrawler extends WebCrawler {
+	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg" + "|png|mp3|mp4|zip|gz))$");
+	private String regexCVEID = "CVE-[0-9]+-[0-9]+";
+
+	/**
+	 * Crawled URLs that include a CVEID (can be at depth>=0)
+	 */
+	private HashMap<String, Integer> hashMapSourceURLsFound = new HashMap<String, Integer>();
+
+	/**
+	 * URLs that are forbidden (depth >=0). NVIP sources that have the same base URL
+	 * with those should be marked, to have an adaptive crawler process
+	 */
+	private HashMap<String, Integer> hashMapForbiddenURLs = new HashMap<String, Integer>();
+
+	/**
+	 * NVIP URLs (depth=0) with status code != HTTP_OK. Those URLs should be removed
+	 * from the NVIP URL sources!
+	 */
+	private HashMap<String, Integer> hashMapSourceURLsNotOk = new HashMap<String, Integer>();
+	Pattern pattern = null;
+
+	public UrlCrawler() {
+		super();
+		pattern = Pattern.compile(regexCVEID);
+	}
+
+	/**
+	 * This method receives two parameters. The first parameter is the page in which
+	 * we have discovered this new url and the second parameter is the new url. You
+	 * should implement this function to specify whether the given url should be
+	 * crawled or not (based on your crawling logic).
+	 */
+	@Override
+	public boolean shouldVisit(Page referringPage, WebURL url) {
+		String href = url.getURL().toLowerCase();
+		boolean crawl = !FILTERS.matcher(href).matches();
+		return crawl;
+	}
+
+	/**
+	 * This function is called when a page is fetched and ready to be processed.
+	 */
+	@Override
+	public void visit(Page page) {
+		String pageURL = page.getWebURL().getURL().trim();
+
+		if (page.getParseData() instanceof HtmlParseData) {
+			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
+			String text = htmlParseData.getText();
+			boolean bHasCVE = pickURL(pageURL, text);
+
+			// the lower the better
+			byte priority = 127;
+			if (bHasCVE)
+				priority = 0;
+
+			Set<WebURL> links = htmlParseData.getOutgoingUrls();
+
+			for (WebURL wUrl : links) {
+				wUrl.setPriority(priority);
+			}
+		}
+	}
+
+	/**
+	 * pick page URL? It needs to have a CVE ID and be not picked before!
+	 * 
+	 * @param pageURL
+	 * @param sContent
+	 */
+	private boolean pickURL(String pageURL, String sContent) {
+		if (haveCveId(sContent)) {
+			if (!hashMapSourceURLsFound.containsKey(pageURL)) {
+				hashMapSourceURLsFound.put(pageURL, 0);
+				if (hashMapSourceURLsFound.size() % 10 == 0)
+					logger.info("This process has found " + hashMapSourceURLsFound.size() + " legitimate and " + hashMapForbiddenURLs.size() + " forbidden (403) URLs so far!");
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected void handlePageStatusCode(WebURL webUrl, int statusCode, String statusDescription) {
+		if (statusCode == HttpStatus.SC_FORBIDDEN) {
+			logger.warn("***CRAWLER WARN! Could not get content from " + webUrl.getURL().toString() + ", StatusCode: " + statusCode + ", StatusDescription:" + statusDescription);
+			hashMapForbiddenURLs.put(webUrl.getURL().toString(), 0);
+		}
+
+		// check base url status?
+		if (webUrl.getDepth() == 0) {
+			if (statusCode != HttpStatus.SC_OK) {
+				hashMapSourceURLsNotOk.put(webUrl.getURL().toString(), statusCode);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param strContent
+	 * @return
+	 */
+	private boolean haveCveId(String strContent) {
+		Matcher matcher = pattern.matcher(strContent);
+		if (matcher.find())
+			return true;
+		return false;
+	}
+
+	@Override
+	public Object getMyLocalData() {
+		return new UrlCrawlerData(hashMapSourceURLsFound, hashMapForbiddenURLs, hashMapSourceURLsNotOk);
+	}
+
+}

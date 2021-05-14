@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>oss-security - Re: Assign CVE for common-collections remote code execution on deserialisation flaw</title>
+
+<link href="/style.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+.calendar { text-align: center; }
+.ccell { background: #ccc; width: 5ex; padding: 2px; }
+
+.cal_brief { text-align: center; }
+.cal_brief td:first-child { background: inherit; }
+.cal_brief td { background: #ccc; width: 5ex; padding: 2px; }
+.cal_big { text-align: center; padding: 0; margin: 0; }
+.cal_big td { padding: 0 2px; }
+.cal_mon { text-align: center; }
+.cal_mon th { font-size: small; padding: 0; margin: 0; }
+.cal_mon td { background: #ccc; width: 5ex; height: 1.5em;
+	padding: 2px; text-align: right; }
+.cal_mon td[colspan] { background: inherit; }
+.cal_mon sup { color: #F0F0F0; text-align: left; float: left;
+	margin-top: -2pt; font-weight: bold; }
+.cal_mon a { text-align: right; margin-left: -4em; float: right; }
+</style>
+</head>
+
+<BODY bgcolor="#E0E0E0" text="black" link="blue" alink="red" vlink="navy">
+
+
+<table bgcolor="#ffffff" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+
+<td>
+<a href="/"><img class="logo" src="/logo.png" border="0" width="182" height="80" alt="Openwall"></a>
+<td width="100%">
+<div class="nav">
+<ul>
+<li><a href="/">Products</a>
+<ul>
+<li><a href="/Owl/">Openwall GNU/*/Linux &nbsp; <i>server OS</i></a>
+<li><a href="/lkrg/">Linux Kernel Runtime Guard</a>
+<li><a href="/john/">John the Ripper &nbsp; <i>password cracker</i></a>
+<ul>
+<li><a href="/john/">Free &amp; Open Source for any platform</a>
+<li><a href="/john/pro/linux/">Pro for Linux</a>
+<li><a href="/john/pro/macosx/">Pro for Mac OS X</a>
+</ul>
+<li><a href="/wordlists/">Wordlists &nbsp; <i>for password cracking</i></a>
+<li><a href="/passwdqc/">passwdqc &nbsp; <i>policy enforcement</i></a>
+<ul>
+<li><a href="/passwdqc/">Free &amp; Open Source for Unix</a>
+<li><a href="/passwdqc/windows/">Pro for Windows (Active Directory)</a>
+</ul>
+<li><a href="/yescrypt/">yescrypt &nbsp; <i>KDF &amp; password hashing</i></a>
+<li><a href="/yespower/">yespower &nbsp; <i>Proof-of-Work (PoW)</i></a>
+<li><a href="/crypt/">crypt_blowfish &nbsp; <i>password hashing</i></a>
+<li><a href="/phpass/">phpass &nbsp; <i>ditto in PHP</i></a>
+<li><a href="/tcb/">tcb &nbsp; <i>better password shadowing</i></a>
+<li><a href="/pam/">Pluggable Authentication Modules</a>
+<li><a href="/scanlogd/">scanlogd &nbsp; <i>port scan detector</i></a>
+<li><a href="/popa3d/">popa3d &nbsp; <i>tiny POP3 daemon</i></a>
+<li><a href="/blists/">blists &nbsp; <i>web interface to mailing lists</i></a>
+<li><a href="/msulogin/">msulogin &nbsp; <i>single user mode login</i></a>
+<li><a href="/php_mt_seed/">php_mt_seed &nbsp; <i>mt_rand() cracker</i></a>
+</ul>
+<li><a href="/services/">Services</a>
+<li id="narrow-li-1"><a>Publications</a>
+<ul>
+<li><a href="/articles/">Articles</a>
+<li><a href="/presentations/">Presentations</a>
+</ul>
+<li><a>Resources</a>
+<ul>
+<li><a href="/lists/">Mailing lists</a>
+<li><a href="https://openwall.info/wiki/">Community wiki</a>
+<li><a href="https://cvsweb.openwall.com">Source code repository (CVSweb)</a>
+<li><a href="/mirrors/">File archive &amp; mirrors</a>
+<li><a href="/signatures/">How to verify digital signatures</a>
+<li><a href="/ove/">OVE IDs</a>
+</ul>
+<li id="last-li"><a href="/news">What's new</a>
+</ul>
+</div>
+
+
+</table>
+
+<TABLE bgcolor="#B4D0DC" width="100%" border="0" cellspacing="0" cellpadding="1">
+<TR><TD>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="2">
+<TR><TD bgcolor="#ECF8FF">
+
+<a href="http://hashsuite.openwall.net">
+Hash Suite - Windows password security audit tool. GUI, reports in PDF.</a>
+
+
+</TABLE>
+</TABLE>
+
+<a href="18">[&lt;prev]</a> <a href="../../../2015/11/18/1">[next&gt;]</a> <a href="../../../2015/11/15/1">[&lt;thread-prev]</a> <a href="../../../2015/11/18/1">[thread-next&gt;]</a> <a href=".">[day]</a> <a href="..">[month]</a> <a href="../..">[year]</a> <a href="../../..">[list]</a>
+<pre style="white-space: pre-wrap">
+Date: Tue, 17 Nov 2015 17:41:28 -0500 (EST)
+From: cve-assign&#64;...re.org
+To: oss-security&#64;...ts.openwall.com
+Cc: cve-assign&#64;...re.org
+Subject: Re: Assign CVE for common-collections remote code execution on deserialisation flaw
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+&gt; [1] <a href="http://foxglovesecurity.com/2015/11/06/what-do-weblogic-websphere-jboss-jenkins-opennms-and-your-application-have-in-common-this-vulnerability/" rel="nofollow">http://foxglovesecurity.com/2015/11/06/what-do-weblogic-websphere-jboss-jenkins-opennms-and-your-application-have-in-common-this-vulnerability/</a>
+&gt; [2] <a href="https://issues.apache.org/jira/browse/COLLECTIONS-580" rel="nofollow">https://issues.apache.org/jira/browse/COLLECTIONS-580</a>
+
+The MITRE CVE team has no current plans to provide a CVE ID associated
+with the Apache Commons Collection product for its behavior described
+at:
+
+  <a href="https://blogs.apache.org/foundation/entry/apache_commons_statement_to_widespread" rel="nofollow">https://blogs.apache.org/foundation/entry/apache_commons_statement_to_widespread</a>
+
+and elsewhere. Our interpretation is that some people are taking a
+position that, very roughly, corresponds to:
+
+ - suppose that a library product is very difficult to deploy safely
+   in a use case involving untrusted input
+
+ - furthermore, suppose that part of this library product has
+   semantics that are inconsistent with the usual semantics for the
+   programming language in use
+
+ - furthermore, suppose that a number of applications are actually
+   using this library in a very unsafe way
+
+ - furthermore, suppose that the vendor of this library product has
+   decided to change this product's behavior so that (among other
+   differences) it will sometimes be easier to deploy safely
+
+ - furthermore, suppose that this vendor's change notification seems
+   to be more about hardening the library as a way to help prevent
+   exploitation of current or future applications, and seems to be
+   less about announcing the original behavior as a library
+   vulnerability
+
+ - still, a CVE ID could be used as a name for the original behavior
+
+We prefer not to have a CVE ID for the library product in this
+situation. There is a continuum between "inadvertent coding error" on
+the left side and "a choice that was reasonable for a smaller than
+expected fraction of customers" on the right side. The situation here
+is not far enough to the left to have a CVE ID.
+
+The CVE-2015-3253 ID came from the Apache Software Foundation itself,
+and thus can't be generalized to other cases that may seem similar.
+
+The CVE-2015-4852 ID came from Oracle and must remain associated only
+with Oracle's own software (WebLogic Server is the product they've
+named).
+
+We'll send a separate response about the Jenkins SECURITY-218 report.
+
+- -- 
+CVE assignment team, MITRE CVE Numbering Authority
+M/S M300
+202 Burlington Road, Bedford, MA 01730 USA
+[ PGP key available through <a href="http://cve.mitre.org/cve/request_id.html" rel="nofollow">http://cve.mitre.org/cve/request_id.html</a> ]
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBCAAGBQJWS6xKAAoJEL54rhJi8gl5QJ0P/11kaNbWjxC2RpWh4L8Y1U29
+Jo+LSwxdBDmh8v8I0Xab4ne6/rmqKN7iPl65yy7J7t8ULYcf2fcU4lUe93sZHpk9
+hPWX/x4eYQBQRS89f7lerYD/RK0hTJ8RGQIsfqYCScEmFuNpqdOA0LoXhGCJFu7p
+63GRtyJuvI0sZkFQKYY5l9A8E2fDLMHyEk9NWyTgwWNKXZWVyMQAkXipbtVko/xy
+DjtVA0OTgaje0PZzh6moFU1rwwMqkSmq+5pXPpUq+iCrAP55RIuEFzzM+sBhgeEG
+6I9JoEjaGci+w6t+jnEwLfzjFWDL9ioFkenyqG0GsTdd7fGC96Lsa2jHI7ZsDy6g
+4GLTUJ/BEhQxKNvQ88cNfUNsyIP8NzLdwjChvxEa7m4CmnxmHU++MQZXmlo8Aq6C
+PBLrWeKaOGhGz6fs8H0NNWfcM5GAco6nEK8d4EYLsb7lIVNrGqaNpwKqnkfntK97
+9vH7OnrIAIfnneyKH8+53IcN1ogPrBmwLPY9DDTU2XUIOlWE7IvtRtmpuBX884KF
+7c5r2pA/xgecczvjGQ5C9t0yMzrNgPBNgfkG9RsPnh/1LOhcm/tA4Ijo21JXmYb6
+2s6MF3yl9H8qvtRAu1fMCUMjuHa4wTOH7Uv57MeJsFVzRZvNxf0nmlWRV5PrLGuW
+VHHOmkmQRl9UWJ9jGv14
+=93c8
+-----END PGP SIGNATURE-----
+</pre>
+<p><a href="http://www.openwall.com/blists/">Powered by blists</a> - <a href="http://lists.openwall.net">more mailing lists</a>
+
+
+
+<p>
+<form action="/cgi/subscribe.cgi" method=POST>
+<input type=hidden name=list value="oss-security/2015/11/17/19">
+Your e-mail address:
+<input type=text name=email size=40>
+<input type=submit value="Subscribe">
+<input type=submit name=unsub value="Unsubscribe">
+</form>
+
+<p>
+Please check out the
+<a href="https://oss-security.openwall.org/wiki/">
+Open Source Software Security Wiki</a>, which is counterpart to this
+<a href="https://oss-security.openwall.org/wiki/mailing-lists/oss-security">mailing list</a>.
+<p>
+Confused about <a href="/lists/">mailing lists</a> and their use?
+<a href="https://en.wikipedia.org/wiki/Electronic_mailing_list">Read about mailing lists on Wikipedia</a>
+and check out these
+<a href="https://www.complang.tuwien.ac.at/anton/mail-news-errors.html">guidelines on proper formatting of your messages</a>.
+<p>
+
+<a href="/Owl/" title="Powered by Openwall GNU/*/Linux - security-enhanced &quot;Linux distribution&quot;"><img src="/Owl/artwork/buttons/80x15/Owl-80x15-4.png" width="80" height="15" border="0" alt="Powered by Openwall GNU/*/Linux"></a>
+<a href="https://openvz.org" title="Powered by OpenVZ - OS virtualization solution for Linux"><img src="/images/OpenVZ-80x15-cd.png" width="80" height="15" border="0" alt="Powered by OpenVZ"></a>
+
+
+
+</body>
+</html>

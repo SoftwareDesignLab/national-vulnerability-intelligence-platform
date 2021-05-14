@@ -1,0 +1,164 @@
+/**
+ * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * government support under contract 70RSAT19CB0000020 awarded by the United
+ * States Department of Homeland Security.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the “Software”), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package edu.rit.se.nvip.cveprocess;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import edu.rit.se.nvip.cvereconcile.CveReconciler;
+import edu.rit.se.nvip.model.CompositeVulnerability;
+import edu.rit.se.nvip.model.Vulnerability;
+import edu.rit.se.nvip.utils.CsvUtils;
+import edu.rit.se.nvip.utils.UtilHelper;
+
+/**
+ * 
+ * Process CVEs to identify the ones not in NVD and MITRE
+ * 
+ * @author axoeec
+ *
+ */
+public class CveProcessor {
+	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private HashMap<String, Integer> hashMapNvdCve = new HashMap<String, Integer>();
+	private HashMap<String, Integer> hashMapMitreCve = new HashMap<String, Integer>();
+	CveReconciler cveUtils = new CveReconciler();
+
+	public CveProcessor(String nvdCvePath, String mitreCvePath) {
+		try {
+
+			CsvUtils csvLogger = new CsvUtils();
+			/**
+			 * NVD
+			 */
+			List<String> arrNVD = FileUtils.readLines(new File(nvdCvePath));
+			for (String cve : arrNVD) {
+				String id = cve.split(csvLogger.getSeparatorCharAsRegex())[0]; // get the first item, i.e. the CVE ID
+				hashMapNvdCve.put(id, 0);
+			}
+
+			/**
+			 * MITRE
+			 */
+			arrNVD = FileUtils.readLines(new File(mitreCvePath));
+			for (String cve : arrNVD) {
+				String id = cve.split(csvLogger.getSeparatorCharAsRegex())[0]; // get the first item, i.e. the CVE ID
+				hashMapMitreCve.put(id, 0);
+			}
+
+		} catch (IOException e) {
+			logger.error("Error while loading NVD/MITRE CVEs!" + e.toString());
+			System.exit(1); // This is a serious error, exit!
+		}
+		logger.info("Loaded cve data for NVD(" + hashMapNvdCve.size() + ") and MITRE(" + hashMapMitreCve.size() + ")");
+	}
+
+	/**
+	 * Process CVEs to identify the ones not in NVD and MITRE
+	 * 
+	 * @param hashMapNvipCve
+	 * @return
+	 */
+	public HashMap<String, List<Object>> processCveData(HashMap<String, CompositeVulnerability> hashMapNvipCve) {
+		final String RESERVED_CVE_TEXT = "** RESERVED ** This candidate has been reserved by";
+		HashMap<String, List<Object>> newCVEMap = new HashMap<String, List<Object>>();
+
+		// get list from hash map
+		List<Object> allCveData = new ArrayList<Object>();
+		List<Object> newCVEDataNotInMitre = new ArrayList<Object>();
+		List<Object> newCVEDataNotInNvd = new ArrayList<Object>();
+		List<Object> newCVEDataNotInNvdAndMitre = new ArrayList<Object>();
+		for (CompositeVulnerability vuln : hashMapNvipCve.values()) {
+
+			try {
+				if (!cveUtils.isCveIdCorrect(vuln.getCveId())) {
+					String note = "Wrong CVE ID! Check for typo? ";
+					vuln.setNvipNote(note);
+					continue; // skip this item
+				}
+
+				if (!hashMapNvdCve.containsKey(vuln.getCveId())) {
+					vuln.setNvdSearchResult("NA");
+					vuln.setExistInNvd(false);
+					newCVEDataNotInNvd.add(vuln);
+				}
+
+				if (!hashMapMitreCve.containsKey(vuln.getCveId())) {
+					vuln.setNvdSearchResult("NA");
+					vuln.setExistInMitre(false);
+					newCVEDataNotInMitre.add(vuln);
+				}
+
+				if (!hashMapMitreCve.containsKey(vuln.getCveId()) && !hashMapNvdCve.containsKey(vuln.getCveId())) {
+					// check NVD online
+					String note = UtilHelper.checkCveIdAtNvd(vuln.getCveId());
+					vuln.setNvdSearchResult(note);
+
+					// check MITRE online
+					note = UtilHelper.checkCveIdAtMitre(vuln.getCveId());
+					vuln.setMitreSearchResult(note);
+					/**
+					 * Include CVE if it is not reserved or rejected. This can be seen in MITRE's
+					 * note that queried online?
+					 */
+					if (!(note.indexOf(RESERVED_CVE_TEXT) >= 0)) {
+						vuln.setExistInNvd(false);
+						vuln.setExistInMitre(false);
+					} else {
+						vuln.setExistInNvd(true);
+						vuln.setExistInMitre(true);
+					}
+
+					/*
+					 * The vulnerability needs to not exist in both NVD and MITRE and have a
+					 * reasonable length!
+					 */
+					if (!vuln.existInMitre() && !vuln.existInNvd() && vuln.getDescription().length() > 10)
+						newCVEDataNotInNvdAndMitre.add(vuln);
+				}
+
+				// add to all
+				allCveData.add(vuln);
+			} catch (Exception e) {
+				logger.error("Error while processing vulnerability: " + vuln.toString());
+			}
+
+		} // for
+
+		newCVEMap.put("all", allCveData); // all CVEs
+		newCVEMap.put("mitre", newCVEDataNotInMitre); // CVEs not in Mitre
+		newCVEMap.put("nvd", newCVEDataNotInNvd); // CVEs not in Nvd
+		newCVEMap.put("nvd-mitre", newCVEDataNotInNvdAndMitre); // CVEs not in Nvd and Mitre
+
+		return newCVEMap;
+	}
+
+}

@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/main/java/edu/rit/se/nvip/cnnvd/CnnvdCveController.java=UTF-8
+encoding//src/main/java/edu/rit/se/nvip/cnnvd/CnnvdCveParser.java=UTF-8
+encoding//src/main/java/edu/rit/se/nvip/nvd/NvdCveParser.java=UTF-8
+encoding//src/test/java/edu/rit/se/nvip/characterizer/CveCharacterizerTest.java=UTF-8

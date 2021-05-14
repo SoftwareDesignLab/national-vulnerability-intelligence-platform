@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script>window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","errorBeacon":"bam-cell.nr-data.net","licenseKey":"4a60df4823","applicationID":"44832761","transactionName":"clpcFUcMWQ1UExhDE11bVxNUAVwNWBVOahRURV0TQRAaElkOQA==","queueTime":1,"applicationTime":58,"agent":""}</script>
+<script>(window.NREUM||(NREUM={})).loader_config={licenseKey:"4a60df4823",applicationID:"44832761"};window.NREUM||(NREUM={}),__nr_require=function(e,t,n){function r(n){if(!t[n]){var i=t[n]={exports:{}};e[n][0].call(i.exports,function(t){var i=e[n][1][t];return r(i||t)},i,i.exports)}return t[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(e,t,n){function r(){}function i(e,t,n){return function(){return o(e,[u.now()].concat(c(arguments)),t?null:this,n),t?void 0:this}}var o=e("handle"),a=e(7),c=e(8),f=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",l=p+"ixn-";a(d,function(e,t){s[t]=i(p+t,!0,"api")}),s.addPageAction=i(p+"addPageAction",!0),s.setCurrentRouteName=i(p+"routeName",!0),t.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,t){var n={},r=this,i="function"==typeof t;return o(l+"tracer",[u.now(),e,n],r),function(){if(f.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return t.apply(this,arguments)}catch(e){throw f.emit("fn-err",[arguments,this,e],n),e}finally{f.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,t){m[t]=i(l+t)}),newrelic.noticeError=function(e,t){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,t])}},{}],2:[function(e,t,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=e(9);t.exports=r,t.exports.offset=a,t.exports.getLastTimestamp=i},{}],3:[function(e,t,n){function r(e){return!(!e||!e.protocol||"file:"===e.protocol)}t.exports=r},{}],4:[function(e,t,n){function r(e,t){var n=e.getEntries();n.forEach(function(e){"first-paint"===e.name?d("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&d("timing",["fcp",Math.floor(e.startTime)])})}function i(e,t){var n=e.getEntries();n.length>0&&d("lcp",[n[n.length-1]])}function o(e){e.getEntries().forEach(function(e){e.hadRecentInput||d("cls",[e])})}function a(e){if(e instanceof m&&!g){var t=Math.round(e.timeStamp),n={type:e.type};t<=p.now()?n.fid=p.now()-t:t>p.offset&&t<=Date.now()?(t-=p.offset,n.fid=p.now()-t):t=p.now(),g=!0,d("timing",["fi",t,n])}}function c(e){d("pageHide",[p.now(),e])}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var f,u,s,d=e("handle"),p=e("loader"),l=e(6),m=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){f=new PerformanceObserver(r);try{f.observe({entryTypes:["paint"]})}catch(v){}u=new PerformanceObserver(i);try{u.observe({entryTypes:["largest-contentful-paint"]})}catch(v){}s=new PerformanceObserver(o);try{s.observe({type:"layout-shift",buffered:!0})}catch(v){}}if("addEventListener"in document){var g=!1,w=["click","keydown","mousedown","pointerdown","touchstart"];w.forEach(function(e){document.addEventListener(e,a,!1)})}l(c)}},{}],5:[function(e,t,n){function r(e,t){if(!i)return!1;if(e!==i)return!1;if(!t)return!0;if(!o)return!1;for(var n=o.split("."),r=t.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,f=c.match(a);f&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=f[1])}t.exports={agent:i,version:o,match:r}},{}],6:[function(e,t,n){function r(e){function t(){e(a&&document[a]?document[a]:document[i]?"hidden":"visible")}"addEventListener"in document&&o&&document.addEventListener(o,t,!1)}t.exports=r;var i,o,a;"undefined"!=typeof document.hidden?(i="hidden",o="visibilitychange",a="visibilityState"):"undefined"!=typeof document.msHidden?(i="msHidden",o="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(i="webkitHidden",o="webkitvisibilitychange",a="webkitVisibilityState")},{}],7:[function(e,t,n){function r(e,t){var n=[],r="",o=0;for(r in e)i.call(e,r)&&(n[o]=t(r,e[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;t.exports=r},{}],8:[function(e,t,n){function r(e,t,n){t||(t=0),"undefined"==typeof n&&(n=e?e.length:0);for(var r=-1,i=n-t||0,o=Array(i<0?0:i);++r<i;)o[r]=e[t+r];return o}t.exports=r},{}],9:[function(e,t,n){t.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,t,n){function r(){}function i(e){function t(e){return e&&e instanceof r?e:e?u(e,f,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!l.aborted||o){e&&a&&e(n,r,i);for(var c=t(i),f=v(n),u=f.length,s=0;s<u;s++)f[s].apply(c,r);var p=d[h[n]];return p&&p.push([b,n,r,c]),c}}function o(e,t){y[e]=v(e).concat(t)}function m(e,t){var n=y[e];if(n)for(var r=0;r<n.length;r++)n[r]===t&&n.splice(r,1)}function v(e){return y[e]||[]}function g(e){return p[e]=p[e]||i(n)}function w(e,t){s(e,function(e,n){t=t||"feature",h[n]=t,t in d||(d[t]=[])})}var y={},h={},b={on:o,addEventListener:o,removeEventListener:m,emit:n,get:g,listeners:v,context:t,buffer:w,abort:c,aborted:!1};return b}function o(e){return u(e,f,a)}function a(){return new r}function c(){(d.api||d.feature)&&(l.aborted=!0,d=l.backlog={})}var f="nr@context",u=e("gos"),s=e(7),d={},p={},l=t.exports=i();t.exports.getOrSetContext=o,l.backlog=d},{}],gos:[function(e,t,n){function r(e,t,n){if(i.call(e,t))return e[t];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[t]=r,r}var i=Object.prototype.hasOwnProperty;t.exports=r},{}],handle:[function(e,t,n){function r(e,t,n,r){i.buffer([e],r),i.emit(e,t,n)}var i=e("ee").get("handle");t.exports=r,r.ee=i},{}],id:[function(e,t,n){function r(e){var t=typeof e;return!e||"object"!==t&&"function"!==t?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");t.exports=r},{}],loader:[function(e,t,n){function r(){if(!E++){var e=x.info=NREUM.info,t=l.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&t))return u.abort();f(h,function(t,n){e[t]||(e[t]=n)});var n=a();c("mark",["onload",n+x.offset],null,"api"),c("timing",["load",n]);var r=l.createElement("script");r.src="https://"+e.agent,t.parentNode.insertBefore(r,t)}}function i(){"complete"===l.readyState&&o()}function o(){c("mark",["domContent",a()+x.offset],null,"api")}var a=e(2),c=e("handle"),f=e(7),u=e("ee"),s=e(5),d=e(3),p=window,l=p.document,m="addEventListener",v="attachEvent",g=p.XMLHttpRequest,w=g&&g.prototype;if(d(p.location)){NREUM.o={ST:setTimeout,SI:p.setImmediate,CT:clearTimeout,XHR:g,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var y=""+location,h={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1208.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),x=t.exports={offset:a.getLastTimestamp(),now:a,origin:y,features:{},xhrWrappable:b,userAgent:s};e(1),e(4),l[m]?(l[m]("DOMContentLoaded",o,!1),p[m]("load",r,!1)):(l[v]("onreadystatechange",i),p[v]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var E=0}},{}],"wrap-function":[function(e,t,n){function r(e,t){function n(t,n,r,f,u){function nrWrapper(){var o,a,s,p;try{a=this,o=d(arguments),s="function"==typeof r?r(o,a):r||{}}catch(l){i([l,"",[o,a,f],s],e)}c(n+"start",[o,a,f],s,u);try{return p=t.apply(a,o)}catch(m){throw c(n+"err",[o,a,m],s,u),m}finally{c(n+"end",[o,a,p],s,u)}}return a(t)?t:(n||(n=""),nrWrapper[p]=t,o(t,nrWrapper,e),nrWrapper)}function r(e,t,r,i,o){r||(r="");var c,f,u,s="-"===r.charAt(0);for(u=0;u<t.length;u++)f=t[u],c=e[f],a(c)||(e[f]=n(c,s?f+r:r,i,f,o))}function c(n,r,o,a){if(!m||t){var c=m;m=!0;try{e.emit(n,r,o,t,a)}catch(f){i([f,n,r,o],e)}m=c}}return e||(e=s),n.inPlace=r,n.flag=p,n}function i(e,t){t||(t=s);try{t.emit("internal-error",e)}catch(n){}}function o(e,t,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(e);return r.forEach(function(n){Object.defineProperty(t,n,{get:function(){return e[n]},set:function(t){return e[n]=t,t}})}),t}catch(o){i([o],n)}for(var a in e)l.call(e,a)&&(t[a]=e[a]);return t}function a(e){return!(e&&e instanceof Function&&e.apply&&!e[p])}function c(e,t){var n=t(e);return n[p]=e,o(e,n,s),n}function f(e,t,n){var r=e[t];e[t]=c(r,n)}function u(){for(var e=arguments.length,t=new Array(e),n=0;n<e;++n)t[n]=arguments[n];return t}var s=e("ee"),d=e(8),p="nr@original",l=Object.prototype.hasOwnProperty,m=!1;t.exports=r,t.exports.wrapFunction=c,t.exports.wrapInPlace=f,t.exports.argsToArray=u},{}]},{},["loader"]);</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href=""/>
+  <title>
+    TALOS-2015-0129 ||  Cisco Talos Intelligence Group - Comprehensive Threat Intelligence
+  </title>
+  <meta name="description" content=""/>
+  <meta name="keywords" content=""/>
+  <link rel="stylesheet" media="all" href="/assets/application-9edce5a0f10c53154415f600cd660dd7e88af9c55217600495b35ee1cd72dbc0.css" />
+  <script src="/assets/application-ce98558e1053a0db4225d06315aa3704d7b22cbf8ef4247c71bfee87532626e6.js"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicons/favicon-49c9b25776778ff43873cf5ebde2e1ffcd0747ad1042ac5a5306cdde3ffca8cd.ico" />
+  
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="xrvXSDHUz/eknx8XGbIP/Q8nCOqICyRxP5xyEKeyPlZ9fXykQarXwmn2wsQAI59dK+5DifVTfUrIu010Lk/IBg==" />
+  <script>
+//<![CDATA[
+
+      window.gmk = "AIzaSyDgclrR8QqACLDYcgLjsLd1RIZV9-V8Bpc";
+
+//]]>
+</script>  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-63204287-3', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <nav id='nav'>
+<div id='top-nav-bar'>
+<ul class='top-nav-links-wrapper'>
+<li><a class="login-button" href="/users/auth/saml">Cisco Login</a></li>
+</ul>
+</div>
+<div id='navigation'>
+<div class='navigation-logos-wrapper'>
+<div id='cisco-logo-wrapper'></div>
+<div id='talos-logo-wrapper'>
+<a class="page-link" href="/"><!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 210.6 61.9" style="enable-background:new 0 0 210.6 61.9;" xml:space="preserve">
+<style type="text/css">
+	.st0{display:none;}
+	.st1{fill:#006DB6;}
+</style>
+<g id="scaffold" class="st0">
+</g>
+<g>
+	<g>
+		<path class="st1" d="M84.5,51.4c-1.7-0.5-3.3-1.1-4.6-2.2c-1.5,1.5-3.4,2.1-5.4,2.1c-3.6,0.1-7.2,0.1-10.8,0.1    c-1.7,0-3.5,0-5.2-0.1c-2.5-0.1-4.6-1-6.3-2.9c-1-1.1-1.5-2.5-1.8-3.9c-0.5-2.6-0.4-5.2,0.5-7.7c1.3-3.4,3.3-6.2,6.4-8.2    c1.7-1.1,3.5-1.6,5.5-1.6c4.8,0,9.6,0,14.4,0c0.1,0,0.3,0,0.4,0c0,1.8,0,3.6,0,5.4c-0.1,0-0.2,0-0.3,0c-4.3,0-8.6,0-12.9,0    c-1.1,0-2.2,0-3.3,0.4c-2.3,0.8-3.8,2.5-4.7,4.6c-0.7,1.7-1,3.5-0.5,5.3c0.6,2.3,2.4,3.5,4.8,3.4c0.3,0,0.7,0,1,0    c3.8,0,7.5,0,11.3,0c0.6,0,1.3-0.1,1.9-0.3c1.8-0.5,2.9-1.8,3.4-3.6c0.2-0.6,0.2-1.2,0.2-1.8c0-3.6,0-7.3,0-10.9    c0-2.7,0-5.5,0-8.2c0-2.6-1.4-4.3-3.7-5.4c-1.1-0.5-2.2-0.6-3.4-0.6c-3.6,0-7.1,0-10.7,0c-0.8,0-1.7,0-2.5,0c-0.1,0-0.3,0-0.4-0.1    c-1.9-1-2.9-2.6-3.2-4.6c0,0,0-0.1,0-0.1c0.1,0,0.2,0,0.3,0c3.2,0,6.4,0,9.6,0c2,0,4-0.1,6-0.1c2.1,0,4.2,0.2,6.2,0.8    c1.8,0.5,3.5,1.3,4.8,2.7c1.5,1.5,2.2,3.3,2.5,5.4c0.1,0.8,0.2,1.7,0.2,2.6c0,4.8,0,9.6,0,14.4c0,3.7,0,7.5,0,11.2    c0,1.2,0,2.5,0,3.7C84.5,51.2,84.5,51.3,84.5,51.4z"></path>
+		<path class="st1" d="M198.7,10.6c-0.1,1.6-0.8,2.9-2,3.9c-0.1,0-0.1,0.1-0.2,0.1c-0.6,0.5-1.3,0.7-2.1,0.7c-5.2,0-10.3,0-15.5,0    c-0.9,0-1.8,0.2-2.6,0.8c-0.7,0.6-1,1.3-1.1,2.2c-0.2,2.4-0.3,4.7-0.5,7.1c0,0.6,0.1,1.2,0.5,1.6c0.4,0.6,1,0.9,1.7,0.9    c0.8,0,1.6,0,2.4,0c4.1,0,8.1-0.1,12.2,0.1c2.9,0.1,5.3,1.4,6.7,4.1c0.5,0.9,0.6,2,0.6,3c0,2.3,0,4.7,0,7c0,0.8,0.1,1.6,0,2.4    c-0.3,2.8-2.5,6.3-6.6,6.9c-0.5,0.1-1,0.1-1.4,0.1c-8.2,0-16.3,0-24.5,0c-0.1,0-0.3,0-0.4,0c0.1-0.2,0.1-0.5,0.2-0.7    c0.9-2.2,2.5-3.7,4.6-4.9c0.4-0.2,0.8-0.3,1.2-0.3c3.3,0,6.6,0,9.9,0c2.8,0,5.7,0,8.5,0c1.5,0,2.8-1.1,3-2.6    c0.1-0.8,0.1-1.5,0.1-2.3c0-1.6,0-3.3-0.1-4.9c0-1.4-0.9-2.4-2.3-2.5c-0.2,0-0.4,0-0.6,0c-4.5,0-9.1,0-13.6,0    c-2.4,0-4.5-0.9-6-2.9c-1.1-1.5-1.5-3.2-1.4-5c0.2-2.7,0.3-5.3,0.5-8c0.1-1.2,0.6-2.3,1.2-3.2c1.3-2.1,3.3-3.1,5.7-3.4    c1-0.1,2.1-0.1,3.1-0.1c2.5,0,5.1,0,7.6,0c3.7,0,7.4,0,11,0C198.5,10.6,198.6,10.6,198.7,10.6z"></path>
+		<path class="st1" d="M10.2,10.4c12.8,0,25.6,0,38.4,0c-0.1,0.4-0.2,0.7-0.3,1.1c-1,2.5-2.8,3.9-5.4,4.1c-1.3,0.1-2.5,0-3.8,0    c-1.5,0-3,0-4.5,0c-1,0-1.8,0.7-2,1.8c-0.1,0.2-0.1,0.5-0.1,0.7c0,10.9,0,21.9,0,32.8c0,0.1,0,0.2,0,0.4c-0.5-0.1-1-0.1-1.4-0.2    c-1.3-0.3-2.4-0.8-3.3-1.8c-1.1-1.1-1.5-2.5-1.5-4c0-9.1,0-18.3,0-27.4c0-0.7-0.2-1.3-0.7-1.8c-0.4-0.4-0.8-0.6-1.4-0.6    c-1.7,0-3.4,0-5.2,0c-1.1,0-2.1,0-3.2-0.1c-2.8-0.2-5-2.1-5.5-4.7C10.3,10.7,10.2,10.6,10.2,10.4z"></path>
+		<path class="st1" d="M92.6,10.6c1.9,0.2,3.5,0.7,4.8,2.1c1,1,1.5,2.3,1.5,3.8c0,7.9,0,15.9,0,23.8c0,1.1,0,2.1,0.3,3.2    c0.3,1.3,1,1.8,2.4,1.8c5.6,0,11.2,0,16.8,0c2.7,0,4.3,1.4,5.2,3.6c0.3,0.8,0.5,1.6,0.5,2.5c-0.1,0-0.2,0-0.3,0    c-8.6,0-17.2,0-25.7,0c-2.8,0-4.9-1.9-5.3-4.7c-0.1-0.4-0.1-0.8-0.1-1.2c0-11.5,0-23,0-34.4C92.6,10.9,92.6,10.8,92.6,10.6z"></path>
+		<path class="st1" d="M158.6,17.7c0.3,0.4,0.7,0.8,1,1.2c2.6,3.7,4,7.8,3.9,12.3c0,4.8-1.4,9.1-4.5,12.8c-3,3.6-6.9,5.9-11.5,6.9    c-5.5,1.2-10.7,0.2-15.5-2.7c-0.4-0.2-0.7-0.5-1.1-0.8c-0.1-0.1-0.2-0.2-0.3-0.3c0.1-0.1,0.2-0.2,0.3-0.3c0.8-0.8,1.5-1.7,2.3-2.5    c0.1-0.1,0.3-0.2,0.4-0.2c3.2,0,6.4,0,9.6,0c3,0,6,0,9.1,0c0.8,0,1.6-0.2,2.3-0.7c0.7-0.6,1-1.4,1-2.3c0-6.6,0-13.2,0-19.8    c0-0.3,0.1-0.5,0.3-0.7C156.8,19.7,157.7,18.7,158.6,17.7z"></path>
+		<path class="st1" d="M155.3,14.6c-0.9,0.9-1.7,1.8-2.6,2.7c-0.3,0.3-0.5,0.4-0.9,0.4c-6.1,0-12.2,0-18.3,0c-1.8,0-3.1,1.3-3.1,3.1    c0,5.7,0,11.4,0,17.1c0,0.8,0,1.7,0,2.5c0,0.1,0,0.3-0.1,0.3c-0.9,1-1.9,2-2.8,3c0,0,0,0-0.1,0.1c-0.1-0.2-0.3-0.3-0.4-0.5    c-2.2-2.9-3.6-6.2-4-9.9c-0.5-4.6,0.2-9,2.5-13c2.3-4.1,5.8-6.8,10.2-8.5c2.8-1.1,5.7-1.6,8.7-1.4c3.9,0.3,7.5,1.5,10.7,3.8    C155.1,14.4,155.2,14.5,155.3,14.6C155.3,14.5,155.3,14.6,155.3,14.6z"></path>
+		<path class="st1" d="M153.9,17.8c0.8-0.8,1.5-1.6,2.3-2.4c0.5,0.5,1,1,1.6,1.5c-0.8,0.9-1.6,1.7-2.4,2.5c-0.2-0.3-0.4-0.6-0.7-0.9    C154.5,18.2,154.2,18,153.9,17.8z"></path>
+		<path class="st1" d="M128.1,44.8c0.8-0.9,1.7-1.7,2.4-2.5c0.2,0.3,0.3,0.7,0.6,0.9c0.2,0.3,0.5,0.5,0.9,0.7    c-0.7,0.8-1.5,1.6-2.3,2.4C129.2,45.8,128.7,45.3,128.1,44.8z"></path>
+	</g>
+	<g>
+		<path class="st1" d="M198.3,50h-0.5v1.4h-0.4V50h-0.5v-0.3h1.5L198.3,50L198.3,50z"></path>
+		<path class="st1" d="M199,49.6l0.4,1.2l0.4-1.2h0.6v1.7h-0.4V51l0-0.8l-0.4,1.2h-0.3l-0.4-1.2l0,0.8v0.4h-0.4v-1.7L199,49.6    L199,49.6z"></path>
+	</g>
+</g>
+</svg>
+
+</a></div>
+</div>
+<div class='navigation-links-wrapper'>
+<ul class='main-nav-list'>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/software"><!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.white{fill:#FFFFFF;}
+</style>
+<path class="white" d="M19.4,17.1c0,0.1-0.1,0-0.2,0c0,0-1.3-0.9-2-1.4c-0.2-0.1-0.5-0.1-0.6,0.1c-0.3,0.3-0.6,0.8-0.9,1.3  c-0.1,0.2-0.1,0.5,0.1,0.6l2,1.5c0.1,0,0,0.1,0.1,0.2c0,0.1,0,0.1-0.1,0.2c-1.2,0.5-2.6,0.2-3.5-0.7c-0.8-0.9-1-2-0.7-3.1L4.5,6.5  c-1,0.3-2.3,0-3-0.9c-0.8-0.9-1.1-1.7-1-2.7c0-0.1,0-0.1,0.1-0.2c0.1,0,0.2,0.1,0.2,0.1l2,1.5C3,4.4,3.3,4.5,3.4,4.2  c0,0,0.5-0.8,0.9-1.3c0.1-0.2,0.1-0.5-0.1-0.6L2.3,0.9c-0.1,0,0-0.1-0.1-0.3c0-0.1,0-0.1,0.1-0.2C3.5-0.1,5,0.2,5.8,1.1  c0.8,0.9,1,2,0.7,3.1l9.1,9.3c1-0.3,2.3,0,3,0.9c0.7,0.7,0.9,1.5,0.9,2.5C19.5,16.9,19.5,17,19.4,17.1z"></path>
+</svg>
+
+<span>Software</span>
+</a></li>
+<li class='nav-item'>
+<div class='primary-link-wrapper'>
+<a class="primary_nav_link" href="/vulnerability_info"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26px" height="20px" viewBox="0 0 26 20">
+	<g id="vuln-icon" class="nav-icon">
+<path fill="#FFFFFF" d="M24.256,18.49L13.872,0.503C13.692,0.192,13.36,0,13,0c-0.359,0-0.692,0.192-0.872,0.503L1.744,18.49  c-0.18,0.312-0.18,0.695,0,1.006C1.924,19.809,2.257,20,2.616,20h20.769c0.359,0,0.691-0.191,0.871-0.504  C24.436,19.186,24.436,18.803,24.256,18.49 M14.268,18.215h-2.533v-1.85h2.533V18.215z M14.268,15.441h-2.533L10.89,6.515h4.222  L14.268,15.441z"></path>
+</g>
+</svg>
+
+<span>
+Vulnerability Information
+</span>
+</a></div>
+<input class='sub-nav-trigger' id='vuln-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='vuln-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="/vulnerability_info"><h1>Vulnerability Information</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='vuln-sub-trigger'>BACK</label>
+</li>
+<li><a href="/vulnerability_reports">Vulnerability Reports</a></li>
+<li><a href="/ms_advisories">Microsoft Advisories</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26px" height="20px" viewBox="0 0 26 20">
+	<g id="vuln-icon" class="nav-icon">
+<path fill="#FFFFFF" d="M24.256,18.49L13.872,0.503C13.692,0.192,13.36,0,13,0c-0.359,0-0.692,0.192-0.872,0.503L1.744,18.49  c-0.18,0.312-0.18,0.695,0,1.006C1.924,19.809,2.257,20,2.616,20h20.769c0.359,0,0.691-0.191,0.871-0.504  C24.436,19.186,24.436,18.803,24.256,18.49 M14.268,18.215h-2.533v-1.85h2.533V18.215z M14.268,15.441h-2.533L10.89,6.515h4.222  L14.268,15.441z"></path>
+</g>
+</svg>
+</div>
+</li>
+<li class='nav-item'>
+<div class='primary-link-wrapper'>
+<a class="primary_nav_link" href="/reputation"><!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" height="20px" width="20px" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.white{fill:#FFFFFF;}
+</style>
+<g>
+	<path class="white" d="M19.5,9.5h-1.1c-0.3-4.2-3.6-7.6-7.8-7.8V0.5C10.5,0.2,10.3,0,10,0l0,0C9.7,0,9.5,0.2,9.5,0.5l0,0v1.1   C5.3,1.9,1.9,5.3,1.6,9.5H0.5C0.2,9.5,0,9.7,0,10s0.2,0.5,0.5,0.5l0,0h1.1c0.3,4.2,3.6,7.6,7.8,7.8v1.1c0,0.3,0.2,0.5,0.5,0.5l0,0   c0.3,0,0.5-0.2,0.5-0.5l0,0v-1.1c4.2-0.3,7.6-3.6,7.8-7.8h1.1c0.3,0,0.5-0.2,0.5-0.5C20,9.7,19.8,9.5,19.5,9.5 M16.6,10.5h0.7   c-0.3,3.6-3.2,6.5-6.8,6.8v-0.8c0-0.3-0.2-0.5-0.5-0.5l0,0c-0.3,0-0.5,0.2-0.5,0.5v0.8C5.8,17,3,14.2,2.7,10.5h0.8   C3.8,10.5,4,10.3,4,10S3.8,9.5,3.5,9.5l0,0H2.7C3,5.8,5.8,3,9.5,2.7v0.8C9.5,3.7,9.7,4,10,4l0,0c0.3,0,0.5-0.2,0.5-0.5V2.7   C14.2,3,17,5.8,17.3,9.5h-0.7c-0.3,0-0.5,0.2-0.5,0.5C16.1,10.3,16.3,10.5,16.6,10.5L16.6,10.5"></path>
+	<circle class="white" cx="10" cy="10" r="3.2"></circle>
+</g>
+</svg>
+
+<span>
+Reputation Center
+</span>
+</a></div>
+<input class='sub-nav-trigger' id='reputation-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='reputation-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="/reputation"><h1>Reputation Center</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='reputation-sub-trigger'>BACK</label>
+</li>
+<li><a data-method="get" href="/reputation_center">IP &amp; Domain Reputation</a></li>
+<li><a href="/talos_file_reputation">Talos File Reputation</a></li>
+<li><a href="/reputation_center/support">Reputation Support</a></li>
+<li><a href="/amp-naming">AMP Threat Naming Conventions</a></li>
+<li><a href="/categories">Intelligence Categories</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" height="20px" width="20px" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.white{fill:#FFFFFF;}
+</style>
+<g>
+	<path class="white" d="M19.5,9.5h-1.1c-0.3-4.2-3.6-7.6-7.8-7.8V0.5C10.5,0.2,10.3,0,10,0l0,0C9.7,0,9.5,0.2,9.5,0.5l0,0v1.1   C5.3,1.9,1.9,5.3,1.6,9.5H0.5C0.2,9.5,0,9.7,0,10s0.2,0.5,0.5,0.5l0,0h1.1c0.3,4.2,3.6,7.6,7.8,7.8v1.1c0,0.3,0.2,0.5,0.5,0.5l0,0   c0.3,0,0.5-0.2,0.5-0.5l0,0v-1.1c4.2-0.3,7.6-3.6,7.8-7.8h1.1c0.3,0,0.5-0.2,0.5-0.5C20,9.7,19.8,9.5,19.5,9.5 M16.6,10.5h0.7   c-0.3,3.6-3.2,6.5-6.8,6.8v-0.8c0-0.3-0.2-0.5-0.5-0.5l0,0c-0.3,0-0.5,0.2-0.5,0.5v0.8C5.8,17,3,14.2,2.7,10.5h0.8   C3.8,10.5,4,10.3,4,10S3.8,9.5,3.5,9.5l0,0H2.7C3,5.8,5.8,3,9.5,2.7v0.8C9.5,3.7,9.7,4,10,4l0,0c0.3,0,0.5-0.2,0.5-0.5V2.7   C14.2,3,17,5.8,17.3,9.5h-0.7c-0.3,0-0.5,0.2-0.5,0.5C16.1,10.3,16.3,10.5,16.6,10.5L16.6,10.5"></path>
+	<circle class="white" cx="10" cy="10" r="3.2"></circle>
+</g>
+</svg>
+</div>
+</li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/resources"><svg xmlns="http://www.w3.org/2000/svg" width="124.999" height="153.391" viewBox="0 0 124.999 153.391">
+  <g>
+    <polygon points="89.149 8.214 89.149 37.263 118.199 37.263 89.149 8.214" fill="#fff"></polygon>
+    <path d="M80.2,44.8V0H21.122A3.72,3.72,0,0,0,17.4,3.719V135.361H121.28A3.719,3.719,0,0,0,125,131.643V44.8ZM36.6,30.7H68.138v7.809H36.6Zm0,24.188h64.427V62.7H36.6Zm0,24.185H79.557v7.809H36.6Zm64.752,32H36.6v-7.81h64.752Z" fill="#fff"></path>
+    <path d="M9.606,18.03H3.718A3.719,3.719,0,0,0,0,21.749V149.672a3.719,3.719,0,0,0,3.718,3.719H103.877a3.72,3.72,0,0,0,3.719-3.719v-6.354H9.942Z" fill="#fff"></path>
+  </g>
+</svg>
+
+<span>Library</span>
+</a></li>
+<li class='nav-item'>
+<div class='primary-link-wrapper'>
+<a class="primary_nav_link" href="/community"><svg xmlns="http://www.w3.org/2000/svg" width="26px" height="20px" viewBox="0 0 123.17 159.292">
+  <path d="M61.59,0,0,17.069v85.32c0,23.472,61.59,56.9,61.59,56.9s61.58-36.288,61.58-56.9V17.069Zm-.433,149.746C38.314,136.662,8.128,114.3,8.128,102.389V23.239l53.029-14.7Z" fill="#fff"></path>
+</svg>
+
+<span>Support</span>
+</a></div>
+<input class='sub-nav-trigger' id='community-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='community-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="/community"><h1>Support</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='community-sub-trigger'>BACK</label>
+</li>
+<li><a href="/reputation_center/support#reputation_center_support_ticket">Reputation Center Support</a></li>
+<li><a target="_blank" href="https://snort.org/community">Snort Community</a></li>
+<li><a target="_blank" href="https://www.clamav.net/contact.html#ml">ClamAV Community</a></li>
+<li><a target="_blank" href="https://www.spamcop.net/">SpamCop</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><svg xmlns="http://www.w3.org/2000/svg" width="26px" height="20px" viewBox="0 0 123.17 159.292">
+  <path d="M61.59,0,0,17.069v85.32c0,23.472,61.59,56.9,61.59,56.9s61.58-36.288,61.58-56.9V17.069Zm-.433,149.746C38.314,136.662,8.128,114.3,8.128,102.389V23.239l53.029-14.7Z" fill="#fff"></path>
+</svg>
+</div>
+</li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/incident_response"><svg xmlns="http://www.w3.org/2000/svg" width="111.588" height="148.311" viewBox="0 0 111.588 148.311">
+  <path d="M1.181,128.446v15.7a4.167,4.167,0,0,0,4.167,4.167h100.9a4.167,4.167,0,0,0,4.167-4.167v-15.7a4.167,4.167,0,0,0-4.167-4.167H5.348a4.167,4.167,0,0,0-4.167,4.166M55.8,63.109a3.277,3.277,0,1,1,0,6.553c-10.344,0-20.755,8.578-20.755,18.57a3.277,3.277,0,1,1-6.554,0C28.489,73.947,41.93,63.109,55.8,63.109Zm0-12.016c-21.787,0-39.325,17.81-39.325,39.937v26.7H95.122V91.03c0-22.128-17.537-39.937-39.324-39.937m52.365-38.3a3.291,3.291,0,0,0-2.254,1.024L88.432,31.294a3.283,3.283,0,0,0,4.642,4.644l17.478-17.479a3.278,3.278,0,0,0-2.389-5.666m-105.138,0a3.276,3.276,0,0,0-1.98,5.666L18.522,35.938a3.283,3.283,0,0,0,4.643-4.644L5.687,13.817A3.255,3.255,0,0,0,3.025,12.793ZM55.389.026a3.276,3.276,0,0,0-2.867,3.345V19.642a3.277,3.277,0,1,0,6.554,0V3.371A3.283,3.283,0,0,0,55.389.026Z" fill="#fff"></path>
+</svg>
+
+<span>Incident Response</span>
+</a></li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/careers"><svg xmlns="http://www.w3.org/2000/svg" width="153.816" height="90" viewBox="0 0 153.816 90">
+  <g>
+    <path d="M56.336,47.451a31.328,31.328,0,0,0-17.1-10.872A19.564,19.564,0,0,0,50.91,19.1C50.91,8.868,42.008,0,31.735,0S12.559,8.868,12.559,19.1A19.564,19.564,0,0,0,24.22,36.574,31.239,31.239,0,0,0,0,66.717c0,2.343,12.671,10.9,31.883,10.9a63.142,63.142,0,0,0,6.536-.341,37,37,0,0,1,8.222-21.367,38.039,38.039,0,0,1,9.7-8.456" fill="#fff" fill-rule="evenodd"></path>
+    <path d="M106.731,70.729a32.386,32.386,0,0,0-1.889-4.815c-.014-.029-.028-.058-.043-.087a32.308,32.308,0,0,0-2.568-4.335c-.033-.047-.066-.095-.1-.142-.312-.436-.631-.866-.964-1.287l-.015-.02a32.215,32.215,0,0,0-2.185-2.483l-.166-.168c-.369-.372-.745-.737-1.131-1.09l-.025-.024c-.415-.379-.838-.744-1.272-1.1l-.081-.064q-.582-.474-1.189-.92l-.217-.159c-.43-.312-.866-.616-1.313-.9h0a31.084,31.084,0,0,0-9.679-4.164A19.564,19.564,0,0,0,95.566,31.488c0-10.234-8.9-19.1-19.175-19.1s-19.176,8.868-19.176,19.1A19.564,19.564,0,0,0,68.876,48.96a31.828,31.828,0,0,0-9.109,3.733h0a31.8,31.8,0,0,0-6.941,5.668l-.045.05a31.3,31.3,0,0,0-2.243,2.738l-.024.034q-.5.693-.969,1.415c-.014.023-.03.047-.046.07a31.053,31.053,0,0,0-1.7,3.019c-.028.059-.057.117-.085.175a30.16,30.16,0,0,0-1.33,3.185c-.02.056-.038.112-.058.169q-.255.741-.474,1.5c-.019.065-.039.13-.057.2a30.092,30.092,0,0,0-.741,3.374c-.015.094-.03.188-.044.282-.084.56-.158,1.123-.211,1.693v.007c-.087.935-.135,1.88-.135,2.834,0,2.343,12.671,10.9,31.883,10.9s31.583-8.555,31.583-10.9a32.8,32.8,0,0,0-1.384-8.35l-.007-.023" fill="#fff" fill-rule="evenodd"></path>
+    <path d="M129.588,36.579A19.564,19.564,0,0,0,141.261,19.1c0-10.234-8.9-19.1-19.175-19.1S102.91,8.868,102.91,19.1a19.562,19.562,0,0,0,11.66,17.472A31.817,31.817,0,0,0,96.916,47.859a38.586,38.586,0,0,1,17.373,29.253,63.062,63.062,0,0,0,7.945.5c19.212,0,31.582-8.554,31.582-10.9a31.947,31.947,0,0,0-24.228-30.138" fill="#fff" fill-rule="evenodd"></path>
+  </g>
+</svg>
+
+<span>Careers</span>
+</a></li>
+<li class='nav-item'>
+<a id="link_blog" class="primary_nav_link" href="http://blog.talosintelligence.com/"><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="260px" height="296.5px" viewBox="0 0 260 296.5" enable-background="new 0 0 260 296.5" xml:space="preserve">
+<path fill="#FFFFFF" d="M243.586,42.404h-14.448c-0.943-4.513-3.143-8.813-6.616-12.33L201.793,9.098  c-4.7-4.757-10.972-7.377-17.66-7.377c-6.578,0-12.777,2.547-17.457,7.173l-33.875,33.511H17.586c-6.6,0-12,5.399-12,12V226.28  c0,6.6,5.4,12,12,12H153.83l84.21,56.278l-27.448-56.278h32.994c6.6,0,12-5.4,12-12V54.404  C255.586,47.804,250.186,42.404,243.586,42.404z M214.662,48.045c-0.01,0.2-0.021,0.399-0.044,0.599  c-0.008,0.069-0.021,0.139-0.031,0.207c-0.046,0.345-0.113,0.688-0.196,1.026c-0.034,0.137-0.063,0.273-0.103,0.408  c-0.039,0.135-0.087,0.267-0.133,0.399c-0.051,0.151-0.102,0.302-0.16,0.45c-0.049,0.126-0.105,0.249-0.16,0.373  c-0.068,0.153-0.139,0.307-0.216,0.457c-0.059,0.116-0.12,0.23-0.184,0.345c-0.088,0.157-0.181,0.312-0.278,0.465  c-0.065,0.104-0.13,0.206-0.2,0.308c-0.115,0.168-0.239,0.33-0.366,0.492c-0.064,0.081-0.124,0.165-0.19,0.244  c-0.199,0.238-0.409,0.472-0.635,0.694L82.458,182.308l-47.932,12.871l13.427-47.74L177.223,19.561  c1.917-1.895,4.414-2.84,6.911-2.84c2.534,0,5.068,0.975,6.99,2.92l20.726,20.974c0.545,0.552,1.002,1.156,1.39,1.79  c0.574,0.938,0.975,1.951,1.206,2.993c0.004,0.021,0.01,0.04,0.014,0.06c0.049,0.226,0.086,0.453,0.119,0.682  c0.008,0.06,0.017,0.118,0.024,0.178c0.026,0.211,0.045,0.424,0.058,0.636c0.004,0.077,0.007,0.153,0.009,0.23  c0.007,0.203,0.011,0.407,0.005,0.61C214.673,47.877,214.666,47.961,214.662,48.045z"></path>
+</svg>
+
+<span>Blog</span>
+</a></li>
+<li class='nav-item'>
+<div class='primary-link-wrapper'>
+<a class="primary_nav_link" href="/podcasts"><!-- Generator: Adobe Illustrator 21.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="podcast-icon-nav" x="0px" y="0px" viewBox="0 0 71.8 75" width="26px" height="20px" style="enable-background:new 0 0 71.8 75;" xml:space="preserve">
+<style type="text/css">
+	.podcast-fill{fill:#fff;}
+</style>
+<path class="podcast-fill" d="M21.8,15.1c0-7.8,6.3-14.1,14.1-14.1c7.8,0,14.1,6.3,14.1,14.1v25.4c0,7.8-6.3,14.1-14.1,14.1  c-7.8,0-14.1-6.3-14.1-14.1V15.1z M59.9,40.1c0,12.4-9.4,22.6-21.5,23.9v3.6h12.8c1.4,0,2.6,1.2,2.6,2.6c0,1.4-1.2,2.6-2.6,2.6H20.4  c-1.4,0-2.6-1.2-2.6-2.6c0-1.4,1.2-2.6,2.6-2.6h12.8V64c-12-1.3-21.5-11.5-21.5-23.9v-6.8c0-1.4,1.2-2.6,2.6-2.6  c1.4,0,2.6,1.2,2.6,2.6v6.8c0,10.4,8.5,18.8,18.8,18.8c10.4,0,18.8-8.5,18.8-18.9v-6.8c0-1.4,1.2-2.6,2.6-2.6c1.4,0,2.6,1.2,2.6,2.6  V40.1z"></path>
+</svg>
+
+<span>
+Podcasts
+</span>
+</a></div>
+<input class='sub-nav-trigger' id='podcast-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='podcast-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="/podcasts"><h1>Podcasts</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='podcast-sub-trigger'>BACK</label>
+</li>
+<li><a href="/podcasts/shows/beers_with_talos">Beers with Talos</a></li>
+<li><a href="/podcasts/shows/talos_takes">Talos Takes</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><!-- Generator: Adobe Illustrator 21.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="podcast-icon-nav" x="0px" y="0px" viewBox="0 0 71.8 75" width="26px" height="20px" style="enable-background:new 0 0 71.8 75;" xml:space="preserve">
+<style type="text/css">
+	.podcast-fill{fill:#fff;}
+</style>
+<path class="podcast-fill" d="M21.8,15.1c0-7.8,6.3-14.1,14.1-14.1c7.8,0,14.1,6.3,14.1,14.1v25.4c0,7.8-6.3,14.1-14.1,14.1  c-7.8,0-14.1-6.3-14.1-14.1V15.1z M59.9,40.1c0,12.4-9.4,22.6-21.5,23.9v3.6h12.8c1.4,0,2.6,1.2,2.6,2.6c0,1.4-1.2,2.6-2.6,2.6H20.4  c-1.4,0-2.6-1.2-2.6-2.6c0-1.4,1.2-2.6,2.6-2.6h12.8V64c-12-1.3-21.5-11.5-21.5-23.9v-6.8c0-1.4,1.2-2.6,2.6-2.6  c1.4,0,2.6,1.2,2.6,2.6v6.8c0,10.4,8.5,18.8,18.8,18.8c10.4,0,18.8-8.5,18.8-18.9v-6.8c0-1.4,1.2-2.6,2.6-2.6c1.4,0,2.6,1.2,2.6,2.6  V40.1z"></path>
+</svg>
+</div>
+</li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/about"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="55px" height="55px" viewBox="0 0 55 55">
+<g>
+	<g class="mobile-nav-home">
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M45.201,12.343c0.378,0.48,0.758,0.925,1.096,1.401    c2.975,4.207,4.543,8.876,4.494,14.044c-0.05,5.452-1.643,10.386-5.186,14.593c-3.484,4.133-7.929,6.73-13.182,7.895    c-6.313,1.398-12.216,0.275-17.695-3.131c-0.441-0.273-0.847-0.6-1.266-0.904c-0.11-0.078-0.208-0.174-0.337-0.287    c0.127-0.141,0.246-0.27,0.366-0.398c0.887-0.949,1.765-1.904,2.663-2.844c0.114-0.119,0.321-0.217,0.485-0.217    c3.658-0.006,7.318,0,10.975,0.008c3.458,0.006,6.913,0.02,10.369,0.02c0.957,0,1.871-0.193,2.62-0.844    c0.797-0.693,1.157-1.596,1.157-2.643c0.001-7.533,0.003-15.067-0.005-22.601c-0.002-0.309,0.088-0.524,0.3-0.743    C43.098,14.598,44.127,13.49,45.201,12.343"></path>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M41.402,8.822c-0.99,1.027-1.994,2.021-2.935,3.072    c-0.312,0.35-0.616,0.416-1.036,0.415c-6.98-0.009-13.957-0.007-20.938-0.007c-2.039,0-3.561,1.514-3.561,3.557    c0,6.504,0.002,13.008,0.006,19.512c0.002,0.973,0.011,1.943,0.004,2.914c0,0.133-0.04,0.301-0.127,0.393    c-1.069,1.162-2.15,2.314-3.229,3.469c-0.021,0.023-0.052,0.039-0.109,0.08c-0.159-0.188-0.323-0.369-0.471-0.562    c-2.535-3.348-4.119-7.102-4.605-11.268c-0.61-5.229,0.194-10.229,2.835-14.839c2.669-4.664,6.655-7.805,11.618-9.75    c3.205-1.257,6.533-1.852,9.977-1.621c4.478,0.298,8.553,1.754,12.227,4.325c0.101,0.072,0.197,0.151,0.291,0.229    C41.364,8.755,41.374,8.778,41.402,8.822"></path>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M39.799,12.47c0.873-0.911,1.749-1.829,2.676-2.797    c0.605,0.564,1.195,1.112,1.816,1.691c-0.941,0.985-1.817,1.903-2.703,2.83c-0.276-0.339-0.511-0.688-0.807-0.975    C40.492,12.941,40.145,12.728,39.799,12.47"></path>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M10.35,43.279c0.969-1.016,1.885-1.977,2.76-2.893    c0.213,0.369,0.376,0.762,0.639,1.072c0.265,0.312,0.627,0.539,0.98,0.832c-0.853,0.891-1.713,1.791-2.624,2.746    C11.513,44.445,10.939,43.869,10.35,43.279"></path>
+	</g>
+</g>
+</svg>
+
+<span>About</span>
+</a></li>
+<li class='acct_links desktop-hide'>
+<a class="login-button" href="/users/auth/saml">Cisco Login
+</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<input class='nav-trigger' id='nav-trigger' type='checkbox'>
+<label for='nav-trigger'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="16px" viewBox="0 0 22 16">
+<g id="menu-icon">
+	<path fill="#FFFFFF" d="M20.5,3h-19C0.672,3,0,2.329,0,1.5S0.672,0,1.5,0h19C21.328,0,22,0.671,22,1.5S21.328,3,20.5,3z"></path>
+	<path fill="#FFFFFF" d="M20.5,9.5h-19C0.672,9.5,0,8.828,0,8c0-0.829,0.672-1.5,1.5-1.5h19C21.328,6.5,22,7.171,22,8   C22,8.828,21.328,9.5,20.5,9.5z"></path>
+	<path fill="#FFFFFF" d="M20.5,16h-19C0.672,16,0,15.328,0,14.5S0.672,13,1.5,13h19c0.828,0,1.5,0.672,1.5,1.5S21.328,16,20.5,16z"></path>
+</g>
+</svg>
+</label>
+
+  <div id="page_wrapper">
+    <small>
+      <p class="success"></p>
+
+      <p class="error"></p>
+    </small>
+    <div class="container-fluid full-height">
+  <div class="row full-height">
+    <div class="col-xs-12 col_single">
+      <div class="row">
+        <div class="col-xs-12 report">
+          <h1>Talos Vulnerability Report</h1>
+
+          <h3 class="report_id">TALOS-2015-0129</h3>
+
+          <h2>Microsoft .NET Manifest Resource Information Disclosure Vulnerability</h2>
+
+              <h5 class="date_time">December  8, 2015</h5>
+
+              <h5>CVE Number</h5>
+              <p>CVE-2015-6114</p>
+
+          <div><h5 id="summary">Summary</h5>
+
+<p>An exploitable information leak or denial of service vulnerability exists in the manifest resource parsing functionality of the .NET Framework.
+A specially crafted resource can cause an integer overflow resulting in an out of bounds read which may return arbitrary memory contents or
+cause the application to unexpectedly terminate. An attacker can supply a corrupted manifest through a .NET or Silverlight assembly,
+which can be automatically loaded in Internet Explorer or other browsers with the appropriate plugin installed. This vulnerability can
+be used to crash the program or to return memory contents to assist with bypassing memory hardening mitigations such as ASLR.</p>
+
+<h5 id="tested-versions">Tested Versions</h5>
+
+<p>Microsoft Silverlight 5.1.30514.0<br />
+Microsoft .NET Framework 4.5.50938</p>
+
+<h5 id="product-urls">Product URLs</h5>
+
+<p><a href="https://www.microsoft.com/" target="_blank">http://www.microsoft.com/</a></p>
+
+<h5 id="cvssv3-score">CVSSv3 Score</h5>
+
+<p>6.1 - CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:H</p>
+
+<h5 id="details">Details</h5>
+
+<p>The .NET Manifest Resources format is undocumented but to learn about it we use one of source mentioned in references <sup><a href="#ref_1">[1]</a> <a href="#ref_2">[2]</a></sup>.
+The resource structure is documented in the following way:</p>
+
+<pre><code> +00 : Signature | needs to equal 0xbeefcace
+ +04 : Resource Manager header version
+ +08 : Reader Type string length [*]
+ +0C : Reader String |
+ [*]   : Resource version
+ [*]+4 : Number of resources
+ [*]+8 : Number of types
+ [ types ]
+ [align 8]
+ [Resources Name hashes]         = Number of resource * DWORD
+ [Offsets to resource names]     = Number of resource * DWORD
+ [..]  : Data Section offset
+ (...)
+</code></pre>
+
+<p>We will focus our attention on Number of resources field. An attacker can modify this field to corrupt a pointer in the following way.</p>
+
+<p>Vulnerable code appears in ResourceReader class: .net\coreclr\src\mscorlib\src\System\Resources\ResourceReader.cs
+This class has multipple constructors, in our scenario we are interested in constructors that assign a value to the _ums field.
+So it can be :</p>
+
+<pre><code>  Line 175        public ResourceReader(Stream stream)
+</code></pre>
+
+<p>or</p>
+
+<pre><code>  Line 197 internal ResourceReader(Stream stream, Dictionary&lt;String, ResourceLocator&gt; resCache)
+</code></pre>
+
+<p>Let’s we analyze the way .NET Manifest Resources structure is parsed.
+Both constructors call internal _ReadResources method:</p>
+
+<pre><code>  Line 870         private void _ReadResources()
+          	{
+  (...)
+  933            _numResources = _store.ReadInt32();
+  934            if (_numResources &lt; 0) {
+  935                throw new BadImageFormatException(Environment.GetResourceString("BadImageFormat_ResourcesHeaderCorrupted"));
+  936            }
+  (...)
+</code></pre>
+
+<p>Number of resources is represented by 32bit signed integer variable which value can’t be larger than MAX_INT.
+Later _numResources is used two times in code to calculate stream offset:</p>
+
+<pre><code>   991             else {
+   992                 int seekPos = unchecked(4 * _numResources);
+   993                 if (seekPos &lt; 0) {
+   994                     throw new BadImageFormatException(Environment.GetResourceString("BadImageFormat_ResourcesHeaderCorrupted"));
+   995                 }
+   996                 unsafe {
+   997                     _nameHashesPtr = (int*)_ums.PositionPointer;
+   998                     // Skip over the array of nameHashes.
+   999                     _ums.Seek(seekPos, SeekOrigin.Current);
+   1000                    // get the position pointer once more to check that the whole table is within the stream
+   1001                    byte* junk = _ums.PositionPointer;
+   1002                }
+   1003            }
+</code></pre>
+
+<p>You can see the vulnerable code at line 992 where integer overflow appears, but we won’t focus on it right now, just remember that _nameHashesPtr pointer was initialized here and it points to area where Resources Name hashes(DWORDs) should appears. We observe here also that the programmer planned to check whether pointer is assigned within stream boundaries but ultimately nothing is checked.</p>
+
+<p>Second usage of _numResources:</p>
+
+<pre><code>        else {
+            int seekPos = unchecked(4 * _numResources);
+            if (seekPos &lt; 0) {
+                throw new BadImageFormatException(Environment.GetResourceString("BadImageFormat_ResourcesHeaderCorrupted"));
+            }
+            unsafe {
+                _namePositionsPtr = (int*)_ums.PositionPointer;
+                // Skip over the array of namePositions.
+                _ums.Seek(seekPos, SeekOrigin.Current);
+                // get the position pointer once more to check that the whole table is within the stream
+                byte* junk = _ums.PositionPointer;
+            }
+        }
+</code></pre>
+
+<p>This code containts another integer overflow and lack of checking whether _namePositionsPtr points out-of-bounds. As we know already where and how _numResources and _nameHashesPtr is set and that there is lack of sanitization for these variables, we can run test application with malformed .NET resource manifest and see where it crashes.</p>
+
+<p>If application has one .NET resource and it’s major resource e.g MainPage.xaml it will be automatically loaded during application start in components initialization method which will trigger the vulnerability:</p>
+
+<pre><code> 47        [System.Diagnostics.DebuggerNonUserCodeAttribute()]
+ 48        public void InitializeComponent() {
+ 49            if (_contentLoaded) {
+ 50                return;
+ 51            }
+ 52            _contentLoaded = true;
+ 53            System.Windows.Application.LoadComponent(this, new System.Uri("/SilverlightApplication1;component/MainPage.xaml", System.UriKind.Relative));
+</code></pre>
+
+<h5 id="crash-analysis">Crash Analysis</h5>
+
+<pre><code> 1:035&gt; r
+ eax=40000000 ebx=20000000 ecx=80be126c edx=20000000 esi=00000000 edi=055b5318
+ eip=795a8a9c esp=0037ebe8 ebp=0037ebec iopl=0         nv up ei pl nz na po nc
+ cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00210200
+ mscorlib_ni+0x348a9c:
+ 795a8a9c 0fb601          movzx   eax,byte ptr [ecx]         ds:002b:80be126c=??
+ 1:035&gt; !u eip
+ preJIT generated code
+ System.Resources.ResourceReader.ReadUnalignedI4(Int32*)
+ Begin 795a8a9c, size 1f
+ &gt;&gt;&gt; 795a8a9c 0fb601          movzx   eax,byte ptr [ecx]
+ 795a8a9f 0fb65101        movzx   edx,byte ptr [ecx+1]
+</code></pre>
+
+<p>Access violation appears in ReadUnalignedI4 method in the following way:</p>
+
+<pre><code> 245        [System.Security.SecurityCritical]  // auto-generated
+ 246        internal static unsafe int ReadUnalignedI4(int* p)
+ 247        {
+ 248            byte* buffer = (byte*)p;
+ 249            // Unaligned, little endian format
+ 250            return buffer[0] | (buffer[1] &lt;&lt; 8) | (buffer[2] &lt;&lt; 16) | (buffer[3] &lt;&lt; 24);
+ 251        }
+</code></pre>
+
+<p>To understand where this *p pointer came from and how its value was calculated let’s we take a look at the call stack:</p>
+
+<pre><code> &gt;!dumpstack
+
+ System.Resources.ResourceReader.ReadUnalignedI4(Int32*))
+ System.Resources.ResourceReader.GetNameHash(Int32)),
+ System.Resources.ResourceReader.FindPosForResource(System.String))
+ System.Collections.Generic.Dictionary`2[[System.__Canon, mscorlib],[System.Resources.ResourceLocator, mscorlib]].TryGetValue(System.__Canon, System.Resources.ResourceLocator ByRef)),
+ System.Resources.RuntimeResourceSet.GetObject(System.String, Boolean, Boolean)),
+ System.Resources.RuntimeResourceSet.GetObject(System.String, Boolean)),
+ System.Resources.ResourceManager.GetObject(System.String, System.Globalization.CultureInfo, Boolean))
+ System.Resources.ResourceManager.GetStream(System.String, System.Globalization.CultureInfo)),
+ System.Windows.ResourceManagerWrapper.GetResourceForUri(System.Uri, System.Type)),
+ System.Windows.Application.LoadComponent(System.Object, System.Uri)),
+ SilverlightApp1.MainPage.InitializeComponent()),
+ (...)
+</code></pre>
+
+<p>We will start our investigation in FindPosForResource method.</p>
+
+<pre><code> 316        internal int FindPosForResource(String name)
+ 317        {
+ 318            Contract.Assert(_store != null, "ResourceReader is closed!");
+ 319            int hash = FastResourceComparer.HashFunction(name);
+ 320            BCLDebug.Log("RESMGRFILEFORMAT", "FindPosForResource for "+name+"  hash: "+hash.ToString("x", CultureInfo.InvariantCulture));
+ 321            // Binary search over the hashes.  Use the _namePositions array to
+ 322            // determine where they exist in the underlying stream.
+ 323            int lo = 0;
+ 324            int hi = _numResources - 1;
+ 325            int index = -1;
+ 326            bool success = false;
+ 327            while (lo &lt;= hi) {
+ 328                index = (lo + hi) &gt;&gt; 1;
+ 329                // Do NOT use subtraction here, since it will wrap for large
+ 330                // negative numbers.
+ 331                int currentHash = GetNameHash(index);
+</code></pre>
+
+<p>This function is searching for a particular resource name using its hash representation on Line 319. Calculated hash is searched for in the array pointed by _nameHashesPtr which is initialized in the _ReadResources method. Index for this array is calculated based on malformed by us _numResources. In this example we modified the original value of _numResources from 1 to 0x40000001 in the manifest. Setting a breakpoint at the beginning of FindPosForResource method we can easy check it out:</p>
+
+<pre><code> eax=055b52c0 ebx=055b2e0c ecx=055b5318 edx=055b3938 esi=ffffffff edi=0037ec88
+ eip=795a8c3c esp=0037ec3c ebp=0037ec98 iopl=0         nv up ei pl nz na po nc
+ cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00200202
+ mscorlib_ni+0x348c3c:
+ 795a8c3c 55              push    ebp
+ 1:035&gt; !dumpobj ecx
+ Name:        System.Resources.ResourceReader
+ MethodTable: 796f446c
+ EEClass:     792a6fd4
+ Size:        68(0x44) bytes
+ File:        C:\Program Files (x86)\Microsoft Silverlight\5.1.30514.0\mscorlib.dll
+ Fields:
+       MT    Field   Offset                 Type VT     Attr    Value Name
+ 796f40c0  4000f6e       14 ...m.IO.BinaryReader  0 instance 055b535c _store
+ 796f42cc  4000f6f       18 ...cator, mscorlib]]  0 instance 055b52e4 _resCache
+ 796e737c  4000f70        4         System.Int64  1 instance 188 _nameSectionOffset
+ 796e737c  4000f71        c         System.Int64  1 instance 211 _dataSectionOffset
+ 796cf828  4000f72       1c       System.Int32[]  0 instance 00000000 _nameHashes
+ 796f8ae8  4000f73       30                  PTR  0 instance 00be126c _nameHashesPtr
+ 796cf828  4000f74       20       System.Int32[]  0 instance 00000000 _namePositions
+ 796f8ae8  4000f75       34                  PTR  0 instance 00be1270 _namePositionsPtr
+ 796d17d0  4000f76       24      System.Object[]  0 instance 055b5850 _typeTable
+ 796cf828  4000f77       28       System.Int32[]  0 instance 055b5860 _typeNamePositions
+ 796e71d4  4000f78       38         System.Int32  1 instance 1073741825 _numResources
+ 796ee0d4  4000f79       2c ...nagedMemoryStream  0 instance 055b4d04 _ums
+ 796e71d4  4000f7a       3c         System.Int32  1 instance        2 _version
+</code></pre>
+
+<p>First index value calculated will be 0x20000000. Further index is passed to GetNameHash function.</p>
+
+<pre><code> 266        [System.Security.SecuritySafeCritical]  // auto-generated
+ 267        private unsafe int GetNameHash(int index)
+ 268        {
+ 269            Contract.Assert(index &gt;=0 &amp;&amp; index &lt; _numResources, "Bad index into hash array.  index: "+index);
+ 270            Contract.Assert((_ums == null &amp;&amp; _nameHashes != null &amp;&amp; _nameHashesPtr == null) ||
+ 271                            (_ums != null &amp;&amp; _nameHashes == null &amp;&amp; _nameHashesPtr != null), "Internal state mangled.");
+ 272            if (_ums == null)
+ 273                return _nameHashes[index];
+ 274            else
+ 275                return ReadUnalignedI4(&amp;_nameHashesPtr[index]);
+ 276        }
+</code></pre>
+
+<p>According to call stack and _ums value which we can observe on ResourceRader object dump above another call is made to ReadUnalignedI4 method where crash appears. Pointer passed to this method as argument is just pointer to element from _nameHashesPtr table. As we can see index argument is used as index into the name hashes array. In this case the corrupted value will point outside array (Resource section/directory) space.</p>
+
+<pre><code> 1:035&gt; !dumpobj 055b4d04  //dump of _ums object
+ Name:        System.IO.UnmanagedMemoryStream
+ MethodTable: 796ee0d4
+ EEClass:     792a39ac
+ Size:        56(0x38) bytes
+ File:        C:\Program Files (x86)\Microsoft Silverlight\5.1.30514.0\mscorlib.dll
+ Fields:
+       MT    Field   Offset                 Type VT     Attr    Value Name
+ 796f2674  400123d      3c0     System.IO.Stream  0   shared   static Null
+     &gt;&gt; Domain:Value  0500a6b0:NotInit  050acb70:NotInit  &lt;&lt;
+ 796efb84  4001320       24 ...rvices.SafeBuffer  0 instance 00000000 _buffer
+ 796f8ae8  4001321       28                  PTR  0 instance 00be11bc _mem
+ 796e737c  4001322        4         System.Int64  1 instance 1954 _length
+ 796e737c  4001323        c         System.Int64  1 instance 1954 _capacity
+ 796e737c  4001324       14         System.Int64  1 instance 188 _position
+ 796e737c  4001325       1c         System.Int64  1 instance 0 _offset
+ 796cf860  4001326       2c         System.Int32  1 instance        1 _access
+ 796e6b40  4001327       30       System.Boolean  1 instance        1 _isOpen
+</code></pre>
+
+<p>00be11bc _mem is a pointer to the beginning of .Net Resources Manifest and the _nameHashesPtr should be constrained within the _mem + _length memory boundary.</p>
+
+<pre><code> Moment when pointer to hash element is calculated:
+ eax=40000000 ebx=20000000 ecx=00be126c edx=20000000 esi=00000000 edi=055b5318
+ eip=795a8b26 esp=0037ebec ebp=0037ebec iopl=0         nv up ei pl nz na po nc
+ cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00200202
+ mscorlib_ni+0x348b26:
+ 795a8b26 8d0c91          lea     ecx,[ecx+edx*4]
+</code></pre>
+
+<p>Notice that here the index is multiplied by 4 (sizeof of element in array) which is another place for possible overflow.</p>
+
+<pre><code> 1:035&gt; p
+ eax=40000000 ebx=20000000 ecx=80be126c edx=20000000 esi=00000000 edi=055b5318
+ eip=795a8b29 esp=0037ebec ebp=0037ebec iopl=0         nv up ei pl nz na po nc
+ cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00200202
+ mscorlib_ni+0x348b29:
+ 795a8b29 e86effffff      call    mscorlib_ni+0x348a9c (795a8a9c)
+</code></pre>
+
+<p>Finally read access violation appears during read of first byte from calculated pointer:</p>
+
+<pre><code> 1:035&gt; p
+ (23e8.2504): Access violation - code c0000005 (first chance)
+ First chance exceptions are reported before any exception handling.
+ This exception may be expected and handled.
+ eax=40000000 ebx=20000000 ecx=80be126c edx=20000000 esi=00000000 edi=055b5318
+ eip=795a8a9c esp=0037ebe8 ebp=0037ebec iopl=0         nv up ei pl nz na po nc
+ cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00210202
+ mscorlib_ni+0x348a9c:
+ 795a8a9c 0fb601          movzx   eax,byte ptr [ecx]         ds:002b:80be126c=??
+
+ FAULTING_IP:
+ mscorlib_ni+348a9c
+ 795a8a9c 0fb601          movzx   eax,byte ptr [ecx]
+
+ EXCEPTION_RECORD:  ffffffff -- (.exr 0xffffffffffffffff)
+ ExceptionAddress: 795a8a9c (mscorlib_ni+0x00348a9c)
+    ExceptionCode: c0000005 (Access violation)
+   ExceptionFlags: 00000000
+ NumberParameters: 2
+    Parameter[0]: 00000000
+    Parameter[1]: 80be126c
+ Attempt to read from address 80be126c
+
+ FAULTING_THREAD:  00002504
+
+ DEFAULT_BUCKET_ID:  WRONG_SYMBOLS
+
+ PROCESS_NAME:  plugin-container.exe
+
+ ERROR_CODE: (NTSTATUS) 0xc0000005 - Instrukcja spod 0x%08lx odwo
+
+ EXCEPTION_CODE: (NTSTATUS) 0xc0000005 - Instrukcja spod 0x%08lx odwo
+
+ EXCEPTION_PARAMETER1:  00000000
+
+ EXCEPTION_PARAMETER2:  80be126c
+
+ READ_ADDRESS:  80be126c
+
+ FOLLOWUP_IP:
+ mscorlib_ni+348a9c
+ 795a8a9c 0fb601          movzx   eax,byte ptr [ecx]
+
+ NTGLOBALFLAG:  470
+
+ APPLICATION_VERIFIER_FLAGS:  0
+
+ APP:  plugin-container.exe
+
+ MANAGED_STACK:
+ (TransitionMU)
+ 0037EBE8 795A8A9C mscorlib_ni!System.Resources.ResourceReader.ReadUnalignedI4(Int32*)
+ 0037EBEC 795A8B2E mscorlib_ni!System.Resources.ResourceReader.GetNameHash(Int32)+0x22
+ 0037EBF4 795A8C88 mscorlib_ni!System.Resources.ResourceReader.FindPosForResource(System.String)+0x4c
+ 0037EC40 795A6774 mscorlib_ni!System.Resources.RuntimeResourceSet.GetObject(System.String, Boolean, Boolean)+0xb8
+ 0037ECA8 795A646D mscorlib_ni!System.Resources.RuntimeResourceSet.GetObject(System.String, Boolean)+0xd
+ 0037ECB0 795A3057 mscorlib_ni!System.Resources.ResourceManager.GetObject(System.String, System.Globalization.CultureInfo, Boolean)+0xc7
+ 0037ECF4 795A3163 mscorlib_ni!System.Resources.ResourceManager.GetStream(System.String, System.Globalization.CultureInfo)+0x13
+ 0037ED08 56E28AB7 System_Windows_ni!System.Windows.ResourceManagerWrapper.GetResourceForUri(System.Uri, System.Type)+0x197
+ 0037ED4C 56E0604A System_Windows_ni!System.Windows.Application.LoadComponent(System.Object, System.Uri)+0x17a
+ 0037ED90 00BF02C6 UNKNOWN!Inplay.Page.InitializeComponent()+0x8e
+ 0037EDD8 00BF0217 UNKNOWN!Inplay.Page..ctor(System.Collections.Generic.IDictionary`2&lt;System.String,System.String&gt;)+0xc7
+ 0037EDEC 00BF0126 UNKNOWN!Inplay.Application.Application_Startup(System.Object, System.Windows.StartupEventArgs)+0x5e
+ 0037EE0C 56E27053 System_Windows_ni!MS.Internal.CoreInvokeHandler.InvokeEventHandler(UInt32, System.Delegate, System.Object, System.Object)+0x3d3
+ 0037EE38 56E052A9 System_Windows_ni!MS.Internal.JoltHelper.FireEvent(IntPtr, IntPtr, Int32, Int32, System.String, UInt32)+0x38d
+ 0037EE88 56EA0A59 System_Windows_ni!DomainNeutralILStubClass.IL_STUB_ReversePInvoke(Int32, Int32, Int32, Int32, IntPtr, Int32)+0x61
+ (TransitionUM)
+
+ MANAGED_STACK_COMMAND:  _EFN_StackTrace
+
+ LAST_CONTROL_TRANSFER:  from 795a8c88 to 795a8a9c
+
+ PRIMARY_PROBLEM_CLASS:  WRONG_SYMBOLS
+
+ BUGCHECK_STR:  APPLICATION_FAULT_WRONG_SYMBOLS
+
+ STACK_TEXT:
+ 0037ebe8 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ebec 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ebf4 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ec40 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037eca8 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ecb0 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ecf4 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ed08 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ed4c 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037ed90 00000000 unknown.dll!Inplay.Page.InitializeComponent+0x8e
+ 0037edd8 00000000 unknown.dll!Inplay.Page..ctor+0xc7
+ 0037edec 00000000 unknown.dll!Inplay.Application.Application_Startup+0x5e
+ 0037ee0c 56e27053 system_windows_ni!MS.Internal.CoreInvokeHandler.InvokeEventHandler+0x3d3
+ 0037ee38 56e052a9 system_windows_ni!MS.Internal.JoltHelper.FireEvent+0x38d
+ 0037ee88 56ea0a59 system_windows_ni!DomainNeutralILStubClass.IL_STUB_ReversePInvoke+0x61
+
+
+ SYMBOL_STACK_INDEX:  0
+
+ SYMBOL_NAME:  unknown.dll!Inplay.Page.InitializeComponent
+
+ FOLLOWUP_NAME:  MachineOwner
+
+ MODULE_NAME: unknown
+
+ IMAGE_NAME:  unknown.dll
+
+ DEBUG_FLR_IMAGE_TIMESTAMP:  0
+
+ STACK_COMMAND:  _EFN_StackTrace ; ** Pseudo Context ** ; kb
+
+ FAILURE_BUCKET_ID:  WRONG_SYMBOLS_c0000005_unknown.dll!Inplay.Page.InitializeComponent
+
+ BUCKET_ID:  APPLICATION_FAULT_WRONG_SYMBOLS_unknown.dll!Inplay.Page.InitializeComponent
+
+ Followup: MachineOwner ---------
+</code></pre>
+
+<h5 id="references">References</h5>
+
+<p><a name="ref_1" class="reference">[1]</a> <a href="http://www.codeproject.com/Articles/12096/NET-Manifest-Resources" target="_blank">http://www.codeproject.com/Articles/12096/NET-Manifest-Resources</a><br />
+<a name="ref_2" class="reference">[2]</a> <a href="https://github.com/dotnet/coreclr" target="_blank">https://github.com/dotnet/coreclr</a></p>
+
+<h5 id="timeline">Timeline</h5>
+
+<p>2015-05-08 - Vendor Disclosure<br />
+2015-12-08 - Public Disclosure</p>
+</div>
+
+          <h5>Credit</h5>
+          <p>Marcin ‘Icewall’ Noga of Cisco Talos</p>
+
+          <hr/>
+          <div class="text-center button_area">
+            <a class="pull-left" href="/vulnerability_reports">
+                <button>Vulnerability Reports</button>
+</a>              <a class="pull-right" href="/vulnerability_reports/TALOS-2016-0066">
+                <button>Next Report</button>
+                <p class="report-button-helper">TALOS-2016-0066</p>
+</a>              <a class="pull-right" href="/vulnerability_reports/TALOS-2015-0069">
+                <button>Previous Report</button>
+                <p class="report-button-helper">TALOS-2015-0069</p>
+</a>          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  </div>
+  <script>
+      Talos.CountryLookup.autoCountry();
+  </script>
+
+<footer id="footer">
+  <div class="container">
+    <div class="row footer_nav_wrapper">
+      <div class="col-md-9 col-sm-12">
+        <ul class="footer_nav">
+          <li class="list_col">
+            <ul class="nopad">
+              <li class="nopad">
+                <ul class="pad first top">
+                  <li>
+                    <a href="/software">Software</a>
+                  </li>
+                  <li>
+                    <a href="/reputation_center">Reputation Center</a>
+                  </li>
+                  <li>
+                    <a href="/vulnerability_info">Vulnerability Information</a>
+                  </li>
+                  <li>
+                    <a href="/ms_advisories">Microsoft Advisory Snort Rules</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="list_col">
+                <ul class="pad second">
+                  <li>
+                    <a href="/incident_response">Incident Response</a>
+                  </li>
+                  <li>
+                    <a href="/amp-naming">AMP Naming Conventions</a>
+                  </li>
+                  <li>
+                    <a href="/talos_file_reputation">Talos File Reputation</a>
+                  </li>
+                  <li>
+                    <a href="/resources">Library</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="list_col">
+            <ul class="nopad">
+              <li class="nopad">
+                <ul class="pad first last">
+                  <li>
+                    <a href="/community">Support Communities</a>
+                  </li>
+                  <li>
+                    <a href="/about">About</a>
+                  </li>
+                  <li>
+                    <a href="/careers">Careers</a>
+                  </li>
+                  <li>
+                    <a href="http://blog.talosintelligence.com/">Blog</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="list_col odd_footer_col">
+                <ul class="pad second last">
+                  <li>
+                    <a href="/newsletters">Threat Source Newsletter</a>
+                  </li>
+                  <li>
+                    <a href="/podcasts/shows/beers_with_talos">Beers with Talos Podcast</a>
+                  </li>
+                  <li>
+                    <a href="/podcasts/shows/talos_takes">Talos Takes Podcast</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-3 col-sm-12 connect_social">
+        <h5>Connect With Us</h5>
+        <ul>
+          <li>
+            <a target="_blank" href="https://twitter.com/talossecurity">
+                <img alt="Follow us on Twitter" src="/assets/footer_icon_tw-bc0e96790d3264696a88a27c94294f32187c98547bcc5f0aaa422f8ddfb69dd1.svg" />
+</a>          </li>
+          <li>
+            <a target="_blank" href="https://www.youtube.com/channel/UCPZ1DtzQkStYBSG3GTNoyfg/featured">
+                <img alt="Watch our informational videos on YouTube" src="/assets/footer_icon_yt-b812952e2ecbdd529f7423a246bca7bdba383e2bb484730a7895dc884e87446c.svg" />
+</a>          </li>
+          <li>
+            <a target="_blank" href="https://www.linkedin.com/company/cisco-talos-intelligence-group/">
+                <img alt="Connect with us on LinkedIn" src="/assets/footer_icon_li-bd0ddcd91a27b1c50c11176142adcf7f1f7bd4ab581b1f04518f681674889461.svg" />
+</a>          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 footer_corporate">
+        <a target="_blank" href="https://tools.cisco.com/security/center/home.x">
+            <img alt="Cisco" src="/assets/logo_cisco_grey-26f5ea290915effad3bcafe2acabaad611aefc3a6ecee6fa50322de01686545c.svg" />
+</a>        <p class="copyright">&copy; 2021 Cisco Systems, Inc. and/or its affiliates. All rights
+          reserved. View our
+          <a target="_blank" class="underline" href="https://www.cisco.com/web/siteassets/legal/privacy_full.html">Privacy Policy</a>
+          here.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+      a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','nzhct');
+  twq('track','PageView');
+</script>
+<!-- End Twitter universal website tag code -->
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="expires" content="Mon, 01 Jan 2000 00:00:00 GMT">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="author" CONTENT="SecurityTracker">
+<meta name="robots" CONTENT="follow, index">
+<meta name="description" CONTENT="A vulnerability was reported in OpenSSL. A remote user can decrypt transmitted data in certain cases. HPE Performance Center is affected.">
+<meta name="keywords" CONTENT="HPE, HPE Performance Center">
+<title>(HPE Issues Fix for HPE Performance Center) OpenSSL 3DES Cipher Block Collision Weakness Lets Remote Users Decrypt Data in Certain Cases - SecurityTracker</title>
+</head>
+<body bgcolor="#FFFFFF">
+ 
+<a name="top">
+ 
+<!-- SecurityTracker Headlines Copyright 2021 by SecurityGlobal.net LLC -->
+
+<!-- build table for top logo header -->
+
+<center><table cellpadding=2 width="93%"><tr><td width="55%">
+<center><a href="/"><img src="/images/securitytracker_194x60.gif" height=60 width=194 title="SecurityTracker.com" alt="SecurityTracker.com" border=0></img></a></center></td>
+<td nowrap>
+
+<!-- 
+<center><font face="Arial, Helvetica"><font size=""><b>Keep Track of the <i>Latest</i> Vulnerabilities<br>with SecurityTracker!</b></font></font>
+</center>
+ -->
+
+</td><td></td></tr><tr><td height=5></td></tr></table></center>
+
+<!-- build color site navigation bar -->
+
+<table cellpadding=1 cellspacing=0 COLS=1 WIDTH="100%" bgcolor="#000080"><FONT link="#999999" vlink="#999999" alink="#999999">
+<tr><td nowrap><font face="Arial, Helvetica"><font size="-1">&nbsp;&nbsp;&nbsp;<b>
+<a style="color:#FFFFFF;text-decoration:none;" href="/" title="Go to the SecurityTracker Home Page">
+<FONT COLOR="#ECECDC">Home</FONT>
+</a>&nbsp;&nbsp;&nbsp;<FONT COLOR="#FFFFFF">|</FONT>&nbsp;&nbsp;&nbsp;
+<a style="color:#FFFFFF;text-decoration:none;" href="/topics/topics.html" title="View the Vulnerability Topic Categories">
+<FONT COLOR="#ECECDC">View Topics</FONT>
+</a>&nbsp;&nbsp;&nbsp;<FONT COLOR="#FFFFFF">|</FONT>&nbsp;&nbsp;&nbsp;
+<a style="color:#FFFFFF;text-decoration:none;" href="/search/search.html" title="Search the Vulnerability Alerts">
+<FONT COLOR="#ECECDC">Search</FONT>
+</a>&nbsp;&nbsp;&nbsp;<FONT COLOR="#FFFFFF">|</FONT>&nbsp;&nbsp;&nbsp;
+<a style="color:#FFFFFF;text-decoration:none;" href="/help/contacts.html" title="Contact Us ">
+<FONT COLOR="#ECECDC">Contact Us</FONT>
+
+</a>&nbsp;&nbsp;&nbsp;<FONT COLOR="#FFFFFF">|</FONT>&nbsp;&nbsp;&nbsp;
+</font></font></td></tr>
+</font></table>
+
+<!-- end of color site navigation bar -->
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-483172-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- table for date and sponsorship -->
+ 
+<table>
+<tr>
+<td></td>
+</tr>
+<tr>
+<td valign=top>
+<table border="0" cellspacing="0" cellpadding="0" width="120">
+<tr><td valign=top><center>
+<font face="Arial, Helvetica" size="-1">
+<br><b><i>Security</i>Tracker<br>Archives<br></b>
+
+</font></center></td>
+</tr></table>
+ 
+</td>
+<!-- spacer columns -->
+<td><br></td>
+<td><br></td>
+ 
+<td valign=top width="100%" align=center>
+<table width="75%" cellspacing="0" cellpadding="0">
+<tr>
+<td valign=top><center>
+<!-- SP1 -->
+ 
+</center></td>
+<td>&nbsp;</td>
+<td valign=top><center>
+
+
+</center></td>
+</tr></table>
+ 
+</td>
+</tr>
+</table>
+ 
+<!-- end of date and sponsorship section -->
+ 
+<!-- begin main section -->
+ 
+<table>
+<tr>
+<td valign=top>
+ 
+<!-- build left hand navigation column  -->
+
+ 
+<table border=0 cellspacing=0 cellpadding=0 width="120">
+<FONT LINK="#ECECDC" VLINK="#ECECDC" ALINK="#ECECDC">
+ 
+<tr><td>
+
+<!--  
+
+<table width="122" cellpadding="0" cellspacing="0" border="0" bgcolor="#660066">
+<tr><td align="center"><font face="Arial, Helvetica">
+<a style="color:#FFFFFF;text-decoration:none;" href="/signup/signup_now.html" title="Sign Up for Free Alerts">
+<font color="#ECECDC" size="-1">
+<b>Sign Up</b></font></a></font></td></tr></table>
+<table width="120" bgcolor="660066" cellpadding="1" cellspacing="0" border="0">
+<tr><td><table width="120" bgcolor="CCCC99" cellpadding="5" cellspacing="0" border="0">
+<tr><td align="center"><font face="Arial, Helvetica" color="#000000" size="-2">
+Sign Up for Your <font color="#DC143C"><b>FREE</b></font> Weekly SecurityTracker E-mail Alert Summary
+
+<br></font>
+</td></tr></table>
+</td></tr></table>
+ 
+</td></tr>
+ 
+<tr><td bgcolor="#FFFFFF" height=8></td></tr>
+ 
+<tr><td>
+ 
+<table width="122" cellpadding="0" cellspacing="0" border="0" bgcolor="#660066">
+<tr><td align="center"><font face="Arial, Helvetica">
+<a style="color:#FFFFFF;text-decoration:none;" href="" title="Buy Our Premium Service">
+<font color="#ECECDC" size="-1">
+<b>Instant Alerts</b></font></a></font></td></tr></table>
+<table width="120" bgcolor="660066" cellpadding="1" cellspacing="0" border="0">
+
+<tr><td><table width="120" bgcolor="CCCC99" cellpadding="5" cellspacing="0" border="0">
+<tr><td align="center"><font face="Arial, Helvetica" color="#000000" size="-2">
+Buy our <a href="/learn/premium.html">Premium Vulnerability Notification Service</a> to receive customized, instant alerts
+<br></font>
+</td></tr></table>
+</td></tr></table>
+ 
+</td></tr>
+ 
+<tr><td bgcolor="#FFFFFF" height=8></td></tr>
+ 
+<tr><td>
+ 
+<table width="122" cellpadding="0" cellspacing="0" border="0" bgcolor="#660066">
+
+<tr><td align="center"><font face="Arial, Helvetica">
+<a style="color:#FFFFFF;text-decoration:none;" href="/affiliate/affiliate_signup.html" title="Join Our Affiliate Program">
+<font color="#ECECDC" size="-1">
+<b>Affiliates</b></font></a></font></td></tr></table>
+<table width="120" bgcolor="660066" cellpadding="1" cellspacing="0" border="0">
+<tr><td><table width="120" bgcolor="CCCC99" cellpadding="5" cellspacing="0" border="0">
+<tr><td align="center"><font face="Arial, Helvetica" color="#000000" size="-2">
+Put SecurityTracker Vulnerability Alerts on Your Web Site
+<br></font>
+</td></tr></table>
+</td></tr></table>
+ 
+</td></tr>
+ 
+<tr><td bgcolor="#FFFFFF" height=8></td></tr>
+ 
+
+<tr><td>
+ 
+<table width="122" cellpadding="0" cellspacing="0" border="0" bgcolor="#660066">
+<tr><td align="center"><font face="Arial, Helvetica">
+<a style="color:#FFFFFF;text-decoration:none;" href="/help/contacts.html" title="Become a Partner">
+<font color="#ECECDC" size="-1">
+<b>Partners</b></font></a></font></td></tr></table>
+<table width="120" bgcolor="660066" cellpadding="1" cellspacing="0" border="0">
+<tr><td><table width="120" bgcolor="CCCC99" cellpadding="5" cellspacing="0" border="0">
+<tr><td align="center"><font face="Arial, Helvetica" color="#000000" size="-2">
+Become a Partner and <a href="/help/contacts.html">License</a> Our Database or Notification Service
+<br></font>
+</td></tr></table>
+
+</td></tr></table>
+ 
+</td></tr>
+ 
+<tr><td bgcolor="#FFFFFF" height=8></td></tr>
+ 
+<tr><td></td></tr>
+ 
+<tr><td></td></tr>
+ 
+<tr><td><center><font face="Arial, Helvetica" size="-2">
+<br><br>
+</font></center><br>
+
+ -->
+
+</td></tr>
+ 
+</font>
+</table>
+ 
+<!-- end of left hand column -->
+ 
+ 
+</td>
+<!-- spacer columns -->
+<td><br></td>
+
+<td><br></td>
+ 
+<td valign=top>
+ 
+<!-- divider line -->
+ 
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr height="2"><td height="2" bgcolor="#FFFFFF"><spacer type="block" width="1" height="1"></td></tr>
+<tr height="1"><td height="1" bgcolor="#CCCCCC"><spacer type="block" width="1" height="1"></td></tr>
+<tr height="4"><td height="4" bgcolor="#FFFFFF"><spacer type="block" width="1" height="1"></td></tr>
+</table>
+ 
+<!-- MSG -->
+ 
+<table width=100%>
+<tr>
+<td valign=top>
+
+<font face="Arial, Helvetica" size="-2">
+Category:&nbsp;&nbsp;
+<a href="/archives/category/9.html">Application (Generic)</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;
+<a href="/archives/target/9379.html">HPE Performance Center</a></font>
+</td>
+ 
+<td align=right><font face="Arial, Helvetica" size="-2">
+Vendors:&nbsp;&nbsp;
+<a href="/archives/vendor/2003.html">HPE</a></font>
+</td>
+</tr>
+</table>
+
+<!-- build table for message contents -->
+ 
+<table width=100%>
+<tr>
+<td valign=top>
+<font face="Arial, Helvetica" size="+2">
+<b>(HPE Issues Fix for HPE Performance Center) OpenSSL 3DES Cipher Block Collision Weakness Lets Remote Users Decrypt Data in Certain Cases</b>
+</font><br></td></tr>
+ 
+<tr><td>
+<font face="Arial, Helvetica" size="-1">
+<b>SecurityTracker Alert ID:</b>&nbsp;&nbsp;1039140</font></td></tr>
+
+<tr><td>
+<font face="Arial, Helvetica" size="-1">
+<b>SecurityTracker URL:</b>&nbsp;&nbsp;http://securitytracker.com/id/1039140 
+</font></td></tr>
+<tr><td><font face="Arial, Helvetica" size="-1">
+<b>CVE Reference:</b>&nbsp;&nbsp;
+<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-2183" target="_blank" rel="noopener noreferrer">CVE-2016-2183</a>
+&nbsp;&nbsp;<font size="-2"><i>(Links to External Site)</i></font>
+ 
+</font></td></tr>
+<tr><td>
+<font face="Arial, Helvetica" size="-1">
+
+<b>Date:&nbsp;&nbsp;</b>Aug 11 2017
+</font><br></td></tr>
+ 
+<tr><td>
+<font face="Arial, Helvetica" size="-1">
+<b>Impact:</b>&nbsp;&nbsp;
+<a href="/archives/impact/18.html">Disclosure of system information</a>, <a href="/archives/impact/19.html">Disclosure of user information</a></a></font><br></td></tr>
+ 
+<tr><td>
+<font face="Arial, Helvetica" size="-1">
+<b>Fix Available:</b>&nbsp;&nbsp;Yes&nbsp;&nbsp;<b>Vendor Confirmed:</b>&nbsp;&nbsp;Yes&nbsp;&nbsp;<b>Exploit Included:</b>&nbsp;&nbsp;Yes&nbsp;&nbsp;</font><br></td></tr>
+ 
+<tr><td><font face="Arial, Helvetica" size="-1">
+<b>Version(s):</b> 12.53 and after</font><br></td></tr>
+ 
+<tr><td><font face="Arial, Helvetica" size="-1">
+<b>Description:</b>&nbsp;&nbsp;
+A vulnerability was reported in OpenSSL. A remote user can decrypt transmitted data in certain cases. HPE Performance Center is affected.<br><br>
+A remote user that can monitor the network and can capture a long duration 3DES CBC mode encrypted session over which some amount of known plaintext is communicated can recover some plaintext in certain cases.<br />
+<br />
+Over the duration of a long-lived connection, a cipher block collision may occur, allowing the remote user to recover the exclusive OR between the two plaintext blocks. If the communications protocol sends a fixed plaintext portion (e.g., a secure cookie) repeatedly and also sends some amount of known plaintext, the user can recover the secret plaintext.<br />
+<br />
+[Editor's note: The report confirms a successful attack to recover secure HTTP cookies by capturing 785 GB of network traffic.]<br />
+<br />
+The attack method is known as a SWEET32 attack.<br />
+<br />
+64-bit block ciphers, such as 3DES and Blowfish, are affected by this type of attack.<br />
+<br />
+The original advisory will be presented at the 23rd ACM Conference on Computer and Communications Security and is available at:<br />
+<br />
+https://sweet32.info/SWEET32_CCS16.pdf<br />
+<br />
+Karthikeyan Bhargavan and Gaetan Leurent from INRIA reported this vulnerability.</font><br></td></tr>
+ 
+<tr><td><font face="Arial, Helvetica" size="-1">
+<b>Impact:</b>&nbsp;&nbsp;
+A remote user that can monitor the network can decrypt transmitted data in certain cases.</font><br></td></tr>
+ 
+<tr><td><font face="Arial, Helvetica" size="-1">
+<b>Solution:</b>&nbsp;&nbsp;
+HPE has issued a fix for HPE Performance Center.<br />
+<br />
+The HPE advisory is available at:<br />
+<br />
+http://h20565.www2.hpe.com/hpsc/doc/public/display?docId=hpesbgn03765en_us</font><br></td></tr>
+
+<tr><td><font face="Arial, Helvetica" size="-1">
+<b>Vendor URL:</b>&nbsp;&nbsp;<a href="http://h20565.www2.hpe.com/hpsc/doc/public/display?docId=hpesbgn03765en_us" target="_blank" rel="noopener noreferrer">h20565.www2.hpe.com/hpsc/doc/public/display?docId=hpesbgn03765en_us</a> <font size="-2"><i>(Links to External Site)</i></font>
+</font><br></td></tr>
+ 
+<tr><td><font face="Arial, Helvetica" size="-1">
+<b>Cause:</b>&nbsp;&nbsp;
+<a href="/archives/cause/25.html">Access control error</a></font><br></td></tr>
+
+
+<tr><td><font face="Arial, Helvetica" size="-1">
+</font><BR></td></tr>
+ 
+<tr><td><font face="Arial, Helvetica" size="-1">
+
+<b>Message History:</b>
+ 
+&nbsp;&nbsp;This archive entry is a follow-up to the message listed below.<br>
+<table cellspacing=3>
+<tr>
+<td valign=top>
+<font face=\042Arial, Helvetica\042 size=-1>
+Aug 26 2016</font></td>
+<td>
+<font face=\042Arial, Helvetica\042 size=-1>
+<a href="/id/1036696">OpenSSL 3DES Cipher Block Collision Weakness Lets Remote Users Decrypt Data in Certain Cases</a>
+<br>
+</font>
+</td>
+</tr>
+</table>
+
+</font><br></td></tr>
+ 
+<tr><td><br><hr size="1">
+ 
+<center><font face="Arial, Helvetica" size="-1">
+<img src="/images/small-st.jpg" align=absmiddle></img>
+&nbsp;<b>Source Message Contents</b><br></font></center>
+<hr size="1"></td></tr>
+
+
+<tr><td><font face="Arial, Helvetica" size="-1">
+
+<!-- <b>Date: </b><font face="Courier, New Courier">&nbsp; --><!-- </font><br> -->
+<b>Subject: </b><font face="Courier, New Courier">&nbsp;http://h20565.www2.hpe.com/hpsc/doc/public/display?docId=hpesbgn03765en_us</font><br>
+</font></td></tr>
+ 
+<tr><td><br>
+<FONT SIZE="-1">
+<PRE>
+ 
+ 
+</PRE>
+</FONT></td></tr>
+ 
+<tr><td width="800"></td></tr>
+
+ 
+</table>
+ 
+<BR><BR>
+<font face="Arial, Helvetica" size="-2">
+<b><center><a href="#top">Go to the Top of This <i>Security</i>Tracker Archive Page</a></center></b></font>
+<br><a name="bottom"><hr size="1">
+ 
+</td></tr></table>
+ 
+<!-- end of main section -->
+ 
+<BR><BR><BR>
+ 
+<!-- build simple site navigation bar -->
+
+<center><font face="Arial, Helvetica"><font size ="-1">
+<a href="/">Home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+<a href="/topics/topics.html">View Topics</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+<a href="/search/search.html">Search</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+<a href="/help/contacts.html">Contact Us</a>
+</font></font></center>
+<BR>
+
+<center><font face="Arial, Helvetica" size="-1">This web site uses cookies for web analytics. <a href="/help/privacy.html">Learn More</a>
+</font></center>
+<BR>
+
+<!-- This page is copyright 2021 by SecurityGlobal.net LLC -->
+
+<center><font face="Arial, Helvetica" size="-2">Copyright 2021, SecurityGlobal.net LLC</font></center>
+
+<!-- end -->
+</body>
+</html>

@@ -1,0 +1,21 @@
+1.useAllSplitWordTriples = true
+useQN = true
+useClassFeature = true
+1.binnedLengths = 10,20,30
+1.minNGramLeng = 2
+lowercase = true
+intern = true
+1.splitWordsRegexp = \s+
+1.minWordNGramLeng = 1
+1.useNGrams = true
+QNsize = 5
+sigma = 3
+1.useAllSplitWordPairs = true
+1.usePrefixSuffixNGrams = true
+1.useSplitWordNGrams = true
+1.maxWordNGramLeng = 4
+1.maxNGramLeng = 4
+ 
+crossValidationFolds=10
+printCrossValidationDecisions=true 
+shuffleTrainingData=true
