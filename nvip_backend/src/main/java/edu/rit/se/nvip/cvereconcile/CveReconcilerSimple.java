@@ -34,8 +34,6 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.rit.se.nvip.utils.UtilHelper;
-import edu.stanford.nlp.simple.Document;
-import edu.stanford.nlp.simple.Sentence;
 
 /**
  * Class for simple Cve reconciliation and validation

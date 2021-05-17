@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +21,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.cnnvd.CnnvdCveController;
 import edu.rit.se.nvip.cnnvd.CnnvdCveParser;
@@ -49,6 +55,9 @@ public class QuickCveCrawler {
 		CveCrawler crawler = new CveCrawler(propertiesNvip);
 
 		List<CompositeVulnerability> list = new ArrayList<>();
+
+		// Seclists
+		getSeclistsCveUpdates(crawler, list);
 
 		// Cnnvd
 		getCnnvdCveUpdates(list);
@@ -159,12 +168,12 @@ public class QuickCveCrawler {
 			List<String> cveURLsInPage = chinaCveParser.getCveUrlListFromPage(pageStr);
 			for (String cveURLItem : cveURLsInPage) {
 				try {
-					
+
 					String[] cveUrlParts = cveURLItem.split("=");
 					String cnnvdCveId = cveUrlParts[1];
-					
+
 					logger.info("Getting {} details from {}", cnnvdCveId, cveURLItem);
-					
+
 					String cveDetailHtml = getContentFromUrl(cveURLItem);
 					// get CVE details
 					CnnvdVulnerability vuln = chinaCveParser.getCveDetailsFromPage(cveDetailHtml);
@@ -188,5 +197,61 @@ public class QuickCveCrawler {
 		logger.info("Done! Scraped {} CVEs from Cnnvd! ", list.size() - count);
 		return list;
 
+	}
+
+	/**
+	 * Seclists CVE summaries are provided for each quarter. For example:
+	 * https://seclists.org/oss-sec/2021/q2 provides CVES for the second quarter of
+	 * 2021.
+	 * 
+	 * This methods scrapes CVEs for the current quarter
+	 * 
+	 * @param crawler
+	 * @param list
+	 * @return
+	 */
+	public List<CompositeVulnerability> getSeclistsCveUpdates(CveCrawler crawler, List<CompositeVulnerability> list) {
+		Random r = new Random(100);
+		String url = "https://seclists.org/oss-sec/{x}/q{y}";
+
+		try {
+			LocalDate myLocal = LocalDate.now();
+			int year = myLocal.getYear();
+			int quarter = myLocal.get(IsoFields.QUARTER_OF_YEAR);
+
+			url = url.replace("{x}", year + "");
+			url = url.replace("{y}", quarter + "");
+
+			logger.info("Getting CVES from {} ", url);
+			int count = list.size();
+
+			// summary page content
+			String html = getContentFromUrl(url);
+			Document doc = Jsoup.parse(html);
+
+			// get all links in the page
+			Elements elements = doc.select("a");
+
+			// filter CVE related links
+			for (Element element : elements) {
+				if (element.text().contains("CVE-")) {
+					String linkExt = element.attr("href");
+					String pageLink = url + "/" + linkExt;
+
+					logger.info("Scraping {}", pageLink);
+
+					// get CVE content
+					html = getContentFromUrl(pageLink);
+					list.addAll(crawler.parseWebPage(pageLink, html));
+
+					Thread.sleep(r.nextInt(10) + 40); // random delay
+				}
+			}
+
+			logger.info("Retrieved {} CVES from {}, Total CVEs: {}", list.size() - count, url, list.size());
+		} catch (Exception e) {
+			logger.error("Error scraping url {}, {}", url, e.toString());
+		}
+		return list;
 	}
 }

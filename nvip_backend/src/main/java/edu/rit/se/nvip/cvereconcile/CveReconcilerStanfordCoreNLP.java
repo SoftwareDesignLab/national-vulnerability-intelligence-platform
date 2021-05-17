@@ -38,8 +38,6 @@ import edu.rit.se.nvip.utils.UtilHelper;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.simple.Document;
-import edu.stanford.nlp.simple.Sentence;
 
 /**
  * Class for Cve reconciliation and validation based on Stanford NLP library

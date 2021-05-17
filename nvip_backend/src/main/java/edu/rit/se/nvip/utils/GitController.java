@@ -62,18 +62,18 @@ public class GitController {
 	 * @return
 	 */
 	public boolean pullRepo() {
-		Git git = null;
-		try {
-			logger.info(localPath + " found! Cheking for updates!...");
-			FileRepository localRepo = new FileRepository(localPath + "/.git");
-			git = new Git(localRepo);
-			PullCommand pull = git.pull();
-			pull.call();
+		logger.info("Cheking for updates for {} repo!...", localPath);
+		try (FileRepository localRepo = new FileRepository(localPath + "/.git");) {
+			try (Git git = new Git(localRepo)) {
+				PullCommand pull = git.pull();
+				pull.call();
+			} catch (Exception e) {
+				logger.error("Error while pulling repo {} {} ", remotePath, e.toString());
+				return false;
+			}
 		} catch (Exception e) {
-			logger.error("Error while pulling repo at: " + remotePath + ", " + e.toString());
+			logger.error("Error while initializing FileRepository for {}: {} ", remotePath, e.toString());
 			return false;
-		} finally {
-			git.close();
 		}
 		return true;
 	}
@@ -87,7 +87,7 @@ public class GitController {
 		Git git = null;
 		File localFileDir = null;
 		try {
-			logger.info(localPath + " local repository does not exist! Cloning repo now, this will take some time, please wait!...");
+			logger.info("{} repository does not exist! Cloning repo now, this will take some time, please wait!...", localPath);
 			localFileDir = new File(localPath);
 			CloneCommand cloneCommand = Git.cloneRepository();
 			cloneCommand.setURI(remotePath);
