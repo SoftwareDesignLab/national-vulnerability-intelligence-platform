@@ -124,33 +124,38 @@ public class NvdCveController {
 			// pull and parse CVE feeds from NVD
 			logger.info("\tPulling CVEs for " + year + "...");
 
-			// get all CVEs
-			ArrayList<JsonObject> jsonList = pullCVEs(year);
-			List<String[]> listCVEData = myCVEParser.parseCVEs(jsonList);
-			logger.info("\tDONE! Pulled " + listCVEData.size() + " CVEs");
+			try {
+				// get all CVEs
+				ArrayList<JsonObject> jsonList = pullCVEs(year);
+				List<String[]> listCVEData = myCVEParser.parseCVEs(jsonList);
+				logger.info("\tDONE! Pulled " + listCVEData.size() + " CVEs");
 
-			if (extractNamedEntities) {
-				// annotate
-				logger.info("\tAnnotating " + listCVEData.size() + " CVEs for year " + year);
-				listCVEData = coreNLP.annotateCVEList(listCVEData);
-				logger.info("\tDONE! Annotated " + listCVEData.size() + " CVEs");
+				if (extractNamedEntities) {
+					// annotate
+					logger.info("\tAnnotating " + listCVEData.size() + " CVEs for year " + year);
+					listCVEData = coreNLP.annotateCVEList(listCVEData);
+					logger.info("\tDONE! Annotated " + listCVEData.size() + " CVEs");
+				}
+
+				// write annotated descriptions to CSV
+				int count = csvLogger.writeListToCSV(listCVEData, filepath, true);
+				totCount += count;
+				if (count > 0) {
+					logger.info("\tWrote " + count + " entries to CSV file: " + filepath);
+				}
+
+				// add references from this json list
+				nvdRefUrlHash.putAll(myCVEParser.getCveReferences(jsonList));
+
+				// scores
+				// logScoreData(scorePath, listCVEData, csvLogger);
+
+				// add references from this json list
+				nvdCveCpeHashMap.putAll(myCVEParser.getCPEs(jsonList));
+			} catch (Exception e) {
+				String url = nvdJsonFeedUrl.replaceAll("YYYY", year + "");
+				logger.error("Error pulling NVD CVES for year {}, url: (), error: {}", year, url, e);
 			}
-
-			// write annotated descriptions to CSV
-			int count = csvLogger.writeListToCSV(listCVEData, filepath, true);
-			totCount += count;
-			if (count > 0) {
-				logger.info("\tWrote " + count + " entries to CSV file: " + filepath);
-			}
-
-			// add references from this json list
-			nvdRefUrlHash.putAll(myCVEParser.getCveReferences(jsonList));
-
-			// scores
-			// logScoreData(scorePath, listCVEData, csvLogger);
-
-			// add references from this json list
-			nvdCveCpeHashMap.putAll(myCVEParser.getCPEs(jsonList));
 		}
 
 		logger.info("\n\tWrote a total of *** " + totCount + " *** entries to CSV file: " + filepath);

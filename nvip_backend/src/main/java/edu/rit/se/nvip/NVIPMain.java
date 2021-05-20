@@ -205,9 +205,14 @@ public class NVIPMain {
 					newDescr = reservedStr + " - NVIP Description: " + vulnCna.getDescription();
 					cveCountReservedInGit++;
 				} else {
-					newDescr = vulnGit.getDescription(); // overwriting, assuming Git descriptions are better!
+					newDescr = vulnGit.getDescription(); // overwriting, assuming Git descriptions are worded better!
 				}
 				vulnCna.setDescription(newDescr);// update description
+
+				// merge sources
+				for (String sUrl : vulnGit.getSourceURL())
+					vulnCna.addSourceURL(sUrl);
+
 				cveHashMapAll.put(cveId, vulnCna); // update existing CVE
 			}
 		}

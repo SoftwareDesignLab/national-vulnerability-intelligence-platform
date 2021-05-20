@@ -27,10 +27,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -92,10 +94,26 @@ public class UrlCrawler extends WebCrawler {
 	 */
 	private HashMap<String, Integer> hashMapSourceURLsNotOk = new HashMap<String, Integer>();
 	Pattern pattern = null;
+	static Map<String, Integer> ignoredDomains = null;
 
 	public UrlCrawler() {
 		super();
 		pattern = Pattern.compile(regexCVEID);
+
+		synchronized (UrlCrawler.class) {
+			if (ignoredDomains == null) {
+				logger.info("Initializing ignored domains...");
+				ignoredDomains = new HashMap<>();
+				ignoredDomains.put("packetstorm", 1);
+				ignoredDomains.put("tenable", 1);
+				ignoredDomains.put("nvd.nist", 1);
+				ignoredDomains.put("mitre", 1);
+				ignoredDomains.put("seclists", 1);
+				ignoredDomains.put("cnnvd.org", 1);
+				ignoredDomains.put("cvedetails.com", 1);
+
+			}
+		}
 	}
 
 	/**
@@ -108,7 +126,16 @@ public class UrlCrawler extends WebCrawler {
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 		boolean crawl = !FILTERS.matcher(href).matches();
-		return crawl;
+
+		// is the url from one of the ignored domains?
+		boolean ignored = false;
+		for (String domain : ignoredDomains.keySet()) {
+			if (href.contains(domain)) {
+				ignored = true;
+				break;
+			}
+		}
+		return crawl && !ignored;
 	}
 
 	/**
@@ -143,7 +170,8 @@ public class UrlCrawler extends WebCrawler {
 	 * @param sContent
 	 */
 	private boolean pickURL(String pageURL, String sContent) {
-		if (haveCveId(sContent)) {
+		// if (haveCveId(sContent)) {
+		if (haveCveId(pageURL, sContent, ignoredDomains)) {
 			if (!hashMapSourceURLsFound.containsKey(pageURL)) {
 				hashMapSourceURLsFound.put(pageURL, 0);
 				if (hashMapSourceURLsFound.size() % 10 == 0)
@@ -184,6 +212,29 @@ public class UrlCrawler extends WebCrawler {
 	@Override
 	public Object getMyLocalData() {
 		return new UrlCrawlerData(hashMapSourceURLsFound, hashMapForbiddenURLs, hashMapSourceURLsNotOk);
+	}
+
+	/**
+	 * Include the URL only if it is not among the ignored domains and has a recent
+	 * CVE.
+	 * 
+	 * @param url
+	 * @param strContent
+	 * @param ignoredDomains
+	 * @return
+	 */
+	private boolean haveCveId(String url, String strContent, Map<String, Integer> ignoredDomains) {
+		// does the page include any recent CVEs
+		Matcher cveMatcher = pattern.matcher(strContent);
+		while (cveMatcher.find()) {
+			String cveId = cveMatcher.group();
+			String[] parts = cveId.split("-");
+			int year = Integer.parseInt(parts[1]);
+			if (Year.now().getValue() - year <= 1)
+				return true;
+		}
+
+		return false;
 	}
 
 }

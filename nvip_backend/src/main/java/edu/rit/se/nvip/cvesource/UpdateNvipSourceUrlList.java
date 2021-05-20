@@ -60,15 +60,12 @@ public class UpdateNvipSourceUrlList {
 	 * Tune this depth to look for more URLs in a given seed URL. It is
 	 * zero-indexed. 1 means second level of the search tree!
 	 */
-	private static final int SEARCH_DEPTH = 3;
+	private static final int SEARCH_DEPTH = 1;
+//	private static final String seedFile = "nvip-seeds-test.txt";
+	private static final String seedFile = "nvip-seeds.txt";
+	private static boolean flushExistingUrls = true;
 
 	public static void main(String[] args) {
-		/**
-		 * load properties file first
-		 */
-
-		// String seedFile = "nvip-seeds-test.txt";
-		String seedFile = "nvip-seeds.txt";
 
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
@@ -122,6 +119,10 @@ public class UpdateNvipSourceUrlList {
 		HashMap<String, Integer> notOkUrls = crawlerData.getHashMapSourceURLsNotOk();
 
 		DatabaseHelper db = DatabaseHelper.getInstance();
+		if (flushExistingUrls) {
+			int count = db.flushNvipSourceUrl();
+			logger.info("Removed existing {} source urls in db", count);
+		}
 		boolean done = db.insertNvipSource(nvipSourceList, notOkUrls);
 		if (done)
 			logger.info("NVIP source crawl URL process is DONE!");

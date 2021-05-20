@@ -85,7 +85,8 @@ public class UrlCrawlController {
 		HashMap<String, Integer> notOkUrlsAll = new HashMap<String, Integer>();
 
 		String crawlStorageFolder = propertiesNvip.getOutputDir();
-		int numberOfCrawlers = propertiesNvip.getNumberOfCrawlerThreads() * 10;
+		int numberOfCrawlers = propertiesNvip.getNumberOfCrawlerThreads() * 2;
+		//int numberOfCrawlers = propertiesNvip.getNumberOfCrawlerThreads();
 		// numberOfCrawlers = urls.size() / 50 + 1;
 
 		try {
@@ -94,7 +95,7 @@ public class UrlCrawlController {
 			config.setIncludeBinaryContentInCrawling(false);
 			config.setMaxDepthOfCrawling(searchDepth);
 			config.setIncludeHttpsPages(true);
-			config.setPolitenessDelay(10);
+			config.setPolitenessDelay(propertiesNvip.getDefaultCrawlerPoliteness());
 			config.setCrawlStorageFolder(crawlStorageFolder);
 
 			// overwrite default agent: "crawler4j (https://github.com/yasserg/crawler4j/)"

@@ -83,6 +83,7 @@ public class DatabaseHelper {
 	private String insertNvipSourceSql = "INSERT INTO NvipSourceUrl (url, description, http_status) VALUES (?,?,?);";
 	private String updateNvipSourceSql = "UPDATE NvipSourceUrl SET http_status = ? WHERE (url = ?);";
 	private String deleteNvipSourceSql = "DELETE FROM NvipSourceUrl WHERE url = ?;";
+	private String deleteAllNvipSourceSql = "DELETE FROM NvipSourceUrl;";
 	private String selectAllNvipSourceSql = "SELECT * FROM NvipSourceUrl;";
 	private String selectNvipSourceSql = "SELECT count(*) FROM NvipSourceUrl WHERE (url = ?);";
 
@@ -926,14 +927,13 @@ public class DatabaseHelper {
 	 */
 	public boolean insertNvipSource(List<NvipSource> nvipSourceList, HashMap<String, Integer> notOkUrls) {
 		HashMap<String, NvipSource> existingNvipSourceMap = new HashMap<String, NvipSource>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
 		int insertedUrlCount = 0;
 		int notOkUrlCount = 0;
-		try {
-			conn = getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(selectAllNvipSourceSql);
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(insertNvipSourceSql);
+				PreparedStatement pstmt2 = conn.prepareStatement(updateNvipSourceSql);
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(selectAllNvipSourceSql);) {
 
 			while (rs.next()) {
 				String sUrl = rs.getString("url");
@@ -941,7 +941,7 @@ public class DatabaseHelper {
 				existingNvipSourceMap.put(sUrl, new NvipSource(sUrl, "", httpStatus));
 			}
 
-			// utls found
+			// urls found
 			for (int i = 0; i < nvipSourceList.size(); i++) {
 				String nvipSourceUrl = null;
 				try {
@@ -952,7 +952,6 @@ public class DatabaseHelper {
 						continue; // next item
 					}
 					// does not exist, insert it!
-					pstmt = conn.prepareStatement(insertNvipSourceSql);
 					pstmt.setString(1, nvipSourceUrl);
 					pstmt.setString(2, nvipSourceList.get(i).getDescription());
 					pstmt.setInt(3, httpStatus);
@@ -967,21 +966,14 @@ public class DatabaseHelper {
 			for (String nvipSourceUrl : notOkUrls.keySet()) {
 				int httpStatus = notOkUrls.get(nvipSourceUrl);
 				// update entry
-				pstmt = conn.prepareStatement(updateNvipSourceSql);
-				pstmt.setInt(1, httpStatus);
-				pstmt.setString(2, nvipSourceUrl); // where
-				pstmt.executeUpdate();
+				pstmt2.setInt(1, httpStatus);
+				pstmt2.setString(2, nvipSourceUrl); // where
+				pstmt2.executeUpdate();
 				notOkUrlCount++;
 			}
-
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
 			return false;
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException ignored) {
-			}
 		}
 
 		logger.info("Out of " + nvipSourceList.size() + " crawled URLs, " + insertedUrlCount + " of them were NEW and INSERTED into database!");
@@ -1827,21 +1819,25 @@ public class DatabaseHelper {
 	 * @return
 	 */
 	public int deleteNvipSourceUrl(String sourceUrl) {
-		Connection conn = null;
-		try {
-			conn = getConnection();
+		try (Connection conn = getConnection();) {
+
 			PreparedStatement pstmt = conn.prepareStatement(deleteNvipSourceSql);
 			pstmt.setString(1, sourceUrl);
 			int count = pstmt.executeUpdate();
 			return count;
 		} catch (SQLException e) {
-			logger.error("Error while removing URL: " + e.getMessage() + "\tSource URL: " + sourceUrl);
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
+			logger.error("Error while removing source url: {}, {} ", sourceUrl, e);
+		}
+		return 0;
+	}
 
-			}
+	public int flushNvipSourceUrl() {
+		try (Connection conn = getConnection();) {
+			PreparedStatement pstmt = conn.prepareStatement(deleteAllNvipSourceSql);
+			int count = pstmt.executeUpdate();
+			return count;
+		} catch (SQLException e) {
+			logger.error("Error while flushing source urls {} ", e);
 		}
 		return 0;
 	}
