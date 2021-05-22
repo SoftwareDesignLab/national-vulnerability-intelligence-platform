@@ -51,9 +51,9 @@ public class AffectedProductIdentifierTest {
 
 		//String description = "--- Test CVE -- An attacker can exploit phpMyAdmin before 4.8.4 to leak the contents of a local file because of an error in the transformation feature. The attacker must have access to the phpMyAdmin Configuration Storage tables, although these can easily be created in any database to which the attacker has access. An attacker must have valid credentials to log in to phpMyAdmin; this vulnerability does not allow an attacker to circumvent the login system.";
 
-		String description = "The \"origin\" parameter passed to some of the endpoints like '/trigger' was vulnerable to XSS exploit. This issue affects Apache Airflow versions <1.10.15 in 1.x series and affects 2.0.0 and 2.0.1 and 2.x series. This is the same as CVE-2020-13944 & CVE-2020-17515 but the implemented fix did not fix the issue completely. Update to Airflow 1.10.15 or 2.0.2. Please also update your Python version to the latest available PATCH releases of the installed MINOR versions, example update to Python 3.6.13 if you are on Python 3.6. (Those contain the fix for CVE-2021-23336 https://nvd.nist.gov/vuln/detail/CVE-2021-23336).";
+		String description = "A relative path traversal vulnerability has been reported to affect QNAP NAS running QTS and QuTS hero. If exploited, this vulnerability allows attackers to modify files that impact system integrity. QNAP have already fixed this vulnerability in the following versions: QTS 4.5.2.1630 Build 20210406 and later QTS 4.3.6.1663 Build 20210504 and later QTS 4.3.3.1624 Build 20210416 and later QuTS hero h4.5.2.1638 Build 20210414 and later QNAP NAS running QTS 4.5.3 are not affected";
 		List<CompositeVulnerability> vulnList = new ArrayList<CompositeVulnerability>();
-		CompositeVulnerability v = new CompositeVulnerability(0, null, "CVE-2021-28359", "", null, null, description, null);
+		CompositeVulnerability v = new CompositeVulnerability(0, null, "CVE-2021-28798", "", null, null, description, null);
 		v.setCveReconcileStatus(CompositeVulnerability.CveReconcileStatus.UPDATE);
 		vulnList.add(v);
 

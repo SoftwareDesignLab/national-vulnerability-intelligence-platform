@@ -132,10 +132,9 @@ public class NVIPMain {
 				logger.info("Loaded {} source URLs from file {}, running NVIP in test mode!", urls.size(), commandLineArgs[0]);
 			} else {
 				List<NvipSource> sources = db.getNvipCveSources();
-				if (sources.isEmpty()) {
+				if (sources.isEmpty())
 					logger.error("No source URLs in the database to crawl! Please make sure to include at least one source URL in the 'nvipsourceurl' table!");
-					System.exit(1);
-				}
+
 				for (NvipSource nvipSource : sources)
 					urls.add(nvipSource.getUrl());
 				logger.info("Loaded {} source URLs from database!", urls.size());
@@ -426,7 +425,7 @@ public class NVIPMain {
 		String dataDir = propertiesNvip.getDataDir();
 
 		if (!new File(dataDir).exists()) {
-			logger.error("No data dir. Make sure you have the directory {} that includes required data to run!", dataDir);
+			logger.error("The data dir is not configured properly, check the 'dataDir' key in the nvip.properties file, currently configured data dir is {}", dataDir);
 			System.exit(1);
 		}
 

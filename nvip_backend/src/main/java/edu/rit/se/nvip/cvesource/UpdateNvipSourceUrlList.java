@@ -25,12 +25,14 @@ package edu.rit.se.nvip.cvesource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,16 +72,13 @@ public class UpdateNvipSourceUrlList {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-		String sourceUrlPath = "src/main/resources/cvesources/" + seedFile; // use the seeds here to look for more source urls
-		// File sourceFile = UtilHelper.getFileNameFromDialog();
-		File seedUrlFile = new File(sourceUrlPath);
-		if (!seedUrlFile.exists()) {
-			logger.info("Looking for seed URLs at ./" + seedFile);
-			seedUrlFile = new File(seedFile);
-			if (!seedUrlFile.exists()) {
-				logger.error("No seed URLs found, exiting. Please provide a seed URL file!");
-				System.exit(1);
-			}
+		// use the seeds here to look for more source urls
+		char separator = File.separatorChar;
+		ClassLoader classLoader = UpdateNvipSourceUrlList.class.getClassLoader();
+		InputStream inputStream = classLoader.getResourceAsStream(seedFile);
+		if (inputStream == null) {
+			logger.error("Could not read seed URLs from resources, exiting!");
+			System.exit(1);
 		}
 
 		// String sourceUrlPath = "src/test/resources/cve-source-multiple-bugzilla.txt";
@@ -88,7 +87,11 @@ public class UpdateNvipSourceUrlList {
 		// load URLs
 		List<String> urls = null;
 		try {
-			urls = FileUtils.readLines(seedUrlFile, "UTF-8");
+			urls = IOUtils.readLines(inputStream, "UTF-8");
+			if (urls.isEmpty()) {
+				logger.info("No seed URLs are provided, exiting!");
+				System.exit(1);
+			}
 		} catch (IOException e) {
 			logger.error("Please enter a correct input .txt file for seed URLs!");
 			System.exit(1);
