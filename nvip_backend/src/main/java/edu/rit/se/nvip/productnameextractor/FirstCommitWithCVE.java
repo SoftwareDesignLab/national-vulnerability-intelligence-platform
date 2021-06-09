@@ -94,13 +94,42 @@ public class FirstCommitWithCVE {
 		}
 		
 	}
+	/**
+	 * Looks for the repository and version (tag)
+	 * 
+	 * @param cpeItem String, cpeID
+	 * @return FirstCommitSearchResult information an=bout the repository and tag associated with the version, or NULL if did not find anything
+	 */
 	
-	public String getFirstCommit(String cpeItem) {
-		String commitUrl = null;
+	public FirstCommitSearchResult getFirstCommit(String cpeItem) {
+		FirstCommitSearchResult result = null;
 		
+		// parse CPE id to elements
+		String[] cpeIDelements = cpeItem.split(":");
 		
+		String vendor = cpeIDelements[3];
+		String name = cpeIDelements[4];
+		String version = cpeIDelements[5];
+		String key = vendor + ":" + name;
 		
-		return commitUrl;
+		RepoFullNameWithTags repository = reposDataset.get(key);
+		
+		if (repository == null) {
+			return null;
+		}
+		
+		result = new FirstCommitSearchResult(repository.getUrl(), repository.getFullName(), repository.getCpeName(), repository.getCpeID(), repository.getHtmlUrl());
+		result.setExactMatch(repository.isExactMatch());
+		
+		if(repository.getTags()!=null && repository.getTags().size()>0 && !version.equalsIgnoreCase("*")) {
+			for (RepoTag tag:repository.getTags()) {
+				if (tag.getName().contains(version.toLowerCase())) {
+					result.fillFromTag(tag);
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -156,7 +185,7 @@ public class FirstCommitWithCVE {
         if (f.exists()){
             InputStream is;
 			try {
-				is = new FileInputStream("file.json");
+				is = new FileInputStream(jsonPath);
 				String jsonTxt = IOUtils.toString(is, "UTF-8");
 				json = new JSONObject(jsonTxt); 
 			} catch (Exception e) {
@@ -166,6 +195,7 @@ public class FirstCommitWithCVE {
         
         if (json==null) {
         	logger.error("Repositories JSON is NULL! JSON file path is {}", jsonPath);
+        	return;
         }
         
         HashMap<String, RepoFullNameWithTags> repoMap = new HashMap<String, RepoFullNameWithTags>();

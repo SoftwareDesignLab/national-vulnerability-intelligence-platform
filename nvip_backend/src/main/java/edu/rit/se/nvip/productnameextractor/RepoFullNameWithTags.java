@@ -68,12 +68,12 @@ public class RepoFullNameWithTags implements Serializable{
 	
 	public RepoFullNameWithTags(JSONObject repo) {
 		super();
-		this.cpeName = repo.getString("cpeName");
-		this.fullName = repo.getString("fullName");
+		this.cpeName = repo.getString("cpe_name");
+		this.fullName = repo.getString("cpe_name");
 		this.url = repo.getString("url");
-		this.cpeID = repo.getString("cpeID");
-		this.htmlUrl = repo.getString("htmlUrl");
-		this.exactMatch = repo.getBoolean("exactMatch");
+		this.cpeID = repo.getString("cpe_i_d");
+		this.htmlUrl = repo.getString("html_url");
+		this.exactMatch = repo.getBoolean("exact_match");
 		
 		JSONArray tagsArray = repo.getJSONArray("tags");
 		if (tagsArray != null && tagsArray.length()>0) {

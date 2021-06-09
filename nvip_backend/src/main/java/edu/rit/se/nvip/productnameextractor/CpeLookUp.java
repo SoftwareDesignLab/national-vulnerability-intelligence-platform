@@ -55,7 +55,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
 import opennlp.tools.tokenize.WhitespaceTokenizer;
 
 /**
- * This class is to check is a software name in the CPE dictionary =
+ * This class is to check is a software name in the CPE dictionary
  * 
  * @author Igor Khokhlov
  *

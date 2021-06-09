@@ -21,72 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package edu.rit.se.nvip.productnameextractor;
 
-import java.io.Serializable;
+import static org.junit.Assert.*;
 
-import org.json.JSONObject;
+import org.junit.Test;
 
 /**
- * RepoTag contains information about the tag(version) of a commit
+ * Unit tests for the FirstCommitWithCVE class
  * 
  * @author Igor Khokhlov
  *
  */
 
-public class RepoTag implements Serializable{
-	
-	private String name, url, nodeID, sha;
+public class FirstCommitTest {
 
-	public RepoTag(String name, String url, String nodeID, String sha) {
-		super();
-		this.name = name;
-		this.url = url;
-		this.nodeID = nodeID;
-		this.sha = sha;
-	}
-	
-	public RepoTag(JSONObject repoTag) {
-		super();
-		this.name = repoTag.getString("name");
-		this.url = repoTag.getString("url");
-		this.nodeID = repoTag.getString("node_i_d");
-		this.sha = repoTag.getString("sha");
-	}
+	@Test
+	public void testGettingFirstCommit() {
+		FirstCommitWithCVE firstCommitLookUp = FirstCommitWithCVE.getInstance();
+		
+		String legitCpeItem = "cpe:2.3:a:openmodelica:omcompiler:1.9.2:*:*:*:*:*:*:*";
+		String legitCpeItemWOversion = "cpe:2.3:a:openmodelica:omcompiler:*:*:*:*:*:*:*:*";
+		String notOpenSourceItem = "cpe:2.3:a:fabrikar:fabrik:3.0.4:*:*:*:*:joomla\\!:*:*";
+		
+		FirstCommitSearchResult result1 = firstCommitLookUp.getFirstCommit(legitCpeItem);
+		FirstCommitSearchResult result2 = firstCommitLookUp.getFirstCommit(legitCpeItemWOversion);
+		FirstCommitSearchResult result3 = firstCommitLookUp.getFirstCommit(notOpenSourceItem);
+		
+		String anticipatedResult1 = "v1.9.2";
+		assertEquals("Result1 is correct", true, result1.getTagName().equals(anticipatedResult1));
+		assertEquals("Result2 is correct", true, result2.getTagName()==null);
+		assertEquals("Result3 is correct", true, result3==null);
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+		
+		return;
 
-	public String getUrl() {
-		return url;
-	}
 
-	public void setUrl(String url) {
-		this.url = url;
+		
 	}
-
-	public String getNodeID() {
-		return nodeID;
-	}
-
-	public void setNodeID(String nodeID) {
-		this.nodeID = nodeID;
-	}
-
-	public String getSha() {
-		return sha;
-	}
-
-	public void setSha(String sha) {
-		this.sha = sha;
-	}
-	
-	
 
 }
