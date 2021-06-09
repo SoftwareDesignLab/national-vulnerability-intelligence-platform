@@ -149,6 +149,10 @@ public class MyProperties extends Properties {
 	public String getNameExtractorDir() {
 		return getProperty("nameextractorDir");
 	}
+	
+	public String getRepositoriesDataDir() {
+		return getProperty("repositoriesDataDir");
+	}
 
 	public String getChar2VecModelConfigPath() {
 		return getProperty("char2vecConfig");
@@ -172,6 +176,10 @@ public class MyProperties extends Properties {
 
 	public String getCPEserialized() {
 		return getProperty("cpeSerialized");
+	}
+	
+	public String getGitHubData() {
+		return getProperty("githubDataset");
 	}
 
 	/**

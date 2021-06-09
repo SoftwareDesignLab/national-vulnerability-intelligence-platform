@@ -574,5 +574,9 @@ public class CpeLookUp {
 			return null;
 		return curr;
 	}
+	
+	public Map<String, CpeGroup> getCpeMap(){
+		return cpeMapFile;
+	}
 
 }
