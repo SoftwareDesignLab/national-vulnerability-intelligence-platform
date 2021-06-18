@@ -119,7 +119,34 @@ public class NvdCveParser {
 			} catch (Exception e) {
 			}
 
-			allData.add(new String[] { sID, sDescription, baseScore, baseSeverity, impactScore, exploitabilityScore });
+			// get CWE
+			String associatedCwes = "";
+			StringBuilder sbCwe = new StringBuilder();
+			try {
+				JsonObject cweObj = jsonCVE.getAsJsonObject("cve").getAsJsonObject("problemtype");
+				if (cweObj != null) {
+					JsonArray problemtype_data_arr = cweObj.getAsJsonArray("problemtype_data");
+					if (problemtype_data_arr != null) {
+						JsonArray description_arr = problemtype_data_arr.get(0).getAsJsonObject().getAsJsonArray("description");
+						if (description_arr != null) {
+							for (JsonElement element : description_arr) {
+								String item = ((JsonObject) element).get("value").getAsString();
+								sbCwe.append(item + ";");
+							}
+
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (sbCwe.toString().length() > 0) {
+					associatedCwes = sbCwe.toString();
+					associatedCwes = associatedCwes.substring(0, associatedCwes.length() - 1); // remove last;
+				}
+			}
+
+			allData.add(new String[] { sID, sDescription, baseScore, baseSeverity, impactScore, exploitabilityScore, associatedCwes });
 		}
 
 		return allData;
@@ -159,6 +186,7 @@ public class NvdCveParser {
 
 	/**
 	 * get CPEs from CVE list
+	 * 
 	 * @param jsonList
 	 * @return
 	 */

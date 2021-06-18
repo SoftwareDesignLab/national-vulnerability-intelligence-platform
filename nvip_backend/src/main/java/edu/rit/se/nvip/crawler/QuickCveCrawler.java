@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import javax.net.ssl.SSLException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -79,26 +82,30 @@ public class QuickCveCrawler {
 	 * @return
 	 */
 	public List<CompositeVulnerability> getPacketStrormCveUpdates(CveCrawler crawler, List<CompositeVulnerability> list) {
-		String url = "https://packetstormsecurity.com/files/date/";
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Calendar cal = Calendar.getInstance();
-		int count = list.size();
+		try {
+			String url = "https://packetstormsecurity.com/files/date/";
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			Calendar cal = Calendar.getInstance();
+			int count = list.size();
 
-		for (int day = 1; day < 7; day++) {
-			cal.add(Calendar.DATE, -1 * day);
-			String date = dateFormat.format(cal.getTime());
-			String link = url + date;
-			logger.info("Scraping most recent CVEs from {}", link);
-			try {
-				String html = getContentFromUrl(link);
-				list.addAll(crawler.parseWebPage(link, html));
-				Thread.sleep(1000);
-			} catch (Exception e) {
-				logger.error("Error scraping url {}, {}", link, e.toString());
+			for (int day = 1; day < 7; day++) {
+				cal.add(Calendar.DATE, -1 * day);
+				String date = dateFormat.format(cal.getTime());
+				String link = url + date;
+				logger.info("Scraping most recent CVEs from {}", link);
+				try {
+					String html = getContentFromUrl(link);
+					list.addAll(crawler.parseWebPage(link, html));
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					logger.error("Error scraping url {}, {}", link, e.toString());
+				}
 			}
-		}
 
-		logger.info("Retrieved {} CVES from {}, Total CVEs: {}", list.size() - count, url, list.size());
+			logger.info("Retrieved {} CVES from {}, Total CVEs: {}", list.size() - count, url, list.size());
+		} catch (Exception e) {
+			logger.error("Error scraping PacketStorm! {}", e);
+		}
 		return list;
 	}
 
@@ -140,9 +147,14 @@ public class QuickCveCrawler {
 			}
 			bufferedReader.close();
 
+		} catch (SSLException e) {
+			logger.error(e.toString());
+		} catch (SocketException e) {
+			logger.error(e.toString());
+		} catch (IOException e) {
+			logger.error(e.toString());
 		} catch (Exception e) {
 			logger.error(e.toString());
-			return null;
 		}
 		return response.toString();
 	}
@@ -154,47 +166,52 @@ public class QuickCveCrawler {
 	 * @return
 	 */
 	public List<CompositeVulnerability> getCnnvdCveUpdates(List<CompositeVulnerability> list) {
-		String sUrlForCveListPage = "http://www.cnnvd.org.cn/web/vulnerability/querylist.tag?pageno=$pageno$&repairLd=";
-		CnnvdCveParser chinaCveParser = new CnnvdCveParser();
-		String dateTimeNow = UtilHelper.longDateFormat.format(new Date());
-		int count = list.size();
-		Random r = new Random(100);
-		// scrape first 3 pages
-		for (int pageIndex = 1; pageIndex < 4; pageIndex++) {
-			String pageLink = sUrlForCveListPage.replace("$pageno$", pageIndex + "");
-			logger.info("Scraping CVEs from CNNVD {} ,pape # {}", pageLink, pageIndex);
+		try {
+			String sUrlForCveListPage = "http://www.cnnvd.org.cn/web/vulnerability/querylist.tag?pageno=$pageno$&repairLd=";
+			CnnvdCveParser chinaCveParser = new CnnvdCveParser();
+			String dateTimeNow = UtilHelper.longDateFormat.format(new Date());
+			int count = list.size();
+			Random r = new Random(100);
+			// scrape first 3 pages
+			for (int pageIndex = 1; pageIndex < 4; pageIndex++) {
+				String pageLink = sUrlForCveListPage.replace("$pageno$", pageIndex + "");
+				logger.info("Scraping CVEs from CNNVD {} ,pape # {}", pageLink, pageIndex);
 
-			String pageStr = getContentFromUrl(pageLink);
-			List<String> cveURLsInPage = chinaCveParser.getCveUrlListFromPage(pageStr);
-			for (String cveURLItem : cveURLsInPage) {
-				try {
+				String pageStr = getContentFromUrl(pageLink);
+				List<String> cveURLsInPage = chinaCveParser.getCveUrlListFromPage(pageStr);
+				for (String cveURLItem : cveURLsInPage) {
+					try {
 
-					String[] cveUrlParts = cveURLItem.split("=");
-					String cnnvdCveId = cveUrlParts[1];
+						String[] cveUrlParts = cveURLItem.split("=");
+						String cnnvdCveId = cveUrlParts[1];
 
-					logger.info("Getting {} details from {}", cnnvdCveId, cveURLItem);
+						logger.info("Getting {} details from {}", cnnvdCveId, cveURLItem);
 
-					String cveDetailHtml = getContentFromUrl(cveURLItem);
-					// get CVE details
-					CnnvdVulnerability vuln = chinaCveParser.getCveDetailsFromPage(cveDetailHtml);
+						String cveDetailHtml = getContentFromUrl(cveURLItem);
+						// get CVE details
+						CnnvdVulnerability vuln = chinaCveParser.getCveDetailsFromPage(cveDetailHtml);
 
-					// get ref urls
-					List<String> refURLs = chinaCveParser.getCveReferencesFromPage(cveDetailHtml);
-					for (String refUrl : refURLs)
-						vuln.addVulnerabilitySource(refUrl);
+						// get ref urls
+						List<String> refURLs = chinaCveParser.getCveReferencesFromPage(cveDetailHtml);
+						for (String refUrl : refURLs)
+							vuln.addVulnerabilitySource(refUrl);
 
-					String description = "New vulnerability from CNNVD! Details:  " + vuln.toString();
-					// add vuln
-					CompositeVulnerability vulnComposite = new CompositeVulnerability(0, cveURLItem, vuln.getCveId(), null, dateTimeNow, dateTimeNow, description, "cnnvd");
-					list.add(vulnComposite);
-					Thread.sleep(r.nextInt(100) + 1000); // random wait
-				} catch (Exception e) {
-					logger.error("Error while getting CVE details from {}, {} ", cveURLItem, e.toString());
+						String description = "New vulnerability from CNNVD! Details:  " + vuln.toString();
+						// add vuln
+						CompositeVulnerability vulnComposite = new CompositeVulnerability(0, cveURLItem, vuln.getCveId(), null, dateTimeNow, dateTimeNow, description, "cnnvd");
+						list.add(vulnComposite);
+						Thread.sleep(r.nextInt(100) + 1000); // random wait
+					} catch (Exception e) {
+						logger.error("Error while getting CVE details from {}, {} ", cveURLItem, e.toString());
+					}
 				}
 			}
-		}
 
-		logger.info("Done! Scraped {} CVEs from Cnnvd! ", list.size() - count);
+			logger.info("Done! Scraped {} CVEs from Cnnvd! ", list.size() - count);
+		} catch (Exception e) {
+			logger.error("Error scraping CNNVD! {}", e);
+
+		}
 		return list;
 
 	}

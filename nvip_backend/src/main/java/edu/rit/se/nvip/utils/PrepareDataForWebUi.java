@@ -34,7 +34,7 @@ public class PrepareDataForWebUi {
 
 		try (Connection conn = databaseHelper.getConnection(); CallableStatement stmt = conn.prepareCall("CALL prepareDailyVulnerabilities(?, ?, ?)"); Statement stmt2 = conn.prepareStatement(sql);) {
 
-			stmt.setTimestamp(1, Timestamp.valueOf(today.minusHours(48)));
+			stmt.setTimestamp(1, Timestamp.valueOf(today.minusHours(168))); //7 days
 			stmt.setTimestamp(2, Timestamp.valueOf(today));
 
 			stmt.registerOutParameter(3, java.sql.Types.INTEGER);
