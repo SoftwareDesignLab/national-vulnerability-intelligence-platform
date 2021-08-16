@@ -146,7 +146,43 @@ public class NvdCveParser {
 				}
 			}
 
-			allData.add(new String[] { sID, sDescription, baseScore, baseSeverity, impactScore, exploitabilityScore, associatedCwes });
+			// get advisories/patches/exploits
+			StringBuilder sbPatches = new StringBuilder();
+			StringBuilder sbAdvisories = new StringBuilder();
+			StringBuilder sbExploits = new StringBuilder();
+			try {
+
+				JsonArray advisories = jsonCVE.getAsJsonObject("cve").getAsJsonObject("references").getAsJsonArray("reference_data");
+				for (JsonElement element : advisories) {
+					JsonObject obj = (JsonObject) element;
+					JsonArray jsonArr = obj.get("tags").getAsJsonArray();
+
+					if (jsonArr.size() == 0)
+						continue;
+
+					// get tags
+					String tags = "";
+					for (JsonElement tag : jsonArr)
+						tags += tag + ";";
+
+					// url
+					String url = obj.get("url").getAsString();
+
+					if (tags.contains("Advisory"))
+						sbAdvisories.append(url + ";");
+
+					if (tags.contains("Patch"))
+						sbPatches.append(url + ";");
+					
+					if (tags.contains("Exploit"))
+						sbExploits.append(url + ";");
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			allData.add(new String[] { sID, sDescription, baseScore, baseSeverity, impactScore, exploitabilityScore, associatedCwes, sbAdvisories.toString(), sbPatches.toString(), sbExploits.toString() });
 		}
 
 		return allData;

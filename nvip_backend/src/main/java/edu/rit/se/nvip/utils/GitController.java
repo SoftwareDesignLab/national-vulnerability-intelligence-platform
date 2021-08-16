@@ -62,7 +62,7 @@ public class GitController {
 	 * @return
 	 */
 	public boolean pullRepo() {
-		logger.info("Cheking for updates for {} repo!...", localPath);
+		logger.info("Checking for updates for {} repo!...", localPath);
 		try (FileRepository localRepo = new FileRepository(localPath + "/.git");) {
 			try (Git git = new Git(localRepo)) {
 				PullCommand pull = git.pull();

@@ -157,6 +157,11 @@ public class CsvUtils {
 	public char getMySeparatorChar() {
 		return mySeparatorChar;
 	}
+	
+	public List<String[]> getDataFromCsv(String dataPath, char separatorChar){
+		this.mySeparatorChar = separatorChar;
+		return getDataFromCsv(dataPath);
+	}
 
 	/**
 	 * read csv

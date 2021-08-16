@@ -25,14 +25,11 @@ package edu.rit.se.nvip.nvd;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -45,14 +42,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -76,7 +67,7 @@ public class NvdCveController {
 	// Parameters
 	private static final int START_YEAR = 2002, END_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 	private static String nvdJsonFeedUrl = "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-YYYY.json.zip";
-	String[] header = new String[] { "CVE-ID", "Description", "BaseScore", "BaseSeverity", "ImpactScore", "ExploitabilityScore" };
+	String[] header = new String[] { "CVE-ID", "Description", "BaseScore", "BaseSeverity", "ImpactScore", "ExploitabilityScore", "CWE", "Advisory", "Patch", "Exploit" };
 	String[] headerScore = new String[] { "Description", "BaseScore", "BaseSeverity", "ImpactScore", "ExploitabilityScore" };
 
 	boolean logCPEInfo = true;
