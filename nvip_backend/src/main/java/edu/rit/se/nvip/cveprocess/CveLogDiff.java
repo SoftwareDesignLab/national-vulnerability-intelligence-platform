@@ -78,12 +78,10 @@ public class CveLogDiff {
 	 * @param newCVEListMap
 	 * @return
 	 */
-	public HashMap<String, List<Object>> logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap, DatabaseHelper databaseHelper, int runId, DailyRun dailyRunStats) {
+	public HashMap<String, List<Object>> logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap, DatabaseHelper databaseHelper, int runId) {
 
 		try {
-			// dailyRunStats.setRunDateTime(UtilHelper.getDateTime(System.currentTimeMillis()));
-			dailyRunStats.setCrawlTimeMin((float) ((crawlEndTime - crawlStartTime) / (1000.0 * 60)));
-
+			
 			Calendar cal = Calendar.getInstance();
 			String subDirName = UtilHelper.getPastDayAsShortDate(cal, 0);
 
@@ -182,7 +180,7 @@ public class CveLogDiff {
 			}
 
 			// CVEs New Today & CVEs disappeared: In the not in [NVD & MITRE] list
-			sSummary += logCveDifferencesComparedToPrevRun(newCVEListMap.get("nvd-mitre"), csvLogger, subDirName, dailyRunStats, databaseHelper, runId);
+			sSummary += logCveDifferencesComparedToPrevRun(newCVEListMap.get("nvd-mitre"), csvLogger, subDirName, databaseHelper, runId);
 			sSummary += "\nToday " + countNvd + " and " + countMitre + " CVE entries appeared at NVD and MITRE feeds, respectively!";
 
 			// write summary info to file
@@ -206,7 +204,7 @@ public class CveLogDiff {
 	 * @param subDirName
 	 * @param dailyRunStats               TODO
 	 */
-	private String logCveDifferencesComparedToPrevRun(List<Object> newCVENotExistAnyWhereToday, CsvUtils csvLogger, String subDirName, DailyRun dailyRunStats, DatabaseHelper databaseHelper, int runId) {
+	private String logCveDifferencesComparedToPrevRun(List<Object> newCVENotExistAnyWhereToday, CsvUtils csvLogger, String subDirName, DatabaseHelper databaseHelper, int runId) {
 		StringBuffer sBuffer = new StringBuffer();
 		try {
 			Calendar cal = Calendar.getInstance();
@@ -265,7 +263,7 @@ public class CveLogDiff {
 
 			} else
 				str = "\nNo new CVEs (not in[nvd and mitre]) today *** !";
-			dailyRunStats.setNewCveCount(count);
+			
 
 			sBuffer.append(str);
 			logger.info(str);
@@ -297,11 +295,6 @@ public class CveLogDiff {
 				str = "\nNo CVEs disappeared from the (not in[nvd and mitre]) list today *** !";
 			sBuffer.append(str);
 			logger.info(str);
-
-			dailyRunStats.setDroppedFromListCount(cveDisappearedToday.size());
-
-			// store stats to db!
-			databaseHelper.updateDailyRun(runId, dailyRunStats);
 		} catch (Exception e) {
 			logger.error("Error in logCveDifferencesComparedToPrevRun(): " + e.toString());
 			return (e.toString());
