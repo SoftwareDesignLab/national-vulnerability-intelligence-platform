@@ -321,7 +321,7 @@ public class NVIPMain {
 	}
 
 	/**
-	 * insert a stats record
+	 * Insert a stats record to db
 	 * 
 	 * @param databaseHelper
 	 * @param totalCve
@@ -360,15 +360,20 @@ public class NVIPMain {
 		return dailyRunStats;
 	}
 
+	/**
+	 * Record additional stats
+	 * 
+	 * @param databaseHelper
+	 * @param runId
+	 * @param dailyRunStats
+	 * @param crawlStartTime
+	 * @param crawlEndTime
+	 * @param dbTime
+	 */
 	private void recordAdditionalStats(DatabaseHelper databaseHelper, int runId, DailyRun dailyRunStats, long crawlStartTime, long crawlEndTime, double dbTime) {
 		// calculate crawl time
 		dailyRunStats.setCrawlTimeMin((float) ((crawlEndTime - crawlStartTime) / (1000.0 * 60)));
 		dailyRunStats.setDatabaseTimeMin(dbTime);
-
-		// Number of new CVEs added today
-
-		// Number of CVEs updated today
-
 		databaseHelper.updateDailyRun(runId, dailyRunStats);
 	}
 
