@@ -37,6 +37,7 @@ import edu.rit.se.nvip.cvereconcile.CveReconciler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.utils.CsvUtils;
+import edu.rit.se.nvip.utils.CveUtils;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
@@ -88,7 +89,6 @@ public class CveProcessor {
 	 * @return
 	 */
 	public HashMap<String, List<Object>> processCveData(HashMap<String, CompositeVulnerability> hashMapNvipCve) {
-		final String RESERVED_CVE_TEXT = "** RESERVED ** This candidate has been reserved by";
 		HashMap<String, List<Object>> newCVEMap = new HashMap<String, List<Object>>();
 
 		// get list from hash map
@@ -99,64 +99,49 @@ public class CveProcessor {
 		for (CompositeVulnerability vuln : hashMapNvipCve.values()) {
 
 			try {
+				// if somehow a wrong CVE id is found, ignore it
 				if (!cveUtils.isCveIdCorrect(vuln.getCveId())) {
 					String note = "Wrong CVE ID! Check for typo? ";
 					vuln.setNvipNote(note);
-					continue; // skip this item
+					continue; // skip this CVE
 				}
 
-				if (!hashMapNvdCve.containsKey(vuln.getCveId())) {
+				/**
+				 * CVE does not exist in the NVD feeds and it is NOT Reserved etc.
+				 */
+				if (!hashMapNvdCve.containsKey(vuln.getCveId()) && !CveUtils.isCveReservedEtc(vuln.getDescription())) {
 					vuln.setNvdSearchResult("NA");
 					vuln.setExistInNvd(false);
 					newCVEDataNotInNvd.add(vuln);
 				}
 
-				if (!hashMapMitreCve.containsKey(vuln.getCveId())) {
+				/**
+				 * CVE does not exist in the MITRE feeds and it is NOT Reserved etc.
+				 */
+				if (!hashMapMitreCve.containsKey(vuln.getCveId()) && !CveUtils.isCveReservedEtc(vuln.getDescription())) {
 					vuln.setNvdSearchResult("NA");
 					vuln.setExistInMitre(false);
 					newCVEDataNotInMitre.add(vuln);
 				}
 
 				if (!hashMapMitreCve.containsKey(vuln.getCveId()) && !hashMapNvdCve.containsKey(vuln.getCveId())) {
-					// check NVD online
-					String note = UtilHelper.checkCveIdAtNvd(vuln.getCveId());
-					vuln.setNvdSearchResult(note);
-
-					// check MITRE online
-					note = UtilHelper.checkCveIdAtMitre(vuln.getCveId());
-					vuln.setMitreSearchResult(note);
-					/**
-					 * Include CVE if it is not reserved or rejected. This can be seen in MITRE's
-					 * note that queried online?
-					 */
-					if (!(note.indexOf(RESERVED_CVE_TEXT) >= 0)) {
-						vuln.setExistInNvd(false);
-						vuln.setExistInMitre(false);
-					} else {
-						vuln.setExistInNvd(true);
-						vuln.setExistInMitre(true);
-					}
-
-					/*
-					 * The vulnerability needs to not exist in both NVD and MITRE and have a
-					 * reasonable length!
-					 */
-					if (!vuln.existInMitre() && !vuln.existInNvd() && vuln.getDescription().length() > 10)
-						newCVEDataNotInNvdAndMitre.add(vuln);
+					newCVEDataNotInNvdAndMitre.add(vuln);
 				}
 
-				// add to all
+				// add to all CVEs list
 				allCveData.add(vuln);
 			} catch (Exception e) {
 				logger.error("Error while processing vulnerability: " + vuln.toString());
 			}
-
 		} // for
 
 		newCVEMap.put("all", allCveData); // all CVEs
 		newCVEMap.put("mitre", newCVEDataNotInMitre); // CVEs not in Mitre
 		newCVEMap.put("nvd", newCVEDataNotInNvd); // CVEs not in Nvd
 		newCVEMap.put("nvd-mitre", newCVEDataNotInNvdAndMitre); // CVEs not in Nvd and Mitre
+
+		logger.info("Out of {} total valid CVEs crawled: {} do not appear in NVD, {} not in MITRE and {} not in Both!", allCveData.size(), newCVEDataNotInNvd.size(), newCVEDataNotInMitre.size(),
+				newCVEDataNotInNvdAndMitre.size());
 
 		return newCVEMap;
 	}

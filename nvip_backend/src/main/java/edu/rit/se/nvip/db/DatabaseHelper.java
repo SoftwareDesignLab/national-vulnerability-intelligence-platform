@@ -26,6 +26,7 @@ package edu.rit.se.nvip.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import edu.rit.se.nvip.model.*;
+import edu.rit.se.nvip.utils.CveUtils;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.rit.se.nvip.utils.UtilHelper;
@@ -96,7 +97,7 @@ public class DatabaseHelper {
 	private String selectCveHistorySql = "SELECT * FROM CveHistory;";
 
 	private String insertDailyRunSql = "INSERT INTO DailyRunHistory (run_date_time, crawl_time_min, total_cve_count, not_in_nvd_count, not_in_mitre_count,"
-			+ "not_in_both_count, new_cve_count) VALUES (?,?,?,?,?,?,?);";
+			+ "not_in_both_count, new_cve_count, added_cve_count, updated_cve_count) VALUES (?,?,?,?,?,?,?,?,?);";
 	private String updateDailyRunSql = "UPDATE DailyRunHistory SET crawl_time_min = ?, db_time_min = ?, total_cve_count = ?, not_in_nvd_count = ?, "
 			+ "not_in_mitre_count = ?, not_in_both_count = ?, new_cve_count = ?, avg_time_gap_nvd = ?, avg_time_gap_mitre = ? WHERE (run_id = ?);";
 	private String selectDailyRunSql = "SELECT * FROM DailyRunHistory;";
@@ -755,119 +756,142 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * This method calculates statistics about the time gaps of NVD and MITRE. A
+	 * This method calculates the time gaps of a CVE for NVD and MITRE if any. A
 	 * time gap for NVD/MITRE is defined as the number of hours between the time a
 	 * vulnerability is found by NVIP and the time it is added to NVD/MITRE. Note
 	 * that the time gaps calculated here will not be precise, because they will be
-	 * depending on the time NVIP is run. However, they will give an idea about the
-	 * value provided by NVIP in terms of EARLY detection of vulnerabilities. To go
-	 * into this block 3 conditions must be satisfied: (1) CreatedDate of the
-	 * previous vulnerability record must be <> Null. (2) Either [ NOT
-	 * prevVulnExistAtNvd AND existInNvd()] OR [NOT prevVulnExistAtMitre AND
-	 * existInMitre()]
+	 * depending on the time that NVIP is run. However, they will give an idea about
+	 * the value provided by NVIP in terms of EARLY detection of vulnerabilities.
+	 * 
+	 * 
+	 * To calculate a time gap certain conditions must be met:
+	 * 
+	 * (1) CVE has a created date in the database: existingAttribs.getCreatedDate()
+	 * != null (We must know when the CVE was first added to db, to calculate a time
+	 * gap)
+	 * 
+	 * (2) ((!vulnAlreadyInNvd && vuln.existInNvd()) || (!vulnAlreaadyInMitre &&
+	 * vuln.existInMitre())): The CVE did not exist in nvd/mitre before, but it is
+	 * there now!
+	 * 
+	 * (3) !CveUtils.isCveReservedEtc(vuln): The CVE must NOT be reserved/rejected
+	 * etc.
 	 * 
 	 * @param vuln
 	 * @param connection
 	 * @param existingAttribs
 	 */
-	private void checkTimeGapsForCVE(CompositeVulnerability vuln, Connection connection, VulnerabilityAttribsForUpdate existingAttribs) {
+	private boolean checkTimeGapsForCVE(CompositeVulnerability vuln, Connection connection, VulnerabilityAttribsForUpdate existingAttribs) {
+		boolean timeGapFound = false;
 		PreparedStatement pstmt = null;
-		boolean prevVulnExistAtNvd = existingAttribs.isExistAtNvd();
-		boolean prevVulnExistAtMitre = existingAttribs.isExistAtMitre();
-		if ((existingAttribs.getCreatedDate() != null) && ((!prevVulnExistAtNvd && vuln.existInNvd()) || (!prevVulnExistAtMitre && vuln.existInMitre()))) {
+		boolean vulnAlreadyInNvd = existingAttribs.isExistAtNvd();
+		boolean vulnAlreaadyInMitre = existingAttribs.isExistAtMitre();
+
+		if ((existingAttribs.getCreatedDate() != null) && ((!vulnAlreadyInNvd && vuln.existInNvd()) || (!vulnAlreaadyInMitre && vuln.existInMitre()))
+				&& !CveUtils.isCveReservedEtc(vuln.getDescription())) {
 
 			Date createdDateTime = null;
 			Date lastModifiedDateTime = null;
 			try {
 
 				/**
-				 * we are not expecting a time gap more than 1 year. This part will help to
-				 * ignore REJECTED/RESERVED CVEs while calculating time gaps
+				 * We are not expecting a time gap more than 1 year. If CVE is from prior years
+				 * skip time gap check
 				 */
 				String[] cveParts = vuln.getCveId().split("-");
 				int cveYear = Integer.parseInt(cveParts[1]);
 				int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 				boolean calculateGap = (cveYear == currentYear);
-				if (calculateGap) {
-					if (databaseType.equalsIgnoreCase("mysql"))
-						createdDateTime = longDateFormatMySQL.parse(existingAttribs.getCreatedDate());
-					else
-						createdDateTime = longDateFormat.parse(existingAttribs.getCreatedDate());
+				if (!calculateGap)
+					return false;
 
-					try {
-						lastModifiedDateTime = longDateFormat.parse(vuln.getLastModifiedDate());
-					} catch (Exception e) {
-						lastModifiedDateTime = new Date();
-						logger.error("Could not parse last modified date of vulnerability: " + vuln.getLastModifiedDate() + ": " + e.toString() + "\nVulnerability: " + vuln.toString());
-					}
+				if (databaseType.equalsIgnoreCase("mysql"))
+					createdDateTime = longDateFormatMySQL.parse(existingAttribs.getCreatedDate());
+				else
+					createdDateTime = longDateFormat.parse(existingAttribs.getCreatedDate());
 
-					int hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
+				try {
+					lastModifiedDateTime = longDateFormat.parse(vuln.getLastModifiedDate());
+				} catch (Exception e) {
+					lastModifiedDateTime = new Date();
+					logger.error("Could not parse last modified date of Cve: {}, Err: {}\nCve data: {}", vuln.getLastModifiedDate(), e.toString(), vuln.toString());
+					return false;
+				}
 
-					// if it did not exist in NVD, but found now, record time gap!
-					if (!prevVulnExistAtNvd && vuln.existInNvd()) {
-						vuln.setTimeGapNvd(hours);
-						pstmt = connection.prepareStatement(updateVulnSqlNvd);
-						pstmt.setInt(1, convertBoolToInt(vuln.existInNvd()));
-						pstmt.setInt(2, vuln.getTimeGapNvd());
-						pstmt.setString(3, vuln.getCveId());
-						pstmt.executeUpdate();
+				// calculate the time gap, if any
+				int hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
 
-						logger.info("Vulnerability added to NVD. Hours gap: " + hours + "\tCreatedDateTime: " + createdDateTime + "\tCrawlDateTime: " + lastModifiedDateTime + "\tVuln: "
-								+ vuln.toString());
+				// if it did not exist in NVD, but found now, record time gap!
+				if (!vulnAlreadyInNvd && vuln.existInNvd()) {
+					vuln.setTimeGapNvd(hours);
+					pstmt = connection.prepareStatement(updateVulnSqlNvd);
+					pstmt.setInt(1, convertBoolToInt(vuln.existInNvd()));
+					pstmt.setInt(2, vuln.getTimeGapNvd());
+					pstmt.setString(3, vuln.getCveId());
+					pstmt.executeUpdate();
 
-					}
+					logger.info("CVE added to NVD! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
+					timeGapFound = true;
+				}
 
-					// if it did not exist in MITRE, but found now, record time gap!
-					if (!prevVulnExistAtMitre && vuln.existInMitre()) {
-						vuln.setTimeGapMitre(hours);
+				// if it did not exist in MITRE, but found now, record time gap!
+				if (!vulnAlreaadyInMitre && vuln.existInMitre()) {
+					vuln.setTimeGapMitre(hours);
 
-						pstmt = connection.prepareStatement(updateVulnSqlMitre);
-						pstmt.setInt(1, convertBoolToInt(vuln.existInMitre()));
-						pstmt.setInt(2, vuln.getTimeGapMitre());
-						pstmt.setString(3, vuln.getCveId());
-						pstmt.executeUpdate();
-						logger.info("Vulnerability added to MITRE. Hours gap: " + hours + "\tCreatedDateTime: " + createdDateTime + "\tCrawlDateTime: " + lastModifiedDateTime + "\tVuln: "
-								+ vuln.toString());
-					}
-				} // if
+					pstmt = connection.prepareStatement(updateVulnSqlMitre);
+					pstmt.setInt(1, convertBoolToInt(vuln.existInMitre()));
+					pstmt.setInt(2, vuln.getTimeGapMitre());
+					pstmt.setString(3, vuln.getCveId());
+					pstmt.executeUpdate();
+					logger.info("CVE added to MITRE! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
+					timeGapFound = true;
+				}
+				return timeGapFound;
+
 			} catch (Exception e) {
-				logger.error("Error in checkTimeGaps(): " + e.toString() + ", lastModifiedDateTime: " + lastModifiedDateTime + ", createdDateTime:" + createdDateTime);
+				logger.error("Error in checkTimeGaps() {}! Cve record time {}, Cve data {}", e.toString(), createdDateTime, vuln);
 			}
 
-		}
+		} // if
+
+		return false;
 	}
 
 	/**
 	 * Check if we need to record any time gaps for any CVE!
 	 * 
+	 * Simply check if an existing vulnerability (that did not exist at NVD/MITRE)
+	 * is there NOW!
+	 * 
 	 * @param connection
 	 * @param crawledVulnerabilityList
 	 * @param existingVulnMap
 	 */
-	public void checkTimeGapsOfCrawledVulnerabilitiesForNvdMitre(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
+	public int[] checkTimeGapsOfCrawledVulnerabilitiesForNvdMitre(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
 			Map<String, VulnerabilityAttribsForUpdate> existingVulnMap) {
-
+		int existingCveCount = 0, newCveCount = 0, timeGapCount = 0;
 		try {
 			logger.info("Checking time gaps for " + crawledVulnerabilityList.size() + " CVEs! # of total CVEs in DB: " + existingVulnMap.size());
-			int count = 0, newCVECount = 0;
+
 			for (CompositeVulnerability vuln : crawledVulnerabilityList) {
 				try {
-					// check if an existing vulnerability (that does not exist at NVD/MITRE is there
-					// NOW!)
 					if (existingVulnMap.containsKey(vuln.getCveId())) {
 						VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
-						checkTimeGapsForCVE(vuln, connection, existingAttribs); // check time gaps!
-						count++;
+						// check time gap for vuln
+						if (checkTimeGapsForCVE(vuln, connection, existingAttribs))
+							timeGapCount++;
+						existingCveCount++;
 					} else
-						newCVECount++;
+						newCveCount++;
 				} catch (Exception e) {
-					logger.error("Error while checking the time gap for CVE: " + vuln.toString() + ". Err: " + e.toString());
+					logger.error("Error while checking the time gap for CVE: {}. Err: {} ", vuln.toString(), e.toString());
 				}
 			}
-			logger.info("Done! Checked time gaps for " + count + " (of " + crawledVulnerabilityList.size() + ") CVEs! # of new CVEs: " + newCVECount);
+			logger.info("Done! Checked time gaps for {} (of {}) CVEs! # of new CVEs: {}", existingCveCount, crawledVulnerabilityList.size(), newCveCount);
 		} catch (Exception e) {
-			logger.error("Error while checking time gaps for " + crawledVulnerabilityList.size() + " CVEs. " + e.toString());
+			logger.error("Error while checking time gaps for {} CVEs. ", crawledVulnerabilityList.size(), e.toString());
 		}
+		return new int[] { existingCveCount, newCveCount, timeGapCount };
 	}
 
 	/**
@@ -1397,6 +1421,8 @@ public class DatabaseHelper {
 			pstmt.setInt(5, dailyRun.getNotInMitreCount());
 			pstmt.setInt(6, dailyRun.getNotInBothCount());
 			pstmt.setInt(7, dailyRun.getNewCveCount());
+			pstmt.setInt(8, dailyRun.getAddedCveCount());
+			pstmt.setInt(9, dailyRun.getUpdatedCveCount());
 			pstmt.executeUpdate();
 
 			String maxRunIdSQL = "SELECT max(run_id) as run_id FROM nvip.dailyrunhistory";

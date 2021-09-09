@@ -29,6 +29,7 @@ package edu.rit.se.nvip.model;
  *
  */
 public class DailyRun {
+	int runId = 0;
 	String runDateTime;
 	float crawlTimeMin;
 	int totalCveCount;
@@ -41,7 +42,11 @@ public class DailyRun {
 	double avgTimeGapMitre = 0;
 	double databaseTimeMin;
 
-	public DailyRun(String runDateTime, float crawlTimeMin, int totalCveCount, int notInNvdCount, int notInMitreCount, int notInBothCount, int newCveCount, float avgTimeGapNvd, float avgTimeGapMitre) {
+	int addedCveCount = 0;
+	int updatedCveCount = 0;
+
+	public DailyRun(String runDateTime, float crawlTimeMin, int totalCveCount, int notInNvdCount, int notInMitreCount, int notInBothCount, int newCveCount, float avgTimeGapNvd,
+			float avgTimeGapMitre) {
 		this.runDateTime = runDateTime;
 		this.crawlTimeMin = crawlTimeMin;
 		this.totalCveCount = totalCveCount;
@@ -144,5 +149,31 @@ public class DailyRun {
 	public void setDatabaseTimeMin(double databaseTimeMin) {
 		this.databaseTimeMin = databaseTimeMin;
 	}
+
+	public int getRunId() {
+		return runId;
+	}
+
+	public void setRunId(int runId) {
+		this.runId = runId;
+	}
+
+	public int getAddedCveCount() {
+		return addedCveCount;
+	}
+
+	public void setAddedCveCount(int addedCveCount) {
+		this.addedCveCount = addedCveCount;
+	}
+
+	public int getUpdatedCveCount() {
+		return updatedCveCount;
+	}
+
+	public void setUpdatedCveCount(int updatedCveCount) {
+		this.updatedCveCount = updatedCveCount;
+	}
+	
+	
 
 }
