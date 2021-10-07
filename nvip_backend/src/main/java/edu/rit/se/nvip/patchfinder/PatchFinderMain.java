@@ -3,6 +3,7 @@ package edu.rit.se.nvip.patchfinder;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -38,15 +39,14 @@ public class PatchFinderMain {
 			int response = urlConnection.getResponseCode();
 
 			// Check if the url leads to an actual GitHub repo
-			// If so, pull clone the repo and pull the patch data
-			/*
-			 * if (response == HttpURLConnection.HTTP_OK) { JGitParser parser = new
-			 * JGitParser(address + ".git", clonePath, outputPath);
-			 * parser.cloneRepository(); parser.parseCommits();
-			 * 
-			 * // Delete clones repo after storing patch/commit data
-			 * parser.deleteRepository(); }
-			 */
+			// If so, push the source link into the DB
+			if (response == HttpURLConnection.HTTP_OK) {
+				try {
+					db.insertPatch(address, null, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 
 		}
 
