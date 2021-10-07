@@ -20,7 +20,7 @@ public class PatchFinderMain {
 	public static void main(String[] args) throws IOException {
 
 		DatabaseHelper db = DatabaseHelper.getInstance();
-		HashMap<String, String> cpes = (HashMap<String, String>) db.getProductMap();
+		HashMap<String, String> cpes = (HashMap<String, String>) db.getCPECVE();
 
 		// Create github URLs based on CPEs for given CVEs
 		for (Entry<String, String> cpe : cpes.entrySet()) {
@@ -42,7 +42,7 @@ public class PatchFinderMain {
 			// If so, push the source link into the DB
 			if (response == HttpURLConnection.HTTP_OK) {
 				try {
-					db.insertPatch(address, null, null);
+					db.insertPatch(cpe.getValue(), address, null, null);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
