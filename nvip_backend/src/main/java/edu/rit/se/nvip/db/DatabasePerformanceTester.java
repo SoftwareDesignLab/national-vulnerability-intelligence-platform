@@ -68,12 +68,12 @@ public class DatabasePerformanceTester {
 		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
 		List<CompositeVulnerability> vulnList = getVulns();
 		long start = System.currentTimeMillis();
-		databaseHelper.insertVuln(vulnList, 1);
+		databaseHelper.recordVulnerabilityList(vulnList, 1);
 		long end = System.currentTimeMillis();
 		logger.info("DB insert time for " + vulnList.size() + " vulns: " + ((end - start)) + " mseconds!");
 
 		start = System.currentTimeMillis();
-		databaseHelper.insertVuln(vulnList, 1);
+		databaseHelper.recordVulnerabilityList(vulnList, 1);
 		end = System.currentTimeMillis();
 		logger.info("DB update time for " + vulnList.size() + " vulns: " + ((end - start)) + " mseconds!");
 

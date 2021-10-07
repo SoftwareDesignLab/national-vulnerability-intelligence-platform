@@ -88,7 +88,7 @@ public class CveProcessor {
 	 * @param hashMapNvipCve
 	 * @return
 	 */
-	public HashMap<String, List<Object>> processCveData(HashMap<String, CompositeVulnerability> hashMapNvipCve) {
+	public HashMap<String, List<Object>> checkAgainstNvdMitre(HashMap<String, CompositeVulnerability> hashMapNvipCve) {
 		HashMap<String, List<Object>> newCVEMap = new HashMap<String, List<Object>>();
 
 		// get list from hash map
