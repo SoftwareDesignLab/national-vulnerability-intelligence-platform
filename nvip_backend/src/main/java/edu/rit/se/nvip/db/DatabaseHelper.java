@@ -553,7 +553,7 @@ public class DatabaseHelper {
 	 * @param vulnList List of Vulnerability objects to be inserted
 	 * @return true if successfully inserted, false if an exception occurred.
 	 */
-	public boolean insertVuln(List<CompositeVulnerability> vulnList, int runId) {
+	public boolean recordVulnerabilityList(List<CompositeVulnerability> vulnList, int runId) {
 		/**
 		 * load existing vulnerabilities. this is supposed to be done once for during
 		 * each run! Using a static map, to make sure each thread does not call this
@@ -571,7 +571,7 @@ public class DatabaseHelper {
 
 				try {
 					if (existingVulnMap.containsKey(vuln.getCveId())) {
-						int count = updateVuln(vuln, connection, existingVulnMap, runId);
+						int count = updateVulnerability(vuln, connection, existingVulnMap, runId);
 						if (count > 0)
 							updateCount++;
 						else
@@ -644,7 +644,7 @@ public class DatabaseHelper {
 			// connection.commit();
 
 			// do time gap analysis
-			checkTimeGapsOfCrawledVulnerabilitiesForNvdMitre(connection, vulnList, existingVulnMap);
+			recordTimeGapsOfCrawledVulnerabilitiesForNvdMitre(connection, vulnList, existingVulnMap);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -662,7 +662,7 @@ public class DatabaseHelper {
 	 * @param existingVulnMap list of exiting vulnerabilities
 	 * @throws SQLException
 	 */
-	public int updateVuln(CompositeVulnerability vuln, Connection connection, Map<String, VulnerabilityAttribsForUpdate> existingVulnMap, int runId) throws SQLException {
+	public int updateVulnerability(CompositeVulnerability vuln, Connection connection, Map<String, VulnerabilityAttribsForUpdate> existingVulnMap, int runId) throws SQLException {
 
 		VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
 		// checkTimeGaps(vuln, connection, existingAttribs); // check time gaps!
@@ -867,7 +867,7 @@ public class DatabaseHelper {
 	 * @param crawledVulnerabilityList
 	 * @param existingVulnMap
 	 */
-	public int[] checkTimeGapsOfCrawledVulnerabilitiesForNvdMitre(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
+	public int[] recordTimeGapsOfCrawledVulnerabilitiesForNvdMitre(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
 			Map<String, VulnerabilityAttribsForUpdate> existingVulnMap) {
 		int existingCveCount = 0, newCveCount = 0, timeGapCount = 0;
 		try {

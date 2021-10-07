@@ -105,7 +105,7 @@ public class DbParallelProcessor {
 		// run process
 		public void run() {
 			logger.info("Active, Idle and Total connections BEFORE insert: " + databaseHelper.getConnectionStatus());
-			databaseHelper.insertVuln(vulnList, runId);
+			databaseHelper.recordVulnerabilityList(vulnList, runId);
 			logger.info("Active, Idle and Total connections AFTER insert (before shutdown): " + databaseHelper.getConnectionStatus());
 			databaseHelper.shutdown();
 		}

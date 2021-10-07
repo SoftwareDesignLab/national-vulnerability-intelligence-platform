@@ -143,7 +143,7 @@ public class NVIPMain {
 			UtilHelper.setProperties(propertiesNvip);
 
 			// start nvip crawlers
-			initiateNvipProcesses(propertiesNvip, urls);
+			startNvipProcesses(propertiesNvip, urls);
 		} catch (IOException e) {
 			logger.error("Error while starting NVIP: {}", e.toString());
 		}
@@ -227,7 +227,7 @@ public class NVIPMain {
 	 * @param propertiesNvip
 	 * @param urls
 	 */
-	private void initiateNvipProcesses(MyProperties propertiesNvip, List<String> urls) {
+	private void startNvipProcesses(MyProperties propertiesNvip, List<String> urls) {
 
 		// initialize logger, characterizer
 		CveLogDiff cveLogger = new CveLogDiff(propertiesNvip);
@@ -272,11 +272,11 @@ public class NVIPMain {
 		HashMap<String, CompositeVulnerability> cveHashMapAll = mergeCVEsDerivedFromCNAsAndGit(cveHashMapGithub, cveHashMapScrapedFromCNAs);
 
 		// process
-		logger.info("Processing crawled CVEs, comparing against NVD & MITRE..");
+		logger.info("Comparing CVES against NVD & MITRE..");
 		String cveDataPathNvd = propertiesNvip.getNvdOutputCsvFullPath();
 		String cveDataPathMitre = propertiesNvip.getMitreOutputCsvFullPath();
 		CveProcessor cveProcessor = new CveProcessor(cveDataPathNvd, cveDataPathMitre);
-		HashMap<String, List<Object>> cveListMap = cveProcessor.processCveData(cveHashMapAll); // CVEs not in Nvd, Mitre
+		HashMap<String, List<Object>> cveListMap = cveProcessor.checkAgainstNvdMitre(cveHashMapAll); // CVEs not in Nvd, Mitre
 
 		// Identify NEW CVEs. Reconcile for Characterization and DB processes
 		List<CompositeVulnerability> crawledVulnerabilityList = cveListMap.get("all").stream().map(e -> (CompositeVulnerability) e).collect(Collectors.toList());
