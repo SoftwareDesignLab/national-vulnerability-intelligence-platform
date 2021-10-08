@@ -18,39 +18,68 @@ import edu.rit.se.nvip.db.DatabaseHelper;
  */
 public class PatchFinderMain {
 
+	private static DatabaseHelper db;
+
 	public static void main(String[] args) throws IOException {
 
-		DatabaseHelper db = DatabaseHelper.getInstance();
+		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPECVE();
 
 		// Create github URLs based on CPEs for given CVEs
 		for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
-			String address = "https://github.com/";
-
-			String[] wordArr = cpe.getKey().split(":");
-
-			if (!wordArr[3].equals("*"))
-				address += wordArr[3];
-
-			if (!wordArr[4].equals("*"))
-				address += "/" + wordArr[4];
-
-			URL url = new URL(address);
-			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-			int response = urlConnection.getResponseCode();
-
-			// Check if the url leads to an actual GitHub repo
-			// If so, push the source link into the DB
-			if (response == HttpURLConnection.HTTP_OK) {
-				try {
-					db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
+			parseURL(cpe);
 		}
 
+	}
+
+	private static void parseURL(Entry<String, ArrayList<String>> cpe) throws IOException {
+
+		String addressBase = "https://github.com/";
+
+		String[] addresses = null;
+
+		String[] wordArr = cpe.getKey().split(":");
+
+		if (!wordArr[3].equals("*")) {
+
+			String address = addressBase + wordArr[3];
+			addresses = new String[] { address + "/", address + "_", address + "-", address };
+
+			for (int i = 0; i < addresses.length; i++) {
+
+				if (!wordArr[4].equals("*"))
+					addresses[i] += wordArr[4];
+
+				if (testConnection(addresses[i], cpe))
+					break;
+
+			}
+
+		} else if (!wordArr[4].equals("*")) {
+			testConnection(addressBase + wordArr[4], cpe);
+		}
+
+	}
+
+	private static boolean testConnection(String address, Entry<String, ArrayList<String>> cpe) throws IOException {
+
+		URL url = new URL(address);
+		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		int response = urlConnection.getResponseCode();
+
+		// Check if the url leads to an actual GitHub repo
+		// If so, push the source link into the DB
+		if (response == HttpURLConnection.HTTP_OK) {
+			try {
+				db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return true;
+
+		}
+		return false;
 	}
 
 }
