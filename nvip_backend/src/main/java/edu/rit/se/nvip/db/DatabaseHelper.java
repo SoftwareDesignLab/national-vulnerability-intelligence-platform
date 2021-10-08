@@ -142,8 +142,8 @@ public class DatabaseHelper {
 	private String productTableSelectAllSql = "SELECT * FROM product";
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
-	private String insertPatchSql = "INSERT INTO patch (cve_id, patch_url, patch_date, description) VALUES (?, ?, ?, ?);";
-	private String selectCpeCve = "SELECT v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
+	private String insertPatchSql = "INSERT INTO patch (vuln_id, cve_id, patch_url, patch_date, description) VALUES (?, ?, ?, ?, ?);";
+	private String selectCpeCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
 
 	private String insertAffectedReleaseSql = "INSERT INTO AffectedRelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
 	private String updateAffectedReleaseSql = "update AffectedRelease set release_date = ?, version = ? where cve_id = ? and product_id = ?;";
@@ -337,13 +337,14 @@ public class DatabaseHelper {
 	 * Adds patch data to patch table, Source is the URL in which the patch
 	 * originated, Date and Description being the commit date and message
 	 */
-	public boolean insertPatch(String cve_id, String source, java.sql.Date date, String description)
+	public boolean insertPatch(String vuln_id, String cve_id, String source, java.sql.Date date, String description)
 			throws SQLException {
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(insertPatchSql);) {
-			pstmt.setString(1, cve_id);
-			pstmt.setString(2, source);
-			pstmt.setDate(3, date);
-			pstmt.setString(4, description);
+			pstmt.setString(1, vuln_id);
+			pstmt.setString(2, cve_id);
+			pstmt.setString(3, source);
+			pstmt.setDate(4, date);
+			pstmt.setString(5, description);
 			pstmt.executeUpdate();
 
 			logger.info("Inserted Patch from url: " + source + " for " + cve_id);
@@ -384,19 +385,23 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * Collects a map of CPEs with their correlated CVE, used for collecting patches
+	 * Collects a map of CPEs with their correlated CVE and Vuln ID used for
+	 * collecting patches
 	 * 
 	 * @return
 	 */
-	public Map<String, String> getCPECVE() {
+	public Map<String, ArrayList<String>> getCPECVE() {
 		Connection conn = null;
-		Map<String, String> cpes = new HashMap<>();
+		Map<String, ArrayList<String>> cpes = new HashMap<>();
 		try {
 			conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(selectCpeCve);
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
-				cpes.put(res.getString("cpe"), res.getString("cve_id"));
+				ArrayList<String> data = new ArrayList<>();
+				data.add(res.getString("vuln_id"));
+				data.add(res.getString("cve_id"));
+				cpes.put(res.getString("cpe"), data);
 			}
 
 		} catch (Exception e) {

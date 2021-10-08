@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
@@ -20,10 +21,10 @@ public class PatchFinderMain {
 	public static void main(String[] args) throws IOException {
 
 		DatabaseHelper db = DatabaseHelper.getInstance();
-		HashMap<String, String> cpes = (HashMap<String, String>) db.getCPECVE();
+		Map<String, ArrayList<String>> cpes = db.getCPECVE();
 
 		// Create github URLs based on CPEs for given CVEs
-		for (Entry<String, String> cpe : cpes.entrySet()) {
+		for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
 			String address = "https://github.com/";
 
 			String[] wordArr = cpe.getKey().split(":");
@@ -42,7 +43,7 @@ public class PatchFinderMain {
 			// If so, push the source link into the DB
 			if (response == HttpURLConnection.HTTP_OK) {
 				try {
-					db.insertPatch(cpe.getValue(), address, null, null);
+					db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
