@@ -1,6 +1,7 @@
 package edu.rit.se.nvip.patchfinder;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
@@ -75,8 +76,12 @@ public class PatchFinderMain {
 		// If so, push the source link into the DB
 		if (response == HttpURLConnection.HTTP_OK) {
 			try {
+				urlConnection.connect();
+				InputStream is = urlConnection.getInputStream();
+
 				db.deletePatch(cpe.getValue().get(0));
-				db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
+				db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), urlConnection.getURL().toString(), null,
+						null);
 				urlConnection.disconnect();
 			} catch (SQLException e) {
 				e.printStackTrace();
