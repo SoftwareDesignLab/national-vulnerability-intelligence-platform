@@ -72,6 +72,7 @@ public class PatchFinderMain {
 		if (response == HttpURLConnection.HTTP_OK) {
 			try {
 				System.out.println("Connection Successful at " + urlConnection.getURL().toString());
+				db.deletePatch(cpe.getValue().get(0));
 				db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
 			} catch (SQLException e) {
 				e.printStackTrace();
