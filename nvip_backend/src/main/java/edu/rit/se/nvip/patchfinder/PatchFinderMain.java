@@ -71,6 +71,7 @@ public class PatchFinderMain {
 		// If so, push the source link into the DB
 		if (response == HttpURLConnection.HTTP_OK) {
 			try {
+				System.out.println("Connection Successful at " + urlConnection.getURL().toString());
 				db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
 			} catch (SQLException e) {
 				e.printStackTrace();

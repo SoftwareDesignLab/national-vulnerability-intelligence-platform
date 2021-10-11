@@ -144,6 +144,7 @@ public class DatabaseHelper {
 
 	private String insertPatchSql = "INSERT INTO patch (vuln_id, cve_id, patch_url, patch_date, description) VALUES (?, ?, ?, ?, ?);";
 	private String selectCpeCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
+	private String deletePatchSql = "DELETE FROM patch WHERE vuln_id = ?;";
 
 	private String insertAffectedReleaseSql = "INSERT INTO AffectedRelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
 	private String updateAffectedReleaseSql = "update AffectedRelease set release_date = ?, version = ? where cve_id = ? and product_id = ?;";
@@ -414,6 +415,22 @@ public class DatabaseHelper {
 
 		System.out.println(cpes);
 		return cpes;
+	}
+
+	/**
+	 * Method for deleting duplicate patch entries by vuln_id
+	 * 
+	 * @param vulnId
+	 */
+	public void deletePatch(int vulnId) {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(deletePatchSql);
+			pstmt.executeQuery();
+		} catch (Exception e) {
+
+		}
 	}
 
 	/**
