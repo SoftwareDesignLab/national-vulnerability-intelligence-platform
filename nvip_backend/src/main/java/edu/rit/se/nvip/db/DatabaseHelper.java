@@ -422,11 +422,12 @@ public class DatabaseHelper {
 	 * 
 	 * @param vulnId
 	 */
-	public void deletePatch(int vulnId) {
+	public void deletePatch(String vulnId) {
 		Connection conn = null;
 		try {
 			conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(deletePatchSql);
+			pstmt.setString(1, vulnId);
 			pstmt.executeQuery();
 		} catch (Exception e) {
 
