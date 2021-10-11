@@ -349,6 +349,7 @@ public class DatabaseHelper {
 			pstmt.executeUpdate();
 
 			logger.info("Inserted Patch from url: " + source + " for " + cve_id);
+			conn.close();
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -428,9 +429,11 @@ public class DatabaseHelper {
 			conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(deletePatchSql);
 			pstmt.setString(1, vulnId);
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
+			conn.close();
+			logger.info("Deleted duplicate patch(es) for vuln ID: " + vulnId);
 		} catch (Exception e) {
-
+			System.out.println(e);
 		}
 	}
 
