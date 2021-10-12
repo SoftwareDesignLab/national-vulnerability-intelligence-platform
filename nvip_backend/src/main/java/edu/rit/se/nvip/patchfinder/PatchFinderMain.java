@@ -6,9 +6,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.eclipse.jgit.api.LsRemoteCommand;
+import org.eclipse.jgit.lib.Ref;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
 
@@ -146,7 +150,20 @@ public class PatchFinderMain {
 			urlConnection.disconnect();
 			is.close();
 
-			return newURL;
+			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
+
+			lsCmd.setRemote(newURL + ".git");
+
+			try {
+				Collection<Ref> results = lsCmd.call();
+				return newURL;
+			} catch (Exception e) {
+				System.out.println(e);
+
+				// input jSoup stuff here
+
+			}
+
 		}
 		return "";
 	}
