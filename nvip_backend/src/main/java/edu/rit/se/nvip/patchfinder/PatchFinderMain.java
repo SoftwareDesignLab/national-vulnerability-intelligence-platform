@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -20,6 +21,7 @@ import edu.rit.se.nvip.db.DatabaseHelper;
 public class PatchFinderMain {
 
 	private static DatabaseHelper db;
+	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/" };
 
 	/**
 	 * Main method just for calling to find all patch URLs
@@ -70,37 +72,54 @@ public class PatchFinderMain {
 	 */
 	private static void parseURL(Entry<String, ArrayList<String>> cpe) throws IOException {
 
-		String addressBaseGH = "https://github.com/";
-		String addressBaseBB = "https://bitbucket.org/";
-
-		String[] addresses = null;
-
 		String[] wordArr = cpe.getKey().split(":");
 
 		if (!wordArr[3].equals("*")) {
 
-			String addressGH = addressBaseGH + wordArr[3];
-			String addressBB = addressBaseBB + wordArr[3];
-			addresses = new String[] { addressGH + "/", addressGH + "_", addressGH + "-", addressGH, addressBB + "/",
-					addressBB + "_", addressBB + "-", addressBB };
+			HashSet<String> addresses = initializeAddresses(wordArr[3]);
 
-			for (int i = 0; i < addresses.length; i++) {
+			for (String address : addresses) {
 
 				if (!wordArr[4].equals("*"))
-					addresses[i] += wordArr[4];
+					address += wordArr[4];
 
-				String newAddress = testConnection(addresses[i], cpe);
+				String newAddress = testConnection(address, cpe);
 
 				if (!newAddress.isEmpty()) {
 					insertPatchURL(newAddress, cpe);
+					break;
 				}
 
 			}
 
 		} else if (!wordArr[4].equals("*")) {
-			testConnection(addressBaseGH + wordArr[4], cpe);
+
+			for (String base : ADDRESS_BASES) {
+				String newAddress = testConnection(base + wordArr[4], cpe);
+				if (!newAddress.isEmpty()) {
+					insertPatchURL(newAddress, cpe);
+					break;
+				}
+			}
+
 		}
 
+	}
+
+	/**
+	 * Inistializes the address set with additional addresses based on cpe keywords
+	 */
+	private static HashSet<String> initializeAddresses(String keyword) {
+		HashSet<String> addresses = new HashSet<>();
+
+		for (String base : ADDRESS_BASES) {
+			addresses.add(base + keyword + "/");
+			addresses.add(base + keyword + "_");
+			addresses.add(base + keyword + "-");
+			addresses.add(base + keyword);
+		}
+
+		return addresses;
 	}
 
 	/**
