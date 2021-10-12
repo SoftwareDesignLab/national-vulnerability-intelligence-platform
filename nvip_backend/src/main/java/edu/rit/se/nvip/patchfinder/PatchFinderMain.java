@@ -21,12 +21,18 @@ public class PatchFinderMain {
 
 	private static DatabaseHelper db;
 
+	/**
+	 * Main method just for calling to find all patch URLs
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 
 		System.out.println("PatchFinder Started!");
 
 		db = DatabaseHelper.getInstance();
-		Map<String, ArrayList<String>> cpes = db.getCPECVE();
+		Map<String, ArrayList<String>> cpes = db.getCPEsByCVE();
 
 		// Create github URLs based on CPEs for given CVEs
 		for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
@@ -37,6 +43,26 @@ public class PatchFinderMain {
 
 	}
 
+	/**
+	 * Gets a URL via a specified CVE and parses and tests
+	 */
+	public static void parseURLByCVE(String cve_id) {
+		
+		db = DatabaseHelper.getInstance();
+		
+		if () {
+			
+		}
+		
+	}
+
+	/**
+	 * Parses URL with github.com base and cpe keywords tests connection and inserts
+	 * into DB if so.
+	 * 
+	 * @param cpe
+	 * @throws IOException
+	 */
 	private static void parseURL(Entry<String, ArrayList<String>> cpe) throws IOException {
 
 		String addressBase = "https://github.com/";
@@ -66,6 +92,14 @@ public class PatchFinderMain {
 
 	}
 
+	/**
+	 * Tests connetion of a crafted URL, If successful, insert in DB
+	 * 
+	 * @param address
+	 * @param cpe
+	 * @return
+	 * @throws IOException
+	 */
 	private static boolean testConnection(String address, Entry<String, ArrayList<String>> cpe) throws IOException {
 
 		URL url = new URL(address);
@@ -83,6 +117,7 @@ public class PatchFinderMain {
 				db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), urlConnection.getURL().toString(), null,
 						null);
 				urlConnection.disconnect();
+				is.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

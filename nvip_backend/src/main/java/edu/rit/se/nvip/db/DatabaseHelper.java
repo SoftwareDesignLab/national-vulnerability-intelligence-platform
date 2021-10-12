@@ -143,7 +143,8 @@ public class DatabaseHelper {
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
 	private String insertPatchSql = "INSERT INTO patch (vuln_id, cve_id, patch_url, patch_date, description) VALUES (?, ?, ?, ?, ?);";
-	private String selectCpeCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
+	private String selectCpeByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
+	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
 	private String deletePatchSql = "DELETE FROM patch WHERE vuln_id = ?;";
 
 	private String insertAffectedReleaseSql = "INSERT INTO AffectedRelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
@@ -387,17 +388,46 @@ public class DatabaseHelper {
 	}
 
 	/**
+	 * Collects a single CPE and vuln_id correlated with a specified CVE Id
+	 * 
+	 * @return
+	 */
+	public Map<String, ArrayList<String>> getCPEByCVE(String cve_id) {
+		Connection conn = null;
+		Map<String, ArrayList<String>> cpes = new HashMap<>();
+		try {
+			conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(selectCpeByCve);
+			pstmt.setString(1, cve_id);
+			ResultSet res = pstmt.executeQuery();
+			if (res.next()) {
+				ArrayList<String> data = new ArrayList<>();
+				data.add(res.getString("vuln_id"));
+				data.add(res.getString("cve_id"));
+				cpes.put(res.getString("cpe"), data);
+			}
+		} catch (Exception e) {
+		}
+
+		try {
+			conn.close();
+		} catch (SQLException e) {
+		}
+		return cpes;
+	}
+
+	/**
 	 * Collects a map of CPEs with their correlated CVE and Vuln ID used for
 	 * collecting patches
 	 * 
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> getCPECVE() {
+	public Map<String, ArrayList<String>> getCPEsByCVE() {
 		Connection conn = null;
 		Map<String, ArrayList<String>> cpes = new HashMap<>();
 		try {
 			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(selectCpeCve);
+			PreparedStatement pstmt = conn.prepareStatement(selectCpesByCve);
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
 				ArrayList<String> data = new ArrayList<>();
