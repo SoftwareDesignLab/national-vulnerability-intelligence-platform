@@ -37,18 +37,10 @@ public class PatchFinderMain {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsByCVE();
 
-		// HashSet of CPE entries to reduce duplicate CPE URL tests
-		HashSet<Entry<String, ArrayList<String>>> usedCpes = new HashSet<Entry<String, ArrayList<String>>>();
-
 		// Create github URLs based on CPEs for given CVEs
 		for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
-			if (!usedCpes.contains(cpe)) {
-				parseURL(cpe);
-				usedCpes.add(cpe);
-			}
+			parseURL(cpe);
 		}
-
-		System.out.println("PatchFinder Finished!");
 
 	}
 
