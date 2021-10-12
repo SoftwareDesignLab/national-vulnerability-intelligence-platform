@@ -21,7 +21,8 @@ import edu.rit.se.nvip.db.DatabaseHelper;
 public class PatchFinderMain {
 
 	private static DatabaseHelper db;
-	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/" };
+	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/",
+			"https://gitlab.com/" };
 
 	/**
 	 * Main method just for calling to find all patch URLs
@@ -159,7 +160,7 @@ public class PatchFinderMain {
 	}
 
 	/**
-	 * 
+	 * Inserts a successfully connected Patch URL to the DB
 	 */
 	private static void insertPatchURL(String address, Entry<String, ArrayList<String>> cpe) {
 		try {
