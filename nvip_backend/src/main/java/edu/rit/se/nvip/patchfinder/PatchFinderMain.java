@@ -45,15 +45,20 @@ public class PatchFinderMain {
 
 	/**
 	 * Gets a URL via a specified CVE and parses and tests
+	 * 
+	 * @throws IOException
 	 */
-	public static void parseURLByCVE(String cve_id) {
-		
+	public static void parseURLByCVE(String cve_id) throws IOException {
+
 		db = DatabaseHelper.getInstance();
-		
-		if () {
-			
+		Map<String, ArrayList<String>> cpe = db.getCPEByCVE(cve_id);
+
+		if (cpe.size() != 0) {
+			for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
+				parseURL(entry);
+			}
 		}
-		
+
 	}
 
 	/**
