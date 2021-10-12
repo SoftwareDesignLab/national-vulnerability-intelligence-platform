@@ -70,7 +70,8 @@ public class PatchFinderMain {
 	 */
 	private static void parseURL(Entry<String, ArrayList<String>> cpe) throws IOException {
 
-		String addressBase = "https://github.com/";
+		String addressBaseGH = "https://github.com/";
+		String addressBaseBB = "https://bitbucket.org/";
 
 		String[] addresses = null;
 
@@ -78,21 +79,26 @@ public class PatchFinderMain {
 
 		if (!wordArr[3].equals("*")) {
 
-			String address = addressBase + wordArr[3];
-			addresses = new String[] { address + "/", address + "_", address + "-", address };
+			String addressGH = addressBaseGH + wordArr[3];
+			String addressBB = addressBaseBB + wordArr[3];
+			addresses = new String[] { addressGH + "/", addressGH + "_", addressGH + "-", addressGH, addressBB + "/",
+					addressBB + "_", addressBB + "-", addressBB };
 
 			for (int i = 0; i < addresses.length; i++) {
 
 				if (!wordArr[4].equals("*"))
 					addresses[i] += wordArr[4];
 
-				if (testConnection(addresses[i], cpe))
-					break;
+				String newAddress = testConnection(addresses[i], cpe);
+
+				if (!newAddress.isEmpty()) {
+					insertPatchURL(newAddress, cpe);
+				}
 
 			}
 
 		} else if (!wordArr[4].equals("*")) {
-			testConnection(addressBase + wordArr[4], cpe);
+			testConnection(addressBaseGH + wordArr[4], cpe);
 		}
 
 	}
@@ -105,7 +111,7 @@ public class PatchFinderMain {
 	 * @return
 	 * @throws IOException
 	 */
-	private static boolean testConnection(String address, Entry<String, ArrayList<String>> cpe) throws IOException {
+	private static String testConnection(String address, Entry<String, ArrayList<String>> cpe) throws IOException {
 
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -114,23 +120,29 @@ public class PatchFinderMain {
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB
 		if (response == HttpURLConnection.HTTP_OK) {
-			try {
-				urlConnection.connect();
-				InputStream is = urlConnection.getInputStream();
+			urlConnection.connect();
 
-				db.deletePatch(cpe.getValue().get(0));
-				db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), urlConnection.getURL().toString(), null,
-						null);
-				urlConnection.disconnect();
-				is.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			InputStream is = urlConnection.getInputStream();
+			String newURL = urlConnection.getURL().toString();
 
-			return true;
+			urlConnection.disconnect();
+			is.close();
 
+			return newURL;
 		}
-		return false;
+		return "";
+	}
+
+	/**
+	 * 
+	 */
+	private static void insertPatchURL(String address, Entry<String, ArrayList<String>> cpe) {
+		try {
+			db.deletePatch(cpe.getValue().get(0));
+			db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
