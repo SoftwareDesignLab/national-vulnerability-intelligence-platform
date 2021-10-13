@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.jsoup.Jsoup;
@@ -157,23 +158,26 @@ public class PatchFinderMain {
 				if (link.attr("href").contains("repositories")) {
 
 					newURL = ADDRESS_BASES[0] + link.attr("href").substring(1);
-					System.out.println("Repos located at: " + newURL);
 
 					Document reposPage = Jsoup.connect(newURL).get();
 
-					Elements repoLinks = reposPage.select("div.Box a[href]");
+					Elements repoLinks = reposPage.select("li.Box-row a[href]");
 
 					for (Element repoLink : repoLinks) {
 						if (!repoLink.attr("href").isEmpty()) {
-							System.out.print(repoLink.attr("href"));
+
+							System.out.println(repoLink.attr("href"));
 							newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
-							if (newURL.contains(keyword1) && newURL.contains(keyword2)) {
+
+							if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE) != null
+									&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE) != null) {
 								LsRemoteCommand lsCmd = new LsRemoteCommand(null);
 
 								lsCmd.setRemote(newURL + ".git");
 
 								try {
 									lsCmd.call();
+									System.out.println("Successful connection at: " + repoLink.attr("href"));
 									return newURL;
 								} catch (Exception e) {
 									System.out.println(e);
@@ -201,10 +205,20 @@ public class PatchFinderMain {
 	 * @param cpe
 	 * @return
 	 */
-	private static ArrayList<String> advanceParseSearch(String address, String keyword1, String keyword2,
+	private static ArrayList<String> advanceParseSearch(String keyword1, String keyword2,
 			Entry<String, ArrayList<String>> cpe) {
-		return null;
 
+		String search_params = ADDRESS_BASES[0] + "search?q=";
+
+		if (!keyword1.equals("*")) {
+			search_params += keyword1;
+		}
+
+		if (!keyword2.equals("*")) {
+			search_params += "+" + keyword2;
+		}
+
+		return null;
 	}
 
 	/**
