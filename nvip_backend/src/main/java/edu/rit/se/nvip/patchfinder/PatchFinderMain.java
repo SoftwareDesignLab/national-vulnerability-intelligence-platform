@@ -169,23 +169,10 @@ public class PatchFinderMain {
 							System.out.println(repoLink.attr("href"));
 							newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
 
-							if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE)
-									.matcher((CharSequence) repoLink.attr("href")).find()
-									&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE)
-											.matcher((CharSequence) repoLink.attr("href")).find()) {
-
-								LsRemoteCommand lsCmd = new LsRemoteCommand(null);
-
-								lsCmd.setRemote(newURL + ".git");
-
-								try {
-									lsCmd.call();
-									System.out.println("Successful connection at: " + repoLink.attr("href"));
-									return newURL;
-								} catch (Exception e) {
-									System.out.println(e);
-								}
+							if (verifyGitRemote(newURL, keyword1, keyword2)) {
+								return newURL;
 							}
+
 						}
 					}
 				}
@@ -232,26 +219,9 @@ public class PatchFinderMain {
 				if (!searchResult.attr("href").isEmpty()) {
 
 					String newURL = ADDRESS_BASES[0] + searchResult.attr("href").substring(1);
-
-					if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE)
-							.matcher((CharSequence) newURL).find()
-							&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE)
-									.matcher((CharSequence) newURL).find()) {
-
-						LsRemoteCommand lsCmd = new LsRemoteCommand(null);
-
-						lsCmd.setRemote(newURL + ".git");
-
-						try {
-							lsCmd.call();
-							System.out.println("Successful connection at: " + newURL);
-							return newURL;
-						} catch (Exception e) {
-							System.out.println(e);
-						}
-
+					if (verifyGitRemote(newURL, keyword1, keyword2)) {
+						return newURL;
 					}
-
 				}
 
 			}
@@ -306,6 +276,36 @@ public class PatchFinderMain {
 
 		}
 		return "";
+	}
+
+	/**
+	 * Method used for verifying Git remote connection to created url via keywords,
+	 * checks if the keywords are included as well before performing connection
+	 * 
+	 * @param newURL
+	 * @param keyword1
+	 * @param keyword2
+	 * @return
+	 */
+	private static boolean verifyGitRemote(String newURL, String keyword1, String keyword2) {
+		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher((CharSequence) newURL).find()
+				&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) newURL)
+						.find()) {
+
+			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
+
+			lsCmd.setRemote(newURL + ".git");
+
+			try {
+				lsCmd.call();
+				System.out.println("Successful connection at: " + newURL);
+				return true;
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+		}
+		return false;
 	}
 
 	/**
