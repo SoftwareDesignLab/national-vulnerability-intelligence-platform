@@ -169,8 +169,11 @@ public class PatchFinderMain {
 				Elements links = doc.select("a[href]");
 
 				for (Element link : links) {
-					System.out.println("New Line: " + link.attr("href"));
-					testConnection(link.attr("href"), cpe);
+					if (link.attr("href").contains("repositories")) {
+						System.out.println("New Link Test at: " + link.attr("href"));
+						newURL = ADDRESS_BASES[0] + link.attr("href").substring(1);
+						testConnection(newURL, cpe);
+					}
 				}
 
 			}
