@@ -7,7 +7,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -107,8 +106,6 @@ public class PatchFinderMain {
 				if (!newAddress.isEmpty()) {
 					insertPatchURL(newAddress, cpe);
 					break;
-				} else {
-					searchForRepos();
 				}
 			}
 
@@ -135,7 +132,7 @@ public class PatchFinderMain {
 	/**
 	 * 
 	 */
-	private static void searchForRepos(String keyword1, String keyword2, String address) {
+	private static void searchForRepos(String keyword1, String keyword2, String newURL) {
 		System.out.println("Grabbing repos");
 		// input jSoup stuff here
 		Document doc = Jsoup.connect(newURL).get();
@@ -169,13 +166,12 @@ public class PatchFinderMain {
 	 * @return
 	 * @throws IOException
 	 */
-	private static Map<String, Boolean> testConnection(String address, Entry<String, ArrayList<String>> cpe)
-			throws IOException {
+	private static String testConnection(String address, String keyword1, String keyword2,
+			Entry<String, ArrayList<String>> cpe) throws IOException {
 
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		int response = urlConnection.getResponseCode();
-		Map<String, Boolean> content = new HashMap<String, Boolean>();
 
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB
@@ -194,15 +190,14 @@ public class PatchFinderMain {
 
 			try {
 				Collection<Ref> results = lsCmd.call();
-				content.put(newURL, true);
+				return newURL;
 			} catch (Exception e) {
 				System.out.println(e);
-				content.put(newURL, false);
+				searchForRepos(keyword1, keyword2, newURL);
 			}
 
 		}
-
-		return content;
+		return "";
 	}
 
 	/**
