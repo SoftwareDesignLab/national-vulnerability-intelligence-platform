@@ -161,7 +161,7 @@ public class PatchFinderMain {
 
 					Document reposPage = Jsoup.connect(newURL).get();
 
-					Elements repoLinks = reposPage.select("li.Box-row a[href]");
+					Elements repoLinks = reposPage.select("li.Box-row > a.d-inline-block[href]");
 
 					for (Element repoLink : repoLinks) {
 						if (!repoLink.attr("href").isEmpty()) {
@@ -170,9 +170,9 @@ public class PatchFinderMain {
 							newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
 
 							if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE)
-									.matcher((CharSequence) repoLink).find()
+									.matcher((CharSequence) repoLink.attr("href")).find()
 									&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE)
-											.matcher((CharSequence) repoLink).find()) {
+											.matcher((CharSequence) repoLink.attr("href")).find()) {
 
 								LsRemoteCommand lsCmd = new LsRemoteCommand(null);
 
@@ -202,23 +202,63 @@ public class PatchFinderMain {
 	 * Performs an advanced search for the repo link(s) for a CPE using the Github
 	 * search feature
 	 * 
+	 * TODO: Change the return type to an array or list for multiple links
+	 * 
 	 * @param address
 	 * @param keyword1
 	 * @param keyword2
 	 * @param cpe
 	 * @return
 	 */
-	private static ArrayList<String> advanceParseSearch(String keyword1, String keyword2,
-			Entry<String, ArrayList<String>> cpe) {
+	private static String advanceParseSearch(String keyword1, String keyword2, Entry<String, ArrayList<String>> cpe) {
 
-		String search_params = ADDRESS_BASES[0] + "search?q=";
+		String searchParams = ADDRESS_BASES[0] + "search?q=";
 
 		if (!keyword1.equals("*")) {
-			search_params += keyword1;
+			searchParams += keyword1;
 		}
 
 		if (!keyword2.equals("*")) {
-			search_params += "+" + keyword2;
+			searchParams += "+" + keyword2;
+		}
+
+		try {
+			Document searchPage = Jsoup.connect(searchParams + "&type=repositories").get();
+
+			Elements searchResults = searchPage.select("li.repo-list-item a[href]");
+
+			for (Element searchResult : searchResults) {
+
+				if (!searchResult.attr("href").isEmpty()) {
+
+					String newURL = ADDRESS_BASES[0] + searchResult.attr("href").substring(1);
+
+					if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE)
+							.matcher((CharSequence) newURL).find()
+							&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE)
+									.matcher((CharSequence) newURL).find()) {
+
+						LsRemoteCommand lsCmd = new LsRemoteCommand(null);
+
+						lsCmd.setRemote(newURL + ".git");
+
+						try {
+							lsCmd.call();
+							System.out.println("Successful connection at: " + newURL);
+							return newURL;
+						} catch (Exception e) {
+							System.out.println(e);
+						}
+
+					}
+
+				}
+
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return null;
