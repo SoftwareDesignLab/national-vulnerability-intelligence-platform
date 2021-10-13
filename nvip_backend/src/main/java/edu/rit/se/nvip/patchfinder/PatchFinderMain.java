@@ -169,8 +169,11 @@ public class PatchFinderMain {
 							System.out.println(repoLink.attr("href"));
 							newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
 
-							if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE) != null
-									&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE) != null) {
+							if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE)
+									.matcher((CharSequence) repoLink).find()
+									&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE)
+											.matcher((CharSequence) repoLink).find()) {
+
 								LsRemoteCommand lsCmd = new LsRemoteCommand(null);
 
 								lsCmd.setRemote(newURL + ".git");
