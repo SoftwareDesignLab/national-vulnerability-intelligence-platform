@@ -7,6 +7,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -168,11 +169,13 @@ public class PatchFinderMain {
 	 * @return
 	 * @throws IOException
 	 */
-	private static String testConnection(String address, Entry<String, ArrayList<String>> cpe) throws IOException {
+	private static Map<String, Boolean> testConnection(String address, Entry<String, ArrayList<String>> cpe)
+			throws IOException {
 
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		int response = urlConnection.getResponseCode();
+		Map<String, Boolean> content = new HashMap<String, Boolean>();
 
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB
@@ -191,13 +194,15 @@ public class PatchFinderMain {
 
 			try {
 				Collection<Ref> results = lsCmd.call();
-				return newURL;
+				content.put(newURL, true);
 			} catch (Exception e) {
 				System.out.println(e);
+				content.put(newURL, false);
 			}
 
 		}
-		return "";
+
+		return content;
 	}
 
 	/**
