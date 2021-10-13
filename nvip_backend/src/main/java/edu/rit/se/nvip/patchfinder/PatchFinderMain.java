@@ -106,6 +106,8 @@ public class PatchFinderMain {
 				if (!newAddress.isEmpty()) {
 					insertPatchURL(newAddress, cpe);
 					break;
+				} else {
+					searchForRepos();
 				}
 			}
 
@@ -127,6 +129,35 @@ public class PatchFinderMain {
 		}
 
 		return addresses;
+	}
+
+	/**
+	 * 
+	 */
+	private static void searchForRepos(String keyword1, String keyword2, String address) {
+		System.out.println("Grabbing repos");
+		// input jSoup stuff here
+		Document doc = Jsoup.connect(newURL).get();
+		Elements links = doc.select("a[href]");
+
+		for (Element link : links) {
+			if (link.attr("href").contains("repositories")) {
+
+				newURL = ADDRESS_BASES[0] + link.attr("href").substring(1);
+				System.out.println("Repos located at: " + newURL);
+
+				Document reposPage = Jsoup.connect(newURL).get();
+				Elements repoLinks = reposPage.select("a[href]");
+
+				for (Element repoLink : repoLinks) {
+					newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
+					if (newURL.contains(address)) {
+
+					}
+				}
+
+			}
+		}
 	}
 
 	/**
@@ -163,19 +194,6 @@ public class PatchFinderMain {
 				return newURL;
 			} catch (Exception e) {
 				System.out.println(e);
-				System.out.println("Grabbing repos");
-				// input jSoup stuff here
-				Document doc = Jsoup.connect(newURL).get();
-				Elements links = doc.select("a[href]");
-
-				for (Element link : links) {
-					if (link.attr("href").contains("repositories")) {
-						System.out.println("New Link Test at: " + link.attr("href"));
-						newURL = ADDRESS_BASES[0] + link.attr("href").substring(1);
-						testConnection(newURL, cpe);
-					}
-				}
-
 			}
 
 		}
