@@ -13,6 +13,10 @@ import java.util.Map.Entry;
 
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.eclipse.jgit.lib.Ref;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
 
@@ -159,8 +163,15 @@ public class PatchFinderMain {
 				return newURL;
 			} catch (Exception e) {
 				System.out.println(e);
-
+				System.out.println("Grabbing repos");
 				// input jSoup stuff here
+				Document doc = Jsoup.connect(newURL).get();
+				Elements links = doc.select("a[href]");
+
+				for (Element link : links) {
+					System.out.println("New Line: " + link.attr("href"));
+					testConnection(link.attr("href"), cpe);
+				}
 
 			}
 
