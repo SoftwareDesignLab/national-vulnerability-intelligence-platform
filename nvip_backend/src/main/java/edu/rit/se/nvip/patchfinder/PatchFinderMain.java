@@ -6,13 +6,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.jgit.api.LsRemoteCommand;
-import org.eclipse.jgit.lib.Ref;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -87,10 +85,14 @@ public class PatchFinderMain {
 
 			for (String address : addresses) {
 
-				if (!wordArr[4].equals("*"))
-					address += wordArr[4];
+				String newAddress = "";
 
-				String newAddress = testConnection(address, cpe);
+				if (!wordArr[4].equals("*")) {
+					address += wordArr[4];
+					newAddress = testConnection(address, wordArr[3], wordArr[4], cpe);
+				} else {
+					newAddress = testConnection(address, wordArr[3], null, cpe);
+				}
 
 				if (!newAddress.isEmpty()) {
 					insertPatchURL(newAddress, cpe);
@@ -102,7 +104,7 @@ public class PatchFinderMain {
 		} else if (!wordArr[4].equals("*")) {
 
 			for (String base : ADDRESS_BASES) {
-				String newAddress = testConnection(base + wordArr[4], cpe);
+				String newAddress = testConnection(base + wordArr[4], null, wordArr[4], cpe);
 				if (!newAddress.isEmpty()) {
 					insertPatchURL(newAddress, cpe);
 					break;
@@ -130,36 +132,64 @@ public class PatchFinderMain {
 	}
 
 	/**
+	 * Searches for all links within a comapanies github page to find the correct
+	 * repo the cpe is correlated to. Uses keywords from cpe to validate and checks
+	 * for git remote connection with found links
 	 * 
+	 * Uses jSoup framework
+	 * 
+	 * @param keyword1
+	 * @param keyword2
+	 * @param newURL
 	 */
-	private static void searchForRepos(String keyword1, String keyword2, String newURL) {
-		System.out.println("Grabbing repos");
-		// input jSoup stuff here
-		Document doc = Jsoup.connect(newURL).get();
-		Elements links = doc.select("a[href]");
+	private static String searchForRepos(String keyword1, String keyword2, String newURL) {
+		System.out.println("Grabbing repos...");
 
-		for (Element link : links) {
-			if (link.attr("href").contains("repositories")) {
+		try {
+			Document doc = Jsoup.connect(newURL).get();
+			Elements links = doc.select("a[href]");
 
-				newURL = ADDRESS_BASES[0] + link.attr("href").substring(1);
-				System.out.println("Repos located at: " + newURL);
+			for (Element link : links) {
+				if (link.attr("href").contains("repositories")) {
 
-				Document reposPage = Jsoup.connect(newURL).get();
-				Elements repoLinks = reposPage.select("a[href]");
+					newURL = ADDRESS_BASES[0] + link.attr("href").substring(1);
+					System.out.println("Repos located at: " + newURL);
 
-				for (Element repoLink : repoLinks) {
-					newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
-					if (newURL.contains(address)) {
+					Document reposPage;
 
+					reposPage = Jsoup.connect(newURL).get();
+
+					Elements repoLinks = reposPage.select("a[href]");
+
+					for (Element repoLink : repoLinks) {
+						newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
+						if (newURL.contains(keyword1) && newURL.contains(keyword2)) {
+							LsRemoteCommand lsCmd = new LsRemoteCommand(null);
+
+							lsCmd.setRemote(newURL + ".git");
+
+							try {
+								lsCmd.call();
+								return newURL;
+							} catch (Exception e) {
+								System.out.println(e);
+							}
+						}
 					}
 				}
-
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		return "";
+
 	}
 
 	/**
-	 * Tests connetion of a crafted URL, If successful, insert in DB
+	 * Tests connetion of a crafted URL, If successful, insert in DB else, search
+	 * for correct repo via github company page (Assuming the link directs to it for
+	 * now)
 	 * 
 	 * @param address
 	 * @param cpe
@@ -189,11 +219,11 @@ public class PatchFinderMain {
 			lsCmd.setRemote(newURL + ".git");
 
 			try {
-				Collection<Ref> results = lsCmd.call();
+				lsCmd.call();
 				return newURL;
 			} catch (Exception e) {
 				System.out.println(e);
-				searchForRepos(keyword1, keyword2, newURL);
+				return searchForRepos(keyword1, keyword2, newURL);
 			}
 
 		}
