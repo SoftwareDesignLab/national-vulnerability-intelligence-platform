@@ -142,13 +142,15 @@ public class DatabaseHelper {
 	private String productTableSelectAllSql = "SELECT * FROM product";
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
-	private String insertPatchSql = "INSERT INTO patch (vuln_id, cve_id, patch_url, patch_date, description) VALUES (?, ?, ?, ?, ?);";
+	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
+	private String insertPatchURLSql = "INSERT INTO patchurl (patch_url) VALUES (?);";
 	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
 	private String selectCpesAndCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
-	private String deletePatchSql = "DELETE FROM patch WHERE vuln_id = ?;";
+	private String deletePatchSql = "DELETE FROM cvepatch WHERE patch_url_id = ?;";
+	private String deletePatchURLSql = "DELETE FROM patchurl WHERE patch_url_id = ?;";
 
 	private String insertAffectedReleaseSql = "INSERT INTO AffectedRelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
-	private String updateAffectedReleaseSql = "update AffectedRelease set release_date = ?, version = ? where cve_id = ? and product_id = ?;";
+	private String updateAffectedReleaseSql = "UPDATE AffectedRelease set release_date = ?, version = ? where cve_id = ? and product_id = ?;";
 	private String deleteAffectedReleaseSql = "DELETE FROM AffectedRelease where cve_id = ?;";
 
 	private String insertVulnerabilityUpdateSql = "INSERT INTO VulnerabilityUpdate (vuln_id, column_name, column_value, run_id) VALUES (?,?,?,?);";
@@ -339,17 +341,16 @@ public class DatabaseHelper {
 	 * Adds patch data to patch table, Source is the URL in which the patch
 	 * originated, Date and Description being the commit date and message
 	 */
-	public boolean insertPatch(String vuln_id, String cve_id, String source, java.sql.Date date, String description)
-			throws SQLException {
+	public boolean insertPatch(String vuln_id, String cve_id, int source_id, java.sql.Date date, String description) {
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(insertPatchSql);) {
 			pstmt.setString(1, vuln_id);
 			pstmt.setString(2, cve_id);
-			pstmt.setString(3, source);
+			pstmt.setInt(3, source_id);
 			pstmt.setDate(4, date);
 			pstmt.setString(5, description);
 			pstmt.executeUpdate();
 
-			logger.info("Inserted Patch from url: " + source + " for " + cve_id);
+			// logger.info("Inserted Patch from url: " + source + " for " + cve_id);
 			conn.close();
 			return true;
 		} catch (Exception e) {
@@ -357,6 +358,64 @@ public class DatabaseHelper {
 			return false;
 		}
 
+	}
+
+	/**
+	 * Inserts given patch URL into the patch_url table
+	 * 
+	 * @param patchURL
+	 * @return
+	 */
+	public boolean insertPatchURL(String patchURL) {
+		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(insertPatchURLSql);) {
+			pstmt.setString(1, patchURL);
+			pstmt.executeUpdate();
+
+			// logger.info("Inserted Patch from url: " + source + " for " + cve_id);
+			conn.close();
+			return true;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * Method for deleting duplicate patch entries by vuln_id
+	 * 
+	 * @param vulnId
+	 */
+	public void deletePatch(int patch_url_id) {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(deletePatchSql);
+			pstmt.setInt(1, patch_url_id);
+			pstmt.executeUpdate();
+			conn.close();
+			// logger.info("Deleted duplicate patch(es) for vuln ID: " + vulnId);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Deletes given patch url from patchurl table
+	 * 
+	 * @param patch_url
+	 */
+	public void deletePatchURL(int patch_url_id) {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(deletePatchURLSql);
+			pstmt.setInt(1, patch_url_id);
+			pstmt.executeUpdate();
+			conn.close();
+			// logger.info("Deleted duplicate patch(es) for vuln ID: " + vulnId);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	/**
@@ -446,25 +505,6 @@ public class DatabaseHelper {
 
 		System.out.println(cpes);
 		return cpes;
-	}
-
-	/**
-	 * Method for deleting duplicate patch entries by vuln_id
-	 * 
-	 * @param vulnId
-	 */
-	public void deletePatch(String vulnId) {
-		Connection conn = null;
-		try {
-			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(deletePatchSql);
-			pstmt.setString(1, vulnId);
-			pstmt.executeUpdate();
-			conn.close();
-			logger.info("Deleted duplicate patch(es) for vuln ID: " + vulnId);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
 	}
 
 	/**
