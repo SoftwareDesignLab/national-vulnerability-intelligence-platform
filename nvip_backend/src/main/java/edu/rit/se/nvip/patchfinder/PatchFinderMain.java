@@ -227,39 +227,16 @@ public class PatchFinderMain {
 
 					// Loop through all repo links in the repo tab page and test for git clone
 					// verification
-					// Retrun the list of all successful links afterwards
+					// Return the list of all successful links afterwards
+					urls = testLinks(repoLinks, newURL, keyword1, keyword2);
 
-					if (repoLinks.size() > 0) {
-						for (Element repoLink : repoLinks) {
-							if (!repoLink.attr("href").isEmpty()) {
-
-								System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
-
-								newURL = repoLink.attr("abs:href");
-								String innerText = repoLink.text();
-
-								if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
-									urls.add(newURL);
-								}
-
-							}
-						}
-					} else {
+					// Check if the list is empty, if so it could be because the wrong html element
+					// was pulled for repoLinks. In this case, try again with a different element
+					// assuming the link redirects to a github profile page instead of a company
+					// page
+					if (urls.isEmpty()) {
 						repoLinks = reposPage.select("div.d-inline-block a[href]");
-
-						if (repoLinks.size() > 0) {
-							for (Element repoLink : repoLinks) {
-								System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
-
-								newURL = repoLink.attr("abs:href");
-								String innerText = repoLink.text();
-
-								if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
-									urls.add(newURL);
-								}
-							}
-						}
-
+						urls = testLinks(repoLinks, newURL, keyword1, keyword2);
 					}
 				}
 			}
@@ -269,6 +246,31 @@ public class PatchFinderMain {
 
 		return urls;
 
+	}
+
+	/**
+	 * Method to loop through given repo links and verify git connection, returns
+	 * list of all successful links
+	 * 
+	 * @return
+	 */
+	private static ArrayList<String> testLinks(Elements repoLinks, String newURL, String keyword1, String keyword2) {
+		ArrayList<String> urls = new ArrayList<String>();
+
+		if (repoLinks.size() > 0) {
+			for (Element repoLink : repoLinks) {
+				System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
+
+				newURL = repoLink.attr("abs:href");
+				String innerText = repoLink.text();
+
+				if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
+					urls.add(newURL);
+				}
+			}
+		}
+
+		return urls;
 	}
 
 	/**
