@@ -29,14 +29,18 @@ public class PatchFinderMain {
 	private static DatabaseHelper db;
 	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/",
 			"https://gitlab.com/" };
+	private static String keyword1;
+	private static String keyword2;
+	private static Entry<String, ArrayList<String>> currentCPE;
 
 	/**
 	 * Main method just for calling to find all patch URLs
 	 * 
 	 * @param args
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 
 		System.out.println("PatchFinder Started!");
 
@@ -48,7 +52,8 @@ public class PatchFinderMain {
 		} else {
 			// Create github URLs based on CPEs for given CVEs
 			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
-				parseURL(cpe);
+				currentCPE = cpe;
+				parseURL();
 			}
 		}
 
@@ -60,15 +65,17 @@ public class PatchFinderMain {
 	 * Gets a URL via a specified CVE and parses and tests
 	 * 
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	public static void parseURLByCVE(String cve_id) throws IOException {
+	public static void parseURLByCVE(String cve_id) throws IOException, InterruptedException {
 
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEsByCVE(cve_id);
 
 		if (cpe.size() != 0) {
 			for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
-				parseURL(entry);
+				currentCPE = entry;
+				parseURL();
 			}
 		}
 
@@ -80,48 +87,55 @@ public class PatchFinderMain {
 	 * 
 	 * @param cpe
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	private static void parseURL(Entry<String, ArrayList<String>> cpe) throws IOException {
+	private static void parseURL() throws IOException, InterruptedException {
 
-		String[] wordArr = cpe.getKey().split(":");
+		String[] wordArr = currentCPE.getKey().split(":");
 		ArrayList<String> newAddresses = null;
 
 		// Parse keywords from CPE to create links for github, bitbucket and gitlab
-		if (!wordArr[3].equals("*")) {
+		if (!wordArr[3].equals("*") && !keyword1.equals(wordArr[3])) {
 
-			HashSet<String> addresses = initializeAddresses(wordArr[3]);
+			keyword1 = wordArr[3];
+			HashSet<String> addresses = initializeAddresses();
 
 			for (String address : addresses) {
 
 				if (!wordArr[4].equals("*")) {
+
+					keyword2 = wordArr[4];
 					address += wordArr[4];
-					newAddresses = testConnection(address, wordArr[3], wordArr[4], cpe);
+					newAddresses = testConnection(address);
+
 				} else {
-					newAddresses = testConnection(address, wordArr[3], null, cpe);
+					newAddresses = testConnection(address);
 				}
 
 				// Place all successful links in DB
 				if (!newAddresses.isEmpty()) {
 					for (String newAddress : newAddresses) {
-						insertPatchURL(newAddress, cpe);
+						insertPatchURL(newAddress);
 					}
 				} else {
-					advanceParseSearch(wordArr[3], wordArr[4], cpe);
+					advanceParseSearch();
 				}
 
 			}
 
-		} else if (!wordArr[4].equals("*")) {
+		} else if (!wordArr[4].equals("*") && !keyword2.equals(wordArr[4])) {
+
+			keyword2 = wordArr[4];
 
 			for (String base : ADDRESS_BASES) {
-				newAddresses = testConnection(base + wordArr[4], null, wordArr[4], cpe);
+				newAddresses = testConnection(base + keyword2);
 
 				if (!newAddresses.isEmpty()) {
 					for (String newAddress : newAddresses) {
-						insertPatchURL(newAddress, cpe);
+						insertPatchURL(newAddress);
 					}
 				} else {
-					advanceParseSearch(wordArr[3], wordArr[4], cpe);
+					advanceParseSearch();
 				}
 			}
 
@@ -132,14 +146,14 @@ public class PatchFinderMain {
 	/**
 	 * Inistializes the address set with additional addresses based on cpe keywords
 	 */
-	private static HashSet<String> initializeAddresses(String keyword) {
+	private static HashSet<String> initializeAddresses() {
 		HashSet<String> addresses = new HashSet<>();
 
 		for (String base : ADDRESS_BASES) {
-			addresses.add(base + keyword + "/");
-			addresses.add(base + keyword + "_");
-			addresses.add(base + keyword + "-");
-			addresses.add(base + keyword);
+			addresses.add(base + keyword1 + "/");
+			addresses.add(base + keyword1 + "_");
+			addresses.add(base + keyword1 + "-");
+			addresses.add(base + keyword1);
 		}
 
 		return addresses;
@@ -155,8 +169,7 @@ public class PatchFinderMain {
 	 * @return
 	 * @throws IOException
 	 */
-	private static ArrayList<String> testConnection(String address, String keyword1, String keyword2,
-			Entry<String, ArrayList<String>> cpe) throws IOException {
+	private static ArrayList<String> testConnection(String address) throws IOException {
 
 		ArrayList<String> urlList = new ArrayList<String>();
 
@@ -187,7 +200,7 @@ public class PatchFinderMain {
 				// link instead leads to
 				// a github company home page
 				System.out.println(e);
-				return searchForRepos(keyword1, keyword2, newURL);
+				return searchForRepos(newURL);
 			}
 
 		}
@@ -205,7 +218,7 @@ public class PatchFinderMain {
 	 * @param keyword2
 	 * @param newURL
 	 */
-	private static ArrayList<String> searchForRepos(String keyword1, String keyword2, String newURL) {
+	private static ArrayList<String> searchForRepos(String newURL) {
 		System.out.println("Grabbing repos...");
 
 		ArrayList<String> urls = new ArrayList<String>();
@@ -228,7 +241,7 @@ public class PatchFinderMain {
 					// Loop through all repo links in the repo tab page and test for git clone
 					// verification
 					// Return the list of all successful links afterwards
-					urls = testLinks(repoLinks, newURL, keyword1, keyword2);
+					urls = testLinks(repoLinks, newURL);
 
 					// Check if the list is empty, if so it could be because the wrong html element
 					// was pulled for repoLinks. In this case, try again with a different element
@@ -236,7 +249,7 @@ public class PatchFinderMain {
 					// page
 					if (urls.isEmpty()) {
 						repoLinks = reposPage.select("div.d-inline-block a[href]");
-						urls = testLinks(repoLinks, newURL, keyword1, keyword2);
+						urls = testLinks(repoLinks, newURL);
 					}
 				}
 			}
@@ -254,7 +267,7 @@ public class PatchFinderMain {
 	 * 
 	 * @return
 	 */
-	private static ArrayList<String> testLinks(Elements repoLinks, String newURL, String keyword1, String keyword2) {
+	private static ArrayList<String> testLinks(Elements repoLinks, String newURL) {
 		ArrayList<String> urls = new ArrayList<String>();
 
 		if (repoLinks.size() > 0) {
@@ -264,7 +277,7 @@ public class PatchFinderMain {
 				newURL = repoLink.attr("abs:href");
 				String innerText = repoLink.text();
 
-				if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
+				if (verifyGitRemote(newURL, innerText)) {
 					urls.add(newURL);
 				}
 			}
@@ -286,8 +299,7 @@ public class PatchFinderMain {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> advanceParseSearch(String keyword1, String keyword2,
-			Entry<String, ArrayList<String>> cpe) throws InterruptedException {
+	private static ArrayList<String> advanceParseSearch() throws InterruptedException {
 
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
 		ArrayList<String> urls = new ArrayList<String>();
@@ -315,7 +327,7 @@ public class PatchFinderMain {
 					String newURL = searchResult.attr("abs:href");
 					String innerText = searchResult.text();
 
-					if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
+					if (verifyGitRemote(newURL, innerText)) {
 						urls.add(newURL);
 					}
 				}
@@ -340,7 +352,7 @@ public class PatchFinderMain {
 	 * @param keyword2
 	 * @return
 	 */
-	private static boolean verifyGitRemote(String newURL, String keyword1, String keyword2, String innerText) {
+	private static boolean verifyGitRemote(String newURL, String innerText) {
 		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText).find()
 				|| Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText)
 						.find()) {
@@ -364,7 +376,7 @@ public class PatchFinderMain {
 	/**
 	 * Inserts a successfully connected Patch URL to the DB
 	 */
-	private static void insertPatchURL(String address, Entry<String, ArrayList<String>> cpe) {
+	private static void insertPatchURL(String address) {
 		try {
 			// Find the PatchURL Id for deletion
 			int urlId = db.getPatchURLId(address);
@@ -378,7 +390,7 @@ public class PatchFinderMain {
 			// Find the automatically generated patchURL id for isertion in the cvepatches
 			// table
 			urlId = db.getPatchURLId(address);
-			db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), urlId, null, null);
+			db.insertPatch(currentCPE.getValue().get(0), currentCPE.getValue().get(1), urlId, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
