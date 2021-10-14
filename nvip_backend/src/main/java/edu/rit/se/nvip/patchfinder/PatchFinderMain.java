@@ -234,9 +234,13 @@ public class PatchFinderMain {
 					for (Element repoLink : repoLinks) {
 						if (!repoLink.attr("href").isEmpty()) {
 
-							System.out.println(repoLink.attr("abs:href"));
+							System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
+
 							newURL = repoLink.attr("abs:href");
 							String innerText = repoLink.text();
+
+							System.out.println(innerText);
+
 							if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
 								urls.add(newURL);
 							}
@@ -315,7 +319,7 @@ public class PatchFinderMain {
 	 */
 	private static boolean verifyGitRemote(String newURL, String keyword1, String keyword2, String innerText) {
 		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText).find()
-				&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText)
+				|| Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText)
 						.find()) {
 
 			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
