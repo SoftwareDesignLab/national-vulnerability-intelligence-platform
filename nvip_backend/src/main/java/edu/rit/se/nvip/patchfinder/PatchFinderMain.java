@@ -343,8 +343,14 @@ public class PatchFinderMain {
 	 */
 	private static void insertPatchURL(String address, Entry<String, ArrayList<String>> cpe) {
 		try {
-			db.deletePatch(cpe.getValue().get(0));
-			db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), address, null, null);
+			int urlId = db.getPatchURLId(address);
+			db.deletePatch(urlId);
+			db.deletePatchURL(urlId);
+
+			db.insertPatchURL(address);
+
+			urlId = db.getPatchURLId(address);
+			db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), urlId, null, null);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -142,6 +142,7 @@ public class DatabaseHelper {
 	private String productTableSelectAllSql = "SELECT * FROM product";
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
+	private String getPatchURLIdSql = "SELECT patch_url_id from patch_url WHERE patch_url = ?;";
 	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
 	private String insertPatchURLSql = "INSERT INTO patchurl (patch_url) VALUES (?);";
 	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
@@ -335,6 +336,32 @@ public class DatabaseHelper {
 			logger.error(e.getMessage());
 			return -1;
 		}
+	}
+
+	/**
+	 * Grabs the patch_id of the given patchURL if it exists in the patchurl table
+	 * returns -1 if entry doesn't exist
+	 * 
+	 * @param address
+	 * @return
+	 */
+	public int getPatchURLId(String address) {
+
+		int patchURLId = -1;
+
+		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(getPatchURLIdSql);) {
+			pstmt.setString(1, address);
+			ResultSet res = pstmt.executeQuery();
+
+			if (res.next()) {
+				patchURLId = res.getInt("patch_url_id");
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		}
+
+		return patchURLId;
 	}
 
 	/*
