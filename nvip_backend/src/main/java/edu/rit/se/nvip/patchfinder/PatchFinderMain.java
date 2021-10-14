@@ -43,7 +43,7 @@ public class PatchFinderMain {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsByCVE();
 
-		if (!args[0].isEmpty()) {
+		if (args.length != 0) {
 			parseURLByCVE(args[0]);
 		} else {
 			// Create github URLs based on CPEs for given CVEs
@@ -228,19 +228,38 @@ public class PatchFinderMain {
 					// Loop through all repo links in the repo tab page and test for git clone
 					// verification
 					// Retrun the list of all successful links afterwards
-					for (Element repoLink : repoLinks) {
-						if (!repoLink.attr("href").isEmpty()) {
 
-							System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
+					if (repoLinks.size() > 0) {
+						for (Element repoLink : repoLinks) {
+							if (!repoLink.attr("href").isEmpty()) {
 
-							newURL = repoLink.attr("abs:href");
-							String innerText = repoLink.text();
+								System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
 
-							if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
-								urls.add(newURL);
+								newURL = repoLink.attr("abs:href");
+								String innerText = repoLink.text();
+
+								if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
+									urls.add(newURL);
+								}
+
 							}
-
 						}
+					} else {
+						repoLinks = reposPage.select("div.d-inline-block a[href]");
+
+						if (repoLinks.size() > 0) {
+							for (Element repoLink : repoLinks) {
+								System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
+
+								newURL = repoLink.attr("abs:href");
+								String innerText = repoLink.text();
+
+								if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
+									urls.add(newURL);
+								}
+							}
+						}
+
 					}
 				}
 			}
@@ -340,8 +359,10 @@ public class PatchFinderMain {
 		try {
 			// Find the PatchURL Id for deletion
 			int urlId = db.getPatchURLId(address);
-			db.deletePatch(urlId);
-			db.deletePatchURL(urlId);
+			if (urlId != -1) {
+				db.deletePatch(urlId);
+				db.deletePatchURL(urlId);
+			}
 
 			db.insertPatchURL(address);
 
