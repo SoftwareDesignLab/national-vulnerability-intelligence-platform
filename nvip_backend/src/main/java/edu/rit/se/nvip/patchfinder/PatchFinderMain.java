@@ -44,10 +44,16 @@ public class PatchFinderMain {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsByCVE();
 
-		// Create github URLs based on CPEs for given CVEs
-		for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
-			parseURL(cpe);
+		if (!args[0].isEmpty()) {
+			parseURLByCVE(args[0]);
+		} else {
+			// Create github URLs based on CPEs for given CVEs
+			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
+				parseURL(cpe);
+			}
 		}
+
+		System.out.println("PatchFinder Finished!");
 
 	}
 
@@ -59,7 +65,9 @@ public class PatchFinderMain {
 	public static void parseURLByCVE(String cve_id) throws IOException {
 
 		db = DatabaseHelper.getInstance();
-		Map<String, ArrayList<String>> cpe = db.getCPEByCVE(cve_id);
+		Map<String, ArrayList<String>> cpe = db.getCPEsByCVE(cve_id);
+
+		System.out.print(cpe);
 
 		if (cpe.size() != 0) {
 			for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
@@ -161,13 +169,13 @@ public class PatchFinderMain {
 
 					Document reposPage = Jsoup.connect(newURL).get();
 
-					Elements repoLinks = reposPage.select("li.Box-row > a.d-inline-block[href]");
+					Elements repoLinks = reposPage.select("li.Box-row a.d-inline-block[href]");
 
 					for (Element repoLink : repoLinks) {
 						if (!repoLink.attr("href").isEmpty()) {
 
-							System.out.println(repoLink.attr("href"));
-							newURL = ADDRESS_BASES[0] + repoLink.attr("href").substring(1);
+							System.out.println(repoLink.attr("abs:href"));
+							newURL = repoLink.attr("abs:href");
 
 							if (verifyGitRemote(newURL, keyword1, keyword2)) {
 								return newURL;
@@ -218,7 +226,7 @@ public class PatchFinderMain {
 
 				if (!searchResult.attr("href").isEmpty()) {
 
-					String newURL = ADDRESS_BASES[0] + searchResult.attr("href").substring(1);
+					String newURL = searchResult.attr("abs:href");
 					if (verifyGitRemote(newURL, keyword1, keyword2)) {
 						return newURL;
 					}

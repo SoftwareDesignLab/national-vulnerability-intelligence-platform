@@ -143,8 +143,8 @@ public class DatabaseHelper {
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
 	private String insertPatchSql = "INSERT INTO patch (vuln_id, cve_id, patch_url, patch_date, description) VALUES (?, ?, ?, ?, ?);";
-	private String selectCpeByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
-	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
+	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
+	private String selectCpesAndCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
 	private String deletePatchSql = "DELETE FROM patch WHERE vuln_id = ?;";
 
 	private String insertAffectedReleaseSql = "INSERT INTO AffectedRelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
@@ -388,19 +388,19 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * Collects a single CPE and vuln_id correlated with a specified CVE Id
+	 * Collects a a list of CPEs correlated with a specified CVE_Id
 	 * 
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> getCPEByCVE(String cve_id) {
+	public Map<String, ArrayList<String>> getCPEsByCVE(String cve_id) {
 		Connection conn = null;
 		Map<String, ArrayList<String>> cpes = new HashMap<>();
 		try {
 			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(selectCpeByCve);
+			PreparedStatement pstmt = conn.prepareStatement(selectCpesByCve);
 			pstmt.setString(1, cve_id);
 			ResultSet res = pstmt.executeQuery();
-			if (res.next()) {
+			while (res.next()) {
 				ArrayList<String> data = new ArrayList<>();
 				data.add(res.getString("vuln_id"));
 				data.add(res.getString("cve_id"));
@@ -427,7 +427,7 @@ public class DatabaseHelper {
 		Map<String, ArrayList<String>> cpes = new HashMap<>();
 		try {
 			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(selectCpesByCve);
+			PreparedStatement pstmt = conn.prepareStatement(selectCpesAndCve);
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
 				ArrayList<String> data = new ArrayList<>();
