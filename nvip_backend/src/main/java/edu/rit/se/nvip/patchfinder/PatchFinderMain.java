@@ -29,8 +29,8 @@ public class PatchFinderMain {
 	private static DatabaseHelper db;
 	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/",
 			"https://gitlab.com/" };
-	private static String keyword1;
-	private static String keyword2;
+	private static String keyword1 = "";
+	private static String keyword2 = "";
 	private static Entry<String, ArrayList<String>> currentCPE;
 
 	/**
@@ -95,6 +95,8 @@ public class PatchFinderMain {
 		ArrayList<String> newAddresses = null;
 
 		// Parse keywords from CPE to create links for github, bitbucket and gitlab
+		// Also checks if the keywords are the same as the previous, indicating the link
+		// is already used
 		if (!wordArr[3].equals("*") && !keyword1.equals(wordArr[3])) {
 
 			keyword1 = wordArr[3];
@@ -105,7 +107,7 @@ public class PatchFinderMain {
 				if (!wordArr[4].equals("*")) {
 
 					keyword2 = wordArr[4];
-					address += wordArr[4];
+					address += keyword2;
 					newAddresses = testConnection(address);
 
 				} else {
@@ -219,7 +221,7 @@ public class PatchFinderMain {
 	 * @param newURL
 	 */
 	private static ArrayList<String> searchForRepos(String newURL) {
-		System.out.println("Grabbing repos...");
+		System.out.println("Grabbing repos from github user page...");
 
 		ArrayList<String> urls = new ArrayList<String>();
 
@@ -241,7 +243,7 @@ public class PatchFinderMain {
 					// Loop through all repo links in the repo tab page and test for git clone
 					// verification
 					// Return the list of all successful links afterwards
-					urls = testLinks(repoLinks, newURL);
+					urls = testLinks(repoLinks);
 
 					// Check if the list is empty, if so it could be because the wrong html element
 					// was pulled for repoLinks. In this case, try again with a different element
@@ -249,7 +251,7 @@ public class PatchFinderMain {
 					// page
 					if (urls.isEmpty()) {
 						repoLinks = reposPage.select("div.d-inline-block a[href]");
-						urls = testLinks(repoLinks, newURL);
+						urls = testLinks(repoLinks);
 					}
 				}
 			}
@@ -267,19 +269,18 @@ public class PatchFinderMain {
 	 * 
 	 * @return
 	 */
-	private static ArrayList<String> testLinks(Elements repoLinks, String newURL) {
+	private static ArrayList<String> testLinks(Elements repoLinks) {
 		ArrayList<String> urls = new ArrayList<String>();
+		String repoURL;
 
-		if (repoLinks.size() > 0) {
-			for (Element repoLink : repoLinks) {
-				System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
+		for (Element repoLink : repoLinks) {
+			System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
 
-				newURL = repoLink.attr("abs:href");
-				String innerText = repoLink.text();
+			repoURL = repoLink.attr("abs:href");
+			String innerText = repoLink.text();
 
-				if (verifyGitRemote(newURL, innerText)) {
-					urls.add(newURL);
-				}
+			if (verifyGitRemote(repoURL, innerText)) {
+				urls.add(repoURL);
 			}
 		}
 
@@ -352,18 +353,21 @@ public class PatchFinderMain {
 	 * @param keyword2
 	 * @return
 	 */
-	private static boolean verifyGitRemote(String newURL, String innerText) {
+	private static boolean verifyGitRemote(String repoURL, String innerText) {
+
+		// Verify if the repo is correlated to the product by checking if the keywords
+		// lie in the inner text of the html link via regex
 		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText).find()
 				|| Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText)
 						.find()) {
 
 			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
 
-			lsCmd.setRemote(newURL + ".git");
+			lsCmd.setRemote(repoURL + ".git");
 
 			try {
 				lsCmd.call();
-				System.out.println("Successful connection at: " + newURL);
+				System.out.println("Successful connection at: " + repoURL);
 				return true;
 			} catch (Exception e) {
 				System.out.println(e);
