@@ -106,7 +106,7 @@ public class PatchFinderMain {
 						insertPatchURL(newAddress, cpe);
 					}
 				} else {
-					// advanceParseSearch(address, wordArr[3], wordArr[4], cpe);
+					advanceParseSearch(wordArr[3], wordArr[4], cpe);
 				}
 
 			}
@@ -121,7 +121,7 @@ public class PatchFinderMain {
 						insertPatchURL(newAddress, cpe);
 					}
 				} else {
-					// advanceParseSearch(newAddress, wordArr[3], wordArr[4], cpe);
+					advanceParseSearch(wordArr[3], wordArr[4], cpe);
 				}
 			}
 
@@ -285,9 +285,11 @@ public class PatchFinderMain {
 	 * @param cpe
 	 * @return
 	 */
-	private static String advanceParseSearch(String keyword1, String keyword2, Entry<String, ArrayList<String>> cpe) {
+	private static ArrayList<String> advanceParseSearch(String keyword1, String keyword2,
+			Entry<String, ArrayList<String>> cpe) {
 
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
+		ArrayList<String> urls = new ArrayList<String>();
 
 		if (!keyword1.equals("*")) {
 			searchParams += keyword1;
@@ -310,18 +312,17 @@ public class PatchFinderMain {
 					String innerText = searchResult.text();
 
 					if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
-						return newURL;
+						urls.add(newURL);
 					}
 				}
 
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e);
 		}
 
-		return null;
+		return urls;
 	}
 
 	/**
