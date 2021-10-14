@@ -236,8 +236,8 @@ public class PatchFinderMain {
 
 							System.out.println(repoLink.attr("abs:href"));
 							newURL = repoLink.attr("abs:href");
-
-							if (verifyGitRemote(newURL, keyword1, keyword2)) {
+							String innerText = repoLink.text();
+							if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
 								urls.add(newURL);
 							}
 
@@ -287,7 +287,9 @@ public class PatchFinderMain {
 				if (!searchResult.attr("href").isEmpty()) {
 
 					String newURL = searchResult.attr("abs:href");
-					if (verifyGitRemote(newURL, keyword1, keyword2)) {
+					String innerText = searchResult.text();
+
+					if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
 						return newURL;
 					}
 				}
@@ -311,9 +313,9 @@ public class PatchFinderMain {
 	 * @param keyword2
 	 * @return
 	 */
-	private static boolean verifyGitRemote(String newURL, String keyword1, String keyword2) {
-		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher((CharSequence) newURL).find()
-				&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) newURL)
+	private static boolean verifyGitRemote(String newURL, String keyword1, String keyword2, String innerText) {
+		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText).find()
+				&& Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText)
 						.find()) {
 
 			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
