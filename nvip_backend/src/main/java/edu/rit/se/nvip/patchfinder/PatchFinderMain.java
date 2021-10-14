@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -66,8 +65,6 @@ public class PatchFinderMain {
 
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEsByCVE(cve_id);
-
-		System.out.print(cpe);
 
 		if (cpe.size() != 0) {
 			for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
@@ -239,8 +236,6 @@ public class PatchFinderMain {
 							newURL = repoLink.attr("abs:href");
 							String innerText = repoLink.text();
 
-							System.out.println(innerText);
-
 							if (verifyGitRemote(newURL, keyword1, keyword2, innerText)) {
 								urls.add(newURL);
 							}
@@ -343,15 +338,18 @@ public class PatchFinderMain {
 	 */
 	private static void insertPatchURL(String address, Entry<String, ArrayList<String>> cpe) {
 		try {
+			// Find the PatchURL Id for deletion
 			int urlId = db.getPatchURLId(address);
 			db.deletePatch(urlId);
 			db.deletePatchURL(urlId);
 
 			db.insertPatchURL(address);
 
+			// Find the automatically generated patchURL id for isertion in the cvepatches
+			// table
 			urlId = db.getPatchURLId(address);
 			db.insertPatch(cpe.getValue().get(0), cpe.getValue().get(1), urlId, null, null);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

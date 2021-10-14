@@ -142,7 +142,7 @@ public class DatabaseHelper {
 	private String productTableSelectAllSql = "SELECT * FROM product";
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
-	private String getPatchURLIdSql = "SELECT patch_url_id from patch_url WHERE patch_url = ?;";
+	private String getPatchURLIdSql = "SELECT patch_url_id from patchurl WHERE patch_url = ?;";
 	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
 	private String insertPatchURLSql = "INSERT INTO patchurl (patch_url) VALUES (?);";
 	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
@@ -377,7 +377,7 @@ public class DatabaseHelper {
 			pstmt.setString(5, description);
 			pstmt.executeUpdate();
 
-			// logger.info("Inserted Patch from url: " + source + " for " + cve_id);
+			logger.info("Inserted Patch from url id: " + source_id + " for " + cve_id);
 			conn.close();
 			return true;
 		} catch (Exception e) {
@@ -398,7 +398,7 @@ public class DatabaseHelper {
 			pstmt.setString(1, patchURL);
 			pstmt.executeUpdate();
 
-			// logger.info("Inserted Patch from url: " + source + " for " + cve_id);
+			logger.info("Inserted PatchURL: " + patchURL);
 			conn.close();
 			return true;
 		} catch (Exception e) {
@@ -420,7 +420,7 @@ public class DatabaseHelper {
 			pstmt.setInt(1, patch_url_id);
 			pstmt.executeUpdate();
 			conn.close();
-			// logger.info("Deleted duplicate patch(es) for vuln ID: " + vulnId);
+			logger.info("Deleted duplicate patch(es) for source ID: " + patch_url_id);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -439,7 +439,7 @@ public class DatabaseHelper {
 			pstmt.setInt(1, patch_url_id);
 			pstmt.executeUpdate();
 			conn.close();
-			// logger.info("Deleted duplicate patch(es) for vuln ID: " + vulnId);
+			logger.info("Deleted duplicate patch URL for source ID: " + patch_url_id);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
