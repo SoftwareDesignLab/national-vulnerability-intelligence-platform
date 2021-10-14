@@ -145,6 +145,52 @@ public class PatchFinderMain {
 	}
 
 	/**
+	 * Tests connetion of a crafted URL, If successful, insert in DB else, search
+	 * for correct repo via github company page (Assuming the link directs to it for
+	 * now)
+	 * 
+	 * @param address
+	 * @param cpe
+	 * @return
+	 * @throws IOException
+	 */
+	private static ArrayList<String> testConnection(String address, String keyword1, String keyword2,
+			Entry<String, ArrayList<String>> cpe) throws IOException {
+
+		ArrayList<String> urlList = new ArrayList<String>();
+
+		URL url = new URL(address);
+		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		int response = urlConnection.getResponseCode();
+
+		// Check if the url leads to an actual GitHub repo
+		// If so, push the source link into the DB
+		if (response == HttpURLConnection.HTTP_OK) {
+			urlConnection.connect();
+
+			InputStream is = urlConnection.getInputStream();
+			String newURL = urlConnection.getURL().toString();
+
+			urlConnection.disconnect();
+			is.close();
+
+			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
+
+			lsCmd.setRemote(newURL + ".git");
+
+			try {
+				lsCmd.call();
+				urlList.add(newURL);
+			} catch (Exception e) {
+				System.out.println(e);
+				return searchForRepos(keyword1, keyword2, newURL);
+			}
+
+		}
+		return urlList;
+	}
+
+	/**
 	 * Searches for all links within a comapanies github page to find the correct
 	 * repo the cpe is correlated to. Uses keywords from cpe to validate and checks
 	 * for git remote connection with found links
@@ -155,8 +201,10 @@ public class PatchFinderMain {
 	 * @param keyword2
 	 * @param newURL
 	 */
-	private static String searchForRepos(String keyword1, String keyword2, String newURL) {
+	private static ArrayList<String> searchForRepos(String keyword1, String keyword2, String newURL) {
 		System.out.println("Grabbing repos...");
+
+		ArrayList<String> urls = new ArrayList<String>();
 
 		try {
 			Document doc = Jsoup.connect(newURL).get();
@@ -178,7 +226,7 @@ public class PatchFinderMain {
 							newURL = repoLink.attr("abs:href");
 
 							if (verifyGitRemote(newURL, keyword1, keyword2)) {
-								return newURL;
+								urls.add(newURL);
 							}
 
 						}
@@ -189,7 +237,7 @@ public class PatchFinderMain {
 			e.printStackTrace();
 		}
 
-		return "";
+		return urls;
 
 	}
 
@@ -240,50 +288,6 @@ public class PatchFinderMain {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Tests connetion of a crafted URL, If successful, insert in DB else, search
-	 * for correct repo via github company page (Assuming the link directs to it for
-	 * now)
-	 * 
-	 * @param address
-	 * @param cpe
-	 * @return
-	 * @throws IOException
-	 */
-	private static String testConnection(String address, String keyword1, String keyword2,
-			Entry<String, ArrayList<String>> cpe) throws IOException {
-
-		URL url = new URL(address);
-		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-		int response = urlConnection.getResponseCode();
-
-		// Check if the url leads to an actual GitHub repo
-		// If so, push the source link into the DB
-		if (response == HttpURLConnection.HTTP_OK) {
-			urlConnection.connect();
-
-			InputStream is = urlConnection.getInputStream();
-			String newURL = urlConnection.getURL().toString();
-
-			urlConnection.disconnect();
-			is.close();
-
-			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
-
-			lsCmd.setRemote(newURL + ".git");
-
-			try {
-				lsCmd.call();
-				return newURL;
-			} catch (Exception e) {
-				System.out.println(e);
-				return searchForRepos(keyword1, keyword2, newURL);
-			}
-
-		}
-		return "";
 	}
 
 	/**
