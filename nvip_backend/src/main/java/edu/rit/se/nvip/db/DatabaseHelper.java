@@ -345,16 +345,19 @@ public class DatabaseHelper {
 	 * @param product_id
 	 * @return
 	 */
-	public String getCPEById(String product_id) {
+	public Map<String, ArrayList<String>> getCPEById(int product_id) {
 
-		String cpe = "";
+		String product = "";
+		ArrayList<String> data = new ArrayList<String>();
+		Map<String, ArrayList<String>> cpe = new HashMap<String, ArrayList<String>>();
 
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(getCPEById);) {
-			pstmt.setString(1, product_id);
+			pstmt.setInt(1, product_id);
 			ResultSet res = pstmt.executeQuery();
 
 			if (res.next()) {
-				cpe = res.getString("patch_url_id");
+				product = res.getString("cpe");
+				cpe.put(product, data);
 			}
 
 		} catch (Exception e) {

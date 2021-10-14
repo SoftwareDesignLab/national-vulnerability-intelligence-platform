@@ -48,7 +48,13 @@ public class PatchFinderMain {
 		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
 
 		if (args.length != 0) {
-			parseURLByCVE(args[0]);
+
+			if (args[0].equals("true")) {
+				parseURLByProductId(Integer.parseInt(args[1]));
+			} else {
+				parseURLByCVE(args[1]);
+			}
+
 		} else {
 			// Create github URLs based on CPEs for given CVEs
 			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
@@ -84,16 +90,16 @@ public class PatchFinderMain {
 	 * Gets a URL via a specified product Id and parses and tests
 	 * 
 	 * @param product_id
+	 * @throws InterruptedException
+	 * @throws IOException
 	 */
-	public static void parseURLByProductId(int product_id) {
+	public static void parseURLByProductId(int product_id) throws IOException, InterruptedException {
 		db = DatabaseHelper.getInstance();
-		Map<String, ArrayList<String>> cpe = db.getCPEsById(product_id);
-
+		Map<String, ArrayList<String>> cpe = db.getCPEById(product_id);
 		for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
 			currentCPE = entry;
 			parseURL();
 		}
-
 	}
 
 	/**
