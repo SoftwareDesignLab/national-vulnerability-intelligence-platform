@@ -87,25 +87,27 @@ public class PatchFinderMain {
 	private static void parseURL(Entry<String, ArrayList<String>> cpe) throws IOException {
 
 		String[] wordArr = cpe.getKey().split(":");
+		ArrayList<String> newAddresses = null;
 
+		// Parse keywords from CPE to create links for github, bitbucket and gitlab
 		if (!wordArr[3].equals("*")) {
 
 			HashSet<String> addresses = initializeAddresses(wordArr[3]);
 
 			for (String address : addresses) {
 
-				String newAddress = "";
-
 				if (!wordArr[4].equals("*")) {
 					address += wordArr[4];
-					newAddress = testConnection(address, wordArr[3], wordArr[4], cpe);
+					newAddresses = testConnection(address, wordArr[3], wordArr[4], cpe);
 				} else {
-					newAddress = testConnection(address, wordArr[3], null, cpe);
+					newAddresses = testConnection(address, wordArr[3], null, cpe);
 				}
 
-				if (!newAddress.isEmpty()) {
-					insertPatchURL(newAddress, cpe);
-					break;
+				// Place all successful links in DB
+				if (!newAddresses.isEmpty()) {
+					for (String newAddress : newAddresses) {
+						insertPatchURL(newAddress, cpe);
+					}
 				} else {
 					// advanceParseSearch(address, wordArr[3], wordArr[4], cpe);
 				}
@@ -115,10 +117,12 @@ public class PatchFinderMain {
 		} else if (!wordArr[4].equals("*")) {
 
 			for (String base : ADDRESS_BASES) {
-				String newAddress = testConnection(base + wordArr[4], null, wordArr[4], cpe);
-				if (!newAddress.isEmpty()) {
-					insertPatchURL(newAddress, cpe);
-					break;
+				newAddresses = testConnection(base + wordArr[4], null, wordArr[4], cpe);
+
+				if (!newAddresses.isEmpty()) {
+					for (String newAddress : newAddresses) {
+						insertPatchURL(newAddress, cpe);
+					}
 				} else {
 					// advanceParseSearch(newAddress, wordArr[3], wordArr[4], cpe);
 				}
@@ -182,6 +186,9 @@ public class PatchFinderMain {
 				lsCmd.call();
 				urlList.add(newURL);
 			} catch (Exception e) {
+				// If unsuccessful on git remote check, perform a advaced search, assuming the
+				// link instead leads to
+				// a github company home page
 				System.out.println(e);
 				return searchForRepos(keyword1, keyword2, newURL);
 			}
@@ -206,10 +213,12 @@ public class PatchFinderMain {
 
 		ArrayList<String> urls = new ArrayList<String>();
 
+		// Obtain all linls from the current company github page
 		try {
 			Document doc = Jsoup.connect(newURL).get();
 			Elements links = doc.select("a[href]");
 
+			// Loop through all links to find the repo page link (repo tab)
 			for (Element link : links) {
 				if (link.attr("href").contains("repositories")) {
 
@@ -219,6 +228,9 @@ public class PatchFinderMain {
 
 					Elements repoLinks = reposPage.select("li.Box-row a.d-inline-block[href]");
 
+					// Loop through all repo links in the repo tab page and test for git clone
+					// verification
+					// Retrun the list of all successful links afterwards
 					for (Element repoLink : repoLinks) {
 						if (!repoLink.attr("href").isEmpty()) {
 
