@@ -142,6 +142,7 @@ public class DatabaseHelper {
 	private String productTableSelectAllSql = "SELECT * FROM product";
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
+	private String getCPEById = "SELECT cpe FROM product WHERE product_id = ?;";
 	private String getPatchURLIdSql = "SELECT patch_url_id from patchurl WHERE patch_url = ?;";
 	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
 	private String insertPatchURLSql = "INSERT INTO patchurl (patch_url) VALUES (?);";
@@ -339,6 +340,32 @@ public class DatabaseHelper {
 	}
 
 	/**
+	 * Grabs CPE from a specified product ID within the product table
+	 * 
+	 * @param product_id
+	 * @return
+	 */
+	public String getCPEById(String product_id) {
+
+		String cpe = "";
+
+		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(getCPEById);) {
+			pstmt.setString(1, product_id);
+			ResultSet res = pstmt.executeQuery();
+
+			if (res.next()) {
+				cpe = res.getString("patch_url_id");
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		}
+
+		return cpe;
+
+	}
+
+	/**
 	 * Grabs the patch_id of the given patchURL if it exists in the patchurl table
 	 * returns -1 if entry doesn't exist
 	 * 
@@ -508,7 +535,7 @@ public class DatabaseHelper {
 	 * 
 	 * @return
 	 */
-	public Map<String, ArrayList<String>> getCPEsByCVE() {
+	public Map<String, ArrayList<String>> getCPEsAndCVE() {
 		Connection conn = null;
 		Map<String, ArrayList<String>> cpes = new HashMap<>();
 		try {

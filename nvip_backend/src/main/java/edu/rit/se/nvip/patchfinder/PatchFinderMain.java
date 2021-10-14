@@ -45,7 +45,7 @@ public class PatchFinderMain {
 		System.out.println("PatchFinder Started!");
 
 		db = DatabaseHelper.getInstance();
-		Map<String, ArrayList<String>> cpes = db.getCPEsByCVE();
+		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
 
 		if (args.length != 0) {
 			parseURLByCVE(args[0]);
@@ -53,6 +53,7 @@ public class PatchFinderMain {
 			// Create github URLs based on CPEs for given CVEs
 			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
 				currentCPE = cpe;
+				System.out.println(cpe);
 				parseURL();
 			}
 		}
@@ -72,11 +73,25 @@ public class PatchFinderMain {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEsByCVE(cve_id);
 
-		if (cpe.size() != 0) {
-			for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
-				currentCPE = entry;
-				parseURL();
-			}
+		for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
+			currentCPE = entry;
+			parseURL();
+		}
+
+	}
+
+	/**
+	 * Gets a URL via a specified product Id and parses and tests
+	 * 
+	 * @param product_id
+	 */
+	public static void parseURLByProductId(int product_id) {
+		db = DatabaseHelper.getInstance();
+		Map<String, ArrayList<String>> cpe = db.getCPEsById(product_id);
+
+		for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
+			currentCPE = entry;
+			parseURL();
 		}
 
 	}
@@ -173,6 +188,7 @@ public class PatchFinderMain {
 	 */
 	private static ArrayList<String> testConnection(String address) throws IOException {
 
+		System.out.println("Testing Connection for address: " + address);
 		ArrayList<String> urlList = new ArrayList<String>();
 
 		URL url = new URL(address);
@@ -184,6 +200,7 @@ public class PatchFinderMain {
 		if (response == HttpURLConnection.HTTP_OK) {
 			urlConnection.connect();
 
+			// Get correct URL in case of redirection
 			InputStream is = urlConnection.getInputStream();
 			String newURL = urlConnection.getURL().toString();
 
@@ -196,6 +213,7 @@ public class PatchFinderMain {
 
 			try {
 				lsCmd.call();
+				System.out.println("Successful Git Remote Connection at: " + newURL);
 				urlList.add(newURL);
 			} catch (Exception e) {
 				// If unsuccessful on git remote check, perform a advaced search, assuming the
@@ -335,7 +353,7 @@ public class PatchFinderMain {
 
 			}
 
-			Thread.sleep(5000);
+			Thread.sleep(11000);
 
 		} catch (IOException e) {
 			System.out.println(e);
@@ -367,7 +385,7 @@ public class PatchFinderMain {
 
 			try {
 				lsCmd.call();
-				System.out.println("Successful connection at: " + repoURL);
+				System.out.println("Successful Git Remote Connection at: " + repoURL);
 				return true;
 			} catch (Exception e) {
 				System.out.println(e);
