@@ -299,6 +299,9 @@ public class PatchFinderMain {
 			searchParams += "+" + keyword2;
 		}
 
+		// Perform search on github using query strings in the url
+		// Loop through the results and return a list of all verified repo links that
+		// match with the product
 		try {
 			Document searchPage = Jsoup.connect(searchParams + "&type=repositories").get();
 
