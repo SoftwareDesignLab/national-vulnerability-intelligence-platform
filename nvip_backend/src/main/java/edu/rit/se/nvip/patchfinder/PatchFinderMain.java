@@ -284,9 +284,10 @@ public class PatchFinderMain {
 	 * @param keyword2
 	 * @param cpe
 	 * @return
+	 * @throws InterruptedException
 	 */
 	private static ArrayList<String> advanceParseSearch(String keyword1, String keyword2,
-			Entry<String, ArrayList<String>> cpe) {
+			Entry<String, ArrayList<String>> cpe) throws InterruptedException {
 
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
 		ArrayList<String> urls = new ArrayList<String>();
@@ -320,6 +321,8 @@ public class PatchFinderMain {
 				}
 
 			}
+
+			Thread.sleep(5000);
 
 		} catch (IOException e) {
 			System.out.println(e);
