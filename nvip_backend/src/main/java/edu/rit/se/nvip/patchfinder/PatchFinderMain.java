@@ -191,8 +191,9 @@ public class PatchFinderMain {
 	 * @param cpe
 	 * @return
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> testConnection(String address) throws IOException {
+	private static ArrayList<String> testConnection(String address) throws IOException, InterruptedException {
 
 		System.out.println("Testing Connection for address: " + address);
 		ArrayList<String> urlList = new ArrayList<String>();
@@ -200,6 +201,7 @@ public class PatchFinderMain {
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		int response = urlConnection.getResponseCode();
+		Thread.sleep(2000);
 
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB
@@ -243,15 +245,18 @@ public class PatchFinderMain {
 	 * @param keyword1
 	 * @param keyword2
 	 * @param newURL
+	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> searchForRepos(String newURL) {
+	private static ArrayList<String> searchForRepos(String newURL) throws InterruptedException {
 		System.out.println("Grabbing repos from github user page...");
 
 		ArrayList<String> urls = new ArrayList<String>();
 
 		// Obtain all linls from the current company github page
 		try {
-			Document doc = Jsoup.connect(newURL).get();
+			Document doc = Jsoup.connect(newURL).timeout(0).get();
+			Thread.sleep(2000);
+
 			Elements links = doc.select("a[href]");
 
 			// Loop through all links to find the repo page link (repo tab)
@@ -260,7 +265,7 @@ public class PatchFinderMain {
 
 					newURL = ADDRESS_BASES[0] + link.attr("href").substring(1);
 
-					Document reposPage = Jsoup.connect(newURL).get();
+					Document reposPage = Jsoup.connect(newURL).timeout(0).get();
 
 					Elements repoLinks = reposPage.select("li.Box-row a.d-inline-block[href]");
 
@@ -343,7 +348,7 @@ public class PatchFinderMain {
 		// Loop through the results and return a list of all verified repo links that
 		// match with the product
 		try {
-			Document searchPage = Jsoup.connect(searchParams + "&type=repositories").get();
+			Document searchPage = Jsoup.connect(searchParams + "&type=repositories").timeout(0).get();
 
 			Elements searchResults = searchPage.select("li.repo-list-item a[href]");
 
@@ -360,8 +365,6 @@ public class PatchFinderMain {
 				}
 
 			}
-
-			Thread.sleep(11000);
 
 		} catch (IOException e) {
 			System.out.println(e);
