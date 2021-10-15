@@ -60,7 +60,6 @@ public class PatchFinderMain {
 			// Create github URLs based on CPEs for given CVEs
 			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
 				currentCPE = cpe;
-				System.out.println(cpe);
 				parseURL();
 			}
 		}
@@ -136,13 +135,7 @@ public class PatchFinderMain {
 					newAddresses = testConnection(address);
 				}
 
-				// Place all successful links in DB
-				if (!newAddresses.isEmpty()) {
-					insertPatchURLs(newAddresses);
-				} else {
-					newAddresses = advanceParseSearch();
-					insertPatchURLs(newAddresses);
-				}
+				checkAddressLst(newAddresses);
 
 			}
 
@@ -152,18 +145,33 @@ public class PatchFinderMain {
 
 			for (String base : ADDRESS_BASES) {
 				newAddresses = testConnection(base + keyword2);
-
-				// Place all successful links in DB
-				if (!newAddresses.isEmpty()) {
-					insertPatchURLs(newAddresses);
-				} else {
-					newAddresses = advanceParseSearch();
-					insertPatchURLs(newAddresses);
-				}
+				checkAddressLst(newAddresses);
 			}
 
 		}
 
+	}
+
+	/**
+	 * Repeated method used to check if a list of collected addresses is empty or
+	 * not If so, perform an advanced search for correct repo URLs. If not, insert
+	 * the following
+	 * 
+	 * @param addresses
+	 * @throws InterruptedException
+	 */
+	private static void checkAddressLst(ArrayList<String> addresses) throws InterruptedException {
+		// Place all successful links in DB
+		if (!addresses.isEmpty()) {
+			insertPatchURLs(addresses);
+		} else {
+			addresses = advanceParseSearch();
+			if (!addresses.isEmpty()) {
+				insertPatchURLs(addresses);
+			} else {
+				System.out.println("No Repo Found");
+			}
+		}
 	}
 
 	/**
