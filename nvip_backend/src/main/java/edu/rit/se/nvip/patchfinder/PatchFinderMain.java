@@ -137,14 +137,10 @@ public class PatchFinderMain {
 
 				// Place all successful links in DB
 				if (!newAddresses.isEmpty()) {
-					for (String newAddress : newAddresses) {
-						insertPatchURL(newAddress);
-					}
+					insertPatchURLs(newAddresses);
 				} else {
 					newAddresses = advanceParseSearch();
-					for (String newAddress : newAddresses) {
-						insertPatchURL(newAddress);
-					}
+					insertPatchURLs(newAddresses);
 				}
 
 			}
@@ -158,14 +154,10 @@ public class PatchFinderMain {
 
 				// Place all successful links in DB
 				if (!newAddresses.isEmpty()) {
-					for (String newAddress : newAddresses) {
-						insertPatchURL(newAddress);
-					}
+					insertPatchURLs(newAddresses);
 				} else {
 					newAddresses = advanceParseSearch();
-					for (String newAddress : newAddresses) {
-						insertPatchURL(newAddress);
-					}
+					insertPatchURLs(newAddresses);
 				}
 			}
 
@@ -413,24 +405,26 @@ public class PatchFinderMain {
 	/**
 	 * Inserts a successfully connected Patch URL to the DB
 	 */
-	private static void insertPatchURL(String address) {
-		try {
-			System.out.println("Inserting Patch for URL: " + address);
-			// Find the PatchURL Id for deletion
-			int urlId = db.getPatchURLId(address);
-			if (urlId != -1) {
-				db.deletePatch(urlId);
-				db.deletePatchURL(urlId);
+	private static void insertPatchURLs(ArrayList<String> addresses) {
+		for (String address : addresses) {
+			try {
+				System.out.println("Inserting Patch for URL: " + address);
+				// Find the PatchURL Id for deletion
+				int urlId = db.getPatchURLId(address);
+				if (urlId != -1) {
+					db.deletePatch(urlId);
+					db.deletePatchURL(urlId);
+				}
+
+				db.insertPatchURL(address);
+
+				// Find the automatically generated patchURL id for isertion in the cvepatches
+				// table
+				urlId = db.getPatchURLId(address);
+				db.insertPatch(currentCPE.getValue().get(0), currentCPE.getValue().get(1), urlId, null, null);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			db.insertPatchURL(address);
-
-			// Find the automatically generated patchURL id for isertion in the cvepatches
-			// table
-			urlId = db.getPatchURLId(address);
-			db.insertPatch(currentCPE.getValue().get(0), currentCPE.getValue().get(1), urlId, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
