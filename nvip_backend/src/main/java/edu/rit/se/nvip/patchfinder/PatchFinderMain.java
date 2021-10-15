@@ -47,7 +47,7 @@ public class PatchFinderMain {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
 
-		if (args.length != 0) {
+		if (args.length > 0) {
 
 			if (args[0].equals("true")) {
 				parseURLByProductId(Integer.parseInt(args[1]));
@@ -141,7 +141,10 @@ public class PatchFinderMain {
 						insertPatchURL(newAddress);
 					}
 				} else {
-					advanceParseSearch();
+					newAddresses = advanceParseSearch();
+					for (String newAddress : newAddresses) {
+						insertPatchURL(newAddress);
+					}
 				}
 
 			}
@@ -153,12 +156,16 @@ public class PatchFinderMain {
 			for (String base : ADDRESS_BASES) {
 				newAddresses = testConnection(base + keyword2);
 
+				// Place all successful links in DB
 				if (!newAddresses.isEmpty()) {
 					for (String newAddress : newAddresses) {
 						insertPatchURL(newAddress);
 					}
 				} else {
-					advanceParseSearch();
+					newAddresses = advanceParseSearch();
+					for (String newAddress : newAddresses) {
+						insertPatchURL(newAddress);
+					}
 				}
 			}
 
@@ -326,6 +333,8 @@ public class PatchFinderMain {
 	 */
 	private static ArrayList<String> advanceParseSearch() throws InterruptedException {
 
+		System.out.println("Conducting Advanced Search...");
+
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
 		ArrayList<String> urls = new ArrayList<String>();
 
@@ -406,6 +415,7 @@ public class PatchFinderMain {
 	 */
 	private static void insertPatchURL(String address) {
 		try {
+			System.out.println("Inserting Patch for URL: " + address);
 			// Find the PatchURL Id for deletion
 			int urlId = db.getPatchURLId(address);
 			if (urlId != -1) {
