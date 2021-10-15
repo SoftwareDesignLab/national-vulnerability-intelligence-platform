@@ -349,7 +349,7 @@ public class DatabaseHelper {
 
 		String product = "";
 		ArrayList<String> data = new ArrayList<String>();
-		data.add("1234");
+		data.add("2159485");
 		data.add("CVE-123-4567");
 		Map<String, ArrayList<String>> cpe = new HashMap<String, ArrayList<String>>();
 
