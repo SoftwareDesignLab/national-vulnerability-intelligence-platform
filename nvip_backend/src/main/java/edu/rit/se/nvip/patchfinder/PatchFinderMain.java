@@ -32,6 +32,7 @@ public class PatchFinderMain {
 	private static String keyword1 = "";
 	private static String keyword2 = "";
 	private static Entry<String, ArrayList<String>> currentCPE;
+	private static String previousURL;
 
 	/**
 	 * Main method just for calling to find all patch URLs
@@ -407,23 +408,28 @@ public class PatchFinderMain {
 	 */
 	private static void insertPatchURLs(ArrayList<String> addresses) {
 		for (String address : addresses) {
-			try {
-				System.out.println("Inserting Patch for URL: " + address);
-				// Find the PatchURL Id for deletion
-				int urlId = db.getPatchURLId(address);
-				if (urlId != -1) {
-					db.deletePatch(urlId);
-					db.deletePatchURL(urlId);
+			if (!address.equals(previousURL)) {
+
+				previousURL = address;
+
+				try {
+					System.out.println("Inserting Patch for URL: " + address);
+					// Find the PatchURL Id for deletion
+					int urlId = db.getPatchURLId(address);
+					if (urlId != -1) {
+						db.deletePatch(urlId);
+						db.deletePatchURL(urlId);
+					}
+
+					db.insertPatchURL(address);
+
+					// Find the automatically generated patchURL id for isertion in the cvepatches
+					// table
+					urlId = db.getPatchURLId(address);
+					db.insertPatch(currentCPE.getValue().get(0), currentCPE.getValue().get(1), urlId, null, null);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-
-				db.insertPatchURL(address);
-
-				// Find the automatically generated patchURL id for isertion in the cvepatches
-				// table
-				urlId = db.getPatchURLId(address);
-				db.insertPatch(currentCPE.getValue().get(0), currentCPE.getValue().get(1), urlId, null, null);
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}
