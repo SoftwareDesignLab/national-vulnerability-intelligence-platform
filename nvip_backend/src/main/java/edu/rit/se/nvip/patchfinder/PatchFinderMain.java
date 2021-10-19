@@ -16,6 +16,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.sun.istack.logging.Logger;
+
 import edu.rit.se.nvip.db.DatabaseHelper;
 
 /**
@@ -25,6 +27,8 @@ import edu.rit.se.nvip.db.DatabaseHelper;
  *
  */
 public class PatchFinderMain {
+
+	private static Logger logger = Logger.getLogger(PatchFinderMain.class.getName(), null);)
 
 	private static DatabaseHelper db;
 	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/",
@@ -43,7 +47,7 @@ public class PatchFinderMain {
 	 */
 	public static void main(String[] args) throws IOException, InterruptedException {
 
-		System.out.println("PatchFinder Started!");
+		logger.info("PatchFinder Started!");
 
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
@@ -64,7 +68,7 @@ public class PatchFinderMain {
 			}
 		}
 
-		System.out.println("PatchFinder Finished!");
+		logger.info("PatchFinder Finished!");
 
 	}
 
@@ -169,7 +173,7 @@ public class PatchFinderMain {
 			if (!addresses.isEmpty()) {
 				insertPatchURLs(addresses);
 			} else {
-				System.out.println("No Repo Found");
+				logger.info("No Repo Found");
 			}
 		}
 	}
@@ -203,7 +207,7 @@ public class PatchFinderMain {
 	 */
 	private static ArrayList<String> testConnection(String address) throws IOException, InterruptedException {
 
-		System.out.println("Testing Connection for address: " + address);
+		logger.info("Testing Connection for address: " + address);
 		ArrayList<String> urlList = new ArrayList<String>();
 
 		URL url = new URL(address);
@@ -229,13 +233,13 @@ public class PatchFinderMain {
 
 			try {
 				lsCmd.call();
-				System.out.println("Successful Git Remote Connection at: " + newURL);
+				logger.info("Successful Git Remote Connection at: " + newURL);
 				urlList.add(newURL);
 			} catch (Exception e) {
 				// If unsuccessful on git remote check, perform a advaced search, assuming the
 				// link instead leads to
 				// a github company home page
-				System.out.println(e);
+				logger.info(e.getMessage());
 				return searchForRepos(newURL);
 			}
 
@@ -256,7 +260,7 @@ public class PatchFinderMain {
 	 * @throws InterruptedException
 	 */
 	private static ArrayList<String> searchForRepos(String newURL) throws InterruptedException {
-		System.out.println("Grabbing repos from github user page...");
+		logger.info("Grabbing repos from github user page...");
 
 		ArrayList<String> urls = new ArrayList<String>();
 
@@ -311,7 +315,7 @@ public class PatchFinderMain {
 		String repoURL;
 
 		for (Element repoLink : repoLinks) {
-			System.out.println("Found possible repo at:" + repoLink.attr("abs:href"));
+			logger.info("Found possible repo at:" + repoLink.attr("abs:href"));
 
 			repoURL = repoLink.attr("abs:href");
 			String innerText = repoLink.text();
@@ -339,7 +343,7 @@ public class PatchFinderMain {
 	 */
 	private static ArrayList<String> advanceParseSearch() throws InterruptedException {
 
-		System.out.println("Conducting Advanced Search...");
+		logger.info("Conducting Advanced Search...");
 
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
 		ArrayList<String> urls = new ArrayList<String>();
@@ -375,7 +379,7 @@ public class PatchFinderMain {
 			}
 
 		} catch (IOException e) {
-			System.out.println(e);
+			logger.info(e.getMessage());
 		}
 
 		return urls;
@@ -404,10 +408,10 @@ public class PatchFinderMain {
 
 			try {
 				lsCmd.call();
-				System.out.println("Successful Git Remote Connection at: " + repoURL);
+				logger.info("Successful Git Remote Connection at: " + repoURL);
 				return true;
 			} catch (Exception e) {
-				System.out.println(e);
+				logger.info(e.getMessage());
 			}
 
 		}
@@ -424,7 +428,7 @@ public class PatchFinderMain {
 				previousURL = address;
 
 				try {
-					System.out.println("Inserting Patch for URL: " + address);
+					logger.info("Inserting Patch for URL: " + address);
 					// Find the PatchURL Id for deletion
 					int urlId = db.getPatchURLId(address);
 					if (urlId != -1) {
