@@ -142,14 +142,15 @@ public class DatabaseHelper {
 	private String productTableSelectAllSql = "SELECT * FROM product";
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
-	private String getCPEById = "SELECT cpe FROM product WHERE product_id = ?;";
-	private String getPatchURLIdSql = "SELECT patch_url_id from patchurl WHERE patch_url = ?;";
+	private String getPatchSourceByIdSql = "SELECT source_url_id from patchsourceurl WHERE source_url = ?;";
 	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
-	private String insertPatchURLSql = "INSERT INTO patchurl (patch_url) VALUES (?);";
+	private String insertPatchSourceURLSql = "INSERT INTO patchsourceurl (source_url) VALUES (?);";
+	private String deletePatchCommitSql = "DELETE FROM patchcommit WHERE source_id = ?;";
+	private String deletePatchSourceURLSql = "DELETE FROM patchsourceurl WHERE source_url_id = ?;";
+
+	private String getCPEById = "SELECT cpe FROM product WHERE product_id = ?;";
 	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
 	private String selectCpesAndCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
-	private String deletePatchSql = "DELETE FROM cvepatch WHERE patch_url_id = ?;";
-	private String deletePatchURLSql = "DELETE FROM patchurl WHERE patch_url_id = ?;";
 
 	private String insertAffectedReleaseSql = "INSERT INTO AffectedRelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
 	private String updateAffectedReleaseSql = "UPDATE AffectedRelease set release_date = ?, version = ? where cve_id = ? and product_id = ?;";
@@ -381,7 +382,8 @@ public class DatabaseHelper {
 
 		int patchURLId = -1;
 
-		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(getPatchURLIdSql);) {
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(getPatchSourceByIdSql);) {
 			pstmt.setString(1, address);
 			ResultSet res = pstmt.executeQuery();
 
@@ -420,13 +422,14 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * Inserts given patch URL into the patch_url table
+	 * Inserts given patch URL into the patch source table
 	 * 
 	 * @param patchURL
 	 * @return
 	 */
 	public boolean insertPatchURL(String patchURL) {
-		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(insertPatchURLSql);) {
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(insertPatchSourceURLSql);) {
 			pstmt.setString(1, patchURL);
 			pstmt.executeUpdate();
 
@@ -440,7 +443,8 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * Method for deleting duplicate patch entries by vuln_id
+	 * Method for deleting duplicate patch entries by vuln_id within the commit
+	 * table
 	 * 
 	 * @param vulnId
 	 */
@@ -448,7 +452,7 @@ public class DatabaseHelper {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(deletePatchSql);
+			PreparedStatement pstmt = conn.prepareStatement(deletePatchCommitSql);
 			pstmt.setInt(1, patch_url_id);
 			pstmt.executeUpdate();
 			conn.close();
@@ -459,7 +463,7 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * Deletes given patch url from patchurl table
+	 * Deletes given patch url from patch source table
 	 * 
 	 * @param patch_url
 	 */
@@ -467,7 +471,7 @@ public class DatabaseHelper {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(deletePatchURLSql);
+			PreparedStatement pstmt = conn.prepareStatement(deletePatchSourceURLSql);
 			pstmt.setInt(1, patch_url_id);
 			pstmt.executeUpdate();
 			conn.close();
