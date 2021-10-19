@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import com.sun.istack.logging.Logger;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
 
@@ -28,7 +28,7 @@ import edu.rit.se.nvip.db.DatabaseHelper;
  */
 public class PatchFinderMain {
 
-	private static Logger logger = Logger.getLogger(PatchFinderMain.class.getName(), null);)
+	private static Logger logger = LogManager.getLogger(PatchFinderMain.getClass().getName());
 
 	private static DatabaseHelper db;
 	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/",
