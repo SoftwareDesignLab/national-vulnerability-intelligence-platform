@@ -430,18 +430,12 @@ public class PatchFinderMain {
 				try {
 					logger.info("Inserting Patch Source for URL: " + address);
 					// Find the PatchURL Id for deletion
-					int urlId = db.getPatchURLId(address);
-					if (urlId != -1) {
-						db.deletePatch(urlId);
-						db.deletePatchURL(urlId);
+					int urlId = db.getPatchSourceId(address);
+
+					if (urlId == -1) {
+						db.insertPatchSourceURL(address);
 					}
 
-					db.insertPatchURL(address);
-
-					// Find the automatically generated patchURL id for isertion in the cvepatches
-					// table
-					urlId = db.getPatchURLId(address);
-					db.insertPatch(currentCPE.getValue().get(0), currentCPE.getValue().get(1), urlId, null, null);
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}

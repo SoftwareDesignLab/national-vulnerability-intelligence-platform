@@ -372,13 +372,13 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * Grabs the patch_id of the given patchURL if it exists in the patchurl table
-	 * returns -1 if entry doesn't exist
+	 * Grabs the source_id of the given sourceURL if it exists in the patch source
+	 * table returns -1 if entry doesn't exist
 	 * 
 	 * @param address
 	 * @return
 	 */
-	public int getPatchURLId(String address) {
+	public int getPatchSourceId(String address) {
 
 		int patchURLId = -1;
 
@@ -388,7 +388,7 @@ public class DatabaseHelper {
 			ResultSet res = pstmt.executeQuery();
 
 			if (res.next()) {
-				patchURLId = res.getInt("patch_url_id");
+				patchURLId = res.getInt("source_url_id");
 			}
 
 		} catch (Exception e) {
@@ -422,18 +422,18 @@ public class DatabaseHelper {
 	}
 
 	/**
-	 * Inserts given patch URL into the patch source table
+	 * Inserts given source URL into the patch source table
 	 * 
 	 * @param patchURL
 	 * @return
 	 */
-	public boolean insertPatchURL(String patchURL) {
+	public boolean insertPatchSourceURL(String sourceURL) {
 		try (Connection conn = getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(insertPatchSourceURLSql);) {
-			pstmt.setString(1, patchURL);
+			pstmt.setString(1, sourceURL);
 			pstmt.executeUpdate();
 
-			logger.info("Inserted PatchURL: " + patchURL);
+			logger.info("Inserted PatchURL: " + sourceURL);
 			conn.close();
 			return true;
 		} catch (Exception e) {
@@ -448,15 +448,15 @@ public class DatabaseHelper {
 	 * 
 	 * @param vulnId
 	 */
-	public void deletePatch(int patch_url_id) {
+	public void deleteCommits(int source_id) {
 		Connection conn = null;
 		try {
 			conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(deletePatchCommitSql);
-			pstmt.setInt(1, patch_url_id);
+			pstmt.setInt(1, source_id);
 			pstmt.executeUpdate();
 			conn.close();
-			logger.info("Deleted duplicate patch(es) for source ID: " + patch_url_id);
+			logger.info("Deleted exiting commits for source ID: " + source_id);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -467,15 +467,15 @@ public class DatabaseHelper {
 	 * 
 	 * @param patch_url
 	 */
-	public void deletePatchURL(int patch_url_id) {
+	public void deletePatchURL(int source_id) {
 		Connection conn = null;
 		try {
 			conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(deletePatchSourceURLSql);
-			pstmt.setInt(1, patch_url_id);
+			pstmt.setInt(1, source_id);
 			pstmt.executeUpdate();
 			conn.close();
-			logger.info("Deleted duplicate patch URL for source ID: " + patch_url_id);
+			logger.info("Deleted duplicate patch URL for source ID: " + source_id);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
