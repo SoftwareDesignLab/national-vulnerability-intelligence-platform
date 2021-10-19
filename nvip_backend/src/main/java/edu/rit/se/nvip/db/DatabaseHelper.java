@@ -144,7 +144,7 @@ public class DatabaseHelper {
 
 	private String getPatchSourceByIdSql = "SELECT source_url_id from patchsourceurl WHERE source_url = ?;";
 	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
-	private String insertPatchSourceURLSql = "INSERT INTO patchsourceurl (source_url) VALUES (?);";
+	private String insertPatchSourceURLSql = "INSERT INTO patchsourceurl (vuln_id, source_url) VALUES (?, ?);";
 	private String deletePatchCommitSql = "DELETE FROM patchcommit WHERE source_id = ?;";
 	private String deletePatchSourceURLSql = "DELETE FROM patchsourceurl WHERE source_url_id = ?;";
 
@@ -424,13 +424,16 @@ public class DatabaseHelper {
 	/**
 	 * Inserts given source URL into the patch source table
 	 * 
+	 * @param vuln_id
+	 * 
 	 * @param patchURL
 	 * @return
 	 */
-	public boolean insertPatchSourceURL(String sourceURL) {
+	public boolean insertPatchSourceURL(int vuln_id, String sourceURL) {
 		try (Connection conn = getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(insertPatchSourceURLSql);) {
-			pstmt.setString(1, sourceURL);
+			pstmt.setInt(1, vuln_id);
+			pstmt.setString(2, sourceURL);
 			pstmt.executeUpdate();
 
 			logger.info("Inserted PatchURL: " + sourceURL);

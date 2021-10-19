@@ -429,11 +429,11 @@ public class PatchFinderMain {
 
 				try {
 					logger.info("Inserting Patch Source for URL: " + address);
-					// Find the PatchURL Id for deletion
+
 					int urlId = db.getPatchSourceId(address);
 
 					if (urlId == -1) {
-						db.insertPatchSourceURL(address);
+						db.insertPatchSourceURL(Integer.parseInt(currentCPE.getValue().get(0)), address);
 					}
 
 				} catch (Exception e) {
