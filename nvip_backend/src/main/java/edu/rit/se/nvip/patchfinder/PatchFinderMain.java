@@ -28,7 +28,7 @@ import edu.rit.se.nvip.db.DatabaseHelper;
  */
 public class PatchFinderMain {
 
-	private static Logger logger = LogManager.getLogger(PatchFinderMain.getClass().getName());
+	private Logger logger = LogManager.getLogger(getClass().getName());
 
 	private static DatabaseHelper db;
 	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/",
@@ -45,7 +45,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public void main(String[] args) throws IOException, InterruptedException {
 
 		logger.info("PatchFinder Started!");
 
@@ -78,7 +78,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void parseURLByCVE(String cve_id) throws IOException, InterruptedException {
+	public void parseURLByCVE(String cve_id) throws IOException, InterruptedException {
 
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEsByCVE(cve_id);
@@ -97,7 +97,7 @@ public class PatchFinderMain {
 	 * @throws InterruptedException
 	 * @throws IOException
 	 */
-	public static void parseURLByProductId(int product_id) throws IOException, InterruptedException {
+	public void parseURLByProductId(int product_id) throws IOException, InterruptedException {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEById(product_id);
 		for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
@@ -114,7 +114,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private static void parseURL() throws IOException, InterruptedException {
+	private void parseURL() throws IOException, InterruptedException {
 
 		String[] wordArr = currentCPE.getKey().split(":");
 		ArrayList<String> newAddresses = null;
@@ -164,7 +164,7 @@ public class PatchFinderMain {
 	 * @param addresses
 	 * @throws InterruptedException
 	 */
-	private static void checkAddressLst(ArrayList<String> addresses) throws InterruptedException {
+	private void checkAddressLst(ArrayList<String> addresses) throws InterruptedException {
 		// Place all successful links in DB
 		if (!addresses.isEmpty()) {
 			insertPatchURLs(addresses);
@@ -173,7 +173,7 @@ public class PatchFinderMain {
 			if (!addresses.isEmpty()) {
 				insertPatchURLs(addresses);
 			} else {
-				logger.info("No Repo Found");
+				logger.error("No Repo Found");
 			}
 		}
 	}
@@ -205,7 +205,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> testConnection(String address) throws IOException, InterruptedException {
+	private ArrayList<String> testConnection(String address) throws IOException, InterruptedException {
 
 		logger.info("Testing Connection for address: " + address);
 		ArrayList<String> urlList = new ArrayList<String>();
@@ -239,7 +239,7 @@ public class PatchFinderMain {
 				// If unsuccessful on git remote check, perform a advaced search, assuming the
 				// link instead leads to
 				// a github company home page
-				logger.info(e.getMessage());
+				logger.error(e.getMessage());
 				return searchForRepos(newURL);
 			}
 
@@ -259,7 +259,7 @@ public class PatchFinderMain {
 	 * @param newURL
 	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> searchForRepos(String newURL) throws InterruptedException {
+	private ArrayList<String> searchForRepos(String newURL) throws InterruptedException {
 		logger.info("Grabbing repos from github user page...");
 
 		ArrayList<String> urls = new ArrayList<String>();
@@ -297,7 +297,7 @@ public class PatchFinderMain {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		return urls;
@@ -310,7 +310,7 @@ public class PatchFinderMain {
 	 * 
 	 * @return
 	 */
-	private static ArrayList<String> testLinks(Elements repoLinks) {
+	private ArrayList<String> testLinks(Elements repoLinks) {
 		ArrayList<String> urls = new ArrayList<String>();
 		String repoURL;
 
@@ -341,7 +341,7 @@ public class PatchFinderMain {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> advanceParseSearch() throws InterruptedException {
+	private ArrayList<String> advanceParseSearch() throws InterruptedException {
 
 		logger.info("Conducting Advanced Search...");
 
@@ -379,7 +379,7 @@ public class PatchFinderMain {
 			}
 
 		} catch (IOException e) {
-			logger.info(e.getMessage());
+			logger.error(e.getMessage());
 		}
 
 		return urls;
@@ -394,7 +394,7 @@ public class PatchFinderMain {
 	 * @param keyword2
 	 * @return
 	 */
-	private static boolean verifyGitRemote(String repoURL, String innerText) {
+	private boolean verifyGitRemote(String repoURL, String innerText) {
 
 		// Verify if the repo is correlated to the product by checking if the keywords
 		// lie in the inner text of the html link via regex
@@ -411,7 +411,7 @@ public class PatchFinderMain {
 				logger.info("Successful Git Remote Connection at: " + repoURL);
 				return true;
 			} catch (Exception e) {
-				logger.info(e.getMessage());
+				logger.error(e.getMessage());
 			}
 
 		}
@@ -421,7 +421,7 @@ public class PatchFinderMain {
 	/**
 	 * Inserts a successfully connected Patch URL to the DB
 	 */
-	private static void insertPatchURLs(ArrayList<String> addresses) {
+	private void insertPatchURLs(ArrayList<String> addresses) {
 		for (String address : addresses) {
 			if (!address.equals(previousURL)) {
 
@@ -443,7 +443,7 @@ public class PatchFinderMain {
 					urlId = db.getPatchURLId(address);
 					db.insertPatch(currentCPE.getValue().get(0), currentCPE.getValue().get(1), urlId, null, null);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 			}
 		}
