@@ -31,8 +31,7 @@ public class PatchFinderMain {
 	private static final Logger logger = LogManager.getLogger(PatchFinderMain.class.getName());
 
 	private static DatabaseHelper db;
-	private static final String[] ADDRESS_BASES = { "https://github.com/", "https://bitbucket.org/",
-			"https://gitlab.com/" };
+	private static final String[] ADDRESS_BASES = { "https://github.com/" };
 	private static String keyword1 = "";
 	private static String keyword2 = "";
 	private static Entry<String, ArrayList<String>> currentCPE;
