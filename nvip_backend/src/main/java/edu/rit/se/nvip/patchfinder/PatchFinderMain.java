@@ -36,6 +36,7 @@ public class PatchFinderMain {
 	private static String keyword1 = "";
 	private static String keyword2 = "";
 	private static Entry<String, ArrayList<String>> currentCPE;
+	private static boolean advanceSearchCheck;
 	private static String previousURL;
 
 	/**
@@ -116,6 +117,7 @@ public class PatchFinderMain {
 	 */
 	private static void parseURL() throws IOException, InterruptedException {
 
+		advanceSearchCheck = true;
 		String[] wordArr = currentCPE.getKey().split(":");
 		ArrayList<String> newAddresses = null;
 
@@ -133,6 +135,7 @@ public class PatchFinderMain {
 
 					keyword2 = wordArr[4];
 					address += keyword2;
+
 					newAddresses = testConnection(address);
 
 				} else {
@@ -148,10 +151,12 @@ public class PatchFinderMain {
 			keyword2 = wordArr[4];
 
 			for (String base : ADDRESS_BASES) {
-				newAddresses = testConnection(base + keyword2);
+
+				String address = base + keyword2;
+
+				newAddresses = testConnection(address);
 				checkAddressLst(newAddresses);
 			}
-
 		}
 
 	}
@@ -343,45 +348,49 @@ public class PatchFinderMain {
 	 */
 	private static ArrayList<String> advanceParseSearch() throws InterruptedException {
 
-		logger.info("Conducting Advanced Search...");
-
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
 		ArrayList<String> urls = new ArrayList<String>();
 
-		if (!keyword1.equals("*")) {
-			searchParams += keyword1;
-		}
+		if (advanceSearchCheck) {
 
-		if (!keyword2.equals("*")) {
-			searchParams += "+" + keyword2;
-		}
+			logger.info("Conducting Advanced Search...");
 
-		// Perform search on github using query strings in the url
-		// Loop through the results and return a list of all verified repo links that
-		// match with the product
-		try {
-			Document searchPage = Jsoup.connect(searchParams + "&type=repositories").timeout(0).get();
-
-			Elements searchResults = searchPage.select("li.repo-list-item a[href]");
-
-			for (Element searchResult : searchResults) {
-
-				if (!searchResult.attr("href").isEmpty()) {
-
-					String newURL = searchResult.attr("abs:href");
-					String innerText = searchResult.text();
-
-					if (verifyGitRemote(newURL, innerText)) {
-						urls.add(newURL);
-					}
-				}
-
+			if (!keyword1.equals("*")) {
+				searchParams += keyword1;
 			}
 
-		} catch (IOException e) {
-			logger.error(e.getMessage());
-		}
+			if (!keyword2.equals("*")) {
+				searchParams += "+" + keyword2;
+			}
 
+			// Perform search on github using query strings in the url
+			// Loop through the results and return a list of all verified repo links that
+			// match with the product
+
+			try {
+				Document searchPage = Jsoup.connect(searchParams + "&type=repositories").timeout(0).get();
+
+				Elements searchResults = searchPage.select("li.repo-list-item a[href]");
+
+				for (Element searchResult : searchResults) {
+
+					if (!searchResult.attr("href").isEmpty()) {
+
+						String newURL = searchResult.attr("abs:href");
+						String innerText = searchResult.text();
+
+						if (verifyGitRemote(newURL, innerText)) {
+							urls.add(newURL);
+						}
+					}
+
+				}
+
+				advanceSearchCheck = false;
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+			}
+		}
 		return urls;
 	}
 
@@ -402,18 +411,22 @@ public class PatchFinderMain {
 				|| Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText)
 						.find()) {
 
-			LsRemoteCommand lsCmd = new LsRemoteCommand(null);
+			if (!repoURL.equals(previousURL)) {
 
-			lsCmd.setRemote(repoURL + ".git");
+				previousURL = repoURL;
 
-			try {
-				lsCmd.call();
-				logger.info("Successful Git Remote Connection at: " + repoURL);
-				return true;
-			} catch (Exception e) {
-				logger.error(e.getMessage());
+				LsRemoteCommand lsCmd = new LsRemoteCommand(null);
+
+				lsCmd.setRemote(repoURL + ".git");
+
+				try {
+					lsCmd.call();
+					logger.info("Successful Git Remote Connection at: " + repoURL);
+					return true;
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}
 			}
-
 		}
 		return false;
 	}
@@ -423,23 +436,20 @@ public class PatchFinderMain {
 	 */
 	private static void insertPatchURLs(ArrayList<String> addresses) {
 		for (String address : addresses) {
-			if (!address.equals(previousURL)) {
 
-				previousURL = address;
+			try {
+				logger.info("Inserting Patch Source for URL: " + address);
 
-				try {
-					logger.info("Inserting Patch Source for URL: " + address);
+				int urlId = db.getPatchSourceId(address);
 
-					int urlId = db.getPatchSourceId(address);
-
-					if (urlId == -1) {
-						db.insertPatchSourceURL(Integer.parseInt(currentCPE.getValue().get(0)), address);
-					}
-
-				} catch (Exception e) {
-					logger.error(e.getMessage());
+				if (urlId == -1) {
+					db.insertPatchSourceURL(Integer.parseInt(currentCPE.getValue().get(0)), address);
 				}
+
+			} catch (Exception e) {
+				logger.error(e.getMessage());
 			}
+
 		}
 	}
 
