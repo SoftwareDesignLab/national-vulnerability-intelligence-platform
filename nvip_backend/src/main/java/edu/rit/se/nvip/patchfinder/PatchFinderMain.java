@@ -142,7 +142,9 @@ public class PatchFinderMain {
 					newAddresses = testConnection(address);
 				}
 
-				checkAddressLst(newAddresses);
+				if (checkAddressLst(newAddresses)) {
+					break;
+				}
 
 			}
 
@@ -155,7 +157,11 @@ public class PatchFinderMain {
 				String address = base + keyword2;
 
 				newAddresses = testConnection(address);
-				checkAddressLst(newAddresses);
+
+				if (checkAddressLst(newAddresses)) {
+					break;
+				}
+
 			}
 		}
 
@@ -169,18 +175,22 @@ public class PatchFinderMain {
 	 * @param addresses
 	 * @throws InterruptedException
 	 */
-	private static void checkAddressLst(ArrayList<String> addresses) throws InterruptedException {
+	private static boolean checkAddressLst(ArrayList<String> addresses) throws InterruptedException {
 		// Place all successful links in DB
 		if (!addresses.isEmpty()) {
 			insertPatchURLs(addresses);
+			return true;
 		} else {
 			addresses = advanceParseSearch();
 			if (!addresses.isEmpty()) {
 				insertPatchURLs(addresses);
+				return true;
 			} else {
-				logger.error("No Repo Found");
+				logger.info("No Repo Found");
 			}
 		}
+
+		return false;
 	}
 
 	/**
