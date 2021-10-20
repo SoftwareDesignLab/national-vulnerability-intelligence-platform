@@ -50,6 +50,8 @@ public class PatchFinderMain {
 
 		logger.info("PatchFinder Started!");
 
+		int i = 0;
+
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
 
@@ -66,6 +68,10 @@ public class PatchFinderMain {
 			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
 				currentCPE = cpe;
 				parseURL();
+				i++;
+				if (i % 100 == 0) {
+					logger.info(i + " CPEs Parsed!");
+				}
 			}
 		}
 
