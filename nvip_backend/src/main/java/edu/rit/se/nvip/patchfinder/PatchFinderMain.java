@@ -147,7 +147,7 @@ public class PatchFinderMain {
 					newAddresses = testConnection(address);
 				}
 
-				if (checkAddressLst(newAddresses)) {
+				if (checkAddressList(newAddresses)) {
 					break;
 				}
 
@@ -163,7 +163,7 @@ public class PatchFinderMain {
 
 				newAddresses = testConnection(address);
 
-				if (checkAddressLst(newAddresses)) {
+				if (checkAddressList(newAddresses)) {
 					break;
 				}
 
@@ -180,7 +180,7 @@ public class PatchFinderMain {
 	 * @param addresses
 	 * @throws InterruptedException
 	 */
-	private static boolean checkAddressLst(ArrayList<String> addresses) throws InterruptedException {
+	private static boolean checkAddressList(ArrayList<String> addresses) throws InterruptedException {
 		// Place all successful links in DB
 		if (!addresses.isEmpty()) {
 			insertPatchURLs(addresses);
