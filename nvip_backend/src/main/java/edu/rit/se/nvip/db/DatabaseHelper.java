@@ -148,6 +148,8 @@ public class DatabaseHelper {
 	private String deletePatchCommitSql = "DELETE FROM patchcommit WHERE source_id = ?;";
 	private String deletePatchSourceURLSql = "DELETE FROM patchsourceurl WHERE source_url_id = ?;";
 
+	private String getPSURLAndVulnID = "SELECT vuln_id, source_url FROM patchsourceurl";
+
 	private String getCPEById = "SELECT cpe FROM product WHERE product_id = ?;";
 	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
 	private String selectCpesAndCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
@@ -159,6 +161,7 @@ public class DatabaseHelper {
 	private String insertVulnerabilityUpdateSql = "INSERT INTO VulnerabilityUpdate (vuln_id, column_name, column_value, run_id) VALUES (?,?,?,?);";
 	private String deleteVulnerabilityUpdateSql = "DELETE FROM VulnerabilityUpdate WHERE run_id=?;";
 	private String selectVulnerabilityIdSql = "SELECT vuln_id FROM nvip.vulnerability WHERE cve_id = ?";
+	private String selectCVEIdSql = "SELECT cve_id FROM vulnerability WHERE vuln_id = ?";
 
 	private String selectVdoLabelSql = "SELECT * FROM vdolabel;";
 	private String selectVdoNounGroupSql = "SELECT * FROM vdonoungroup;";
@@ -2299,6 +2302,33 @@ public class DatabaseHelper {
 			logger.error(e.toString());
 		}
 		return 0;
+	}
+
+	/**
+	 * Obtains a collection of vuln IDs with their correlated patch sources
+	 * 
+	 * @param limit
+	 * @return
+	 */
+	public Map<Integer, String> getVulnIdPatchSource(int limit) {
+		String query = getPSURLAndVulnID;
+
+		HashMap<Integer, String> results = new HashMap<>();
+
+		if (limit > 0) {
+			query += " LIMIT " + limit;
+		}
+
+		try (Connection connection = getConnection(); ResultSet rs = connection.createStatement().executeQuery(query)) {
+			while (rs.next()) {
+				results.put(rs.getInt("vuln_id"), rs.getString("source_url"));
+			}
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+		return results;
+
 	}
 
 }

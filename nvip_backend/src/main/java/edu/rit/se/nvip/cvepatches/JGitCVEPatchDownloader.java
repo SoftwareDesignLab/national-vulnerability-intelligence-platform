@@ -55,27 +55,14 @@ public final class JGitCVEPatchDownloader {
 	 * @throws IOException
 	 * @throws GitAPIException
 	 */
-	public static void parse(String clonePath, String limit) throws IOException {
+	public static void parse(String clonePath, int limit) throws IOException {
 
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
 
 		try {
-			Connection conn = getConn();
 
-			String querySourceUrl = "SELECT vuln_id, source_url FROM patchsourceurl";
-			String queryCveId = "SELECT cve_id FROM vulnerability WHERE vuln_id = ?;";
-
-			if (limit != null) {
-				int max = Integer.parseInt(limit);
-				querySourceUrl += " LIMIT " + max;
-			}
-
-			querySourceUrl += ";";
-			PreparedStatement stmtUrl = conn.prepareStatement(querySourceUrl);
-			ResultSet resultUrls = stmtUrl.executeQuery(querySourceUrl);
-
-			while (resultUrls.next()) {
+			for () {
 				PreparedStatement stmtCveID = conn.prepareStatement(querySourceUrl);
 				ResultSet resultCveId = stmtCveID.executeQuery(queryCveId);
 				pullCommitData(resultUrls.getString("source_url"), clonePath, resultCveId.getString("cve_id"));
