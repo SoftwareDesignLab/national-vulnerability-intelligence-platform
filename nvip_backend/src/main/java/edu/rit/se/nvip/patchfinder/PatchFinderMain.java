@@ -391,7 +391,7 @@ public class PatchFinderMain {
 				// 10 have already been conducted to avoid HTTP 429 error
 				if (advanceSearchCount >= 10) {
 					logger.info("Performing Sleep before continuing: 1 minute");
-					Thread.sleep(50000);
+					Thread.sleep(60000);
 					advanceSearchCount = 0;
 				}
 
