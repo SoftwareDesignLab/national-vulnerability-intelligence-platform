@@ -37,6 +37,7 @@ public class PatchFinderMain {
 	private static Entry<String, ArrayList<String>> currentCPE;
 	private static boolean advanceSearchCheck;
 	private static String previousURL;
+	private static int advanceSearchCount;
 
 	/**
 	 * Main method just for calling to find all patch URLs
@@ -63,6 +64,7 @@ public class PatchFinderMain {
 			}
 
 		} else {
+			advanceSearchCount = 0;
 			// Create github URLs based on CPEs for given CVEs
 			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
 				currentCPE = cpe;
@@ -86,6 +88,7 @@ public class PatchFinderMain {
 	 */
 	public static void parseURLByCVE(String cve_id) throws IOException, InterruptedException {
 
+		advanceSearchCount = 0;
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEsByCVE(cve_id);
 
@@ -104,6 +107,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 */
 	public static void parseURLByProductId(int product_id) throws IOException, InterruptedException {
+		advanceSearchCount = 0;
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEById(product_id);
 		for (Entry<String, ArrayList<String>> entry : cpe.entrySet()) {
@@ -206,9 +210,9 @@ public class PatchFinderMain {
 
 		for (String base : ADDRESS_BASES) {
 			addresses.add(base + keyword1 + "/");
-			addresses.add(base + keyword1 + "_");
-			addresses.add(base + keyword1 + "-");
-			addresses.add(base + keyword1);
+//			addresses.add(base + keyword1 + "_");
+//			addresses.add(base + keyword1 + "-");
+//			addresses.add(base + keyword1);
 		}
 
 		return addresses;
@@ -233,7 +237,7 @@ public class PatchFinderMain {
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		int response = urlConnection.getResponseCode();
-		Thread.sleep(2000);
+		// Thread.sleep(2000);
 
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB
@@ -287,7 +291,6 @@ public class PatchFinderMain {
 		// Obtain all linls from the current company github page
 		try {
 			Document doc = Jsoup.connect(newURL).timeout(0).get();
-			Thread.sleep(2000);
 
 			Elements links = doc.select("a[href]");
 
@@ -383,8 +386,17 @@ public class PatchFinderMain {
 			// match with the product
 
 			try {
-				Document searchPage = Jsoup.connect(searchParams + "&type=repositories").userAgent("Mozilla").timeout(0)
-						.get();
+
+				// Sleep for a minute before performing another advance search if
+				// 10 have already been conducted to avoid HTTP 429 error
+				if (advanceSearchCount >= 10) {
+					logger.info("Performing Sleep before continuing: 1 minute");
+					Thread.sleep(50000);
+					advanceSearchCount = 0;
+				}
+
+				advanceSearchCount++;
+				Document searchPage = Jsoup.connect(searchParams + "&type=repositories").get();
 
 				Elements searchResults = searchPage.select("li.repo-list-item a[href]");
 
