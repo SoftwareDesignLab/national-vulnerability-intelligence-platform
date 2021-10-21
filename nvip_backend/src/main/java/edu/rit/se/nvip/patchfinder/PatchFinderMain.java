@@ -233,7 +233,7 @@ public class PatchFinderMain {
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		int response = urlConnection.getResponseCode();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB
@@ -383,7 +383,7 @@ public class PatchFinderMain {
 			// match with the product
 
 			try {
-				Document searchPage = Jsoup.connect(searchParams + "&type=repositories").timeout(0).get();
+				Document searchPage = Jsoup.connect(searchParams + "&type=repositories").userAgent("Mozilla").get();
 
 				Elements searchResults = searchPage.select("li.repo-list-item a[href]");
 
@@ -403,7 +403,7 @@ public class PatchFinderMain {
 
 				advanceSearchCheck = false;
 			} catch (IOException e) {
-				logger.error(e.getMessage());
+				logger.error(e.toString());
 			}
 		}
 		return urls;
