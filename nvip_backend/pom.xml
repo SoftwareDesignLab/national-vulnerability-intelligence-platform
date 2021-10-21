@@ -97,6 +97,12 @@
 			<artifactId>log4j-web</artifactId>
 			<version>2.7</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>org.eclipse.mylyn.github</groupId>
+            <artifactId>org.eclipse.egit.github.core</artifactId>
+            <version>2.1.5</version>
+        </dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
 		<dependency>
