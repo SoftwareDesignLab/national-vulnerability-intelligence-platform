@@ -145,6 +145,7 @@ public class DatabaseHelper {
 	private String getPatchSourceByIdSql = "SELECT source_url_id from patchsourceurl WHERE source_url = ?;";
 	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
 	private String insertPatchSourceURLSql = "INSERT INTO patchsourceurl (vuln_id, source_url) VALUES (?, ?);";
+	private String insertPatchCommitSql = "INSERT INTO patchcommit (source_id, commit_url, commit_date, commit_message) VALUES (?, ?, ?, ?);";
 	private String deletePatchCommitSql = "DELETE FROM patchcommit WHERE source_id = ?;";
 	private String deletePatchSourceURLSql = "DELETE FROM patchsourceurl WHERE source_url_id = ?;";
 
@@ -2353,4 +2354,28 @@ public class DatabaseHelper {
 		return cve_id;
 	}
 
+	/**
+	 * Method for inserting a patch commit into the patchcommit table
+	 * 
+	 * @param sourceId
+	 * @param sourceURL
+	 * @param commitId
+	 * @param commitDate
+	 * @param commitMessage
+	 */
+	public void insertPatchCommit(int sourceId, String sourceURL, String commitId, Date commitDate,
+			String commitMessage) {
+
+		try (Connection connection = getConnection();
+				PreparedStatement pstmt = connection.prepareStatement(insertPatchCommitSql);) {
+
+			pstmt.setInt(1, sourceId);
+			pstmt.setString(2, sourceURL + "/commit/" + commitId);
+			pstmt.setDate(3, new java.sql.Date(commitDate.getTime()));
+			pstmt.setString(4, commitMessage);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+	}
 }

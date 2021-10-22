@@ -5,9 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,7 +87,7 @@ public final class JGitCVEPatchDownloader {
 		Map<java.util.Date, ArrayList<String>> commits = parser.parseCommits(cveId);
 
 		if (commits.isEmpty()) {
-			deletePatchSource(sourceURL);
+			// deletePatchSource(sourceURL);
 		} else {
 			for (java.util.Date commit : commits.keySet()) {
 				insertPatchCommitData(sourceURL, commits.get(commit).get(0), commit, commits.get(commit).get(1));
@@ -150,9 +147,6 @@ public final class JGitCVEPatchDownloader {
 			String commitMessage) {
 
 		logger.info("Inserting commit data to patchcommit table...");
-		String selUrlIdQuery = "SELECT source_url_id FROM patchsourceurl WHERE source_url = ?;";
-		String insertCommitQuery = "INSERT INTO patchcommit (source_id, commit_url, commit_date, commit_message) VALUES (?, ?, ?, ?);";
-
 		if (commitMessage.length() > 300) {
 			commitMessage = commitMessage.substring(0, 299);
 		}
@@ -160,21 +154,9 @@ public final class JGitCVEPatchDownloader {
 		commitId = commitId.split(" ")[1];
 
 		try {
-			Connection conn = getConn();
-
-			PreparedStatement pstmt = conn.prepareStatement(selUrlIdQuery);
-			pstmt.setString(1, sourceURL);
-			ResultSet rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				pstmt = conn.prepareStatement(insertCommitQuery);
-				pstmt.setInt(1, rs.getInt("source_url_id"));
-				pstmt.setString(2, sourceURL + "/commit/" + commitId);
-				pstmt.setDate(3, new java.sql.Date(commitDate.getTime()));
-				pstmt.setString(4, commitMessage);
-				pstmt.executeUpdate();
-				logger.info("Inserted commit from source ID: " + rs.getInt("source_url_id"));
-			}
+			int id = db.getPatchSourceId(sourceURL);
+			db.insertPatchCommit(id, sourceURL, commitId, commitDate, commitMessage);
+			logger.info("Inserted commit from source ID: " + id);
 
 		} catch (Exception e) {
 			logger.error((e.getMessage()));
@@ -186,43 +168,40 @@ public final class JGitCVEPatchDownloader {
 	 * CVEs or patches
 	 * 
 	 * @param sourceURL
-	 */
-	private static void deletePatchSource(String sourceURL) {
-
-		logger.info("Deleting patch from database...");
-
-		String selUrlIdQuery = "SELECT source_url_id FROM patchsourceurl WHERE source_url = ?;";
-		String delPatchQuery = "DELETE FROM patchcommit WHERE source_id = ?;";
-		String delPatchUrlQuery = "DELETE FROM patchsourceurl WHERE source_url_id = ?;";
-
-		try {
-
-			PreparedStatement pstmt = conn.prepareStatement(selUrlIdQuery);
-			pstmt.setString(1, sourceURL);
-
-			ResultSet rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				int id = rs.getInt("source_url_id");
-
-				// Delete Patch Entry
-				pstmt = conn.prepareStatement(delPatchQuery);
-				pstmt.setInt(1, id);
-				pstmt.executeUpdate();
-
-				// Delete Patch URL Entry
-				pstmt = conn.prepareStatement(delPatchUrlQuery);
-				pstmt.setInt(1, id);
-				pstmt.executeUpdate();
-
-			}
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-	}
-
-	/**
+	 *
+	 *                  private static void deletePatchSource(String sourceURL) {
+	 * 
+	 *                  logger.info("Deleting patch from database...");
+	 * 
+	 *                  String selUrlIdQuery = "SELECT source_url_id FROM
+	 *                  patchsourceurl WHERE source_url = ?;"; String delPatchQuery
+	 *                  = "DELETE FROM patchcommit WHERE source_id = ?;"; String
+	 *                  delPatchUrlQuery = "DELETE FROM patchsourceurl WHERE
+	 *                  source_url_id = ?;";
+	 * 
+	 *                  try {
+	 * 
+	 *                  PreparedStatement pstmt =
+	 *                  conn.prepareStatement(selUrlIdQuery); pstmt.setString(1,
+	 *                  sourceURL);
+	 * 
+	 *                  ResultSet rs = pstmt.executeQuery();
+	 * 
+	 *                  if (rs.next()) { int id = rs.getInt("source_url_id");
+	 * 
+	 *                  // Delete Patch Entry pstmt =
+	 *                  conn.prepareStatement(delPatchQuery); pstmt.setInt(1, id);
+	 *                  pstmt.executeUpdate();
+	 * 
+	 *                  // Delete Patch URL Entry pstmt =
+	 *                  conn.prepareStatement(delPatchUrlQuery); pstmt.setInt(1,
+	 *                  id); pstmt.executeUpdate();
+	 * 
+	 *                  }
+	 * 
+	 *                  } catch (Exception e) { logger.error(e.getMessage()); } }
+	 * 
+	 *                  /**
 	 *
 	 * @param file
 	 * @return

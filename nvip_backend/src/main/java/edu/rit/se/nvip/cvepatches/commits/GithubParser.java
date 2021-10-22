@@ -51,7 +51,7 @@ public class GithubParser {
 
 		System.out.println("Found " + commitsList.size() + " commits");
 		commitsList.stream().forEachOrdered((repoCommit) -> {
-			Commit commit = repoCommit.getCommit();
+			org.eclipse.egit.github.core.Commit commit = repoCommit.getCommit();
 			String message = commit.getMessage();
 			Matcher matcherCve = PATTERN_CVES.matcher(message);
 			List<String> foundCves = new ArrayList<>();
@@ -66,9 +66,10 @@ public class GithubParser {
 				foundBugs.add(matcherBug.group(0));
 			}
 			if (foundBugs.size() > 0 || foundCves.size() > 0) {
-				GithubCommit githubCommit = new GithubCommit(repoCommit.getSha(), foundCves, foundBugs, commit,
-						repoCommit.getFiles());
-				this.fixCommits.add(githubCommit);
+				// GithubCommit githubCommit = new GithubCommit(repoCommit.getSha(), foundCves,
+				// foundBugs, commit,
+				// repoCommit.getFiles());
+				// this.fixCommits.add(githubCommit);
 			}
 		});
 	}

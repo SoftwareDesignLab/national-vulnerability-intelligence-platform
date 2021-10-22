@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import edu.rit.se.nvip.cvepatches.commits.GithubCommit;
 import edu.rit.se.nvip.cvepatches.commits.GithubParser;
-import edu.rit.se.nvip.cvepatches.utils.DataManager;
 
 /**
  *
@@ -34,7 +33,7 @@ public class CVECommitsExtractor {
 			GithubParser parser = new GithubParser(parts[0], parts[1], username, password);
 			parser.parseCommits();
 			List<GithubCommit> cveCommits = parser.getCveCommits();
-			DataManager dataManager = new DataManager();
+			// DataManager dataManager = new DataManager();
 			String csvOutputPath = repoPath.replace("/", "__") + "_cve-commits.csv";
 			String csvCommitsFiles = repoPath.replace("/", "__") + "_cve-files.csv";
 			// dataManager.saveCommits(new File(csvOutputPath), cveCommits);
