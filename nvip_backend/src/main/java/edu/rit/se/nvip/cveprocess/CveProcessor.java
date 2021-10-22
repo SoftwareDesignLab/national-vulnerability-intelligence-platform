@@ -111,7 +111,7 @@ public class CveProcessor {
 				 */
 				if (!hashMapNvdCve.containsKey(vuln.getCveId()) && !CveUtils.isCveReservedEtc(vuln.getDescription())) {
 					vuln.setNvdSearchResult("NA");
-					vuln.setExistInNvd(false);
+					vuln.setExistInNvd(0);
 					newCVEDataNotInNvd.add(vuln);
 				}
 
@@ -120,7 +120,7 @@ public class CveProcessor {
 				 */
 				if (!hashMapMitreCve.containsKey(vuln.getCveId()) && !CveUtils.isCveReservedEtc(vuln.getDescription())) {
 					vuln.setNvdSearchResult("NA");
-					vuln.setExistInMitre(false);
+					vuln.setExistInMitre(0);
 					newCVEDataNotInMitre.add(vuln);
 				}
 

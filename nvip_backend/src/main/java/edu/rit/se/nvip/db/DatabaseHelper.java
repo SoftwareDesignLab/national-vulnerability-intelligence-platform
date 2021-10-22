@@ -851,8 +851,8 @@ public class DatabaseHelper {
 						/**
 						 * Bug fix: indexes 9 and 10 were wrong
 						 */
-						pstmt.setInt(9, convertBoolToInt(vuln.existInNvd()));
-						pstmt.setInt(10, convertBoolToInt(vuln.existInMitre()));
+						pstmt.setInt(9, vuln.getExistInNvd());
+						pstmt.setInt(10, vuln.getExistInMitre());
 						pstmt.setInt(11, vuln.getTimeGapNvd());
 						pstmt.setInt(12, vuln.getTimeGapMitre());
 						pstmt.executeUpdate();
@@ -1048,7 +1048,7 @@ public class DatabaseHelper {
 		boolean vulnAlreaadyInMitre = existingAttribs.isExistAtMitre();
 
 		if ((existingAttribs.getCreatedDate() != null)
-				&& ((!vulnAlreadyInNvd && vuln.existInNvd()) || (!vulnAlreaadyInMitre && vuln.existInMitre()))
+				&& ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
 				&& !CveUtils.isCveReservedEtc(vuln.getDescription())) {
 
 			Date createdDateTime = null;
@@ -1085,10 +1085,10 @@ public class DatabaseHelper {
 						lastModifiedDateTime.toInstant());
 
 				// if it did not exist in NVD, but found now, record time gap!
-				if (!vulnAlreadyInNvd && vuln.existInNvd()) {
+				if (!vulnAlreadyInNvd && vuln.doesExistInNvd()) {
 					vuln.setTimeGapNvd(hours);
 					pstmt = connection.prepareStatement(updateVulnSqlNvd);
-					pstmt.setInt(1, convertBoolToInt(vuln.existInNvd()));
+					pstmt.setInt(1, vuln.getExistInNvd());
 					pstmt.setInt(2, vuln.getTimeGapNvd());
 					pstmt.setString(3, vuln.getCveId());
 					pstmt.executeUpdate();
@@ -1098,11 +1098,11 @@ public class DatabaseHelper {
 				}
 
 				// if it did not exist in MITRE, but found now, record time gap!
-				if (!vulnAlreaadyInMitre && vuln.existInMitre()) {
+				if (!vulnAlreaadyInMitre && vuln.doesExistInMitre()) {
 					vuln.setTimeGapMitre(hours);
 
 					pstmt = connection.prepareStatement(updateVulnSqlMitre);
-					pstmt.setInt(1, convertBoolToInt(vuln.existInMitre()));
+					pstmt.setInt(1, vuln.getExistInMitre());
 					pstmt.setInt(2, vuln.getTimeGapMitre());
 					pstmt.setString(3, vuln.getCveId());
 					pstmt.executeUpdate();
@@ -1188,8 +1188,8 @@ public class DatabaseHelper {
 				vuln.setCreateDate(rs.getString("created_date"));
 				vuln.setLastModifiedDate(rs.getString("last_modified_date"));
 				vuln.setFixDate(rs.getString("fixed_date"));
-				vuln.setExistInMitre(convertIntToBool(rs.getInt("exists_at_mitre")));
-				vuln.setExistInNvd(convertIntToBool(rs.getInt("exists_at_nvd")));
+				vuln.setExistInMitre(rs.getInt("exists_at_mitre"));
+				vuln.setExistInNvd(rs.getInt("exists_at_nvd"));
 				vuln.setTimeGapNvd(rs.getInt("time_gap_nvd"));
 				vuln.setTimeGapMitre(rs.getInt("time_gap_mitre"));
 
