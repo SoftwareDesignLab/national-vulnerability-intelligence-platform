@@ -190,7 +190,7 @@ public class PatchFinderMain {
 			insertPatchURLs(addresses);
 			return true;
 		} else {
-			// addresses = advanceParseSearch();
+			addresses = advanceParseSearch();
 			if (!addresses.isEmpty()) {
 				insertPatchURLs(addresses);
 				return true;
@@ -237,6 +237,7 @@ public class PatchFinderMain {
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		int response = urlConnection.getResponseCode();
+		// Thread.sleep(2000);
 
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB
@@ -362,67 +363,68 @@ public class PatchFinderMain {
 	 * @param cpe
 	 * @return
 	 * @throws InterruptedException
-	 *
-	 *                              private static ArrayList<String>
-	 *                              advanceParseSearch() throws InterruptedException
-	 *                              {
-	 * 
-	 *                              String searchParams = ADDRESS_BASES[0] +
-	 *                              "search?q="; ArrayList<String> urls = new
-	 *                              ArrayList<String>();
-	 * 
-	 *                              if (advanceSearchCheck) {
-	 * 
-	 *                              logger.info("Conducting Advanced Search...");
-	 * 
-	 *                              if (!keyword1.equals("*")) { searchParams +=
-	 *                              keyword1; }
-	 * 
-	 *                              if (!keyword2.equals("*")) { searchParams += "+"
-	 *                              + keyword2; }
-	 * 
-	 *                              // Perform search on github using query strings
-	 *                              in the url // Loop through the results and
-	 *                              return a list of all verified repo links that //
-	 *                              match with the product
-	 * 
-	 *                              try {
-	 * 
-	 *                              // Sleep for a minute before performing another
-	 *                              advance search if // 10 have already been
-	 *                              conducted to avoid HTTP 429 error if
-	 *                              (advanceSearchCount >= 10) {
-	 *                              logger.info("Performing Sleep before continuing:
-	 *                              1 minute"); Thread.sleep(60000);
-	 *                              advanceSearchCount = 0; }
-	 * 
-	 *                              advanceSearchCount++; Document searchPage =
-	 *                              Jsoup.connect(searchParams +
-	 *                              "&type=repositories").get();
-	 * 
-	 *                              Elements searchResults =
-	 *                              searchPage.select("li.repo-list-item a[href]");
-	 * 
-	 *                              for (Element searchResult : searchResults) {
-	 * 
-	 *                              if (!searchResult.attr("href").isEmpty()) {
-	 * 
-	 *                              String newURL = searchResult.attr("abs:href");
-	 *                              String innerText = searchResult.text();
-	 * 
-	 *                              if (verifyGitRemote(newURL, innerText)) {
-	 *                              urls.add(newURL); } }
-	 * 
-	 *                              }
-	 * 
-	 *                              advanceSearchCheck = false; } catch (IOException
-	 *                              e) { logger.error(e.toString()); } } return
-	 *                              urls; }
-	 * 
-	 *                              /** Method used for verifying Git remote
-	 *                              connection to created url via keywords, checks
-	 *                              if the keywords are included as well before
-	 *                              performing connection
+	 */
+	private static ArrayList<String> advanceParseSearch() throws InterruptedException {
+
+		String searchParams = ADDRESS_BASES[0] + "search?q=";
+		ArrayList<String> urls = new ArrayList<String>();
+
+		if (advanceSearchCheck) {
+
+			logger.info("Conducting Advanced Search...");
+
+			if (!keyword1.equals("*")) {
+				searchParams += keyword1;
+			}
+
+			if (!keyword2.equals("*")) {
+				searchParams += "+" + keyword2;
+			}
+
+			// Perform search on github using query strings in the url
+			// Loop through the results and return a list of all verified repo links that
+			// match with the product
+
+			try {
+
+				// Sleep for a minute before performing another advance search if
+				// 10 have already been conducted to avoid HTTP 429 error
+				if (advanceSearchCount >= 10) {
+					logger.info("Performing Sleep before continuing: 1 minute");
+					Thread.sleep(60000);
+					advanceSearchCount = 0;
+				}
+
+				advanceSearchCount++;
+				Document searchPage = Jsoup.connect(searchParams + "&type=repositories").get();
+
+				Elements searchResults = searchPage.select("li.repo-list-item a[href]");
+
+				for (Element searchResult : searchResults) {
+
+					if (!searchResult.attr("href").isEmpty()) {
+
+						String newURL = searchResult.attr("abs:href");
+						String innerText = searchResult.text();
+
+						if (verifyGitRemote(newURL, innerText)) {
+							urls.add(newURL);
+						}
+					}
+
+				}
+
+				advanceSearchCheck = false;
+			} catch (IOException e) {
+				logger.error(e.toString());
+			}
+		}
+		return urls;
+	}
+
+	/**
+	 * Method used for verifying Git remote connection to created url via keywords,
+	 * checks if the keywords are included as well before performing connection
 	 * 
 	 * @param newURL
 	 * @param keyword1
