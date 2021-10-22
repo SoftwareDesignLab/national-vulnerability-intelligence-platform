@@ -19,8 +19,8 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.util.FileUtils;
 
-import edu.rit.se.nvip.cvepatches.commits.JGitParser;
 import edu.rit.se.nvip.db.DatabaseHelper;
+import edu.rit.se.nvip.patchfinder.commits.JGitParser;
 
 public final class JGitCVEPatchDownloader {
 

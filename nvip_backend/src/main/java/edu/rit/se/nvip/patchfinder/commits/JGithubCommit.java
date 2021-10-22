@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.rit.se.commits;
+package edu.rit.se.nvip.patchfinder.commits;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.egit.github.core.Commit;
-import org.eclipse.egit.github.core.CommitFile;
+
 import org.eclipse.jgit.revwalk.RevCommit;
 
 /**
@@ -17,51 +15,56 @@ import org.eclipse.jgit.revwalk.RevCommit;
  */
 public class JGithubCommit {
 
-    private final String sha;
-    private final List<String> foundBugs;
-    private final List<String> foundCves;
-    private final List<String> foundVulns;
-    private final RevCommit commit;
-    private final List<String> affectedFiles;
+	private final String sha;
+	private final List<String> foundBugs;
+	private final List<String> foundCves;
+	private final List<String> foundVulns;
+	private final RevCommit commit;
+	private final List<String> affectedFiles;
 
-    public JGithubCommit(String sha, List<String> foundCves, List<String> foundBugs, List<String> foundVulns, RevCommit commit, List<String> affectedFiles) {
-        this.sha = sha;
-        this.foundCves = foundCves;
-        this.foundBugs = foundBugs;
-        this.foundVulns = foundVulns;
-        this.commit = commit;
-        this.affectedFiles = affectedFiles;
-    }
+	public JGithubCommit(String sha, List<String> foundCves, List<String> foundBugs, List<String> foundVulns,
+			RevCommit commit, List<String> affectedFiles) {
+		this.sha = sha;
+		this.foundCves = foundCves;
+		this.foundBugs = foundBugs;
+		this.foundVulns = foundVulns;
+		this.commit = commit;
+		this.affectedFiles = affectedFiles;
+	}
 
-    public List<String> getFoundBugs() {
-        return foundBugs;
-    }
+	public List<String> getFoundBugs() {
+		return foundBugs;
+	}
 
-    public List<String> getFoundCves() {
-        return foundCves;
-    }
+	public List<String> getFoundCves() {
+		return foundCves;
+	}
 
-    public List<String> getFoundVulns() { return foundVulns; }
+	public List<String> getFoundVulns() {
+		return foundVulns;
+	}
 
-    public RevCommit getCommit() {
-        return commit;
-    }
+	public RevCommit getCommit() {
+		return commit;
+	}
 
-    public boolean isFixingCve() {
-        return this.foundCves.size() > 0;
-    }
+	public boolean isFixingCve() {
+		return this.foundCves.size() > 0;
+	}
 
-    public boolean isFixingBug() {
-        return this.foundBugs.size() > 0;
-    }
+	public boolean isFixingBug() {
+		return this.foundBugs.size() > 0;
+	}
 
-    public boolean isFixingVuln() { return this.foundVulns.size() > 0;}
+	public boolean isFixingVuln() {
+		return this.foundVulns.size() > 0;
+	}
 
-    public List<String> getAffectedFiles() {
-        return this.affectedFiles;
-    }
+	public List<String> getAffectedFiles() {
+		return this.affectedFiles;
+	}
 
-    public String getSha() {
-        return sha;
-    }
+	public String getSha() {
+		return sha;
+	}
 }

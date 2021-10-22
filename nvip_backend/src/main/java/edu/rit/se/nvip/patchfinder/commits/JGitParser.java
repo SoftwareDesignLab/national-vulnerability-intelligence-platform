@@ -1,8 +1,12 @@
-package edu.rit.se.commits;
+package edu.rit.se.nvip.patchfinder.commits;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.Level;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +20,10 @@ import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.internal.storage.file.WindowCache;
-import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.WindowCacheConfig;
@@ -24,12 +31,11 @@ import org.eclipse.jgit.util.FileUtils;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 /**
- * Author: Fawaz Alhenaki
- * Edited by: Andrew Pickard (As of 10/19/2021)
+ * Author: Fawaz Alhenaki Edited by: Andrew Pickard (As of 10/19/2021)
  */
 public class JGitParser {
 
-    private static final Logger logger = LogManager.getLogger(JGitParser.class.getName());
+	private static final Logger logger = LogManager.getLogger(JGitParser.class.getName());
 
 	private static final String REGEX_VULN = "vulnerability|Vulnerability|vuln|Vuln|VULN[ #]*([0-9]+)";
 	private static final String REGEX_CVE = "(CVE[-]*[0-9]*[-]*[0-9]*)";
@@ -64,11 +70,10 @@ public class JGitParser {
 	 * This function clones a repo parms: RemoteLocation. Format:
 	 * https://github.com/user/example.git return: Git object of cloned repo
 	 */
-	public void cloneRepository()  {
+	public void cloneRepository() {
 		try {
 			logger.info("Cloning Repo to " + localDownloadLoc + File.separator + projectName + "...");
-			git = Git.cloneRepository()
-					.setURI(remoteLoc)
+			git = Git.cloneRepository().setURI(remoteLoc)
 					.setDirectory(new File(localDownloadLoc + File.separator + projectName))
 					.setProgressMonitor(new ProgressMonitor() {
 
@@ -77,39 +82,38 @@ public class JGitParser {
 						@Override
 						public void start(int totalTasks) {
 							total_completed = 0;
-                            logger.info("------- Starting work on " + totalTasks + " tasks");
+							logger.info("------- Starting work on " + totalTasks + " tasks");
 						}
 
 						@Override
 						public void beginTask(String title, int totalWork) {
 							total_completed = 0;
-                            logger.info("------- Start " + title + ": " + totalWork);
+							logger.info("------- Start " + title + ": " + totalWork);
 						}
 
 						@Override
 						public void update(int completed) {
 							total_completed += completed;
 							if (total_completed % 100000 == 0)
-                                logger.info("------- " + total_completed);
+								logger.info("------- " + total_completed);
 						}
 
 						@Override
 						public void endTask() {
-                            logger.info("------- Done");
+							logger.info("------- Done");
 						}
 
 						@Override
 						public boolean isCancelled() {
 							return false;
 						}
-					})
-					.call();
+					}).call();
 
-			//git.close();
+			// git.close();
 
-            logger.info("Repo " + projectName + " successfully cloned!");
+			logger.info("Repo " + projectName + " successfully cloned!");
 		} catch (Exception e) {
-            logger.info(e.getMessage());
+			logger.info(e.getMessage());
 		}
 	}
 
@@ -117,7 +121,7 @@ public class JGitParser {
 	 * Deletes repository from storage (used after patch data is pulled)
 	 */
 	public void deleteRepository() {
-        logger.info("Deleting Repo...");
+		logger.info("Deleting Repo...");
 		try {
 			WindowCacheConfig config = new WindowCacheConfig();
 			config.setPackedGitMMAP(true);
@@ -127,9 +131,9 @@ public class JGitParser {
 			this.git.getRepository().close();
 			FileUtils.delete(dir, 1);
 
-            logger.info("Repo " + projectName + " deleted successfully!");
+			logger.info("Repo " + projectName + " deleted successfully!");
 		} catch (IOException e) {
-            logger.info(e.getMessage());
+			logger.info(e.getMessage());
 		}
 	}
 
@@ -147,7 +151,7 @@ public class JGitParser {
 			return revCommits;
 		} catch (GitAPIException e) {
 			e.getMessage();
-            logger.info(e.toString());
+			logger.info(e.toString());
 		}
 		return null;
 	}
@@ -161,7 +165,7 @@ public class JGitParser {
 	 * @return
 	 */
 	public Map<Date, ArrayList<String>> parseCommits(String cveId) {
-        logger.info("Parsing Commits...");
+		logger.info("Parsing Commits...");
 
 		List<RevCommit> allCommits = this.getAllCommitList();
 
@@ -174,41 +178,41 @@ public class JGitParser {
 				List<String> foundCves = new ArrayList<>();
 
 				List<String> foundBugs = new ArrayList<>();
-				//Matcher matcherBug = PATTERN_BUGS.matcher(message);
+				// Matcher matcherBug = PATTERN_BUGS.matcher(message);
 
-                List<String> foundVulns = new ArrayList<>();
-                Matcher matcherVuln = PATTERN_VULN.matcher(message);
+				List<String> foundVulns = new ArrayList<>();
+				Matcher matcherVuln = PATTERN_VULN.matcher(message);
 
-                // Search for 'CVE' commits
-                if (matcherCve.find()) {
+				// Search for 'CVE' commits
+				if (matcherCve.find()) {
 
-                	boolean cveCheck = true;
+					boolean cveCheck = true;
 
-                	if (matcherCve.group(0).contains("CVE-")) {
-                		if (matcherCve.group(0).contains(cveId)) {
+					if (matcherCve.group(0).contains("CVE-")) {
+						if (matcherCve.group(0).contains(cveId)) {
 							logger.info("Found CVE Commit " + matcherCve.group(0));
 							foundCves.add(matcherCve.group(0));
 						} else {
-                			cveCheck = false;
+							cveCheck = false;
 						}
 					}
 
-                	if (cveCheck) {
+					if (cveCheck) {
 						logger.info("Found CVE Commit " + matcherCve.group(0));
 						foundCves.add(matcherCve.group(0));
 					}
-                }
+				}
 
-                // Search for 'Vulnerability' commits
-                else if (matcherVuln.find()) {
-                    logger.info("Found Vuln Commit " + matcherVuln.group(0));
-                    foundVulns.add(matcherVuln.group(0));
-                }
+				// Search for 'Vulnerability' commits
+				else if (matcherVuln.find()) {
+					logger.info("Found Vuln Commit " + matcherVuln.group(0));
+					foundVulns.add(matcherVuln.group(0));
+				}
 
 				if (!foundCves.isEmpty() || !foundVulns.isEmpty()) {
 					try {
-						JGithubCommit githubCommit = new JGithubCommit(repoCommit.getName(), foundCves, foundBugs, foundVulns,
-								repoCommit, getFilesPathsByCommit(repoCommit));
+						JGithubCommit githubCommit = new JGithubCommit(repoCommit.getName(), foundCves, foundBugs,
+								foundVulns, repoCommit, getFilesPathsByCommit(repoCommit));
 						this.fixCommits.add(githubCommit);
 					} catch (IOException ex) {
 						logger.error(ex.getMessage());
@@ -230,8 +234,7 @@ public class JGitParser {
 	 * @throws MissingObjectException
 	 * @throws GitAPIException
 	 */
-	private List<String> getFilesPathsByCommit(RevCommit commit)
-			throws IOException, MissingObjectException {
+	private List<String> getFilesPathsByCommit(RevCommit commit) throws IOException, MissingObjectException {
 
 		List<String> paths = new ArrayList();
 
@@ -274,7 +277,7 @@ public class JGitParser {
 			commits.put(fixCommit.getCommit().getAuthorIdent().getWhen(), commitData);
 		}
 
-        logger.info("Commits from repo " + projectName + " parsed successfully!");
+		logger.info("Commits from repo " + projectName + " parsed successfully!");
 		return commits;
 
 	}
