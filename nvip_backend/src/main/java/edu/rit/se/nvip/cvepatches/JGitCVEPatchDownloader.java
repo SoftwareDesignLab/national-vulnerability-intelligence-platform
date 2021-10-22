@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -62,10 +63,8 @@ public final class JGitCVEPatchDownloader {
 
 		try {
 
-			for () {
-				PreparedStatement stmtCveID = conn.prepareStatement(querySourceUrl);
-				ResultSet resultCveId = stmtCveID.executeQuery(queryCveId);
-				pullCommitData(resultUrls.getString("source_url"), clonePath, resultCveId.getString("cve_id"));
+			for (Entry<Integer, String> source : db.getVulnIdPatchSource(limit).entrySet()) {
+				pullCommitData(source.getValue(), clonePath, db.getCveId(source.getKey() + ""));
 			}
 
 		} catch (Exception e) {

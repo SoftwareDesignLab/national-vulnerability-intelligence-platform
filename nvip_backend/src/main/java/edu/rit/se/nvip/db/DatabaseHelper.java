@@ -2331,4 +2331,26 @@ public class DatabaseHelper {
 
 	}
 
+	/**
+	 * Collect a CVE ID from the Vulnerability table by Vuln ID
+	 * 
+	 * @param vulnId
+	 * @return
+	 */
+	public String getCveId(String vulnId) {
+
+		String cve_id = "";
+
+		try (Connection connection = getConnection();
+				ResultSet rs = connection.createStatement().executeQuery(selectCVEIdSql)) {
+			if (rs.next()) {
+				cve_id = rs.getString("cve_id");
+			}
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+		return cve_id;
+	}
+
 }
