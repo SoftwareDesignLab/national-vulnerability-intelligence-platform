@@ -5,16 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,7 +85,7 @@ public final class JGitCVEPatchDownloader {
 		Map<java.util.Date, ArrayList<String>> commits = parser.parseCommits(cveId);
 
 		if (commits.isEmpty()) {
-			// deletePatchSource(sourceURL);
+			deletePatchSource(sourceURL);
 		} else {
 			for (java.util.Date commit : commits.keySet()) {
 				insertPatchCommitData(sourceURL, commits.get(commit).get(0), commit, commits.get(commit).get(1));
@@ -103,39 +99,6 @@ public final class JGitCVEPatchDownloader {
 		}
 		previousRepo = parser;
 
-	}
-
-	/**
-	 * TODO: Update this so that it can pull CVE IDs from vulnerability table for
-	 * the 3rd parameter
-	 * 
-	 * @param repoFile
-	 * @param clonePath
-	 * @throws IOException
-	 */
-	public static void parseCLI(File repoFile, String clonePath) throws IOException {
-		List<String> repos = processInputFile(repoFile);
-		for (int i = 0; i < repos.size(); i++) {
-			JGitParser parser = new JGitParser(repos.get(i) + ".git", clonePath);
-			parser.cloneRepository();
-			parser.parseCommits("");
-		}
-	}
-
-	/**
-	 * @param clonePath
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public void parseCLIConcurrent(String clonePath) throws InterruptedException {
-
-		int maxThreads = Runtime.getRuntime().availableProcessors();
-
-		ExecutorService es = Executors.newCachedThreadPool();
-		for (int i = 0; i < maxThreads; i++) {
-			// es.execute(new JGitThread(clonePath, cveId));
-		}
-		es.shutdown();
 	}
 
 	/**
@@ -174,29 +137,16 @@ public final class JGitCVEPatchDownloader {
 	private static void deletePatchSource(String sourceURL) {
 		logger.info("Deleting patch from database...");
 
-		String selUrlIdQuery = "SELECT source_url_id FROM patchsourceurl WHERE source_url = ?;";
-		String delPatchQuery = "DELETE FROM patchcommit WHERE source_id = ?;";
-		String delPatchUrlQuery = "DELETE FROM patchsourceurl WHERE source_url_id = ?;";
-
 		try {
 
-			PreparedStatement pstmt = conn.prepareStatement(selUrlIdQuery);
-			pstmt.setString(1, sourceURL);
-			ResultSet rs = pstmt.executeQuery();
+			int id = db.getPatchSourceId(sourceURL);
 
-			if (rs.next()) {
-				int id = rs.getInt("source_url_id");
-
+			if (id != -1) {
 				// Delete Patch Entry
-				pstmt = conn.prepareStatement(delPatchQuery);
-				pstmt.setInt(1, id);
-				pstmt.executeUpdate();
+				db.deleteCommits(id);
 
 				// Delete Patch URL Entry
-				pstmt = conn.prepareStatement(delPatchUrlQuery);
-				pstmt.setInt(1, id);
-				pstmt.executeUpdate();
-
+				db.deletePatchURL(id);
 			}
 
 		} catch (Exception e) {

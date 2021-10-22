@@ -471,11 +471,10 @@ public class DatabaseHelper {
 
 	/**
 	 * Deletes given patch url from patch source table
-	 * 
-	 * @param patch_url
+	 *
 	 */
 	public void deletePatchURL(int source_id) {
-		Connection conn = null;
+		Connection conn;
 		try {
 			conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(deletePatchSourceURLSql);
@@ -2378,4 +2377,5 @@ public class DatabaseHelper {
 			logger.error(e.toString());
 		}
 	}
+
 }
