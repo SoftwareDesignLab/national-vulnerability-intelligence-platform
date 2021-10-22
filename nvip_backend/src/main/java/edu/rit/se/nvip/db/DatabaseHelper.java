@@ -740,7 +740,7 @@ public class DatabaseHelper {
 				if (existingVulnMap.size() == 0) {
 					int vulnId = 0;
 					String cveId, description, createdDate;
-					boolean existAtNvd, existAtMitre;
+					int existAtNvd, existAtMitre;
 					existingVulnMap = new HashMap<String, VulnerabilityAttribsForUpdate>();
 					try (Connection connection = getConnection();) {
 
@@ -753,8 +753,8 @@ public class DatabaseHelper {
 							cveId = rs.getString("cve_id");
 							description = rs.getString("description");
 							createdDate = rs.getString("created_date");
-							existAtNvd = convertIntToBool(rs.getInt("exists_at_nvd"));
-							existAtMitre = convertIntToBool(rs.getInt("exists_at_mitre"));
+							existAtNvd = rs.getInt("exists_at_nvd");
+							existAtMitre = rs.getInt("exists_at_mitre");
 							VulnerabilityAttribsForUpdate existingVulnInfo = new VulnerabilityAttribsForUpdate(vulnId, cveId, description, existAtNvd, existAtMitre, createdDate);
 							existingVulnMap.put(cveId, existingVulnInfo);
 						}
@@ -873,7 +873,7 @@ public class DatabaseHelper {
 			// connection.commit();
 
 			// do time gap analysis
-			recordTimeGapsOfCrawledVulnerabilitiesForNvdMitre(connection, vulnList, existingVulnMap);
+			recordTimeGapsForCrawledVulnerabilityList(connection, vulnList, existingVulnMap);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -1010,11 +1010,11 @@ public class DatabaseHelper {
 	 * @param connection
 	 * @param existingAttribs
 	 */
-	private boolean checkTimeGapsForCVE(CompositeVulnerability vuln, Connection connection, VulnerabilityAttribsForUpdate existingAttribs) {
+	private boolean recordTimeGapForVulnerability(CompositeVulnerability vuln, Connection connection, VulnerabilityAttribsForUpdate existingAttribs) {
 		boolean timeGapFound = false;
 		PreparedStatement pstmt = null;
-		boolean vulnAlreadyInNvd = existingAttribs.isExistAtNvd();
-		boolean vulnAlreaadyInMitre = existingAttribs.isExistAtMitre();
+		boolean vulnAlreadyInNvd = existingAttribs.doesExistInNvd();
+		boolean vulnAlreaadyInMitre = existingAttribs.doesExistInMitre();
 
 		if ((existingAttribs.getCreatedDate() != null) && ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
 				&& !CveUtils.isCveReservedEtc(vuln.getDescription())) {
@@ -1096,7 +1096,7 @@ public class DatabaseHelper {
 	 * @param crawledVulnerabilityList
 	 * @param existingVulnMap
 	 */
-	public int[] recordTimeGapsOfCrawledVulnerabilitiesForNvdMitre(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
+	public int[] recordTimeGapsForCrawledVulnerabilityList(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
 			Map<String, VulnerabilityAttribsForUpdate> existingVulnMap) {
 		int existingCveCount = 0, newCveCount = 0, timeGapCount = 0;
 		try {
@@ -1107,7 +1107,7 @@ public class DatabaseHelper {
 					if (existingVulnMap.containsKey(vuln.getCveId())) {
 						VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
 						// check time gap for vuln
-						if (checkTimeGapsForCVE(vuln, connection, existingAttribs))
+						if (recordTimeGapForVulnerability(vuln, connection, existingAttribs))
 							timeGapCount++;
 						existingCveCount++;
 					} else
