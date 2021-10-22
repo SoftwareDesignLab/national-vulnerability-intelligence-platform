@@ -170,7 +170,7 @@ public class DatabaseHelper {
 	private String deleteExploitSql = "DELETE FROM Exploit WHERE vuln_id=?;";
 
 	private static DatabaseHelper databaseHelper = null;
-	private static Map<String, VulnerabilityAttribsForUpdate> existingVulnMap = new HashMap<String, VulnerabilityAttribsForUpdate>();
+	private static Map<String, Vulnerability> existingVulnMap = new HashMap<String, Vulnerability>();
 
 	/**
 	 * Thread safe singleton implementation
@@ -733,7 +733,7 @@ public class DatabaseHelper {
 	 * 
 	 * @return
 	 */
-	public Map<String, VulnerabilityAttribsForUpdate> getExistingVulnerabilities() {
+	public Map<String, Vulnerability> getExistingVulnerabilities() {
 
 		if (existingVulnMap.size() == 0) {
 			synchronized (DatabaseHelper.class) {
@@ -741,7 +741,7 @@ public class DatabaseHelper {
 					int vulnId = 0;
 					String cveId, description, createdDate;
 					int existAtNvd, existAtMitre;
-					existingVulnMap = new HashMap<String, VulnerabilityAttribsForUpdate>();
+					existingVulnMap = new HashMap<String, Vulnerability>();
 					try (Connection connection = getConnection();) {
 
 						String selectSql = "SELECT vuln_id, cve_id, description, created_date, exists_at_nvd, exists_at_mitre from Vulnerability";
@@ -755,7 +755,7 @@ public class DatabaseHelper {
 							createdDate = rs.getString("created_date");
 							existAtNvd = rs.getInt("exists_at_nvd");
 							existAtMitre = rs.getInt("exists_at_mitre");
-							VulnerabilityAttribsForUpdate existingVulnInfo = new VulnerabilityAttribsForUpdate(vulnId, cveId, description, existAtNvd, existAtMitre, createdDate);
+							Vulnerability existingVulnInfo = new Vulnerability(vulnId, cveId, description, existAtNvd, existAtMitre, createdDate);
 							existingVulnMap.put(cveId, existingVulnInfo);
 						}
 						logger.info("NVIP has loaded " + existingVulnMap.size() + " existing CVE items from DB!");
@@ -891,9 +891,9 @@ public class DatabaseHelper {
 	 * @param existingVulnMap list of exiting vulnerabilities
 	 * @throws SQLException
 	 */
-	public int updateVulnerability(CompositeVulnerability vuln, Connection connection, Map<String, VulnerabilityAttribsForUpdate> existingVulnMap, int runId) throws SQLException {
+	public int updateVulnerability(CompositeVulnerability vuln, Connection connection, Map<String, Vulnerability> existingVulnMap, int runId) throws SQLException {
 
-		VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
+		Vulnerability existingAttribs = existingVulnMap.get(vuln.getCveId());
 		// checkTimeGaps(vuln, connection, existingAttribs); // check time gaps!
 
 		// check reconcile status, is an update needed?
@@ -947,7 +947,7 @@ public class DatabaseHelper {
 		 * record updates if there is an existing vuln
 		 */
 		if (existingAttribs != null)
-			insertVulnerabilityUpdate(existingAttribs.getVulnId(), "description", existingAttribs.getDescription(), runId);
+			insertVulnerabilityUpdate(existingAttribs.getVulnID(), "description", existingAttribs.getDescription(), runId);
 
 		return 1; // done
 	} // updateVuln
@@ -1010,13 +1010,13 @@ public class DatabaseHelper {
 	 * @param connection
 	 * @param existingAttribs
 	 */
-	private boolean recordTimeGapForVulnerability(CompositeVulnerability vuln, Connection connection, VulnerabilityAttribsForUpdate existingAttribs) {
+	private boolean recordTimeGapForVulnerability(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs) {
 		boolean timeGapFound = false;
 		PreparedStatement pstmt = null;
 		boolean vulnAlreadyInNvd = existingAttribs.doesExistInNvd();
 		boolean vulnAlreaadyInMitre = existingAttribs.doesExistInMitre();
 
-		if ((existingAttribs.getCreatedDate() != null) && ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
+		if ((existingAttribs.getCreateDate() != null) && ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
 				&& !CveUtils.isCveReservedEtc(vuln.getDescription())) {
 
 			Date createdDateTime = null;
@@ -1035,9 +1035,9 @@ public class DatabaseHelper {
 					return false;
 
 				if (databaseType.equalsIgnoreCase("mysql"))
-					createdDateTime = longDateFormatMySQL.parse(existingAttribs.getCreatedDate());
+					createdDateTime = longDateFormatMySQL.parse(existingAttribs.getCreateDate());
 				else
-					createdDateTime = longDateFormat.parse(existingAttribs.getCreatedDate());
+					createdDateTime = longDateFormat.parse(existingAttribs.getCreateDate());
 
 				try {
 					lastModifiedDateTime = longDateFormat.parse(vuln.getLastModifiedDate());
@@ -1097,7 +1097,7 @@ public class DatabaseHelper {
 	 * @param existingVulnMap
 	 */
 	public int[] recordTimeGapsForCrawledVulnerabilityList(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
-			Map<String, VulnerabilityAttribsForUpdate> existingVulnMap) {
+			Map<String, Vulnerability> existingVulnMap) {
 		int existingCveCount = 0, newCveCount = 0, timeGapCount = 0;
 		try {
 			logger.info("Checking time gaps for " + crawledVulnerabilityList.size() + " CVEs! # of total CVEs in DB: " + existingVulnMap.size());
@@ -1105,7 +1105,7 @@ public class DatabaseHelper {
 			for (CompositeVulnerability vuln : crawledVulnerabilityList) {
 				try {
 					if (existingVulnMap.containsKey(vuln.getCveId())) {
-						VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
+						Vulnerability existingAttribs = existingVulnMap.get(vuln.getCveId());
 						// check time gap for vuln
 						if (recordTimeGapForVulnerability(vuln, connection, existingAttribs))
 							timeGapCount++;
@@ -2123,11 +2123,11 @@ public class DatabaseHelper {
 			VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vulnerability.getCveId());
 
 			// remove existing exploits for CVE
-			deleteExploits(connection, existingAttribs.getVulnId());
+			deleteExploits(connection, existingAttribs.getVulnID());
 
 			// insert new exploits
 			for (Exploit exploit : exploitList) {
-				exploit.setVulnId(existingAttribs.getVulnId()); // set vulnerability ID from DB
+				exploit.setVulnId(existingAttribs.getVulnID()); // set vulnerability ID from DB
 				insertExploit(connection, exploit);
 			}
 
