@@ -1059,7 +1059,11 @@ public class DatabaseHelper {
 				}
 
 				/**
-				 * record status changes
+				 * Record status changes. We calculate a time gap only if the status changes
+				 * from "not-exists" to "exists". Not all status changes require a time gap
+				 * calculation. For example, if the CVE was reserved etc. in Mitre, but NVIP has
+				 * found a description for it, we mark its status as-1 (not-exists), to be able
+				 * to calculate a time gap for it (later on) when it is included in Mitre!
 				 */
 				if (nvdStatusChanged) {
 					pstmt = connection.prepareStatement(updateNvdStatusSql);
@@ -1082,29 +1086,30 @@ public class DatabaseHelper {
 				 * record time gaps if any
 				 */
 				int hours = 0;
-				if (recordTimeGap)
+				if (recordTimeGap) {
 					hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
-				if (!vulnAlreadyInNvd && vuln.doesExistInNvd() && recordTimeGap) {
-					// if it did not exist in NVD, but found now, record time gap!
-					vuln.setTimeGapNvd(hours);
-					pstmt = connection.prepareStatement(updateNvdTimeGapSql);
-					pstmt.setInt(1, vuln.getTimeGapNvd());
-					pstmt.setString(2, vuln.getCveId());
-					pstmt.executeUpdate();
+					if (!vulnAlreadyInNvd && vuln.doesExistInNvd() && recordTimeGap) {
+						// if it did not exist in NVD, but found now, record time gap!
+						vuln.setTimeGapNvd(hours);
+						pstmt = connection.prepareStatement(updateNvdTimeGapSql);
+						pstmt.setInt(1, vuln.getTimeGapNvd());
+						pstmt.setString(2, vuln.getCveId());
+						pstmt.executeUpdate();
 
-					logger.info("CVE added to NVD! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
-					timeGapFound = true;
-				}
-				if (!vulnAlreaadyInMitre && vuln.doesExistInMitre() && recordTimeGap) {
-					// if it did not exist in MITRE, but found now, record time gap!
-					vuln.setTimeGapMitre(hours);
-					pstmt = connection.prepareStatement(updateMitreTimeGapSql);
-					pstmt.setInt(1, vuln.getTimeGapMitre());
-					pstmt.setString(2, vuln.getCveId());
-					pstmt.executeUpdate();
+						logger.info("CVE added to NVD! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
+						timeGapFound = true;
+					}
+					if (!vulnAlreaadyInMitre && vuln.doesExistInMitre() && recordTimeGap) {
+						// if it did not exist in MITRE, but found now, record time gap!
+						vuln.setTimeGapMitre(hours);
+						pstmt = connection.prepareStatement(updateMitreTimeGapSql);
+						pstmt.setInt(1, vuln.getTimeGapMitre());
+						pstmt.setString(2, vuln.getCveId());
+						pstmt.executeUpdate();
 
-					logger.info("CVE added to MITRE! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
-					timeGapFound = true;
+						logger.info("CVE added to MITRE! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
+						timeGapFound = true;
+					}
 				}
 
 				return timeGapFound;
