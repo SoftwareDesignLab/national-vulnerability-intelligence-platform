@@ -12,7 +12,7 @@ public class JGitCVEPatchMultithread implements Runnable {
 	public void run() {
 		try {
 			parser.cloneRepository();
-			parser.parseCommits();
+			//parser.parseCommits();
 		} catch (Exception e) {
 			System.err.println(e.toString());
 		}
