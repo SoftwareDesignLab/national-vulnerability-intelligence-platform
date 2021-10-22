@@ -117,7 +117,7 @@ public class CveProcessor {
 					if (vuln.isReservedCveHasNewDescription())
 						status = -1;
 
-					vuln.setExistInNvd(status);
+					vuln.setNvdStatus(status);
 					newCVEDataNotInNvd.add(vuln);
 				}
 
@@ -132,7 +132,7 @@ public class CveProcessor {
 					if (vuln.isReservedCveHasNewDescription())
 						status = -1;
 
-					vuln.setExistInMitre(status);
+					vuln.setMitreStatus(status);
 					newCVEDataNotInMitre.add(vuln);
 				}
 

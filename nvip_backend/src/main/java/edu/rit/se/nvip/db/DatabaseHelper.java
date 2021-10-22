@@ -824,8 +824,8 @@ public class DatabaseHelper {
 						/**
 						 * Bug fix: indexes 9 and 10 were wrong
 						 */
-						pstmt.setInt(9, vuln.getExistInNvd());
-						pstmt.setInt(10, vuln.getExistInMitre());
+						pstmt.setInt(9, vuln.getNvdStatus());
+						pstmt.setInt(10, vuln.getMitreStatus());
 						pstmt.setInt(11, vuln.getTimeGapNvd());
 						pstmt.setInt(12, vuln.getTimeGapMitre());
 						pstmt.executeUpdate();
@@ -1016,12 +1016,19 @@ public class DatabaseHelper {
 		boolean vulnAlreadyInNvd = existingAttribs.doesExistInNvd();
 		boolean vulnAlreaadyInMitre = existingAttribs.doesExistInMitre();
 
-		if ((existingAttribs.getCreateDate() != null) && ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
-				&& !CveUtils.isCveReservedEtc(vuln.getDescription())) {
+		/**
+		 * nvd or mitre status change?
+		 */
+		boolean nvdMitreStatusChange = (existingAttribs.getNvdStatus() != vuln.getNvdStatus()) || (existingAttribs.getMitreStatus() != vuln.getMitreStatus());
+
+		if (nvdMitreStatusChange) {
 
 			Date createdDateTime = null;
 			Date lastModifiedDateTime = null;
 			try {
+
+				boolean calculateTimeGap = (existingAttribs.getCreateDate() != null) && ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
+						&& !CveUtils.isCveReservedEtc(vuln.getDescription());
 
 				/**
 				 * We are not expecting a time gap more than 1 year. If CVE is from prior years
@@ -1054,7 +1061,7 @@ public class DatabaseHelper {
 				if (!vulnAlreadyInNvd && vuln.doesExistInNvd()) {
 					vuln.setTimeGapNvd(hours);
 					pstmt = connection.prepareStatement(updateVulnSqlNvd);
-					pstmt.setInt(1, vuln.getExistInNvd());
+					pstmt.setInt(1, vuln.getNvdStatus());
 					pstmt.setInt(2, vuln.getTimeGapNvd());
 					pstmt.setString(3, vuln.getCveId());
 					pstmt.executeUpdate();
@@ -1068,7 +1075,7 @@ public class DatabaseHelper {
 					vuln.setTimeGapMitre(hours);
 
 					pstmt = connection.prepareStatement(updateVulnSqlMitre);
-					pstmt.setInt(1, vuln.getExistInMitre());
+					pstmt.setInt(1, vuln.getMitreStatus());
 					pstmt.setInt(2, vuln.getTimeGapMitre());
 					pstmt.setString(3, vuln.getCveId());
 					pstmt.executeUpdate();
@@ -1096,8 +1103,7 @@ public class DatabaseHelper {
 	 * @param crawledVulnerabilityList
 	 * @param existingVulnMap
 	 */
-	public int[] checkNvdMitreStatusForCrawledVulnerabilityList(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList,
-			Map<String, Vulnerability> existingVulnMap) {
+	public int[] checkNvdMitreStatusForCrawledVulnerabilityList(Connection connection, List<CompositeVulnerability> crawledVulnerabilityList, Map<String, Vulnerability> existingVulnMap) {
 		int existingCveCount = 0, newCveCount = 0, timeGapCount = 0;
 		try {
 			logger.info("Checking time gaps for " + crawledVulnerabilityList.size() + " CVEs! # of total CVEs in DB: " + existingVulnMap.size());
@@ -1149,8 +1155,8 @@ public class DatabaseHelper {
 				vuln.setCreateDate(rs.getString("created_date"));
 				vuln.setLastModifiedDate(rs.getString("last_modified_date"));
 				vuln.setFixDate(rs.getString("fixed_date"));
-				vuln.setExistInMitre(rs.getInt("exists_at_mitre"));
-				vuln.setExistInNvd(rs.getInt("exists_at_nvd"));
+				vuln.setMitreStatus(rs.getInt("exists_at_mitre"));
+				vuln.setNvdStatus(rs.getInt("exists_at_nvd"));
 				vuln.setTimeGapNvd(rs.getInt("time_gap_nvd"));
 				vuln.setTimeGapMitre(rs.getInt("time_gap_mitre"));
 
