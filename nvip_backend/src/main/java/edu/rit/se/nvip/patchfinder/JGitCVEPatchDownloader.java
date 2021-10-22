@@ -35,6 +35,8 @@ public final class JGitCVEPatchDownloader {
 		if (checkFile.exists()) {
 			logger.info("Reading in csv file: " + checkFile.getName());
 			parse(checkFile, args[1]);
+		} else if (args[0].equals("true")) {
+			parseMulitThread(args[1]);
 		} else if (args.length > 2) {
 			parse(args[1], args[2]);
 		} else {
@@ -53,11 +55,24 @@ public final class JGitCVEPatchDownloader {
 	 * @throws IOException
 	 */
 	public static void parse(File repoFile, String clonePath) throws IOException {
+		File dir = new File(clonePath);
+		FileUtils.delete(dir, 1);
+
 		List<String> repos = processInputFile(repoFile);
 		repos = new ArrayList<>(new HashSet<>(repos));
 		for (int i = 0; i < repos.size(); i++) {
 			pullCommitData(repos.get(i), clonePath, "");
 		}
+	}
+
+	public static void parseMulitThread(String clonePath) throws IOException {
+		File dir = new File(clonePath);
+		FileUtils.delete(dir, 1);
+
+		Map<Integer, String> sources = db.getVulnIdPatchSource(0);
+
+
+
 	}
 
 	/**
@@ -124,7 +139,7 @@ public final class JGitCVEPatchDownloader {
 	 * @param commitDate
 	 * @param commitMessage
 	 */
-	private static void insertPatchCommitData(String sourceURL, String commitId, java.util.Date commitDate,
+	public static void insertPatchCommitData(String sourceURL, String commitId, java.util.Date commitDate,
 			String commitMessage) {
 
 		logger.info("Inserting commit data to patchcommit table...");
@@ -150,7 +165,7 @@ public final class JGitCVEPatchDownloader {
 	 * 
 	 * @param sourceURL
 	 */
-	private static void deletePatchSource(String sourceURL) {
+	public static void deletePatchSource(String sourceURL) {
 		logger.info("Deleting patch from database...");
 
 		try {

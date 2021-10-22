@@ -143,7 +143,6 @@ public class DatabaseHelper {
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
 	private String getPatchSourceByIdSql = "SELECT source_url_id from patchsourceurl WHERE source_url = ?;";
-	private String insertPatchSql = "INSERT INTO cvepatch (vuln_id, cve_id, patch_url_id, patch_date, description) VALUES (?, ?, ?, ?, ?);";
 	private String insertPatchSourceURLSql = "INSERT INTO patchsourceurl (vuln_id, source_url) VALUES (?, ?);";
 	private String insertPatchCommitSql = "INSERT INTO patchcommit (source_id, commit_url, commit_date, commit_message) VALUES (?, ?, ?, ?);";
 	private String deletePatchCommitSql = "DELETE FROM patchcommit WHERE source_id = ?;";
@@ -402,35 +401,11 @@ public class DatabaseHelper {
 		return patchURLId;
 	}
 
-	/*
-	 * Adds patch data to patch table, Source is the URL in which the patch
-	 * originated, Date and Description being the commit date and message
-	 */
-	public boolean insertPatch(String vuln_id, String cve_id, int source_id, java.sql.Date date, String description) {
-		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(insertPatchSql);) {
-			pstmt.setString(1, vuln_id);
-			pstmt.setString(2, cve_id);
-			pstmt.setInt(3, source_id);
-			pstmt.setDate(4, date);
-			pstmt.setString(5, description);
-			pstmt.executeUpdate();
-
-			logger.info("Inserted Patch from url id: " + source_id + " for " + cve_id);
-			conn.close();
-			return true;
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return false;
-		}
-
-	}
-
 	/**
 	 * Inserts given source URL into the patch source table
 	 * 
 	 * @param vuln_id
-	 * 
-	 * @param patchURL
+	 *
 	 * @return
 	 */
 	public boolean insertPatchSourceURL(int vuln_id, String sourceURL) {
@@ -452,8 +427,7 @@ public class DatabaseHelper {
 	/**
 	 * Method for deleting duplicate patch entries by vuln_id within the commit
 	 * table
-	 * 
-	 * @param vulnId
+	 *
 	 */
 	public void deleteCommits(int source_id) {
 		Connection conn = null;
@@ -712,8 +686,7 @@ public class DatabaseHelper {
 
 	/**
 	 * Get mapping between products-CVEs
-	 * 
-	 * @param conn
+	 *
 	 * @return
 	 */
 	public Map<Integer, List<String>> getProductCveMapFromDb() {
@@ -2232,8 +2205,7 @@ public class DatabaseHelper {
 
 	/**
 	 * delete exploits of this vulnerability from DB
-	 * 
-	 * @param exploit
+	 *
 	 * @return
 	 */
 	public int deleteExploits(Connection connection, int vulnerabilityId) {
@@ -2341,8 +2313,12 @@ public class DatabaseHelper {
 
 		String cve_id = "";
 
-		try (Connection connection = getConnection();
-				ResultSet rs = connection.createStatement().executeQuery(selectCVEIdSql)) {
+		try (Connection connection = getConnection()) {
+
+			PreparedStatement pstmt = connection.prepareStatement(selectCVEIdSql);
+			pstmt.setInt(1, Integer.parseInt(vulnId));
+			ResultSet rs = pstmt.executeQuery();
+
 			if (rs.next()) {
 				cve_id = rs.getString("cve_id");
 			}
