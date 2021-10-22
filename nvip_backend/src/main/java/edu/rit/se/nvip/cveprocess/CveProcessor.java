@@ -107,24 +107,36 @@ public class CveProcessor {
 				}
 
 				/**
-				 * CVE does not exist in the NVD feeds and it is NOT Reserved etc.
+				 * [CVE does not exist in the NVD] OR [it is reserved etc. in NVD but NVIP found
+				 * a description for it]
 				 */
-				if (!hashMapNvdCve.containsKey(vuln.getCveId()) && !CveUtils.isCveReservedEtc(vuln.getDescription())) {
+				if (!hashMapNvdCve.containsKey(vuln.getCveId()) || vuln.isReservedCveHasNewDescription()) {
 					vuln.setNvdSearchResult("NA");
-					vuln.setExistInNvd(0);
+
+					int status = 0;
+					if (vuln.isReservedCveHasNewDescription())
+						status = -1;
+
+					vuln.setExistInNvd(status);
 					newCVEDataNotInNvd.add(vuln);
 				}
 
 				/**
-				 * CVE does not exist in the MITRE feeds and it is NOT Reserved etc.
+				 * [CVE does not exist in the MITRE] OR [it is reserved etc. in MITRE but NVIP
+				 * found a description for it]
 				 */
-				if (!hashMapMitreCve.containsKey(vuln.getCveId()) && !CveUtils.isCveReservedEtc(vuln.getDescription())) {
+				if (!hashMapMitreCve.containsKey(vuln.getCveId()) || vuln.isReservedCveHasNewDescription()) {
 					vuln.setNvdSearchResult("NA");
-					vuln.setExistInMitre(0);
+
+					int status = 0;
+					if (vuln.isReservedCveHasNewDescription())
+						status = -1;
+
+					vuln.setExistInMitre(status);
 					newCVEDataNotInMitre.add(vuln);
 				}
 
-				if (!hashMapMitreCve.containsKey(vuln.getCveId()) && !hashMapNvdCve.containsKey(vuln.getCveId())) {
+				if ((!hashMapMitreCve.containsKey(vuln.getCveId()) && !hashMapNvdCve.containsKey(vuln.getCveId())) || vuln.isReservedCveHasNewDescription()) {
 					newCVEDataNotInNvdAndMitre.add(vuln);
 				}
 

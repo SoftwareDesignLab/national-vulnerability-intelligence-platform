@@ -169,7 +169,7 @@ public class DatabaseHelperTest {
 			CompositeVulnerability vuln = new CompositeVulnerability(0, "", "CVE-2021-34173", null, null, lastModifiedDate, description, null);
 			vulnList.add(vuln);
 
-			int[] counts = db.recordTimeGapsForCrawledVulnerabilityList(connection, vulnList, existingVulnMap);
+			int[] counts = db.checkNvdMitreStatusForCrawledVulnerabilityList(connection, vulnList, existingVulnMap);
 			logger.info("Out of {} CVEs, {} are existing, {} are new. Found {} time gaps", vulnList.size(), counts[0], counts[1], counts[2]);
 
 			// existingCveCount, newCveCount, foundTimeGapCount
