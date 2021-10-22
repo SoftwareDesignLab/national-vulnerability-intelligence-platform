@@ -1005,8 +1005,8 @@ public class DatabaseHelper {
 	 * vuln.existInMitre())): The CVE did not exist in nvd/mitre before, but it is
 	 * there now!
 	 * 
-	 * (3) !CveUtils.isCveReservedEtc(vuln): The CVE must NOT be reserved/rejected
-	 * etc.
+	 * (3) !CveUtils.isCveReservedEtc(vuln): The new CVE must NOT be
+	 * reserved/rejected etc.
 	 * 
 	 * @param vuln
 	 * @param connection
@@ -1059,11 +1059,7 @@ public class DatabaseHelper {
 				}
 
 				/**
-				 * Record status changes. We calculate a time gap only if the status changes
-				 * from "not-exists" to "exists". Not all status changes require a time gap
-				 * calculation. For example, if the CVE was reserved etc. in Mitre, but NVIP has
-				 * found a description for it, we mark its status as-1 (not-exists), to be able
-				 * to calculate a time gap for it (later on) when it is included in Mitre!
+				 * Record status changes.
 				 */
 				if (nvdStatusChanged) {
 					pstmt = connection.prepareStatement(updateNvdStatusSql);
@@ -1073,7 +1069,7 @@ public class DatabaseHelper {
 					logger.info("Changed NVD status of CVE {} from {} to {}", vuln.getCveId(), existingAttribs.getNvdStatus(), vuln.getNvdStatus());
 				}
 
-				if (nvdStatusChanged) {
+				if (mitreStatusChanged) {
 					pstmt = connection.prepareStatement(updateMitreStatusSql);
 					pstmt.setInt(1, vuln.getMitreStatus());
 					pstmt.setString(2, vuln.getCveId());
@@ -1083,7 +1079,12 @@ public class DatabaseHelper {
 				}
 
 				/**
-				 * record time gaps if any
+				 * record time gaps if any. We calculate a time gap only if the status changes
+				 * from "not-exists" to "exists". Not all status changes require a time gap
+				 * calculation. If the CVE was reserved etc. in Mitre, but NVIP has found a
+				 * description for it (or did not exist there), we mark its status as-1 (or 0),
+				 * to be able to calculate a time gap for it (later on) when it is included in
+				 * Mitre with a proper description (not reserved etc.)!
 				 */
 				int hours = 0;
 				if (recordTimeGap) {
