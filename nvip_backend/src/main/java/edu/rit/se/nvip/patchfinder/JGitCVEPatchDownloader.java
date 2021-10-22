@@ -26,6 +26,23 @@ public final class JGitCVEPatchDownloader {
 	private static JGitParser previousRepo = null;
 	private static final DatabaseHelper db = DatabaseHelper.getInstance();
 
+
+	public static void main(String[] args) throws IOException {
+		logger.info("Started Patches Application");
+
+		File checkFile = new File(args[0]);
+
+		if (checkFile.exists()) {
+			logger.info("Reading in csv file: " + checkFile.getName());
+			parse(checkFile, args[1]);
+		} else if (args.length > 2) {
+			parse(args[1], args[2]);
+		} else {
+			parse(args[1], "0");
+		}
+		logger.info("Patches Application Finished!");
+	}
+
 	/**
 	 * TODO: Update this so that it can pull CVE IDs from vulnerability table for
 	 * the 3rd parameter Parses out patch data from a preset list of repos within a
@@ -51,14 +68,13 @@ public final class JGitCVEPatchDownloader {
 	 * @throws IOException
 	 * @throws GitAPIException
 	 */
-	public static void parse(String clonePath, int limit) throws IOException {
+	public static void parse(String clonePath, String limit) throws IOException {
 
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
 
 		try {
-
-			for (Entry<Integer, String> source : db.getVulnIdPatchSource(limit).entrySet()) {
+			for (Entry<Integer, String> source : db.getVulnIdPatchSource(Integer.parseInt(limit)).entrySet()) {
 				pullCommitData(source.getValue(), clonePath, db.getCveId(source.getKey() + ""));
 			}
 
