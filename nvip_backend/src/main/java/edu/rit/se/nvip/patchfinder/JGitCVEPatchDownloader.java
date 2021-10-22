@@ -70,10 +70,13 @@ public final class JGitCVEPatchDownloader {
 	 * @throws IOException
 	 */
 	public static void parseMulitThread(String clonePath) throws IOException {
+		logger.info("Applying multi threading...");
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
 
 		int maxThreads = Runtime.getRuntime().availableProcessors();
+
+		logger.info(maxThreads + " available processors found");
 
 		ExecutorService es = Executors.newCachedThreadPool();
 		Map<Integer, String> sources = db.getVulnIdPatchSource(0);
@@ -94,7 +97,7 @@ public final class JGitCVEPatchDownloader {
 		}
 
 		for (int k = maxThreads - 1; k >= 0; k--) {
-			es.execute(new JGitThread(sourceBatches.get(k), clonePath));
+			new JGitThread(sourceBatches.get(k), clonePath).start();
 		}
 		es.shutdown();
 
