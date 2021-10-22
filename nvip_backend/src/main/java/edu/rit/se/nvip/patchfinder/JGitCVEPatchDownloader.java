@@ -6,11 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,13 +64,39 @@ public final class JGitCVEPatchDownloader {
 		}
 	}
 
+	/**
+	 * Git commit parser that implements multiple threads to increase performance
+	 * @param clonePath
+	 * @throws IOException
+	 */
 	public static void parseMulitThread(String clonePath) throws IOException {
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
 
+		int maxThreads = Runtime.getRuntime().availableProcessors();
+
+		ExecutorService es = Executors.newCachedThreadPool();
 		Map<Integer, String> sources = db.getVulnIdPatchSource(0);
 
+		ArrayList<HashMap<Integer, String>> sourceBatches = new ArrayList<>();
 
+		for (int i=0; i < maxThreads; i++) {
+			sourceBatches.add(i, new HashMap<>());
+		}
+
+		int i = 1;
+		int thread = 0;
+		for (Integer vulnId : sources.keySet()) {
+			sourceBatches.get(thread).put(vulnId, sources.get(vulnId));
+			i++;
+			if (i % 1000 == 0 && thread < maxThreads)
+				thread++;
+		}
+
+		for (int k = maxThreads - 1; k >= 0; k--) {
+			es.execute(new JGitThread(sourceBatches.get(k), clonePath));
+		}
+		es.shutdown();
 
 	}
 
