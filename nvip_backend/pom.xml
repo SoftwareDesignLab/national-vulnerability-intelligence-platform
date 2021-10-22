@@ -73,6 +73,11 @@
 			<version>1.4.01</version>
 		</dependency>
 
+		<dependency>
+            <groupId>org.eclipse.mylyn.github</groupId>
+            <artifactId>org.eclipse.egit.github.core</artifactId>
+            <version>2.1.5</version>
+        </dependency>
 
 		<!-- com.google.code.gson -->
 		<dependency>

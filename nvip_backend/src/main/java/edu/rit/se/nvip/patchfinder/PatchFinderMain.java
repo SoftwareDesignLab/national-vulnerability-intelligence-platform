@@ -119,8 +119,7 @@ public class PatchFinderMain {
 	/**
 	 * Parses URL with github.com base and cpe keywords tests connection and inserts
 	 * into DB if so.
-	 * 
-	 * @param cpe
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
@@ -224,7 +223,6 @@ public class PatchFinderMain {
 	 * now)
 	 * 
 	 * @param address
-	 * @param cpe
 	 * @return
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -277,9 +275,7 @@ public class PatchFinderMain {
 	 * for git remote connection with found links
 	 * 
 	 * Uses jSoup framework
-	 * 
-	 * @param keyword1
-	 * @param keyword2
+	 *
 	 * @param newURL
 	 * @throws InterruptedException
 	 */
@@ -356,11 +352,7 @@ public class PatchFinderMain {
 	 * search feature
 	 * 
 	 * TODO: Change the return type to an array or list for multiple links
-	 * 
-	 * @param address
-	 * @param keyword1
-	 * @param keyword2
-	 * @param cpe
+	 *
 	 * @return
 	 * @throws InterruptedException
 	 */
@@ -425,10 +417,6 @@ public class PatchFinderMain {
 	/**
 	 * Method used for verifying Git remote connection to created url via keywords,
 	 * checks if the keywords are included as well before performing connection
-	 * 
-	 * @param newURL
-	 * @param keyword1
-	 * @param keyword2
 	 * @return
 	 */
 	private static boolean verifyGitRemote(String repoURL, String innerText) {
