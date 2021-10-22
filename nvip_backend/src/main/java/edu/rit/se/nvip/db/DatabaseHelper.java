@@ -94,8 +94,10 @@ public class DatabaseHelper {
 			+ "fixed_date = ? WHERE (cve_id = ?);";
 	private String updateVulnDescriptionSql = "UPDATE Vulnerability SET description = ? WHERE cve_id = ?;";
 
-	private String updateVulnSqlNvd = "UPDATE Vulnerability SET exists_at_nvd = ?, time_gap_nvd = ? WHERE cve_id = ?;";
-	private String updateVulnSqlMitre = "UPDATE Vulnerability SET exists_at_mitre = ?, time_gap_mitre = ? WHERE cve_id = ?;";
+	private String updateNvdTimeGapSql = "UPDATE Vulnerability SET time_gap_nvd = ? WHERE cve_id = ?;";
+	private String updateNvdStatusSql = "UPDATE Vulnerability SET exists_at_nvd = ? WHERE cve_id = ?;";
+	private String updateMitreTimeGapSql = "UPDATE Vulnerability SET time_gap_mitre = ? WHERE cve_id = ?;";
+	private String updateMitreStatusSql = "UPDATE Vulnerability SET exists_at_mitre = ? WHERE cve_id = ?;";
 	private String selectVulnSql = "SELECT * FROM Vulnerability;";
 	private String deleteVulnSql = "DELETE FROM Vulnerability WHERE cve_id=?;";
 
@@ -1019,15 +1021,17 @@ public class DatabaseHelper {
 		/**
 		 * nvd or mitre status change?
 		 */
-		boolean nvdMitreStatusChange = (existingAttribs.getNvdStatus() != vuln.getNvdStatus()) || (existingAttribs.getMitreStatus() != vuln.getMitreStatus());
+		boolean nvdStatusChanged = (existingAttribs.getNvdStatus() != vuln.getNvdStatus());
+		boolean mitreStatusChanged = (existingAttribs.getMitreStatus() != vuln.getMitreStatus());
+		boolean nvdOrMitreStatusChanged = nvdStatusChanged || mitreStatusChanged;
 
-		if (nvdMitreStatusChange) {
+		if (nvdOrMitreStatusChanged) {
 
 			Date createdDateTime = null;
 			Date lastModifiedDateTime = null;
 			try {
 
-				boolean calculateTimeGap = (existingAttribs.getCreateDate() != null) && ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
+				boolean recordTimeGap = (existingAttribs.getCreateDate() != null) && ((!vulnAlreadyInNvd && vuln.doesExistInNvd()) || (!vulnAlreaadyInMitre && vuln.doesExistInMitre()))
 						&& !CveUtils.isCveReservedEtc(vuln.getDescription());
 
 				/**
@@ -1039,7 +1043,7 @@ public class DatabaseHelper {
 				int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 				boolean calculateGap = (cveYear == currentYear);
 				if (!calculateGap)
-					return false;
+					recordTimeGap = false;
 
 				if (databaseType.equalsIgnoreCase("mysql"))
 					createdDateTime = longDateFormatMySQL.parse(existingAttribs.getCreateDate());
@@ -1051,44 +1055,65 @@ public class DatabaseHelper {
 				} catch (Exception e) {
 					lastModifiedDateTime = new Date();
 					logger.error("Could not parse last modified date of Cve: {}, Err: {}\nCve data: {}", vuln.getLastModifiedDate(), e.toString(), vuln.toString());
-					return false;
+					recordTimeGap = false;
 				}
 
-				// calculate the time gap, if any
-				int hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
-
-				// if it did not exist in NVD, but found now, record time gap!
-				if (!vulnAlreadyInNvd && vuln.doesExistInNvd()) {
-					vuln.setTimeGapNvd(hours);
-					pstmt = connection.prepareStatement(updateVulnSqlNvd);
+				/**
+				 * record status changes
+				 */
+				if (nvdStatusChanged) {
+					pstmt = connection.prepareStatement(updateNvdStatusSql);
 					pstmt.setInt(1, vuln.getNvdStatus());
-					pstmt.setInt(2, vuln.getTimeGapNvd());
-					pstmt.setString(3, vuln.getCveId());
+					pstmt.setString(2, vuln.getCveId());
+					pstmt.executeUpdate();
+					logger.info("Changed NVD status of CVE {} from {} to {}", vuln.getCveId(), existingAttribs.getNvdStatus(), vuln.getNvdStatus());
+				}
+
+				if (nvdStatusChanged) {
+					pstmt = connection.prepareStatement(updateMitreStatusSql);
+					pstmt.setInt(1, vuln.getMitreStatus());
+					pstmt.setString(2, vuln.getCveId());
+					pstmt.executeUpdate();
+
+					logger.info("Changed MITRE status of CVE {} from {} to {}", vuln.getCveId(), existingAttribs.getMitreStatus(), vuln.getMitreStatus());
+				}
+
+				/**
+				 * record time gaps if any
+				 */
+				int hours = 0;
+				if (recordTimeGap)
+					hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
+				if (!vulnAlreadyInNvd && vuln.doesExistInNvd() && recordTimeGap) {
+					// if it did not exist in NVD, but found now, record time gap!
+					vuln.setTimeGapNvd(hours);
+					pstmt = connection.prepareStatement(updateNvdTimeGapSql);
+					pstmt.setInt(1, vuln.getTimeGapNvd());
+					pstmt.setString(2, vuln.getCveId());
 					pstmt.executeUpdate();
 
 					logger.info("CVE added to NVD! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
 					timeGapFound = true;
 				}
-
-				// if it did not exist in MITRE, but found now, record time gap!
-				if (!vulnAlreaadyInMitre && vuln.doesExistInMitre()) {
+				if (!vulnAlreaadyInMitre && vuln.doesExistInMitre() && recordTimeGap) {
+					// if it did not exist in MITRE, but found now, record time gap!
 					vuln.setTimeGapMitre(hours);
-
-					pstmt = connection.prepareStatement(updateVulnSqlMitre);
-					pstmt.setInt(1, vuln.getMitreStatus());
-					pstmt.setInt(2, vuln.getTimeGapMitre());
-					pstmt.setString(3, vuln.getCveId());
+					pstmt = connection.prepareStatement(updateMitreTimeGapSql);
+					pstmt.setInt(1, vuln.getTimeGapMitre());
+					pstmt.setString(2, vuln.getCveId());
 					pstmt.executeUpdate();
+
 					logger.info("CVE added to MITRE! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
 					timeGapFound = true;
 				}
+
 				return timeGapFound;
 
 			} catch (Exception e) {
 				logger.error("Error in checkTimeGaps() {}! Cve record time {}, Cve data {}", e.toString(), createdDateTime, vuln);
 			}
 
-		} // if
+		} // if nvdOrMitreStatusChanged
 
 		return false;
 	}
