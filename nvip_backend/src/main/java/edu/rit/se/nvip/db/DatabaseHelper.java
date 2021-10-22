@@ -768,8 +768,7 @@ public class DatabaseHelper {
 			} // synchronized (DatabaseHelper.class) {
 		} // if (existingVulnMap.size() == 0) {
 		else {
-			// logger.info("NVIP has loaded " + existingVulnMap.size() + " existing CVE
-			// items from memory!");
+			logger.warn("NVIP has loaded {} existing CVE items from memory!", existingVulnMap.size());
 		}
 
 		return existingVulnMap;
