@@ -2104,7 +2104,7 @@ public class DatabaseHelper {
 	 * @param exploitList
 	 * @return
 	 */
-	public boolean saveExploits(CompositeVulnerability vulnerability, List<Exploit> exploitList, Map<String, VulnerabilityAttribsForUpdate> existingVulnMap) {
+	public boolean saveExploits(CompositeVulnerability vulnerability, List<Exploit> exploitList, Map<String, Vulnerability> existingVulnMap) {
 
 		Connection connection;
 		try {
@@ -2120,7 +2120,7 @@ public class DatabaseHelper {
 				return false;
 			}
 
-			VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vulnerability.getCveId());
+			Vulnerability existingAttribs = existingVulnMap.get(vulnerability.getCveId());
 
 			// remove existing exploits for CVE
 			deleteExploits(connection, existingAttribs.getVulnID());
@@ -2197,10 +2197,10 @@ public class DatabaseHelper {
 		return 0;
 	}
 
-	public int updateVulnerabilityDataFromCsv(CompositeVulnerability vuln, Map<String, VulnerabilityAttribsForUpdate> existingVulnMap, int runId) throws SQLException {
+	public int updateVulnerabilityDataFromCsv(CompositeVulnerability vuln, Map<String, Vulnerability> existingVulnMap, int runId) throws SQLException {
 		Connection connection = getConnection();
 		try {
-			VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
+			Vulnerability existingAttribs = existingVulnMap.get(vuln.getCveId());
 			if (existingAttribs == null) {
 				try (PreparedStatement pstmt = connection.prepareStatement(insertVulnDescriptionSql);) {
 					// insert

@@ -53,6 +53,7 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.CompositeVulnerability.CveReconcileStatus;
 import edu.rit.se.nvip.model.DailyRun;
 import edu.rit.se.nvip.model.NvipSource;
+import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.nvd.PullNvdCveMain;
 import edu.rit.se.nvip.productnameextractor.AffectedProductIdentifier;
@@ -432,7 +433,7 @@ public class NVIPMain {
 		CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
 		AbstractCveReconciler cveReconciler = reconcileFactory.createReconciler(propertiesNvip.getCveReconciliationMethod());
 
-		Map<String, VulnerabilityAttribsForUpdate> existingVulnMap = databaseHelper.getExistingVulnerabilities();
+		Map<String, Vulnerability> existingVulnMap = databaseHelper.getExistingVulnerabilities();
 
 		int countUpdate = 0, countInsert = 0;
 		for (int index = 0; index < crawledVulnerabilityList.size(); index++) {
@@ -440,7 +441,7 @@ public class NVIPMain {
 
 			// does CVE exist in the DB?
 			if (existingVulnMap.containsKey(vuln.getCveId())) {
-				VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
+				Vulnerability existingAttribs = existingVulnMap.get(vuln.getCveId());
 				String existingDescription = existingAttribs.getDescription(); // get existing description
 
 				// do we need to update it?
