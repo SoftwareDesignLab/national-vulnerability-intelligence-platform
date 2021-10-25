@@ -55,7 +55,7 @@ public class PatchFinderMain {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
 
-		if (args.length > 0) {
+		if (args.length > 1) {
 
 			if (args[0].equals("true")) {
 				parseURLByProductId(Integer.parseInt(args[1]));
@@ -235,7 +235,6 @@ public class PatchFinderMain {
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		int response = urlConnection.getResponseCode();
-		// Thread.sleep(2000);
 
 		// Check if the url leads to an actual GitHub repo
 		// If so, push the source link into the DB

@@ -546,7 +546,6 @@ public class DatabaseHelper {
 		} catch (SQLException e) {
 		}
 
-		System.out.println(cpes);
 		return cpes;
 	}
 

@@ -92,12 +92,13 @@ public final class JGitCVEPatchDownloader {
 		for (Integer vulnId : sources.keySet()) {
 			sourceBatches.get(thread).put(vulnId, sources.get(vulnId));
 			i++;
-			if (i % 1000 == 0 && thread < maxThreads)
+			if (i % 3 == 0 && thread < maxThreads) {
+				logger.info(thread);
 				thread++;
+			}
 		}
 
 		for (int k = 0; k < maxThreads; k++) {
-			logger.info(k);
 			es.submit(new Thread(new JGitThread(sourceBatches.get(k), clonePath), "Thread - " + k));
 		}
 		es.shutdown();
