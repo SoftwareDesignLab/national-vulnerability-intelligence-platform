@@ -79,7 +79,7 @@ public final class JGitCVEPatchDownloader {
 		logger.info(maxThreads + " available processors found");
 
 		ExecutorService es = Executors.newCachedThreadPool();
-		Map<Integer, String> sources = db.getVulnIdPatchSource(0);
+		Map<String, Integer> sources = db.getVulnIdPatchSource(0);
 
 		ArrayList<HashMap<Integer, String>> sourceBatches = new ArrayList<>();
 
@@ -89,11 +89,10 @@ public final class JGitCVEPatchDownloader {
 
 		int i = 1;
 		int thread = 0;
-		for (Integer vulnId : sources.keySet()) {
-			sourceBatches.get(thread).put(vulnId, sources.get(vulnId));
+		for (String source : sources.keySet()) {
+			sourceBatches.get(thread).put(sources.get(source), source);
 			i++;
-			if (i % 3 == 0 && thread < maxThreads) {
-				logger.info(thread);
+			if (i % 100 == 0 && thread < maxThreads) {
 				thread++;
 			}
 		}
@@ -119,8 +118,8 @@ public final class JGitCVEPatchDownloader {
 		FileUtils.delete(dir, 1);
 
 		try {
-			for (Entry<Integer, String> source : db.getVulnIdPatchSource(Integer.parseInt(limit)).entrySet()) {
-				pullCommitData(source.getValue(), clonePath, db.getCveId(source.getKey() + ""));
+			for (Entry<String, Integer> source : db.getVulnIdPatchSource(Integer.parseInt(limit)).entrySet()) {
+				pullCommitData(source.getKey(), clonePath, db.getCveId(source.getValue() + ""));
 			}
 
 		} catch (Exception e) {

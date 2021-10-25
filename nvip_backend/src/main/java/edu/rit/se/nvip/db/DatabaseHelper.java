@@ -2281,10 +2281,10 @@ public class DatabaseHelper {
 	 * @param limit
 	 * @return
 	 */
-	public Map<Integer, String> getVulnIdPatchSource(int limit) {
+	public Map<String, Integer> getVulnIdPatchSource(int limit) {
 		String query = getPSURLAndVulnID;
 
-		HashMap<Integer, String> results = new HashMap<>();
+		HashMap<String, Integer> results = new HashMap<>();
 
 		if (limit > 0) {
 			query += " LIMIT " + limit;
@@ -2292,7 +2292,7 @@ public class DatabaseHelper {
 
 		try (Connection connection = getConnection(); ResultSet rs = connection.createStatement().executeQuery(query)) {
 			while (rs.next()) {
-				results.put(rs.getInt("vuln_id"), rs.getString("source_url"));
+				results.put(rs.getString("source_url"), rs.getInt("vuln_id"));
 			}
 		} catch (Exception e) {
 			logger.error(e.toString());
