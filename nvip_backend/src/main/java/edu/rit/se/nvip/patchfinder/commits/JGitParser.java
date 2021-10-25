@@ -128,7 +128,7 @@ public class JGitParser {
 			WindowCache.reconfigure(config);
 
 			File dir = new File(localDownloadLoc + File.separator + projectName);
-			this.git.getRepository().close();
+			this.git.close();
 
 			FileUtils.delete(dir, 1);
 
