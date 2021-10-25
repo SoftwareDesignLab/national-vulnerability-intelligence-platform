@@ -1,5 +1,6 @@
 package edu.rit.se.nvip.patchfinder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,11 +8,14 @@ import java.util.Map;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.patchfinder.commits.JGitParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.jgit.util.FileUtils;
 
 public class JGitThread implements Runnable {
 	private HashMap<Integer, String> sources;
 	private String clonePath;
-	private JGitParser myParser = null;
+	private static final Logger logger = LogManager.getLogger(JGitThread.class.getName());
 	private static final DatabaseHelper db = DatabaseHelper.getInstance();
 
 	public JGitThread(HashMap<Integer, String> sources, String cP) {
@@ -23,24 +27,23 @@ public class JGitThread implements Runnable {
 	public void run() {
 		for (Map.Entry<Integer, String> source : sources.entrySet()) {
 			try {
-					JGitParser repo = new JGitParser(source.getValue() + ".git", this.clonePath);
-					repo.cloneRepository();
-					Map<Date, ArrayList<String>> commits = repo.parseCommits(db.getCveId(source.getKey()+""));
-					if (commits.isEmpty()) {
-						JGitCVEPatchDownloader.deletePatchSource(source.getValue());
-					} else {
-						for (java.util.Date commit : commits.keySet()) {
-							JGitCVEPatchDownloader.insertPatchCommitData(source.getValue(), commits.get(commit).get(0), commit, commits.get(commit).get(1));
-						}
+				JGitParser repo = new JGitParser(source.getValue() + ".git", this.clonePath);
+				repo.cloneRepository();
+				Map<Date, ArrayList<String>> commits = repo.parseCommits(db.getCveId(source.getKey()+""));
+				if (commits.isEmpty()) {
+					JGitCVEPatchDownloader.deletePatchSource(source.getValue());
+				} else {
+					for (java.util.Date commit : commits.keySet()) {
+						JGitCVEPatchDownloader.insertPatchCommitData(source.getValue(), commits.get(commit).get(0), commit, commits.get(commit).get(1));
 					}
+				}
 
-					if (this.myParser != null) {
-						this.myParser.deleteRepository();
-					}
+				logger.info("Cleaning Clone Path directory from any unused repos");
+				File dir = new File(clonePath);
+				FileUtils.delete(dir, 1);
 
-					this.myParser = repo;
 			} catch (Exception e) {
-				System.err.println(e.toString());
+				logger.error(e.toString());
 			}
 		}
 	}
