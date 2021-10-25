@@ -8,7 +8,7 @@ import java.util.Map;
 import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.patchfinder.commits.JGitParser;
 
-public class JGitThread extends Thread implements Runnable {
+public class JGitThread implements Runnable {
 	private HashMap<Integer, String> sources;
 	private String clonePath;
 	private JGitParser myParser = null;
