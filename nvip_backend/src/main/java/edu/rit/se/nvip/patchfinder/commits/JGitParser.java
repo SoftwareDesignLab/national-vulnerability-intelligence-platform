@@ -109,7 +109,7 @@ public class JGitParser {
 						}
 					}).call();
 
-			// git.close();
+			//git.close();
 
 			logger.info("Repo " + projectName + " successfully cloned!");
 		} catch (Exception e) {
@@ -129,6 +129,7 @@ public class JGitParser {
 
 			File dir = new File(localDownloadLoc + File.separator + projectName);
 			this.git.getRepository().close();
+
 			FileUtils.delete(dir, 1);
 
 			logger.info("Repo " + projectName + " deleted successfully!");

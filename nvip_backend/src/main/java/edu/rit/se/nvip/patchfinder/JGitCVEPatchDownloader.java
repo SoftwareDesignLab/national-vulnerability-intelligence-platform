@@ -35,7 +35,7 @@ public final class JGitCVEPatchDownloader {
 			logger.info("Reading in csv file: " + checkFile.getName());
 			parse(checkFile, args[1]);
 		} else if (args[0].equals("true")) {
-			parseMulitThread(args[1]);
+			parseMulitThread(args[1], Integer.parseInt(args[2]));
 		} else if (args.length > 2) {
 			parse(args[1], args[2]);
 		} else {
@@ -69,7 +69,7 @@ public final class JGitCVEPatchDownloader {
 	 * @param clonePath
 	 * @throws IOException
 	 */
-	public static void parseMulitThread(String clonePath) throws IOException {
+	public static void parseMulitThread(String clonePath, int breaker) throws IOException {
 		logger.info("Applying multi threading...");
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
@@ -92,7 +92,7 @@ public final class JGitCVEPatchDownloader {
 		for (String source : sources.keySet()) {
 			sourceBatches.get(thread).put(sources.get(source), source);
 			i++;
-			if (i % 100 == 0 && thread < maxThreads - 1) {
+			if (i % breaker == 0 && thread < maxThreads - 1) {
 				thread++;
 			}
 		}
