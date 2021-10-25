@@ -92,7 +92,7 @@ public final class JGitCVEPatchDownloader {
 		for (String source : sources.keySet()) {
 			sourceBatches.get(thread).put(sources.get(source), source);
 			i++;
-			if (i % 100 == 0 && thread < maxThreads) {
+			if (i % 100 == 0 && thread < maxThreads - 1) {
 				thread++;
 			}
 		}
