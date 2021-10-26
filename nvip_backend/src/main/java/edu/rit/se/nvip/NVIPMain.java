@@ -53,10 +53,12 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.CompositeVulnerability.CveReconcileStatus;
 import edu.rit.se.nvip.model.DailyRun;
 import edu.rit.se.nvip.model.NvipSource;
+import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.nvd.PullNvdCveMain;
 import edu.rit.se.nvip.productnameextractor.AffectedProductIdentifier;
 import edu.rit.se.nvip.utils.PrepareDataForWebUi;
+import edu.rit.se.nvip.utils.CveUtils;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.rit.se.nvip.utils.UtilHelper;
@@ -200,9 +202,14 @@ public class NVIPMain {
 				CompositeVulnerability vulnCna = cveHashMapAll.get(cveId);
 				String newDescr = "";
 
-				if (vulnGit.getDescription().contains(reservedStr)) {
+				//if (vulnGit.getDescription().contains(reservedStr)) {
+				if (CveUtils.isCveReservedEtc(vulnGit.getDescription())) {
+					/**
+					 * CVE is reserved/rejected etc in Mitre but nvip found a description for it.
+					 */
 					newDescr = reservedStr + " - NVIP Description: " + vulnCna.getDescription();
 					cveCountReservedInGit++;
+					vulnCna.setReservedCveHasNewDescription(true);
 				} else {
 					newDescr = vulnGit.getDescription(); // overwriting, assuming Git descriptions are worded better!
 				}
@@ -432,7 +439,7 @@ public class NVIPMain {
 		CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
 		AbstractCveReconciler cveReconciler = reconcileFactory.createReconciler(propertiesNvip.getCveReconciliationMethod());
 
-		Map<String, VulnerabilityAttribsForUpdate> existingVulnMap = databaseHelper.getExistingVulnerabilities();
+		Map<String, Vulnerability> existingVulnMap = databaseHelper.getExistingVulnerabilities();
 
 		int countUpdate = 0, countInsert = 0;
 		for (int index = 0; index < crawledVulnerabilityList.size(); index++) {
@@ -440,7 +447,7 @@ public class NVIPMain {
 
 			// does CVE exist in the DB?
 			if (existingVulnMap.containsKey(vuln.getCveId())) {
-				VulnerabilityAttribsForUpdate existingAttribs = existingVulnMap.get(vuln.getCveId());
+				Vulnerability existingAttribs = existingVulnMap.get(vuln.getCveId());
 				String existingDescription = existingAttribs.getDescription(); // get existing description
 
 				// do we need to update it?
