@@ -3,6 +3,7 @@ package edu.rit.se.nvip.db;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.CompositeVulnerability.CveReconcileStatus;
 import edu.rit.se.nvip.model.DailyRun;
+import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.utils.UtilHelper;
 import org.apache.logging.log4j.LogManager;
@@ -159,7 +160,7 @@ public class DatabaseHelperTest {
 	public void testTimeGapCalculation() {
 		DatabaseHelper db = DatabaseHelper.getInstance();
 		try (Connection connection = db.getConnection();) {
-			Map<String, VulnerabilityAttribsForUpdate> existingVulnMap = db.getExistingVulnerabilities();
+			Map<String, Vulnerability> existingVulnMap = db.getExistingVulnerabilities();
 
 			// create a vuln list for test
 			List<CompositeVulnerability> vulnList = new ArrayList<>();
@@ -168,7 +169,7 @@ public class DatabaseHelperTest {
 			CompositeVulnerability vuln = new CompositeVulnerability(0, "", "CVE-2021-34173", null, null, lastModifiedDate, description, null);
 			vulnList.add(vuln);
 
-			int[] counts = db.recordTimeGapsOfCrawledVulnerabilitiesForNvdMitre(connection, vulnList, existingVulnMap);
+			int[] counts = db.checkNvdMitreStatusForCrawledVulnerabilityList(connection, vulnList, existingVulnMap);
 			logger.info("Out of {} CVEs, {} are existing, {} are new. Found {} time gaps", vulnList.size(), counts[0], counts[1], counts[2]);
 
 			// existingCveCount, newCveCount, foundTimeGapCount

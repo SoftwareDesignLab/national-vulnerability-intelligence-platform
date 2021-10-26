@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import edu.rit.se.nvip.characterizer.CveCharacterizer;
 import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.CompositeVulnerability;
+import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.utils.CsvUtils;
 import edu.rit.se.nvip.utils.MyProperties;
@@ -66,7 +67,7 @@ public class FlushCveDescriptionsFromMitreCsv {
 		cveCharacterizer.characterizeCveList(vulnList, db); // characterize
 
 		// update db
-		Map<String, VulnerabilityAttribsForUpdate> existingCves = db.getExistingVulnerabilities();
+		Map<String, Vulnerability> existingCves = db.getExistingVulnerabilities();
 		int count = 0;
 		int maxRunId = db.getMaxRunId();
 		for (CompositeVulnerability vuln : vulnList) {
