@@ -169,6 +169,8 @@ public class DatabaseHelper {
 	private String insertExploitSql = "INSERT INTO Exploit (vuln_id, cve_id, publisher_id, publish_date, publisher_url, description, exploit_code, nvip_record_date) VALUES (?,?,?,?,?,?,?,?);";
 	private String deleteExploitSql = "DELETE FROM Exploit WHERE vuln_id=?;";
 
+	private String selEmailsSql = "SELECT email FROM user;";
+
 	private static DatabaseHelper databaseHelper = null;
 	private static Map<String, VulnerabilityAttribsForUpdate> existingVulnMap = new HashMap<String, VulnerabilityAttribsForUpdate>();
 
@@ -2352,5 +2354,31 @@ public class DatabaseHelper {
 			logger.error(e.toString());
 		}
 	}
+
+	/**
+	 * Collects a list of user emails
+	 * @return
+	 */
+	public ArrayList<String> getEmails() {
+
+		ArrayList<String> results = new ArrayList<>();
+
+		try (Connection connection = getConnection();
+			 PreparedStatement pstmt = connection.prepareStatement(selEmailsSql);) {
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				results.add(rs.getString("email"));
+			}
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+		return results;
+
+	}
+
 
 }
