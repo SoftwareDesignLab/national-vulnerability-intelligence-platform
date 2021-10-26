@@ -171,6 +171,7 @@ public class DatabaseHelper {
 	private String deleteExploitSql = "DELETE FROM Exploit WHERE vuln_id=?;";
 
 	private String selEmailsSql = "SELECT email FROM user;";
+	private String getCVEByDate = "SELECT cve_id, description FROM vulnerabilityaggregate WHERE run_date_time = ?";
 
 	private static DatabaseHelper databaseHelper = null;
 	private static Map<String, Vulnerability> existingVulnMap = new HashMap<String, Vulnerability>();
@@ -2362,6 +2363,33 @@ public class DatabaseHelper {
 		return results;
 
 	}
+
+	/**
+	 * Collects CVE ID and Description with the given run_date_time
+	 * @param runDateTime
+	 * @return
+	 */
+	public HashMap<String, String> getCVEByRunDate(Date runDateTime) {
+
+		HashMap<String, String> data = new HashMap<>();
+
+		try (Connection connection = getConnection();
+			 PreparedStatement pstmt = connection.prepareStatement(getCVEByDate);) {
+			pstmt.setDate(1, (java.sql.Date) runDateTime);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				data.put(rs.getString("cve_id"), rs.getString("description"));
+			}
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+
+		return data;
+	}
+
 
 
 }
