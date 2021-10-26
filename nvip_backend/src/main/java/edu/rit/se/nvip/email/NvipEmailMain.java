@@ -58,15 +58,25 @@ public class NvipEmailMain {
     private static void sendEmail(String emailAddress) {
         try {
             logger.info("Sending notifcation to " + emailAddress);
-            Properties properties = System.getProperties();
-            properties.setProperty("mail.smtp.host", "localhost");
-            Session session = Session.getDefaultInstance(properties);
+            Properties prop = System.getProperties();
+            prop.put("mail.smtp.auth", true);
+            prop.put("mail.smtp.starttls.enable", "false");
+            prop.put("mail.smtp.host", "smtp.mailtrap.io");
+            prop.put("mail.smtp.port", "25");
+            prop.put("mail.smtp.ssl.trust", "smtp.mailtrap.io");
+            Session session = Session.getDefaultInstance(prop,
+                    new Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication("username", "password");
+                        }
+                    });
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("admin@cve.live"));
+            message.setFrom(new InternetAddress("PandaPickard@gmail.com"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
             message.setSubject("Daily CVE Notification");
             message.setText("Hello There :D");
-            Transport.send(message);
+            Transport.send(message, "PandaPickard@gmail.com", "Punda115");
             logger.info("Message sent successfully!");
         } catch (Exception e) {
             logger.error(e.getMessage());
