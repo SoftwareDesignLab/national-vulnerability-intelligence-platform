@@ -171,7 +171,7 @@ public class DatabaseHelper {
 	private String deleteExploitSql = "DELETE FROM Exploit WHERE vuln_id=?;";
 
 	private String selEmailsSql = "SELECT email FROM user;";
-	private String getCVEByDate = "SELECT cve_id, description FROM vulnerabilityaggregate WHERE run_date_time >= ? AND run_date_time <= ?";
+	private String getCVEByDate = "SELECT cve_id, description FROM vulnerabilityaggregate WHERE run_date_time >= ? AND run_date_time < ?";
 
 	private static DatabaseHelper databaseHelper = null;
 	private static Map<String, Vulnerability> existingVulnMap = new HashMap<String, Vulnerability>();
@@ -2371,17 +2371,15 @@ public class DatabaseHelper {
 	 */
 	public HashMap<String, String> getCVEByRunDate(Date runDateTime) {
 
-		Date endpoint  = new java.sql.Date(runDateTime.getTime());
+		//Tomorrows date
+		java.sql.Date endpoint  = new java.sql.Date(runDateTime.getTime() + (86400000));
 		HashMap<String, String> data = new HashMap<>();
 
 		try (Connection connection = getConnection();
 			 PreparedStatement pstmt = connection.prepareStatement(getCVEByDate);) {
 
-			runDateTime.setHours(0);
 			pstmt.setDate(1, (java.sql.Date) runDateTime);
-			endpoint.setHours(23);
-			endpoint.setMinutes(59);
-			pstmt.setDate(2, (java.sql.Date) endpoint);
+			pstmt.setDate(2, endpoint);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
