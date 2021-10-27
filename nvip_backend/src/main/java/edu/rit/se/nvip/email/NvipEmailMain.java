@@ -99,11 +99,11 @@ public class NvipEmailMain {
 
             Document doc = Jsoup.parse(writer.toString());
 
-            Element header = doc.select("main_header").first();
+            Element header = doc.select(".main_header").first();
             header.appendText(" "+name);
 
             for (String cveId : newCves.keySet()) {
-                Element cveList = doc.select("cve_list").first();
+                Element cveList = doc.select(".cve_list").first();
                 cveList.append("<li>\n" +
                         "                <h3 class=\"cve_id\">" + cveId + "</h3>\n" +
                         "                <p class=\"cve_description\">" + newCves.get(cveId) + "</p>\n" +
@@ -113,11 +113,11 @@ public class NvipEmailMain {
                         "            </li>");
             }
 
-            message.setContent(writer.toString(), "text/html");
+            message.setContent(doc.toString(), "text/html");
             Transport.send(message);
             logger.info("Message sent successfully!");
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e);
         }
     }
 
