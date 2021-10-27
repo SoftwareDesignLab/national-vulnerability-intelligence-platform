@@ -170,7 +170,7 @@ public class DatabaseHelper {
 	private String insertExploitSql = "INSERT INTO Exploit (vuln_id, cve_id, publisher_id, publish_date, publisher_url, description, exploit_code, nvip_record_date) VALUES (?,?,?,?,?,?,?,?);";
 	private String deleteExploitSql = "DELETE FROM Exploit WHERE vuln_id=?;";
 
-	private String selEmailsSql = "SELECT email FROM user;";
+	private String selEmailsSql = "SELECT email, first_name FROM user;";
 	private String getCVEByDate = "SELECT cve_id, description FROM vulnerabilityaggregate WHERE run_date_time >= ? AND run_date_time < ?";
 
 	private static DatabaseHelper databaseHelper = null;
@@ -2353,7 +2353,7 @@ public class DatabaseHelper {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				results.add(rs.getString("email"));
+				results.add(rs.getString("email")+";!;~;#&%:;!"+rs.getString("first_name"));
 			}
 
 		} catch (Exception e) {

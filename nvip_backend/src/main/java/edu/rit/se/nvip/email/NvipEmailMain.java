@@ -1,11 +1,13 @@
 package edu.rit.se.nvip.email;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
+import it.unimi.dsi.fastutil.Hash;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -29,7 +31,7 @@ public class NvipEmailMain {
         if (args.length == 0) {
             sendNotificationEmail();
         } else {
-            sendNotificationEmail(args[0]);
+            sendNotificationEmail(args[0], args[1]);
         }
         logger.info("Email module finished!");
     }
@@ -38,11 +40,16 @@ public class NvipEmailMain {
      * Sends notification email to all emails in DB
      */
     public static void sendNotificationEmail() {
-        ArrayList<String> emails = db.getEmails();
+        ArrayList<String> data = db.getEmails();
         HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
 
-        for (String email : emails) {
-            sendEmail(email);
+        if (newCves.size() > 0) {
+            for (String info : data) {
+
+                String[] userData = info.split(";!;~;#&%:;!");
+
+                sendEmail(userData[0], userData[1], newCves);
+            }
         }
 
     }
@@ -52,9 +59,11 @@ public class NvipEmailMain {
      * Send notification to specified email
      * @param emailAddress
      */
-    public static void sendNotificationEmail(String emailAddress) {
+    public static void sendNotificationEmail(String emailAddress, String name) {
         HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
-        sendEmail(emailAddress);
+        if (newCves.size() > 0) {
+            sendEmail(emailAddress, name, newCves);
+        }
     }
 
 
@@ -62,7 +71,7 @@ public class NvipEmailMain {
      * Reused function to send email
      * @param emailAddress
      */
-    private static void sendEmail(String emailAddress) {
+    private static void sendEmail(String emailAddress, String name, HashMap<String, String> newCves) {
         try {
             logger.info("Sending notifcation to " + emailAddress);
             Properties prop = System.getProperties();
@@ -89,6 +98,9 @@ public class NvipEmailMain {
             IOUtils.copy(new FileInputStream(new File("./src/main/java/edu/rit/se/nvip/email/emailTemplate.html")), writer);
 
             Document doc = Jsoup.parse(writer.toString());
+
+            Element header = doc.select("main_header").first();
+            header.appendText(" "+name);
 
             message.setContent(writer.toString(), "text/html");
             Transport.send(message);
