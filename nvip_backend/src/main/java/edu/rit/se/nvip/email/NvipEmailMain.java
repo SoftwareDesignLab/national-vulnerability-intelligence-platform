@@ -25,6 +25,7 @@ public class NvipEmailMain {
 
     private static final Logger logger = LogManager.getLogger(NvipEmailMain.class.getSimpleName());
     private static final DatabaseHelper db = DatabaseHelper.getInstance();
+    private static final String CVEHTML = "";
 
     public static void main(String[] args) {
         logger.info("Emails module started!");
@@ -101,6 +102,11 @@ public class NvipEmailMain {
 
             Element header = doc.select("main_header").first();
             header.appendText(" "+name);
+
+            for (String cveId : newCves.keySet()) {
+                Element cveList = doc.select("cve_list").first();
+                cveList.append("");
+            }
 
             message.setContent(writer.toString(), "text/html");
             Transport.send(message);
