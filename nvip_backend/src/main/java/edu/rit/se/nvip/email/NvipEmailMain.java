@@ -1,7 +1,6 @@
 package edu.rit.se.nvip.email;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
-import it.unimi.dsi.fastutil.Hash;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,7 +104,13 @@ public class NvipEmailMain {
 
             for (String cveId : newCves.keySet()) {
                 Element cveList = doc.select("cve_list").first();
-                cveList.append("");
+                cveList.append("<li>\n" +
+                        "                <h3 class=\"cve_id\">" + cveId + "</h3>\n" +
+                        "                <p class=\"cve_description\">" + newCves.get(cveId) + "</p>\n" +
+                        "                <button type=\"button\" class=\"btn btn-primary accept_cve\">ACCEPT CVE</button>\n" +
+                        "                <button type=\"button\" class=\"btn btn-primary accept_cve\">REJECT CVE</button>\n" +
+                        "                <button type=\"button\" class=\"btn btn-primary accept_cve\">REVIEW CVE</button>\n" +
+                        "            </li>");
             }
 
             message.setContent(writer.toString(), "text/html");
