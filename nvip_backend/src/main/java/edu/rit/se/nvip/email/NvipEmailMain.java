@@ -60,10 +60,11 @@ public class NvipEmailMain {
             logger.info("Sending notifcation to " + emailAddress);
             Properties prop = System.getProperties();
             prop.put("mail.smtp.auth", true);
-            prop.put("mail.smtp.starttls.enable", "false");
-            prop.put("mail.smtp.host", "smtp.mailtrap.io");
+            prop.put("mail.smtp.starttls.enable", "true");
+            prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+            prop.put("mail.smtp.host", "smtp.gmail.com");
             prop.put("mail.smtp.port", "25");
-            prop.put("mail.smtp.ssl.trust", "smtp.mailtrap.io");
+            prop.put("mail.smtp.debug", "true");
             Session session = Session.getDefaultInstance(prop,
                     new Authenticator() {
                         @Override
@@ -76,7 +77,7 @@ public class NvipEmailMain {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
             message.setSubject("Daily CVE Notification");
             message.setText("Hello There :D");
-            Transport.send(message, "PandaPickard@gmail.com", "Punda115");
+            Transport.send(message);
             logger.info("Message sent successfully!");
         } catch (Exception e) {
             logger.error(e.getMessage());
