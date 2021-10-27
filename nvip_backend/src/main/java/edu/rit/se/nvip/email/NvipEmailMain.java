@@ -1,11 +1,11 @@
 package edu.rit.se.nvip.email;
 
-
-
 import edu.rit.se.nvip.db.DatabaseHelper;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -86,9 +86,9 @@ public class NvipEmailMain {
             message.setSubject("Daily CVE Notification");
 
             StringWriter writer = new StringWriter();
-            IOUtils.copy(new FileInputStream(new File("home.html")), writer);
+            IOUtils.copy(new FileInputStream(new File("./src/main/java/edu/rit/se/nvip/email/emailTemplate.html")), writer);
 
-            
+            Document doc = Jsoup.parse(writer.toString());
 
             message.setContent(writer.toString(), "text/html");
             Transport.send(message);
