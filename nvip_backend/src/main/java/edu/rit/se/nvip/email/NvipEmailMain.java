@@ -1,12 +1,19 @@
 package edu.rit.se.nvip.email;
 
+
+
 import edu.rit.se.nvip.db.DatabaseHelper;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.StringWriter;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,11 +79,18 @@ public class NvipEmailMain {
                             return new PasswordAuthentication("username", "password");
                         }
                     });
+
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("PandaPickard@gmail.com"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
             message.setSubject("Daily CVE Notification");
-            message.setText("Hello There :D");
+
+            StringWriter writer = new StringWriter();
+            IOUtils.copy(new FileInputStream(new File("home.html")), writer);
+
+            
+
+            message.setContent(writer.toString(), "text/html");
             Transport.send(message);
             logger.info("Message sent successfully!");
         } catch (Exception e) {
