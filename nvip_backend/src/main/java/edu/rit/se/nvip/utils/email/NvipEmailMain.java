@@ -89,7 +89,7 @@ public class NvipEmailMain {
                     new Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication("PandaPickard@gmail.com", "Punda115");
+                            return new PasswordAuthentication("username", "Password");
                         }
                     });
 
@@ -121,12 +121,20 @@ public class NvipEmailMain {
             //Apply HTML for every CVE
             for (String cveId : newCves.keySet()) {
                 Element cveList = doc.select(".cve_list").first();
-                cveList.append("<h3 class=\"cve_id\">" + cveId + "</h3>\n" +
-                        "   <p class=\"cve_description\">" + newCves.get(cveId) + "</p>\n" +
+                cveList.append("<h3 class=\"cve_id\">" + cveId + "</h3>" +
+                        "   <p class=\"cve_description\">" + newCves.get(cveId) + "</p>" +
+                        "   <span><table><tr><td class=\"btn btn-primary\">" +
+                        "       <div class=\"review_button\">" +
+                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">ACCEPT CVE</a>" +
+                        "       </div></td></tr></table>" +
                         "   <table><tr><td class=\"btn btn-primary\">" +
-                        "   <div class=\"review_button\">" +
-                        "   <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">REVIEW CVE</a>" +
-                        "   </div></td></tr></table>");
+                        "       <div class=\"review_button\">" +
+                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">REJECT CVE</a>" +
+                        "       </div></td></tr></table>" +
+                        "   <table><tr><td class=\"btn btn-primary\">" +
+                        "       <div class=\"review_button\">" +
+                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">REVIEW CVE</a>" +
+                        "   </div></td></tr></table></span>");
             }
 
             MimeBodyPart body = new MimeBodyPart();
