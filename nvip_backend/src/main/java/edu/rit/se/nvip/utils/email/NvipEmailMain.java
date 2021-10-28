@@ -10,7 +10,9 @@ import org.jsoup.nodes.Element;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,6 +76,8 @@ public class NvipEmailMain {
     private static void sendEmail(String emailAddress, String name, HashMap<String, String> newCves) {
         try {
             logger.info("Sending notifcation to " + emailAddress);
+
+            //Initialize Session
             Properties prop = System.getProperties();
             prop.put("mail.smtp.auth", true);
             prop.put("mail.smtp.starttls.enable", "true");
@@ -85,35 +89,52 @@ public class NvipEmailMain {
                     new Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication("username", "password");
+                            return new PasswordAuthentication("PandaPickard@gmail.com", "Punda115");
                         }
                     });
 
+            //Prepare Message
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("PandaPickard@gmail.com"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
             message.setSubject("Daily CVE Notification");
 
+            MimeMultipart content = new MimeMultipart("related");
+
+            //Prepare NVIP Logo image
+            MimeBodyPart image = new MimeBodyPart();
+            image.setHeader("Content-ID", "AbfKrOw");
+            image.setDisposition(MimeBodyPart.INLINE);
+            image.attachFile("./src/main/java/edu/rit/se/nvip/utils/email/emailTemplate.html");
+            content.addBodyPart(image);
+
+            //Collect HTML Template
             StringWriter writer = new StringWriter();
             IOUtils.copy(new FileInputStream(new File("./src/main/java/edu/rit/se/nvip/utils/email/emailTemplate.html")), writer);
 
             Document doc = Jsoup.parse(writer.toString());
 
+            //Add users name to email header
             Element header = doc.select(".main_header").first();
             header.appendText(" "+name);
 
+            //Apply HTML for every CVE
             for (String cveId : newCves.keySet()) {
                 Element cveList = doc.select(".cve_list").first();
-                cveList.append("<li>\n" +
-                        "                <h3 class=\"cve_id\">" + cveId + "</h3>\n" +
-                        "                <p class=\"cve_description\">" + newCves.get(cveId) + "</p>\n" +
-                        "                <button type=\"button\" class=\"btn btn-primary accept_cve\">ACCEPT CVE</button>\n" +
-                        "                <button type=\"button\" class=\"btn btn-primary accept_cve\">REJECT CVE</button>\n" +
-                        "                <button type=\"button\" class=\"btn btn-primary accept_cve\">REVIEW CVE</button>\n" +
-                        "            </li>");
+                cveList.append("<h3 class=\"cve_id\">" + cveId + "</h3>\n" +
+                        "   <p class=\"cve_description\">" + newCves.get(cveId) + "</p>\n" +
+                        "   <table><tr><td class=\"btn btn-primary\">" +
+                        "   <div class=\"review_button\">" +
+                        "   <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">REVIEW CVE</a>" +
+                        "   </div></td></tr></table>");
             }
 
+            MimeBodyPart body = new MimeBodyPart();
+            body.setContent(doc.toString(), "text/html; charset=ISO-8859-1");
+            content.addBodyPart(body);
+
             message.setContent(doc.toString(), "text/html");
+
             Transport.send(message);
             logger.info("Message sent successfully!");
         } catch (Exception e) {
