@@ -193,7 +193,6 @@ public class VendorAssessment {
 	 * each vendor.
 	 * 
 	 * @param vendorList
-	 * @param vendorData
 	 */
 	public void calcVendorMetrics(String[] vendorList) {
 		CsvUtils csvUtils = new CsvUtils();
