@@ -133,7 +133,7 @@ public class NvipEmailMain {
                         "       </div></td></tr></table>" +
                         "   <table><tr><td class=\"btn btn-primary\">" +
                         "       <div class=\"review_button\">" +
-                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">REVIEW CVE</a>" +
+                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review?cveid="+cveId+"\">REVIEW CVE</a>" +
                         "   </div></td></tr></table></span>");
             }
 
