@@ -1,4 +1,4 @@
-package edu.rit.se.nvip.email;
+package edu.rit.se.nvip.utils.email;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
 import org.apache.commons.io.IOUtils;
@@ -95,7 +95,7 @@ public class NvipEmailMain {
             message.setSubject("Daily CVE Notification");
 
             StringWriter writer = new StringWriter();
-            IOUtils.copy(new FileInputStream(new File("./src/main/java/edu/rit/se/nvip/email/emailTemplate.html")), writer);
+            IOUtils.copy(new FileInputStream(new File("./src/main/java/edu/rit/se/nvip/utils/email/emailTemplate.html")), writer);
 
             Document doc = Jsoup.parse(writer.toString());
 
