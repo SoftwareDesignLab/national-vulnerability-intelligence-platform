@@ -89,7 +89,7 @@ public class NvipEmailMain {
                     new Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication("Username", "password");
+                            return new PasswordAuthentication("username", "password");
                         }
                     });
 
