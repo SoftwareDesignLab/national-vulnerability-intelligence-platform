@@ -49,7 +49,7 @@ public class CveReconciler {
 		try {
 			int year = Integer.parseInt(arr[1]);
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-			if (year >= 1999 && year <= currentYear)
+			if (year >= 1999 && year <= (currentYear + 1))
 				rangeOk = true;
 		} catch (NumberFormatException e) {
 			logger.error("Error!" + e.toString());
@@ -70,7 +70,8 @@ public class CveReconciler {
 	public HashMap<String, CompositeVulnerability> addCrawledCveToExistingCveHashMap(HashMap<String, CompositeVulnerability> existingCveMap, CompositeVulnerability newVuln, boolean bLogInfo) {
 		if (existingCveMap.containsKey(newVuln.getCveId())) {
 			if (bLogInfo)
-				logger.info("*** Existing CVE-ID: " + newVuln.getCveId() + "\tCVE:URL: " + newVuln.getSourceURL().get(0) + "\tPlatform: " + newVuln.getPlatform() + "\tDescription: " + newVuln.getDescription());
+				logger.info("*** Existing CVE-ID: " + newVuln.getCveId() + "\tCVE:URL: " + newVuln.getSourceURL().get(0) + "\tPlatform: " + newVuln.getPlatform() + "\tDescription: "
+						+ newVuln.getDescription());
 			CompositeVulnerability existingVuln = existingCveMap.get(newVuln.getCveId());
 
 			// reconcile, check if we have better attribute values and update?
@@ -81,7 +82,8 @@ public class CveReconciler {
 		} else {
 			existingCveMap.put(newVuln.getCveId(), newVuln);
 			if (bLogInfo)
-				logger.info("***  New  ** CVE-ID: " + newVuln.getCveId() + "\tCVE:URL: " + newVuln.getSourceURL() + "\tPlatform: " + newVuln.getPlatform() + "\tDescription: " + newVuln.getDescription());
+				logger.info(
+						"***  New  ** CVE-ID: " + newVuln.getCveId() + "\tCVE:URL: " + newVuln.getSourceURL() + "\tPlatform: " + newVuln.getPlatform() + "\tDescription: " + newVuln.getDescription());
 		}
 
 		return existingCveMap;

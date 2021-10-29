@@ -26,6 +26,7 @@ package edu.rit.se.nvip.cveprocess;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -103,6 +104,7 @@ public class CveProcessor {
 				if (!cveUtils.isCveIdCorrect(vuln.getCveId())) {
 					String note = "Wrong CVE ID! Check for typo? ";
 					vuln.setNvipNote(note);
+					logger.warn("The CVE ID {} found at {} does not appear to be valid!", vuln.getCveId(), Arrays.deepToString(vuln.getSourceURL().toArray()));
 					continue; // skip this CVE
 				}
 
@@ -110,11 +112,11 @@ public class CveProcessor {
 				 * [CVE does not exist in the NVD] OR [it is reserved etc. in NVD but NVIP found
 				 * a description for it]
 				 */
-				if (!hashMapNvdCve.containsKey(vuln.getCveId()) || vuln.isReservedCveHasNewDescription()) {
+				if (!hashMapNvdCve.containsKey(vuln.getCveId()) || vuln.isFoundNewDescriptionForReservedCve()) {
 					vuln.setNvdSearchResult("NA");
 
 					int status = 0;
-					if (vuln.isReservedCveHasNewDescription())
+					if (vuln.isFoundNewDescriptionForReservedCve())
 						status = -1;
 
 					vuln.setNvdStatus(status);
@@ -125,25 +127,26 @@ public class CveProcessor {
 				 * [CVE does not exist in the MITRE] OR [it is reserved etc. in MITRE but NVIP
 				 * found a description for it]
 				 */
-				if (!hashMapMitreCve.containsKey(vuln.getCveId()) || vuln.isReservedCveHasNewDescription()) {
+				if (!hashMapMitreCve.containsKey(vuln.getCveId()) || vuln.isFoundNewDescriptionForReservedCve()) {
 					vuln.setNvdSearchResult("NA");
 
 					int status = 0;
-					if (vuln.isReservedCveHasNewDescription())
+					if (vuln.isFoundNewDescriptionForReservedCve())
 						status = -1;
 
 					vuln.setMitreStatus(status);
 					newCVEDataNotInMitre.add(vuln);
 				}
 
-				if ((!hashMapMitreCve.containsKey(vuln.getCveId()) && !hashMapNvdCve.containsKey(vuln.getCveId())) || vuln.isReservedCveHasNewDescription()) {
+				// not in both?
+				if (!vuln.doesExistInNvd() && !vuln.doesExistInMitre()) {
 					newCVEDataNotInNvdAndMitre.add(vuln);
 				}
 
 				// add to all CVEs list
 				allCveData.add(vuln);
 			} catch (Exception e) {
-				logger.error("Error while processing vulnerability: " + vuln.toString());
+				logger.error("Error while checking against NVD/MITRE, CVE: " + vuln.toString());
 			}
 		} // for
 

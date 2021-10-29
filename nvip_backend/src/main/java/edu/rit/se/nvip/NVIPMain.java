@@ -60,6 +60,7 @@ import edu.rit.se.nvip.productnameextractor.AffectedProductIdentifier;
 import edu.rit.se.nvip.utils.PrepareDataForWebUi;
 import edu.rit.se.nvip.utils.CveUtils;
 import edu.rit.se.nvip.utils.MyProperties;
+import edu.rit.se.nvip.utils.NlpUtil;
 import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.rit.se.nvip.utils.UtilHelper;
 
@@ -184,6 +185,8 @@ public class NVIPMain {
 		HashMap<String, CompositeVulnerability> cveHashMapAll = new HashMap<>(); // merged CVEs
 		cveHashMapAll.putAll(cveHashMapScrapedFromCNAs); // include all CVEs from CNAs
 
+		NlpUtil nlpUtil = new NlpUtil();
+
 		int cveCountReservedInGit = 0;
 		int cveCountFoundOnlyInGit = 0;
 		// iterate over CVEs from Git
@@ -202,14 +205,17 @@ public class NVIPMain {
 				CompositeVulnerability vulnCna = cveHashMapAll.get(cveId);
 				String newDescr = "";
 
-				//if (vulnGit.getDescription().contains(reservedStr)) {
+				// if (vulnGit.getDescription().contains(reservedStr)) {
 				if (CveUtils.isCveReservedEtc(vulnGit.getDescription())) {
 					/**
 					 * CVE is reserved/rejected etc in Mitre but nvip found a description for it.
 					 */
 					newDescr = reservedStr + " - NVIP Description: " + vulnCna.getDescription();
 					cveCountReservedInGit++;
-					vulnCna.setReservedCveHasNewDescription(true);
+
+					// did we find garbage or valid description?
+					if (nlpUtil.sentenceDetect(vulnCna.getDescription()) != null)
+						vulnCna.setFoundNewDescriptionForReservedCve(true);
 				} else {
 					newDescr = vulnGit.getDescription(); // overwriting, assuming Git descriptions are worded better!
 				}
