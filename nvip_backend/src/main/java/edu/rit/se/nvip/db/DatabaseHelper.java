@@ -100,6 +100,7 @@ public class DatabaseHelper {
 	private String updateMitreStatusSql = "UPDATE Vulnerability SET exists_at_mitre = ? WHERE cve_id = ?;";
 	private String selectVulnSql = "SELECT * FROM Vulnerability;";
 	private String deleteVulnSql = "DELETE FROM Vulnerability WHERE cve_id=?;";
+	private String insertCveStatusSql = "INSERT INTO cvestatuschange (vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code, cve_description, time_gap_recorded, time_gap_hours, status_date) VALUES (?,?,?,?,?,?,?,?,?);";
 
 	private String insertVulnSourceSql = "INSERT INTO VulnSourceUrl (cve_id, url) VALUES (?,?);";
 	private String selectVulnSourceSql = "SELECT * FROM VulnSourceUrl;";
@@ -894,6 +895,7 @@ public class DatabaseHelper {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e1) {
+			e1.printStackTrace();
 			// you may still continue updating other vuln attribs below!
 			logger.error("Error while updating Vuln: {} Exception: {}", vuln, e1);
 
@@ -1063,7 +1065,7 @@ public class DatabaseHelper {
 				int hours = 0;
 				if (recordTimeGap) {
 					hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
-					if (!vulnAlreadyInNvd && vuln.doesExistInNvd() && recordTimeGap) {
+					if (!vulnAlreadyInNvd && vuln.doesExistInNvd()) {
 						// if it did not exist in NVD, but found now, record time gap!
 						vuln.setTimeGapNvd(hours);
 						pstmt = connection.prepareStatement(updateNvdTimeGapSql);
@@ -1073,8 +1075,11 @@ public class DatabaseHelper {
 
 						logger.info("CVE added to NVD! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
 						timeGapFound = true;
+
+						// record time gap
+						recordCveStatusChange(vuln, connection, existingAttribs, "NVD", existingAttribs.getNvdStatus(), vuln.getNvdStatus(), true, hours);
 					}
-					if (!vulnAlreaadyInMitre && vuln.doesExistInMitre() && recordTimeGap) {
+					if (!vulnAlreaadyInMitre && vuln.doesExistInMitre()) {
 						// if it did not exist in MITRE, but found now, record time gap!
 						vuln.setTimeGapMitre(hours);
 						pstmt = connection.prepareStatement(updateMitreTimeGapSql);
@@ -1084,7 +1089,17 @@ public class DatabaseHelper {
 
 						logger.info("CVE added to MITRE! There is {} hours gap!\tCve data: {}", hours, vuln.toString());
 						timeGapFound = true;
+
+						// record time gap
+						recordCveStatusChange(vuln, connection, existingAttribs, "MITRE", existingAttribs.getMitreStatus(), vuln.getMitreStatus(), true, hours);
 					}
+				} else {
+					// just a status change without a time-gap record
+					if (nvdStatusChanged)
+						recordCveStatusChange(vuln, connection, existingAttribs, "NVD", existingAttribs.getNvdStatus(), vuln.getNvdStatus(), false, 0);
+
+					if (mitreStatusChanged)
+						recordCveStatusChange(vuln, connection, existingAttribs, "MITRE", existingAttribs.getMitreStatus(), vuln.getMitreStatus(), false, 0);
 				}
 
 				return timeGapFound;
@@ -1096,6 +1111,45 @@ public class DatabaseHelper {
 		} // if nvdOrMitreStatusChanged
 
 		return false;
+	}
+
+	/**
+	 * Record CVE status changes in NVD/MITRE
+	 * 
+	 * @param vuln
+	 * @param connection
+	 * @param existingAttribs
+	 * @param comparedAgainst
+	 * @param oldStatus
+	 * @param newStatus
+	 * @param timeGapFound
+	 * @param timeGap
+	 */
+	private boolean recordCveStatusChange(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs, String comparedAgainst, int oldStatus, int newStatus, boolean timeGapFound,
+			int timeGap) {
+		// vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code,
+		// cve_description, time_gap_recorded, time_gap_hours, status_date
+		try (PreparedStatement pstmt = connection.prepareStatement(insertCveStatusSql);) {
+			pstmt.setInt(1, existingAttribs.getVulnID());
+			pstmt.setString(2, vuln.getCveId());
+			pstmt.setString(3, comparedAgainst);
+			pstmt.setInt(4, oldStatus);
+			pstmt.setInt(5, newStatus);
+			pstmt.setString(6, vuln.getDescription());
+
+			int timeGapRecorded = (timeGapFound) ? 1 : 0;
+			pstmt.setInt(7, timeGapRecorded);
+			pstmt.setInt(8, timeGap);
+			pstmt.setDate(9, new java.sql.Date(longDateFormat.parse(vuln.getLastModifiedDate()).getTime()));
+
+			pstmt.executeUpdate();
+			logger.info("Recorded CVE status change for CVE {}", vuln.getCveId());
+		} catch (Exception e) {
+			logger.error("Error recording CVE status change for {}", vuln.getCveId());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -2305,7 +2359,7 @@ public class DatabaseHelper {
 			PreparedStatement pstmt = connection.prepareStatement(selectCVEIdSql);
 			pstmt.setInt(1, Integer.parseInt(vulnId));
 			ResultSet rs = pstmt.executeQuery();
-      
+
 			if (rs.next()) {
 				cve_id = rs.getString("cve_id");
 			}
@@ -2341,19 +2395,19 @@ public class DatabaseHelper {
 
 	/**
 	 * Collects a list of user emails
+	 * 
 	 * @return
 	 */
 	public ArrayList<String> getEmails() {
 
 		ArrayList<String> results = new ArrayList<>();
 
-		try (Connection connection = getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(selEmailsSql);) {
+		try (Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement(selEmailsSql);) {
 
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				results.add(rs.getString("email")+";!;~;#&%:;!"+rs.getString("first_name"));
+				results.add(rs.getString("email") + ";!;~;#&%:;!" + rs.getString("first_name"));
 			}
 
 		} catch (Exception e) {
@@ -2366,17 +2420,17 @@ public class DatabaseHelper {
 
 	/**
 	 * Collects CVE ID and Description with the given run_date_time
+	 * 
 	 * @param runDateTime
 	 * @return
 	 */
 	public HashMap<String, String> getCVEByRunDate(Date runDateTime) {
 
-		//Tomorrows date
-		java.sql.Date endpoint  = new java.sql.Date(runDateTime.getTime() + (86400000));
+		// Tomorrows date
+		java.sql.Date endpoint = new java.sql.Date(runDateTime.getTime() + (86400000));
 		HashMap<String, String> data = new HashMap<>();
 
-		try (Connection connection = getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(getCVEByDate);) {
+		try (Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement(getCVEByDate);) {
 
 			pstmt.setDate(1, (java.sql.Date) runDateTime);
 			pstmt.setDate(2, endpoint);
@@ -2390,10 +2444,7 @@ public class DatabaseHelper {
 			logger.error(e.toString());
 		}
 
-
 		return data;
 	}
-
-
 
 }
