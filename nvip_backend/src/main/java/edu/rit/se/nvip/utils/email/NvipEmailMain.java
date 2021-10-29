@@ -33,7 +33,7 @@ public class NvipEmailMain {
         if (args.length == 0) {
             sendNotificationEmail();
         } else {
-            sendNotificationEmail(args[0], args[1]);
+            sendNotificationEmail(args[0], args[1], args[2]);
         }
         logger.info("Email module finished!");
     }
@@ -50,7 +50,7 @@ public class NvipEmailMain {
 
                 String[] userData = info.split(";!;~;#&%:;!");
 
-                sendEmail(userData[0], userData[1], newCves);
+                sendEmail(userData[0], userData[1], newCves, "http://cve.live/");
             }
         }
 
@@ -61,10 +61,10 @@ public class NvipEmailMain {
      * Send notification to specified email
      * @param emailAddress
      */
-    public static void sendNotificationEmail(String emailAddress, String name) {
+    public static void sendNotificationEmail(String emailAddress, String name, String location) {
         HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
         if (newCves.size() > 0) {
-            sendEmail(emailAddress, name, newCves);
+            sendEmail(emailAddress, name, newCves, location);
         }
     }
 
@@ -73,7 +73,7 @@ public class NvipEmailMain {
      * Reused function to send email
      * @param emailAddress
      */
-    private static void sendEmail(String emailAddress, String name, HashMap<String, String> newCves) {
+    private static void sendEmail(String emailAddress, String name, HashMap<String, String> newCves, String location) {
         try {
             logger.info("Sending notifcation to " + emailAddress);
 
@@ -89,7 +89,7 @@ public class NvipEmailMain {
                     new Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication("username", "Password");
+                            return new PasswordAuthentication("Username", "password");
                         }
                     });
 
@@ -125,15 +125,15 @@ public class NvipEmailMain {
                         "   <p class=\"cve_description\">" + newCves.get(cveId) + "</p>" +
                         "   <span><table><tr><td class=\"btn btn-primary\">" +
                         "       <div class=\"review_button\">" +
-                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">ACCEPT CVE</a>" +
+                        "           <a style=\"color: #fff; text-decoration: none\" href=\"" + location + "#/review?cveid=" + cveId + "&verd=accept\">ACCEPT CVE</a>" +
+                        "       </div></td></tr></table>" + 
+                        "   <table><tr><td class=\"btn btn-primary\">" +
+                        "       <div class=\"review_button\">" +
+                        "           <a style=\"color: #fff; text-decoration: none\" href=\"" + location + "#/review?cveid=" + cveId + "&verd=reject\">REJECT CVE</a>" +
                         "       </div></td></tr></table>" +
                         "   <table><tr><td class=\"btn btn-primary\">" +
                         "       <div class=\"review_button\">" +
-                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review\">REJECT CVE</a>" +
-                        "       </div></td></tr></table>" +
-                        "   <table><tr><td class=\"btn btn-primary\">" +
-                        "       <div class=\"review_button\">" +
-                        "           <a style=\"color: #fff; text-decoration: none\" href=\"http://cve.live/#/review?cveid="+cveId+"\">REVIEW CVE</a>" +
+                        "           <a style=\"color: #fff; text-decoration: none\" href=\"" + location + "#/review?cveid=" + cveId + "\">REVIEW CVE</a>" +
                         "   </div></td></tr></table></span>");
             }
 
