@@ -26,14 +26,13 @@ public class NvipEmailMain {
 
     private static final Logger logger = LogManager.getLogger(NvipEmailMain.class.getSimpleName());
     private static final DatabaseHelper db = DatabaseHelper.getInstance();
-    private static final String CVEHTML = "";
 
     public static void main(String[] args) {
         logger.info("Emails module started!");
         if (args.length == 0) {
             sendNotificationEmail();
         } else {
-            sendNotificationEmail(args[0], args[1], args[2]);
+            sendNotificationEmail(args[0], args[1]);
         }
         logger.info("Email module finished!");
     }
@@ -42,15 +41,16 @@ public class NvipEmailMain {
      * Sends notification email to all emails in DB
      */
     public static void sendNotificationEmail() {
-        ArrayList<String> data = db.getEmails();
+        ArrayList<String> data = db.getEmailsRoleId();
         HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
 
         if (newCves.size() > 0) {
             for (String info : data) {
 
                 String[] userData = info.split(";!;~;#&%:;!");
-
-                sendEmail(userData[0], userData[1], newCves, "http://cve.live/");
+                if (Integer.parseInt(userData[2]) == 1) {
+                    sendEmail(userData[0], userData[1], newCves, "http://cve.live/");
+                }
             }
         }
 
@@ -59,12 +59,17 @@ public class NvipEmailMain {
 
     /**
      * Send notification to specified email
-     * @param emailAddress
+     * @param username
      */
-    public static void sendNotificationEmail(String emailAddress, String name, String location) {
+    public static void sendNotificationEmail(String username, String location) {
         HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
-        if (newCves.size() > 0) {
-            sendEmail(emailAddress, name, newCves, location);
+        ArrayList<String> userInfo = db.getEmailRoleIdByUser(username);
+
+        if (!userInfo.isEmpty()) {
+            String[] userData = userInfo.get(0).split(";!;~;#&%:;!");
+            if (newCves.size() > 0 && Integer.parseInt(userData[2]) == 1) {
+                sendEmail(userData[0], userData[1], newCves, location);
+            }
         }
     }
 
@@ -118,8 +123,14 @@ public class NvipEmailMain {
             Element header = doc.select(".main_header").first();
             header.appendText(" "+name);
 
+            int i = 0;
             //Apply HTML for every CVE
             for (String cveId : newCves.keySet()) {
+
+                if (i >= 20) {
+                    break;
+                }
+
                 Element cveList = doc.select(".cve_list").first();
                 cveList.append("<h3 class=\"cve_id\">" + cveId + "</h3>" +
                         "   <p class=\"cve_description\">" + newCves.get(cveId) + "</p>" +
@@ -135,6 +146,7 @@ public class NvipEmailMain {
                         "       <div class=\"review_button\">" +
                         "           <a style=\"color: #fff; text-decoration: none\" href=\"" + location + "#/review?cveid=" + cveId + "\">REVIEW CVE</a>" +
                         "   </div></td></tr></table></span>");
+                i++;
             }
 
             MimeBodyPart body = new MimeBodyPart();
