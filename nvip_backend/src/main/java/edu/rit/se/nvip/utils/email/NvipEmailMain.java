@@ -14,9 +14,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +30,7 @@ public class NvipEmailMain {
         if (args.length == 0) {
             sendNotificationEmail();
         } else {
-            sendNotificationEmail(args[0], args[1]);
+            sendNotificationEmail(args[0]);
         }
         logger.info("Email module finished!");
     }
@@ -49,7 +47,7 @@ public class NvipEmailMain {
 
                 String[] userData = info.split(";!;~;#&%:;!");
                 if (Integer.parseInt(userData[2]) == 1) {
-                    sendEmail(userData[0], userData[1], newCves, "http://cve.live/");
+                    sendEmail(userData[0], userData[1], newCves);
                 }
             }
         }
@@ -59,16 +57,17 @@ public class NvipEmailMain {
 
     /**
      * Send notification to specified email
+     *
      * @param username
      */
-    public static void sendNotificationEmail(String username, String location) {
+    public static void sendNotificationEmail(String username) {
         HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
         ArrayList<String> userInfo = db.getEmailRoleIdByUser(username);
 
         if (!userInfo.isEmpty()) {
             String[] userData = userInfo.get(0).split(";!;~;#&%:;!");
             if (newCves.size() > 0 && Integer.parseInt(userData[2]) == 1) {
-                sendEmail(userData[0], userData[1], newCves, location);
+                sendEmail(userData[0], userData[1], newCves);
             }
         }
     }
@@ -76,9 +75,10 @@ public class NvipEmailMain {
 
     /**
      * Reused function to send email
+     *
      * @param emailAddress
      */
-    private static void sendEmail(String emailAddress, String name, HashMap<String, String> newCves, String location) {
+    private static void sendEmail(String emailAddress, String name, HashMap<String, String> newCves) {
         try {
             logger.info("Sending notifcation to " + emailAddress);
 
@@ -90,17 +90,27 @@ public class NvipEmailMain {
             prop.put("mail.smtp.host", "smtp.gmail.com");
             prop.put("mail.smtp.port", "25");
             prop.put("mail.smtp.debug", "true");
-            Session session = Session.getDefaultInstance(prop,
-                    new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication("username", "password");
-                        }
-                    });
 
+
+            HashMap<String, String> login = getPropValues();
+            Session session;
+
+            //Check if the properties are valid, if not then do not continue
+            if (!login.isEmpty()) {
+                session = Session.getDefaultInstance(prop,
+                        new Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(login.get("email"), login.get("password"));
+                            }
+                        });
+            } else {
+                logger.error("Properties not found for email login");
+                return;
+            }
             //Prepare Message
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("PandaPickard@gmail.com"));
+            message.setFrom(new InternetAddress(login.get("email")));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
             message.setSubject("Daily CVE Notification");
 
@@ -121,9 +131,11 @@ public class NvipEmailMain {
 
             //Add users name to email header
             Element header = doc.select(".main_header").first();
-            header.appendText(" "+name);
+            header.appendText(" " + name);
 
             int i = 0;
+            String location = login.get("location");
+
             //Apply HTML for every CVE
             for (String cveId : newCves.keySet()) {
 
@@ -137,7 +149,7 @@ public class NvipEmailMain {
                         "   <span><table><tr><td class=\"btn btn-primary\">" +
                         "       <div class=\"review_button\">" +
                         "           <a style=\"color: #fff; text-decoration: none\" href=\"" + location + "#/review?cveid=" + cveId + "&verd=accept\">ACCEPT CVE</a>" +
-                        "       </div></td></tr></table>" + 
+                        "       </div></td></tr></table>" +
                         "   <table><tr><td class=\"btn btn-primary\">" +
                         "       <div class=\"review_button\">" +
                         "           <a style=\"color: #fff; text-decoration: none\" href=\"" + location + "#/review?cveid=" + cveId + "&verd=reject\">REJECT CVE</a>" +
@@ -158,8 +170,31 @@ public class NvipEmailMain {
             Transport.send(message);
             logger.info("Message sent successfully!");
         } catch (Exception e) {
-            logger.error(e);
+            logger.error(e.toString());
         }
     }
 
+    /**
+     * Method used to extract email login properties from emailConfig.properties
+     * @return
+     * @throws IOException
+     */
+    private static HashMap<String, String> getPropValues() {
+
+        HashMap<String, String> props = new HashMap<>();
+
+        try {
+            Properties properties = new Properties();
+            FileInputStream input = new FileInputStream(new File("src/main/java/edu/rit/se/nvip/utils/email/emailConfig.properties"));
+            properties.load(input);
+            props.put("email", properties.getProperty("Email"));
+            props.put("password", properties.getProperty("Password"));
+            props.put("location", properties.getProperty("location"));
+            input.close();
+        } catch (Exception e) {
+            logger.error(e.toString());
+        }
+
+        return props;
+    }
 }
