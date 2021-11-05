@@ -117,15 +117,17 @@ public class NvipEmailMain {
             MimeMultipart content = new MimeMultipart("related");
 
             //Prepare NVIP Logo image
+            /*
             MimeBodyPart image = new MimeBodyPart();
             image.setHeader("Content-ID", "AbfKrOw");
             image.setDisposition(MimeBodyPart.INLINE);
-            image.attachFile("./src/main/java/edu/rit/se/nvip/utils/email/emailTemplate.html");
+            image.attachFile("./src/main/resources/email/emailTemplate.html");
             content.addBodyPart(image);
+            */
 
             //Collect HTML Template
             StringWriter writer = new StringWriter();
-            IOUtils.copy(new FileInputStream(new File("./src/main/java/edu/rit/se/nvip/utils/email/emailTemplate.html")), writer);
+            IOUtils.copy(new FileInputStream(new File("./src/main/resources/email/emailTemplate.html")), writer);
 
             Document doc = Jsoup.parse(writer.toString());
 
@@ -185,7 +187,7 @@ public class NvipEmailMain {
 
         try {
             Properties properties = new Properties();
-            FileInputStream input = new FileInputStream(new File("src/main/java/edu/rit/se/nvip/utils/email/emailConfig.properties"));
+            FileInputStream input = new FileInputStream(new File("src/main/resources/email/emailConfig.properties"));
             properties.load(input);
             props.put("email", properties.getProperty("Email"));
             props.put("password", properties.getProperty("Password"));
