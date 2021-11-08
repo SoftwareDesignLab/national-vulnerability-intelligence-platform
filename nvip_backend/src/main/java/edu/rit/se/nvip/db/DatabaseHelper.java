@@ -171,7 +171,8 @@ public class DatabaseHelper {
 	private String insertExploitSql = "INSERT INTO Exploit (vuln_id, cve_id, publisher_id, publish_date, publisher_url, description, exploit_code, nvip_record_date) VALUES (?,?,?,?,?,?,?,?);";
 	private String deleteExploitSql = "DELETE FROM Exploit WHERE vuln_id=?;";
 
-	private String selEmailsSql = "SELECT email, first_name FROM user;";
+	private String selEmailsSql = "SELECT email, role_id, first_name FROM user;";
+	private String selEmailsByUserNameSql = "SELECT email, role_id, first_name FROM user WHERE user_name = ?";
 	private String getCVEByDate = "SELECT cve_id, description FROM vulnerabilityaggregate WHERE run_date_time >= ? AND run_date_time < ?";
 
 	private static DatabaseHelper databaseHelper = null;
@@ -2399,7 +2400,7 @@ public class DatabaseHelper {
 	 * 
 	 * @return
 	 */
-	public ArrayList<String> getEmails() {
+	public ArrayList<String> getEmailsRoleId() {
 
 		ArrayList<String> results = new ArrayList<>();
 
@@ -2408,7 +2409,7 @@ public class DatabaseHelper {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				results.add(rs.getString("email") + ";!;~;#&%:;!" + rs.getString("first_name"));
+				results.add(rs.getString("email") + ";!;~;#&%:;!" + rs.getString("first_name") + ";!;~;#&%:;!" + rs.getInt("role_id"));
 			}
 
 		} catch (Exception e) {
@@ -2416,6 +2417,32 @@ public class DatabaseHelper {
 		}
 
 		return results;
+
+	}
+
+	/**
+	 * Obtains a users role Id by their email
+	 * @return
+	 */
+	public ArrayList<String> getEmailRoleIdByUser(String username) {
+
+		ArrayList<String> data = new ArrayList<>();
+
+		try (Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement(selEmailsByUserNameSql);) {
+
+			pstmt.setString(1, username);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			if  (rs.next()) {
+				data.add(rs.getString("email") + ";!;~;#&%:;!" + rs.getString("first_name") + ";!;~;#&%:;!" + rs.getInt("role_id"));
+			}
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+		return data;
 
 	}
 
