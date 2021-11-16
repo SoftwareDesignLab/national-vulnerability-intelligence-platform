@@ -1126,8 +1126,8 @@ public class DatabaseHelper {
 	 * @param timeGapFound
 	 * @param timeGap
 	 */
-	private boolean addToCveStatusChangeHistory(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs, String comparedAgainst, int oldStatus, int newStatus, boolean timeGapFound,
-			int timeGap) {
+	private boolean addToCveStatusChangeHistory(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs, String comparedAgainst, int oldStatus, int newStatus,
+			boolean timeGapFound, int timeGap) {
 		// vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code,
 		// cve_description, time_gap_recorded, time_gap_hours, status_date
 		try (PreparedStatement pstmt = connection.prepareStatement(insertCveStatusSql);) {
@@ -1147,7 +1147,7 @@ public class DatabaseHelper {
 			pstmt.executeUpdate();
 			logger.info("Recorded CVE status change for CVE {}", vuln.getCveId());
 		} catch (Exception e) {
-			logger.error("Error recording CVE status change for {}", vuln.getCveId());
+			logger.error("Error recording CVE status change for {}: {}", vuln.getCveId(), e);
 			return false;
 		}
 
@@ -2422,6 +2422,7 @@ public class DatabaseHelper {
 
 	/**
 	 * Obtains a users role Id by their email
+	 * 
 	 * @return
 	 */
 	public ArrayList<String> getEmailRoleIdByUser(String username) {
@@ -2434,7 +2435,7 @@ public class DatabaseHelper {
 
 			ResultSet rs = pstmt.executeQuery();
 
-			if  (rs.next()) {
+			if (rs.next()) {
 				data.add(rs.getString("email") + ";!;~;#&%:;!" + rs.getString("first_name") + ";!;~;#&%:;!" + rs.getInt("role_id"));
 			}
 
