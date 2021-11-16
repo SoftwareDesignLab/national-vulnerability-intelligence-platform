@@ -80,7 +80,7 @@ public class EmailDailyCveList {
 	 */
 	private void sendEmail(String emailAddress, String name, HashMap<String, String> newCves) {
 		try {
-			logger.info("Sending notifcation to " + emailAddress);
+			logger.info("Sending notification to " + emailAddress);
 
 			// Initialize Session
 			Properties prop = System.getProperties();
