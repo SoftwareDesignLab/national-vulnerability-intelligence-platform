@@ -187,7 +187,7 @@ public class NvipEmailMain {
 
         try {
             Properties properties = new Properties();
-            FileInputStream input = new FileInputStream(new File("src/main/resources/email/emailConfig.properties"));
+            FileInputStream input = new FileInputStream(new File("src/main/resources/nvip.properties"));
             properties.load(input);
             props.put("email", properties.getProperty("Email"));
             props.put("password", properties.getProperty("Password"));
