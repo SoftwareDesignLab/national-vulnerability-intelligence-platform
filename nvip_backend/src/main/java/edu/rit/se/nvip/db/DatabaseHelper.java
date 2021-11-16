@@ -100,7 +100,7 @@ public class DatabaseHelper {
 	private String updateMitreStatusSql = "UPDATE Vulnerability SET exists_at_mitre = ? WHERE cve_id = ?;";
 	private String selectVulnSql = "SELECT * FROM Vulnerability;";
 	private String deleteVulnSql = "DELETE FROM Vulnerability WHERE cve_id=?;";
-	private String insertCveStatusSql = "INSERT INTO cvestatuschange (vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code, cve_description, time_gap_recorded, time_gap_hours, status_date) VALUES (?,?,?,?,?,?,?,?,?);";
+	private String insertCveStatusSql = "INSERT INTO cvestatuschange (vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code, cve_description, time_gap_recorded, time_gap_hours, status_date, cve_create_date) VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 	private String insertVulnSourceSql = "INSERT INTO VulnSourceUrl (cve_id, url) VALUES (?,?);";
 	private String selectVulnSourceSql = "SELECT * FROM VulnSourceUrl;";
@@ -1078,7 +1078,7 @@ public class DatabaseHelper {
 						timeGapFound = true;
 
 						// record time gap
-						recordCveStatusChange(vuln, connection, existingAttribs, "NVD", existingAttribs.getNvdStatus(), vuln.getNvdStatus(), true, hours);
+						addToCveStatusChangeHistory(vuln, connection, existingAttribs, "NVD", existingAttribs.getNvdStatus(), vuln.getNvdStatus(), true, hours);
 					}
 					if (!vulnAlreaadyInMitre && vuln.doesExistInMitre()) {
 						// if it did not exist in MITRE, but found now, record time gap!
@@ -1092,15 +1092,15 @@ public class DatabaseHelper {
 						timeGapFound = true;
 
 						// record time gap
-						recordCveStatusChange(vuln, connection, existingAttribs, "MITRE", existingAttribs.getMitreStatus(), vuln.getMitreStatus(), true, hours);
+						addToCveStatusChangeHistory(vuln, connection, existingAttribs, "MITRE", existingAttribs.getMitreStatus(), vuln.getMitreStatus(), true, hours);
 					}
 				} else {
 					// just a status change without a time-gap record
 					if (nvdStatusChanged)
-						recordCveStatusChange(vuln, connection, existingAttribs, "NVD", existingAttribs.getNvdStatus(), vuln.getNvdStatus(), false, 0);
+						addToCveStatusChangeHistory(vuln, connection, existingAttribs, "NVD", existingAttribs.getNvdStatus(), vuln.getNvdStatus(), false, 0);
 
 					if (mitreStatusChanged)
-						recordCveStatusChange(vuln, connection, existingAttribs, "MITRE", existingAttribs.getMitreStatus(), vuln.getMitreStatus(), false, 0);
+						addToCveStatusChangeHistory(vuln, connection, existingAttribs, "MITRE", existingAttribs.getMitreStatus(), vuln.getMitreStatus(), false, 0);
 				}
 
 				return timeGapFound;
@@ -1126,8 +1126,8 @@ public class DatabaseHelper {
 	 * @param timeGapFound
 	 * @param timeGap
 	 */
-	private boolean recordCveStatusChange(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs, String comparedAgainst, int oldStatus, int newStatus, boolean timeGapFound,
-			int timeGap) {
+	private boolean addToCveStatusChangeHistory(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs, String comparedAgainst, int oldStatus, int newStatus,
+			boolean timeGapFound, int timeGap) {
 		// vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code,
 		// cve_description, time_gap_recorded, time_gap_hours, status_date
 		try (PreparedStatement pstmt = connection.prepareStatement(insertCveStatusSql);) {
@@ -1141,12 +1141,13 @@ public class DatabaseHelper {
 			int timeGapRecorded = (timeGapFound) ? 1 : 0;
 			pstmt.setInt(7, timeGapRecorded);
 			pstmt.setInt(8, timeGap);
-			pstmt.setDate(9, new java.sql.Date(longDateFormat.parse(vuln.getLastModifiedDate()).getTime()));
+			pstmt.setDate(9, new java.sql.Date(longDateFormatMySQL.parse(vuln.getLastModifiedDate()).getTime()));
+			pstmt.setDate(10, new java.sql.Date(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
 
 			pstmt.executeUpdate();
 			logger.info("Recorded CVE status change for CVE {}", vuln.getCveId());
 		} catch (Exception e) {
-			logger.error("Error recording CVE status change for {}", vuln.getCveId());
+			logger.error("Error recording CVE status change for {}: {}", vuln.getCveId(), e);
 			return false;
 		}
 
@@ -2421,6 +2422,7 @@ public class DatabaseHelper {
 
 	/**
 	 * Obtains a users role Id by their email
+	 * 
 	 * @return
 	 */
 	public ArrayList<String> getEmailRoleIdByUser(String username) {
@@ -2433,7 +2435,7 @@ public class DatabaseHelper {
 
 			ResultSet rs = pstmt.executeQuery();
 
-			if  (rs.next()) {
+			if (rs.next()) {
 				data.add(rs.getString("email") + ";!;~;#&%:;!" + rs.getString("first_name") + ";!;~;#&%:;!" + rs.getInt("role_id"));
 			}
 
