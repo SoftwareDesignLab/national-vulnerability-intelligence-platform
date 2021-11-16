@@ -160,6 +160,8 @@ public class EmailDailyCveList {
 
 			Transport.send(message);
 			logger.info("Message sent successfully!");
+		} catch (AuthenticationFailedException e) {
+			logger.error("Password for Email is incorrect");
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
