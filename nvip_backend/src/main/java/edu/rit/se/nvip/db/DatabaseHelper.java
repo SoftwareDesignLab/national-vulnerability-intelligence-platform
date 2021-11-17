@@ -1126,7 +1126,7 @@ public class DatabaseHelper {
 	 * @param timeGapFound
 	 * @param timeGap
 	 */
-	private boolean addToCveStatusChangeHistory(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs, String comparedAgainst, int oldStatus, int newStatus,
+	public boolean addToCveStatusChangeHistory(CompositeVulnerability vuln, Connection connection, Vulnerability existingAttribs, String comparedAgainst, int oldStatus, int newStatus,
 			boolean timeGapFound, int timeGap) {
 		// vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code,
 		// cve_description, time_gap_recorded, time_gap_hours, status_date
@@ -1141,7 +1141,12 @@ public class DatabaseHelper {
 			int timeGapRecorded = (timeGapFound) ? 1 : 0;
 			pstmt.setInt(7, timeGapRecorded);
 			pstmt.setInt(8, timeGap);
-			pstmt.setDate(9, new java.sql.Date(longDateFormatMySQL.parse(vuln.getLastModifiedDate()).getTime()));
+			try {
+				pstmt.setDate(9, new java.sql.Date(longDateFormat.parse(vuln.getLastModifiedDate()).getTime()));
+			} catch (Exception e) {
+				//format might be "yyyy/MM/dd HH:mm:ss" ?
+				pstmt.setDate(9, new java.sql.Date(longDateFormatMySQL.parse(vuln.getLastModifiedDate()).getTime()));
+			}
 			pstmt.setDate(10, new java.sql.Date(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
 
 			pstmt.executeUpdate();

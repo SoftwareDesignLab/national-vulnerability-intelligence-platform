@@ -24,6 +24,23 @@ import static org.junit.Assert.assertTrue;
 // NOTE this is informal testing of the DatabaseHelper class. Should be revised for proper unit testing
 public class DatabaseHelperTest {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	
+	@Test
+	public void testCveNvdMitreStatusUpdate() {
+		DatabaseHelper db = DatabaseHelper.getInstance();
+		CompositeVulnerability vuln = new CompositeVulnerability(0, "test_url", "CVE-2017-17590", null, null, UtilHelper.longDateFormatMySQL.format(new Date()), "Test description", null);
+		Vulnerability existingVuln = new Vulnerability(0, "CVE-2017-17590", "Test description", 0, 0, UtilHelper.longDateFormatMySQL.format(new Date()));
+		Connection connection = null;
+		boolean recorded = false;
+		try {
+			connection = db.getConnection();
+			recorded = db.addToCveStatusChangeHistory(vuln, connection, existingVuln, "NVD", 0, 1, true, 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		assertEquals(true, recorded);
+	}
 
 	@Test
 	public void testTimeDiff() {
