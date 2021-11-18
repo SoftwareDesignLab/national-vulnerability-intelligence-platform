@@ -124,19 +124,7 @@ public class EmailDailyCveList {
 
 			MimeMultipart content = new MimeMultipart("related");
 
-			// Prepare NVIP Logo image
-			/*
-			 * MimeBodyPart image = new MimeBodyPart(); image.setHeader("Content-ID",
-			 * "AbfKrOw"); image.setDisposition(MimeBodyPart.INLINE);
-			 * image.attachFile("./src/main/resources/email/emailTemplate.html");
-			 * content.addBodyPart(image);
-			 */
-
 			// Collect HTML Template
-			// StringWriter writer = new StringWriter();
-			// IOUtils.copy(new FileInputStream(new
-			// File("./src/main/resources/email/emailTemplate.html")), writer);
-
 			String sFileContent = null;
 			String fileName = "email/emailTemplate.html";
 			ClassLoader classLoader = getClass().getClassLoader();
@@ -146,7 +134,6 @@ public class EmailDailyCveList {
 				}
 			}
 			Document doc = Jsoup.parse(sFileContent);
-			// Document doc = Jsoup.parse(writer.toString());
 
 			// Add users name to email header
 			Element header = doc.select(".main_header").first();
