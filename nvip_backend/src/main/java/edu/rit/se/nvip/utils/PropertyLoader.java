@@ -67,7 +67,8 @@ public class PropertyLoader {
 			inputStream = new FileInputStream("nvip.properties");
 		} catch (FileNotFoundException e) {
 			try {
-				logger.warn("Could not locate the config file in the application root directory, getting it from resources! {}", e.getMessage());
+				String currDir = System.getProperty("user.dir");
+				logger.warn("Could not locate the config file in the application root path \"{}\", getting it from resources! Warning: {}", currDir, e.getMessage());
 				// not there? Get it from resources!
 				ClassLoader classLoader = getClass().getClassLoader();
 				inputStream = classLoader.getResourceAsStream("nvip.properties");
