@@ -22,6 +22,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class EmailDailyCveList {
 
@@ -42,20 +43,26 @@ public class EmailDailyCveList {
 	/**
 	 * Sends notification email to all emails in DB
 	 */
-	public void sendCveNotificationEmailToSystemAdmin() {
-		ArrayList<String> data = db.getEmailsRoleId();
-		HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
-		logger.info("Sending {} CVEs to {} users!...", newCves.size(), data.size());
-		if (newCves.size() > 0) {
-			for (String info : data) {
+	public boolean sendCveNotificationEmailToSystemAdmin() {
+		try {
+			ArrayList<String> data = db.getEmailsRoleId();
+			HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
+			logger.info("Sending {} CVEs to {} users!...", newCves.size(), data.size());
+			if (newCves.size() > 0) {
+				for (String info : data) {
 
-				String[] userData = info.split(";!;~;#&%:;!");
-				if (Integer.parseInt(userData[2]) == 1) {
-					sendEmail(userData[0], userData[1], newCves);
+					String[] userData = info.split(";!;~;#&%:;!");
+					if (Integer.parseInt(userData[2]) == 1) {
+						sendEmail(userData[0], userData[1], newCves);
+					}
 				}
 			}
+			logger.info("Done sending {} CVEs to {} users!", newCves.size(), data.size());
+			return true;
+		} catch (NumberFormatException e) {
+			logger.error("Error sending email {}", e);
 		}
-		logger.info("Done sending {} CVEs to {} users!", newCves.size(), data.size());
+		return false;
 
 	}
 
@@ -126,10 +133,20 @@ public class EmailDailyCveList {
 			 */
 
 			// Collect HTML Template
-			StringWriter writer = new StringWriter();
-			IOUtils.copy(new FileInputStream(new File("./src/main/resources/email/emailTemplate.html")), writer);
+			// StringWriter writer = new StringWriter();
+			// IOUtils.copy(new FileInputStream(new
+			// File("./src/main/resources/email/emailTemplate.html")), writer);
 
-			Document doc = Jsoup.parse(writer.toString());
+			String sFileContent = null;
+			String fileName = "email/emailTemplate.html";
+			ClassLoader classLoader = getClass().getClassLoader();
+			try (InputStream is = classLoader.getResourceAsStream(fileName)) {
+				try (InputStreamReader isr = new InputStreamReader(is); BufferedReader reader = new BufferedReader(isr)) {
+					sFileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+				}
+			}
+			Document doc = Jsoup.parse(sFileContent);
+			// Document doc = Jsoup.parse(writer.toString());
 
 			// Add users name to email header
 			Element header = doc.select(".main_header").first();
@@ -179,7 +196,7 @@ public class EmailDailyCveList {
 	private HashMap<String, String> getPropValues() {
 		HashMap<String, String> props = new HashMap<>();
 		try {
-			//load nvip config file
+			// load nvip config file
 			MyProperties propertiesNvip = new MyProperties();
 			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 			props.put("email", propertiesNvip.getProperty("Email"));
