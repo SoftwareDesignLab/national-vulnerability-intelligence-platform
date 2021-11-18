@@ -23,6 +23,8 @@
  */
 package edu.rit.se.nvip.db;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -209,12 +211,24 @@ public class DatabaseHelper {
 
 		String configFile = "db-" + databaseType + ".properties";
 		try {
-
-			ClassLoader loader = Thread.currentThread().getContextClassLoader();
 			Properties props = new Properties();
-			try (InputStream resourceStream = loader.getResourceAsStream(configFile)) {
-				props.load(resourceStream);
+			try {
+				// get config file from the root path
+				try (InputStream inputStream = new FileInputStream(configFile)) {
+					props.load(inputStream);
+					logger.info("DatabaseHelper initialized using config file {} at {}", configFile, System.getProperty("user.dir"));
+				}
+			} catch (FileNotFoundException e) {
+				String currDir = System.getProperty("user.dir");
+				logger.warn("Could not locate db config file in the root path \"{}\", getting it from resources! Warning: {}", currDir, e.getMessage());
+				ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
+				try (InputStream inputStream = loader.getResourceAsStream(configFile)) {
+					props.load(inputStream);
+				}
+
 			}
+
 			config = new HikariConfig(props);
 			config.setMaximumPoolSize(50);
 		} catch (Exception e1) {
@@ -1141,10 +1155,10 @@ public class DatabaseHelper {
 			int timeGapRecorded = (timeGapFound) ? 1 : 0;
 			pstmt.setInt(7, timeGapRecorded);
 			pstmt.setInt(8, timeGap);
-			try {				
+			try {
 				pstmt.setTimestamp(9, new java.sql.Timestamp(longDateFormat.parse(vuln.getLastModifiedDate()).getTime()));
 			} catch (Exception e) {
-				// format might be "yyyy/MM/dd HH:mm:ss" ?			
+				// format might be "yyyy/MM/dd HH:mm:ss" ?
 				pstmt.setTimestamp(9, new java.sql.Timestamp(longDateFormatMySQL.parse(vuln.getLastModifiedDate()).getTime()));
 			}
 			pstmt.setTimestamp(10, new java.sql.Timestamp(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
