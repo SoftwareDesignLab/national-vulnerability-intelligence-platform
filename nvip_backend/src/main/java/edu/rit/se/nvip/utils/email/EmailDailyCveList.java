@@ -1,6 +1,9 @@
 package edu.rit.se.nvip.utils.email;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
+import edu.rit.se.nvip.utils.MyProperties;
+import edu.rit.se.nvip.utils.PropertyLoader;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -179,12 +182,18 @@ public class EmailDailyCveList {
 
 		try {
 			Properties properties = new Properties();
-			FileInputStream input = new FileInputStream(new File("src/main/resources/nvip.properties"));
-			properties.load(input);
-			props.put("email", properties.getProperty("Email"));
-			props.put("password", properties.getProperty("Password"));
-			props.put("location", properties.getProperty("location"));
-			input.close();
+			
+			//load nvip config file
+			MyProperties propertiesNvip = new MyProperties();
+			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
+			
+			//FileInputStream input = new FileInputStream(new File("src/main/resources/nvip.properties"));
+			//properties.load(input);
+			
+			props.put("email", propertiesNvip.getProperty("Email"));
+			props.put("password", propertiesNvip.getProperty("Password"));
+			props.put("location", propertiesNvip.getProperty("location"));
+			//input.close();
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}

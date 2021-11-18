@@ -85,6 +85,12 @@ public class PropertyLoader {
 		} catch (IOException e) {
 			System.err.println("Error! Could not load parameters from the config file! " + e.toString());
 			System.exit(1);
+		} finally {
+			try {
+				if (inputStream != null)
+					inputStream.close();
+			} catch (IOException ignored) {
+			}
 		}
 
 		return propertiesNVIP;
