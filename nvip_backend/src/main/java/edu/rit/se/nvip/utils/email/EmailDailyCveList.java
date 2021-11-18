@@ -177,23 +177,14 @@ public class EmailDailyCveList {
 	 * @throws IOException
 	 */
 	private HashMap<String, String> getPropValues() {
-
 		HashMap<String, String> props = new HashMap<>();
-
 		try {
-			Properties properties = new Properties();
-			
 			//load nvip config file
 			MyProperties propertiesNvip = new MyProperties();
 			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-			
-			//FileInputStream input = new FileInputStream(new File("src/main/resources/nvip.properties"));
-			//properties.load(input);
-			
 			props.put("email", propertiesNvip.getProperty("Email"));
 			props.put("password", propertiesNvip.getProperty("Password"));
 			props.put("location", propertiesNvip.getProperty("location"));
-			//input.close();
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
