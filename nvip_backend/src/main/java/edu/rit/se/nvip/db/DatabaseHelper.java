@@ -850,7 +850,7 @@ public class DatabaseHelper {
 			logger.info("DatabaseHelper updated/inserted/notchanged " + total + " [" + updateCount + "/" + insertCount + "/" + noChangeCount + "] of " + vulnList.size() + " vulnerabilities.");
 			// connection.commit();
 
-			// do time gap analysis
+			// do time gap analysis for CVEs in vulnList
 			checkNvdMitreStatusForCrawledVulnerabilityList(connection, vulnList, existingVulnMap);
 
 		} catch (Exception e) {
@@ -1141,14 +1141,13 @@ public class DatabaseHelper {
 			int timeGapRecorded = (timeGapFound) ? 1 : 0;
 			pstmt.setInt(7, timeGapRecorded);
 			pstmt.setInt(8, timeGap);
-			try {
-				pstmt.setDate(9, new java.sql.Date(longDateFormat.parse(vuln.getLastModifiedDate()).getTime()));
+			try {				
+				pstmt.setTimestamp(9, new java.sql.Timestamp(longDateFormat.parse(vuln.getLastModifiedDate()).getTime()));
 			} catch (Exception e) {
-				//format might be "yyyy/MM/dd HH:mm:ss" ?
-				pstmt.setDate(9, new java.sql.Date(longDateFormatMySQL.parse(vuln.getLastModifiedDate()).getTime()));
+				// format might be "yyyy/MM/dd HH:mm:ss" ?			
+				pstmt.setTimestamp(9, new java.sql.Timestamp(longDateFormatMySQL.parse(vuln.getLastModifiedDate()).getTime()));
 			}
-			pstmt.setDate(10, new java.sql.Date(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
-
+			pstmt.setTimestamp(10, new java.sql.Timestamp(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
 			pstmt.executeUpdate();
 			logger.info("Recorded CVE status change for CVE {}", vuln.getCveId());
 		} catch (Exception e) {
