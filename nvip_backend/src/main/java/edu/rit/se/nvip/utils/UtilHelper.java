@@ -145,8 +145,7 @@ public class UtilHelper {
 	}
 
 	public static void initLog4j(Properties config) {
-		logger.info("log4j Log Level is: " + LogManager.getRootLogger().getLevel().toString());
-
+		logger.info("log4j Log Level is: " + LogManager.getRootLogger());
 	}
 
 	public static String getDateTime(long time) {

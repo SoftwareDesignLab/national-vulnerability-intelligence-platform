@@ -61,20 +61,31 @@ public class PropertyLoader {
 	 */
 	public MyProperties loadConfigFile(MyProperties propertiesNVIP) {
 		InputStream inputStream = null;
+
 		try {
-			ClassLoader classLoader = getClass().getClassLoader();
-			inputStream = classLoader.getResourceAsStream("nvip.properties");
-		} catch (Exception e1) {
-			System.err.println("Could not locate NVIP config file at src/main/resources/nvip.properties!");
-			System.exit(1);
-		} finally {
+			// get config file from the root dir
+			inputStream = new FileInputStream("nvip.properties");
+		} catch (FileNotFoundException e) {
 			try {
-				propertiesNVIP.load(inputStream);
-			} catch (IOException e) {
-				System.err.println("Error! Could not locate NVIP config file!");
+				logger.warn("Could not locate the config file in the application root directory, getting it from resources! {}", e.getMessage());
+				// not there? Get it from resources!
+				ClassLoader classLoader = getClass().getClassLoader();
+				inputStream = classLoader.getResourceAsStream("nvip.properties");
+			} catch (Exception e1) {
+				System.err.println("Could not locate the config file at src/main/resources/nvip.properties!");
 				System.exit(1);
 			}
 		}
+
+		try {
+			// load values from input stream
+			propertiesNVIP.load(inputStream);
+			logger.info("Loaded {} parameters from .properties file!", propertiesNVIP.size());
+		} catch (IOException e) {
+			System.err.println("Error! Could not load parameters from the config file! " + e.toString());
+			System.exit(1);
+		}
+
 		return propertiesNVIP;
 	}
 
