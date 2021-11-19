@@ -110,7 +110,6 @@ public class EmailDailyCveList {
 	 * Send <newCves> to <toEmail>
 	 * 
 	 * @param toEmail
-	 * @param name
 	 * @param newCves
 	 */
 	private void sendEmailV2(String toEmail, HashMap<String, String> newCves) {
