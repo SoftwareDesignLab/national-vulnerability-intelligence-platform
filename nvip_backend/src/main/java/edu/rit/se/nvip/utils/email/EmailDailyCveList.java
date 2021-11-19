@@ -64,7 +64,7 @@ public class EmailDailyCveList {
 	}
 
 	/**
-	 * Sends notification email to all emails in DB
+	 * Sends notification email to all admin email addresses in DB
 	 */
 	public boolean sendCveNotificationEmailToSystemAdmin() {
 		try {
@@ -76,7 +76,7 @@ public class EmailDailyCveList {
 
 					String[] userData = info.split(";!;~;#&%:;!");
 					if (Integer.parseInt(userData[2]) == 1) {
-						sendEmail(userData[0], userData[1], newCves);
+						sendEmailV2(userData[0], newCves);
 					}
 				}
 			}
@@ -101,50 +101,23 @@ public class EmailDailyCveList {
 		if (!userInfo.isEmpty()) {
 			String[] userData = userInfo.get(0).split(";!;~;#&%:;!");
 			if (newCves.size() > 0 && Integer.parseInt(userData[2]) == 1) {
-				sendEmail(userData[0], userData[1], newCves);
+				sendEmailV2(userData[0], newCves);
 			}
 		}
 	}
 
 	/**
-	 * Reused function to send email
-	 *
-	 * @param emailAddress
+	 * Send <newCves> to <toEmail>
+	 * 
+	 * @param toEmail
+	 * @param name
+	 * @param newCves
 	 */
-	private void sendEmail(String emailAddress, String name, HashMap<String, String> newCves) {
+	private void sendEmailV2(String toEmail, HashMap<String, String> newCves) {
 		try {
-			logger.info("Sending notification to " + emailAddress);
+			logger.info("Sending notification to " + toEmail);
 
-			// Initialize Session
-			Properties prop = System.getProperties();
-			prop.put("mail.smtp.auth", true);
-			prop.put("mail.smtp.starttls.enable", "true");
-			prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-			prop.put("mail.smtp.host", "smtp.gmail.com");
-			prop.put("mail.smtp.port", "25");
-			prop.put("mail.smtp.debug", "true");
-
-			HashMap<String, String> login = getPropValues();
-			Session session;
-
-			// Check if the properties are valid, if not then do not continue
-			if (!login.isEmpty()) {
-				session = Session.getDefaultInstance(prop, new Authenticator() {
-					@Override
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(login.get("email"), login.get("password"));
-					}
-				});
-			} else {
-				logger.error("Properties not found for email login");
-				return;
-			}
-			// Prepare Message
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(login.get("email")));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
-			message.setSubject("Daily CVE Notification");
-
+			HashMap<String, String> paramsFromConfigFile = getPropValues();
 			MimeMultipart content = new MimeMultipart("related");
 
 			// Collect HTML Template
@@ -157,13 +130,8 @@ public class EmailDailyCveList {
 				}
 			}
 			Document doc = Jsoup.parse(sFileContent);
-
-			// Add users name to email header
-			Element header = doc.select(".main_header").first();
-			header.appendText(" " + name);
-
 			int i = 0;
-			String location = login.get("location");
+			String location = paramsFromConfigFile.get("location");
 
 			// Apply HTML for every CVE
 			for (String cveId : newCves.keySet()) {
@@ -186,15 +154,76 @@ public class EmailDailyCveList {
 			body.setContent(doc.toString(), "text/html; charset=ISO-8859-1");
 			content.addBodyPart(body);
 
-			message.setContent(doc.toString(), "text/html");
-
-			Transport.send(message);
-			logger.info("Message sent successfully!");
+			sendFromGMail(paramsFromConfigFile.get("email"), paramsFromConfigFile.get("password"), new String[] { toEmail }, "Daily CVE Notification", doc.toString(), true);
+			logger.info("Message sent to successfully!", toEmail);
 		} catch (AuthenticationFailedException e) {
-			logger.error("Password for Email is incorrect");
+			logger.error("Password for {} is incorrect, please check your password in the config file!", toEmail);
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
+	}
+
+	/**
+	 * Send email via javax.mail.Transport
+	 * 
+	 * @param from
+	 * @param pass
+	 * @param to
+	 * @param subject
+	 * @param body
+	 * @param asHtml
+	 */
+	public static void sendFromGMail(String from, String pass, String[] to, String subject, String body, boolean asHtml) {
+		Properties props = System.getProperties();
+		String host = "smtp.gmail.com";
+		props.put("mail.smtp.starttls.enable", "true");
+		// added to fix javax.net.ssl.SSLHandshakeException: PKIX path building failed:
+		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.user", from);
+		props.put("mail.smtp.password", pass);
+		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.auth", "true");
+
+		// added to solve javax.net.ssl.SSLHandshakeException: No appropriate protocol
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+		Session session = Session.getDefaultInstance(props);
+		MimeMessage message = new MimeMessage(session);
+
+		try {
+			message.setFrom(new InternetAddress(from));
+			InternetAddress[] toAddress = new InternetAddress[to.length];
+
+			// To get the array of addresses
+			for (int i = 0; i < to.length; i++) {
+				toAddress[i] = new InternetAddress(to[i]);
+			}
+
+			for (int i = 0; i < toAddress.length; i++) {
+				message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+			}
+
+			message.setSubject(subject);
+
+			if (asHtml)
+				message.setContent(body, "text/html; charset=utf-8");
+			else
+				message.setText(body);
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(host, from, pass);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+		} catch (Exception e) {
+			logger.error("Error while sending email, {}", e.toString());
+			e.printStackTrace();
+
+		}
+		logger.info("Sent {} email(s) with title: {}", to.length, subject);
 	}
 
 	/**
