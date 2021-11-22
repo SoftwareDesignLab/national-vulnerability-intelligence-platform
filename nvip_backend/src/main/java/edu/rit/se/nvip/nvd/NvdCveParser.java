@@ -88,9 +88,9 @@ public class NvdCveParser {
 			JsonArray descriptions = jsonCVE.getAsJsonObject("cve").getAsJsonObject("description").getAsJsonArray("description_data");
 			String sDescription = ((JsonObject) descriptions.get(0)).get("value").getAsString();
 
-			// clear content: replace <Operating System Command> (OSC) and â€� etc
+			// clear content: replace <Operating System Command> (OSC) and â€" etc
 			sDescription = sDescription.replaceAll("[^\\p{Print}]", " ");
-			sDescription = sDescription.replaceAll("[ ,|'|\\\"|â€�|\\|]", " ");
+			sDescription = sDescription.replaceAll("[ ,|'|\\\"|â€"|\\|]", " ");
 
 			String baseScore = "?", baseSeverity = "?";
 			String impactScore = "?", exploitabilityScore = "?";
