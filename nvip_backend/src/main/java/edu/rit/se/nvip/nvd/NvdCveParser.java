@@ -90,7 +90,7 @@ public class NvdCveParser {
 
 			// clear content: replace <Operating System Command> (OSC) and â€" etc
 			sDescription = sDescription.replaceAll("[^\\p{Print}]", " ");
-			sDescription = sDescription.replaceAll("[ ,|'|\\\"|â€"|\\|]", " ");
+			sDescription = sDescription.replaceAll("[ ,|'|\\\"|â€�|\\|]", " ");
 
 			String baseScore = "?", baseSeverity = "?";
 			String impactScore = "?", exploitabilityScore = "?";

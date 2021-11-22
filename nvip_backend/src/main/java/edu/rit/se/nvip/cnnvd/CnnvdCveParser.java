@@ -155,20 +155,20 @@ public class CnnvdCveParser {
 	 */
 	private Map<String, String> getBasicDictionary() {
 		Map<String, String> dict = new HashMap<String, String>();
-		dict.put("CNNVDç¼–å"·", "CNNVD");
-		dict.put("CVEç¼–å"·", "CVE");
-		dict.put("å"‘å¸ƒæ—¶é—´", "Published");
+		dict.put("CNNVDç¼–å�·", "CNNVD");
+		dict.put("CVEç¼–å�·", "CVE");
+		dict.put("å�‘å¸ƒæ—¶é—´", "Published");
 		dict.put("æ›´æ–°æ—¶é—´", "Updated");
-		dict.put("æ¼"æ´žæ"¥æº"", "Source");
-		dict.put("å"±å®³ç­‰çº§", "Hazard-level");
-		dict.put("æ¼"æ´žç±»åž‹", "Type");
-		dict.put("å¨"èƒ"ç±»åž‹", "Threat-type");
+		dict.put("æ¼�æ´žæ�¥æº�", "Source");
+		dict.put("å�±å®³ç­‰çº§", "Hazard-level");
+		dict.put("æ¼�æ´žç±»åž‹", "Type");
+		dict.put("å¨�èƒ�ç±»åž‹", "Threat-type");
 		dict.put("åŽ‚\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0å•†", "Manufacturer");
-		dict.put("ä¸­å"±", "Medium");
+		dict.put("ä¸­å�±", "Medium");
 		dict.put("å…¶ä»–", "Other");
-		dict.put("é«˜å"±", "High Risk");
-		dict.put("è¶…å"±", "Super Danger");
-		dict.put("ä½Žå"±", "Low Risk");
+		dict.put("é«˜å�±", "High Risk");
+		dict.put("è¶…å�±", "Super Danger");
+		dict.put("ä½Žå�±", "Low Risk");
 
 		return dict;
 	}

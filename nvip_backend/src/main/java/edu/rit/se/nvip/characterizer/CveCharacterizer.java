@@ -105,7 +105,7 @@ public class CveCharacterizer {
 				trainingDataFileName = trainingDataPath + trainingDataFileName;
 				// remove special chars?
 				String sContent = FileUtils.readFileToString(new File(trainingDataFileName));
-				sContent = sContent.replaceAll("[ '|\\\"|â€"|\\|]", " ");
+				sContent = sContent.replaceAll("[ '|\\\"|â€�|\\|]", " ");
 				FileUtils.writeStringToFile(new File(trainingDataFileName), sContent, false);
 
 				// pre-process training data and store it
