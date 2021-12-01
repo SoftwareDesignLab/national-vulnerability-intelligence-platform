@@ -150,7 +150,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
+			<version>2.7</version>
 			<type>jar</type>
 		</dependency>
 
@@ -165,7 +165,7 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.13.1</version>
+			<version>1.14.2</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit -->
@@ -237,7 +237,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.15</version>
+			<version>8.0.16</version>
 		</dependency>
 
 
@@ -259,7 +259,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 
