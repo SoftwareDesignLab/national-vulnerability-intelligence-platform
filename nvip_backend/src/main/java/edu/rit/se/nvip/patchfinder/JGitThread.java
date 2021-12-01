@@ -39,10 +39,12 @@ public class JGitThread implements Runnable {
 	private static final Logger logger = LogManager.getLogger(JGitCVEPatchDownloader.class.getName());
 	private JGitParser previous;
 	private static final DatabaseHelper db = DatabaseHelper.getInstance();
+	private JGitCVEPatchDownloader patchDownloader;
 
-	public JGitThread(HashMap<Integer, String> sources, String cP) {
+	public JGitThread(HashMap<Integer, String> sources, String cP, JGitCVEPatchDownloader patchDownloader) {
 		this.sources = sources;
 		this.clonePath = cP;
+		this.patchDownloader = patchDownloader;
 	}
 
 	@Override
@@ -53,10 +55,10 @@ public class JGitThread implements Runnable {
 				repo.cloneRepository();
 				Map<Date, ArrayList<String>> commits = repo.parseCommits(db.getCveId(source.getKey()+""));
 				if (commits.isEmpty()) {
-					JGitCVEPatchDownloader.deletePatchSource(source.getValue());
+					patchDownloader.deletePatchSource(source.getValue());
 				} else {
 					for (java.util.Date commit : commits.keySet()) {
-						JGitCVEPatchDownloader.insertPatchCommitData(source.getValue(), commits.get(commit).get(0), commit, commits.get(commit).get(1));
+						patchDownloader.insertPatchCommitData(source.getValue(), commits.get(commit).get(0), commit, commits.get(commit).get(1));
 					}
 				}
 

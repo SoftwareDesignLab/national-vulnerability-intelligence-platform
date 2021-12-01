@@ -184,7 +184,7 @@ public final class JGitCVEPatchDownloader {
 		}
 
 		for (int k = 0; k < maxThreads; k++) {
-			es.submit(new Thread(new JGitThread(sourceBatches.get(k), clonePath), "Thread - " + k));
+			es.submit(new Thread(new JGitThread(sourceBatches.get(k), clonePath, this), "Thread - " + k));
 		}
 		es.shutdown();
 
