@@ -34,6 +34,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import edu.rit.se.nvip.utils.MyProperties;
+import edu.rit.se.nvip.utils.PropertyLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -42,6 +44,10 @@ import org.eclipse.jgit.util.FileUtils;
 import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.patchfinder.commits.JGitParser;
 
+/**
+ * Main class for collecting CVE Patches within repos that were
+ * previously collected from the PatchFinder class
+ */
 public final class JGitCVEPatchDownloader {
 
 	private static final Logger logger = LogManager.getLogger(JGitCVEPatchDownloader.class.getName());
@@ -52,20 +58,55 @@ public final class JGitCVEPatchDownloader {
 	public static void main(String[] args) throws IOException {
 		logger.info("Started Patches Application");
 
-		File checkFile = new File(args[0]);
+		JGitCVEPatchDownloader main = new JGitCVEPatchDownloader();
+		main.parse();
+
+		logger.info("Patches Application Finished!");
+	}
+
+	/**
+	 * Main parse method that pulls parameters from nvip props
+	 * to determine clone location and limit
+	 */
+	public void parse() throws IOException {
+		Map<String, String> props = getPropValues();
+
+		File checkFile = new File(props.get("repofile"));
 
 		if (checkFile.exists()) {
 			logger.info("Reading in csv file: " + checkFile.getName());
-			parse(checkFile, args[1]);
-		} else if (args[0].equals("true")) {
-			parseMulitThread(args[1], Integer.parseInt(args[2]));
-		} else if (args.length > 2) {
-			parse(args[1], args[2]);
+			parse(checkFile, props.get("cloneloc"));
+		} else if (props.get("multithread").equals("true")) {
+			parseMulitThread(props.get("cloneloc"), Integer.parseInt(props.get("repolimit")));
 		} else {
-			parse(args[1], "0");
+			parse(props.get("cloneloc"), props.get("repolimit"));
 		}
-		logger.info("Patches Application Finished!");
+
 	}
+
+	/**
+	 * Method used to extract email login properties from emailConfig.properties
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	private HashMap<String, String> getPropValues() {
+		HashMap<String, String> props = new HashMap<>();
+		try {
+			// load nvip config file
+			MyProperties propertiesNvip = new MyProperties();
+			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
+			props.put("repofile", propertiesNvip.getProperty("RepoFile"));
+			props.put("multithread", propertiesNvip.getProperty("MultiThreadPatchDownload"));
+			props.put("cloneloc", propertiesNvip.getProperty("CloneLoc"));
+			props.put("repolimit", propertiesNvip.getProperty("RepoLimit"));
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+		return props;
+	}
+
 
 	/**
 	 * TODO: Update this so that it can pull CVE IDs from vulnerability table for
@@ -76,7 +117,7 @@ public final class JGitCVEPatchDownloader {
 	 * @param clonePath
 	 * @throws IOException
 	 */
-	public static void parse(File repoFile, String clonePath) throws IOException {
+	public void parse(File repoFile, String clonePath) throws IOException {
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
 
@@ -88,11 +129,33 @@ public final class JGitCVEPatchDownloader {
 	}
 
 	/**
+	 * Extract Method called multiple times for parsing an individual URL
+	 *
+	 * @param clonePath
+	 * @throws SQLException
+	 * @throws IOException
+	 * @throws GitAPIException
+	 */
+	public void parse(String clonePath, String limit) throws IOException {
+		File dir = new File(clonePath);
+		FileUtils.delete(dir, 1);
+
+		try {
+			for (Entry<String, Integer> source : db.getVulnIdPatchSource(Integer.parseInt(limit)).entrySet()) {
+				pullCommitData(source.getKey(), clonePath, db.getCveId(source.getValue() + ""));
+			}
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+
+	/**
 	 * Git commit parser that implements multiple threads to increase performance
 	 * @param clonePath
 	 * @throws IOException
 	 */
-	public static void parseMulitThread(String clonePath, int breaker) throws IOException {
+	public void parseMulitThread(String clonePath, int breaker) throws IOException {
 		logger.info("Applying multi threading...");
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
@@ -127,28 +190,6 @@ public final class JGitCVEPatchDownloader {
 
 	}
 
-	/**
-	 * Extract Method called multiple times for parsing an individual URL
-	 * 
-	 * @param clonePath
-	 * @throws SQLException
-	 * @throws IOException
-	 * @throws GitAPIException
-	 */
-	public static void parse(String clonePath, String limit) throws IOException {
-
-		File dir = new File(clonePath);
-		FileUtils.delete(dir, 1);
-
-		try {
-			for (Entry<String, Integer> source : db.getVulnIdPatchSource(Integer.parseInt(limit)).entrySet()) {
-				pullCommitData(source.getKey(), clonePath, db.getCveId(source.getValue() + ""));
-			}
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-	}
 
 	/**
 	 * Extract Method used for pulling commit data from a repo vi a source link and
@@ -159,7 +200,7 @@ public final class JGitCVEPatchDownloader {
 	 * @throws IOException
 	 * @throws GitAPIException
 	 */
-	private static void pullCommitData(String sourceURL, String clonePath, String cveId) {
+	private void pullCommitData(String sourceURL, String clonePath, String cveId) {
 
 		JGitParser parser = new JGitParser(sourceURL + ".git", clonePath);
 
@@ -191,7 +232,7 @@ public final class JGitCVEPatchDownloader {
 	 * @param commitDate
 	 * @param commitMessage
 	 */
-	public static void insertPatchCommitData(String sourceURL, String commitId, java.util.Date commitDate,
+	public void insertPatchCommitData(String sourceURL, String commitId, java.util.Date commitDate,
 			String commitMessage) {
 
 		logger.info("Inserting commit data to patchcommit table...");
@@ -217,7 +258,7 @@ public final class JGitCVEPatchDownloader {
 	 * 
 	 * @param sourceURL
 	 */
-	public static void deletePatchSource(String sourceURL) {
+	public void deletePatchSource(String sourceURL) {
 		logger.info("Deleting patch from database...");
 
 		try {
@@ -245,7 +286,7 @@ public final class JGitCVEPatchDownloader {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private static List<String> processInputFile(File file) throws FileNotFoundException, IOException {
+	private List<String> processInputFile(File file) throws FileNotFoundException, IOException {
 		ArrayList<String> repos = new ArrayList<String>();
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
