@@ -43,15 +43,17 @@ import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
 
+import javax.sound.midi.Patch;
+
 /**
  * Start patch finder for a given repository list (as .csv)
  * 
  * @author 15854
  *
  */
-public class PatchFinderMain {
+public class PatchFinder {
 
-	private static final Logger logger = LogManager.getLogger(PatchFinderMain.class.getName());
+	private static final Logger logger = LogManager.getLogger(PatchFinder.class.getName());
 
 	private static DatabaseHelper db;
 	private static final String[] ADDRESS_BASES = { "https://github.com/" };
@@ -73,7 +75,7 @@ public class PatchFinderMain {
 
 		logger.info("PatchFinder Started!");
 
-		int i = 0;
+		PatchFinder main = new PatchFinder();
 
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
@@ -81,27 +83,41 @@ public class PatchFinderMain {
 		if (args.length > 1) {
 
 			if (args[0].equals("true")) {
-				parseURLByProductId(Integer.parseInt(args[1]));
+				main.parseURLByProductId(Integer.parseInt(args[1]));
 			} else {
-				parseURLByCVE(args[1]);
+				main.parseURLByCVE(args[1]);
 			}
 
 		} else {
-			advanceSearchCount = 0;
-			// Create github URLs based on CPEs for given CVEs
-			for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
-				currentCPE = cpe;
-				parseURL();
-				i++;
-				if (i % 100 == 0) {
-					logger.info(i + " CPEs Parsed!");
-				}
-			}
+			main.parseMassURLs(cpes);
 		}
 
 		logger.info("PatchFinder Finished!");
 
 	}
+
+
+	/**
+	 * Parse URLs from all CPEs given within the map
+	 * @param cpes
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	private void parseMassURLs(Map<String, ArrayList<String>> cpes) throws IOException, InterruptedException {
+
+		advanceSearchCount = 0;
+		int i = 0;
+		// Create github URLs based on CPEs for given CVEs
+		for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
+			currentCPE = cpe;
+			parseURL();
+			i++;
+			if (i % 100 == 0) {
+				logger.info(i + " CPEs Parsed!");
+			}
+		}
+	}
+
 
 	/**
 	 * Gets a URL via a specified CVE and parses and tests
@@ -109,7 +125,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void parseURLByCVE(String cve_id) throws IOException, InterruptedException {
+	public void parseURLByCVE(String cve_id) throws IOException, InterruptedException {
 
 		advanceSearchCount = 0;
 		db = DatabaseHelper.getInstance();
@@ -129,7 +145,7 @@ public class PatchFinderMain {
 	 * @throws InterruptedException
 	 * @throws IOException
 	 */
-	public static void parseURLByProductId(int product_id) throws IOException, InterruptedException {
+	public void parseURLByProductId(int product_id) throws IOException, InterruptedException {
 		advanceSearchCount = 0;
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpe = db.getCPEById(product_id);
@@ -146,7 +162,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private static void parseURL() throws IOException, InterruptedException {
+	private void parseURL() throws IOException, InterruptedException {
 
 		advanceSearchCheck = true;
 		String[] wordArr = currentCPE.getKey().split(":");
@@ -206,7 +222,7 @@ public class PatchFinderMain {
 	 * @param addresses
 	 * @throws InterruptedException
 	 */
-	private static boolean checkAddressList(ArrayList<String> addresses) throws InterruptedException {
+	private boolean checkAddressList(ArrayList<String> addresses) throws InterruptedException {
 		// Place all successful links in DB
 		if (!addresses.isEmpty()) {
 			insertPatchURLs(addresses);
@@ -227,7 +243,7 @@ public class PatchFinderMain {
 	/**
 	 * Inistializes the address set with additional addresses based on cpe keywords
 	 */
-	private static HashSet<String> initializeAddresses() {
+	private HashSet<String> initializeAddresses() {
 		HashSet<String> addresses = new HashSet<>();
 
 		for (String base : ADDRESS_BASES) {
@@ -250,7 +266,7 @@ public class PatchFinderMain {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> testConnection(String address) throws IOException, InterruptedException {
+	private ArrayList<String> testConnection(String address) throws IOException, InterruptedException {
 
 		logger.info("Testing Connection for address: " + address);
 		ArrayList<String> urlList = new ArrayList<String>();
@@ -281,8 +297,7 @@ public class PatchFinderMain {
 				urlList.add(newURL);
 			} catch (Exception e) {
 				// If unsuccessful on git remote check, perform a advaced search, assuming the
-				// link instead leads to
-				// a github company home page
+				// link instead leads to a github company home page
 				logger.error(e.getMessage());
 				return searchForRepos(newURL);
 			}
@@ -301,7 +316,7 @@ public class PatchFinderMain {
 	 * @param newURL
 	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> searchForRepos(String newURL) throws InterruptedException {
+	private ArrayList<String> searchForRepos(String newURL) throws InterruptedException {
 		logger.info("Grabbing repos from github user page...");
 
 		ArrayList<String> urls = new ArrayList<String>();
@@ -323,8 +338,7 @@ public class PatchFinderMain {
 					Elements repoLinks = reposPage.select("li.Box-row a.d-inline-block[href]");
 
 					// Loop through all repo links in the repo tab page and test for git clone
-					// verification
-					// Return the list of all successful links afterwards
+					// verification. Return the list of all successful links afterwards
 					urls = testLinks(repoLinks);
 
 					// Check if the list is empty, if so it could be because the wrong html element
@@ -351,7 +365,7 @@ public class PatchFinderMain {
 	 * 
 	 * @return
 	 */
-	private static ArrayList<String> testLinks(Elements repoLinks) {
+	private ArrayList<String> testLinks(Elements repoLinks) {
 		ArrayList<String> urls = new ArrayList<String>();
 		String repoURL;
 
@@ -372,13 +386,11 @@ public class PatchFinderMain {
 	/**
 	 * Performs an advanced search for the repo link(s) for a CPE using the Github
 	 * search feature
-	 * 
-	 * TODO: Change the return type to an array or list for multiple links
 	 *
 	 * @return
 	 * @throws InterruptedException
 	 */
-	private static ArrayList<String> advanceParseSearch() throws InterruptedException {
+	private ArrayList<String> advanceParseSearch() throws InterruptedException {
 
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
 		ArrayList<String> urls = new ArrayList<String>();
@@ -441,7 +453,7 @@ public class PatchFinderMain {
 	 * checks if the keywords are included as well before performing connection
 	 * @return
 	 */
-	private static boolean verifyGitRemote(String repoURL, String innerText) {
+	private boolean verifyGitRemote(String repoURL, String innerText) {
 
 		// Verify if the repo is correlated to the product by checking if the keywords
 		// lie in the inner text of the html link via regex
@@ -472,7 +484,7 @@ public class PatchFinderMain {
 	/**
 	 * Inserts a successfully connected Patch URL to the DB
 	 */
-	private static void insertPatchURLs(ArrayList<String> addresses) {
+	private void insertPatchURLs(ArrayList<String> addresses) {
 		for (String address : addresses) {
 
 			try {
