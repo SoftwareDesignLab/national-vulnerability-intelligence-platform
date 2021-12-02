@@ -59,7 +59,7 @@ public final class JGitCVEPatchDownloader {
 		logger.info("Started Patches Application");
 
 		JGitCVEPatchDownloader main = new JGitCVEPatchDownloader();
-		main.parse();
+		main.parse(args);
 
 		logger.info("Patches Application Finished!");
 	}
@@ -68,18 +68,18 @@ public final class JGitCVEPatchDownloader {
 	 * Main parse method that pulls parameters from nvip props
 	 * to determine clone location and limit
 	 */
-	public void parse() throws IOException {
-		Map<String, String> props = getPropValues();
+	public void parse(String[] args) throws IOException {
+		//Map<String, String> props = getPropValues();
 
-		File checkFile = new File(props.get("repofile"));
+		File checkFile = new File(args[0]);
 
 		if (checkFile.exists()) {
 			logger.info("Reading in csv file: " + checkFile.getName());
-			parse(checkFile, props.get("cloneloc"));
-		} else if (props.get("multithread").equals("true")) {
-			parseMulitThread(props.get("cloneloc"), Integer.parseInt(props.get("repolimit")));
+			parse(checkFile, args[1]);
+		} else if (args[3].equals("true")) {
+			parseMulitThread(args[1], Integer.parseInt(args[2]));
 		} else {
-			parse(props.get("cloneloc"), props.get("repolimit"));
+			parse(args[1], Integer.parseInt(args[2]));
 		}
 
 	}
@@ -136,12 +136,12 @@ public final class JGitCVEPatchDownloader {
 	 * @throws IOException
 	 * @throws GitAPIException
 	 */
-	public void parse(String clonePath, String limit) throws IOException {
+	public void parse(String clonePath, int limit) throws IOException {
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
 
 		try {
-			for (Entry<String, Integer> source : db.getVulnIdPatchSource(Integer.parseInt(limit)).entrySet()) {
+			for (Entry<String, Integer> source : db.getVulnIdPatchSource(limit).entrySet()) {
 				pullCommitData(source.getKey(), clonePath, db.getCveId(source.getValue() + ""));
 			}
 
