@@ -69,10 +69,12 @@ Follow the steps below to generate NVIP output jars:
 * Make sure the <dataDir> (in nvip.properties) points to the nvip_data directory and the database user and password in the <db-mysql.properties> are correct.
 
 
-## Download & Install MySQL, Create the Database
+## Download & Install MySQL
 * Download “mysql-installer-community-8.0.20.0.msi” from  https://dev.mysql.com/downloads/installer/.
 * Click on the downloaded file, choose “Full” installation and continue with default options.
 * During the configuration of MySQL Server, when prompted for a password (for user "root"), make sure you use the "same password" that you have at "\src\main\resources\db-mysql.properties". 
+
+### Create & Initialize Database
 * After the setup process is finished open "MySQL Workbench" program (Click start and search for "MySQL Workbench" to find it).
 * Click on "Database/Connect To Database" menu on MySQL Workbench and Click "Ok". Enter the password you set for user "root" earlier. You should be connected to the MySQL database.
 * Open a new query editor in MySQL Workbench and execute the script provided at '\nvip_data\mysql-database\' to create and initialize the MySQL database.
