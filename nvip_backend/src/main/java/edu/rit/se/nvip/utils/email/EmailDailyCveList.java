@@ -35,10 +35,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 
 import java.io.*;
 import java.sql.Date;
@@ -70,7 +67,6 @@ public class EmailDailyCveList {
 		try {
 			ArrayList<String> data = db.getEmailsRoleId();
 			HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
-			logger.info("Sending {} CVEs to {} users!...", newCves.size(), data.size());
 			if (newCves.size() > 0) {
 				for (String info : data) {
 
@@ -80,7 +76,6 @@ public class EmailDailyCveList {
 					}
 				}
 			}
-			logger.info("Done sending {} CVEs to {} users!", newCves.size(), data.size());
 			return true;
 		} catch (NumberFormatException e) {
 			logger.error("Error sending email {}", e);
@@ -156,7 +151,7 @@ public class EmailDailyCveList {
 			sendFromGMail(paramsFromConfigFile.get("email"), paramsFromConfigFile.get("password"), new String[] { toEmail }, "Daily CVE Notification", doc.toString(), true);
 			logger.info("Message sent to successfully!", toEmail);
 		} catch (AuthenticationFailedException e) {
-			logger.error("Password for {} is incorrect, please check your password in the config file!", toEmail);
+			logger.error("Username or Password for sending address is incorrect, please check your password in the config file!");
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
@@ -172,7 +167,7 @@ public class EmailDailyCveList {
 	 * @param body
 	 * @param asHtml
 	 */
-	public static void sendFromGMail(String from, String pass, String[] to, String subject, String body, boolean asHtml) {
+	public static void sendFromGMail(String from, String pass, String[] to, String subject, String body, boolean asHtml) throws MessagingException {
 		Properties props = System.getProperties();
 		String host = "smtp.gmail.com";
 		props.put("mail.smtp.starttls.enable", "true");
@@ -193,36 +188,31 @@ public class EmailDailyCveList {
 		Session session = Session.getDefaultInstance(props);
 		MimeMessage message = new MimeMessage(session);
 
-		try {
-			message.setFrom(new InternetAddress(from));
-			InternetAddress[] toAddress = new InternetAddress[to.length];
+		message.setFrom(new InternetAddress(from));
+		InternetAddress[] toAddress = new InternetAddress[to.length];
 
-			// To get the array of addresses
-			for (int i = 0; i < to.length; i++) {
-				toAddress[i] = new InternetAddress(to[i]);
-			}
-
-			for (int i = 0; i < toAddress.length; i++) {
-				message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-			}
-
-			message.setSubject(subject);
-
-			if (asHtml)
-				message.setContent(body, "text/html; charset=utf-8");
-			else
-				message.setText(body);
-
-			Transport transport = session.getTransport("smtp");
-			transport.connect(host, from, pass);
-			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();
-		} catch (Exception e) {
-			logger.error("Error while sending email, {}", e.toString());
-			e.printStackTrace();
-
+		// To get the array of addresses
+		for (int i = 0; i < to.length; i++) {
+			toAddress[i] = new InternetAddress(to[i]);
 		}
+
+		for (int i = 0; i < toAddress.length; i++) {
+			message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+		}
+
+		message.setSubject(subject);
+
+		if (asHtml)
+			message.setContent(body, "text/html; charset=utf-8");
+		else
+			message.setText(body);
+
+		Transport transport = session.getTransport("smtp");
+		transport.connect(host, from, pass);
+		transport.sendMessage(message, message.getAllRecipients());
+		transport.close();
 		logger.info("Sent {} email(s) with title: {}", to.length, subject);
+
 	}
 
 	/**
