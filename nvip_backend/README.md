@@ -52,9 +52,13 @@ Follow the steps below to run NVIP from Eclipse:
 To load source URLs from a file, right click and then go to Run As->Run Configurations->Arguments and enter the file path, stg. like 'src/test/resources/cve-source-2URLs.txt'
 * To configure nvip for MySQL database, please follow instrustions at the "Download and Integrate MySQL" section below.
 
-##### Important Note
-Required training data and resources are stored under the nvip_data (the data directory).
-- You need to configure the NVIP data directory of the project (in the nvip.properties) to to point to the nvip_data directory. 
+### Important Notes - Troubleshooing
+- There are two config files used. 'nvip.properties' is used to set program parameters, and 'db-mysql.properties' is used to set database parameters. 
+When the system is run, the config files are first searched in the application root, if they are not found there the ones at '\src\main\resources' are used!
+
+- Please make sure the user name and password parameters in the 'db-mysql.properties' are set correctly! The user (root) and password parameters should be the ones set while installing MySQL.   
+
+- Required training data and resources are stored under the nvip_data (the data directory). You need to configure the NVIP data directory of the project (in the nvip.properties) to point to the nvip_data directory. 
 The data directory of the NVIP project can be set by the "dataDir" in the nvip.properties file at src/main/resources/nvip.properties.
 - Ex: assuming you have the data directory at C:/mvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to set dataDir = ../nvip_data in the nvip.properties.
 
