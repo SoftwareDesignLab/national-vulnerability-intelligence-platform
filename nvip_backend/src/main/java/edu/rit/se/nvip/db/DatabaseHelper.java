@@ -241,7 +241,7 @@ public class DatabaseHelper {
 		try {
 			dataSource = new HikariDataSource(config); // init data source
 		} catch (PoolInitializationException e2) {
-			logger.error("Error initializing data source! Check the value of the database user/password in the config file {}! Current values are: {}", configFile, config.getDataSourceProperties());
+			logger.error("Error initializing data source! Check the value of the database user/password in the config file '{}'! Current values are: {}", configFile, config.getDataSourceProperties());
 			System.exit(1);
 
 		}
