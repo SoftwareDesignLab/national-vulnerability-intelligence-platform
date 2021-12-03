@@ -50,6 +50,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.pool.HikariPool.PoolInitializationException;
 
 import edu.rit.se.nvip.model.AffectedRelease;
 import edu.rit.se.nvip.model.CVE;
@@ -237,8 +238,13 @@ public class DatabaseHelper {
 																				// root dir
 		}
 
-		dataSource = new HikariDataSource(config); // init data source
+		try {
+			dataSource = new HikariDataSource(config); // init data source
+		} catch (PoolInitializationException e2) {
+			logger.error("Error initializing data source! Check the value of the database user/password in the config file {}! Current values are: {}", configFile, config.getDataSourceProperties());
+			System.exit(1);
 
+		}
 	}
 
 	/**
