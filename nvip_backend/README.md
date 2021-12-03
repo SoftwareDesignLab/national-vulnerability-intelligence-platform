@@ -10,27 +10,25 @@ It scrapes disclosed CVEs, scores/characterizes them automatically and stores th
 * NVIP automatically scores each CVE based on the Common Vulnerability Scoring System Version 3.1 specification.
 * It reconciles scraped CVEs using Apache Open NLP. 
 * Automatically extracts affected Common Platform Enumeration (CPE) products from free-form CVE descriptions.
-
-### Additional Utilities & Functions
 * Maintains an updated list of CVE source URLs, takes a seed URL list as input and searches for additional CVE sources. 
 * Compares crawled CVEs against NVD and MITRE and records the comparison results under the "output" directory. 
 (If NVIP is run at date "MM/dd/yyyy", the output will be at "output//yyyyMMdd" path.) 
 
-### System Requirements
+## System Requirements
 * NVIP requires Java 8.
 * It uses MySQL (version 8) to store CVEs. The database muste be created before running the system. The database dump is provided at '/nvip_data/mysql-database'. 
 * Because the crawling process is a multi-threaded process and the characterization and product name extraction trains AI/ML models, minimum 8GB RAM is needed to run the system.
 (Suggested JVM parameters: -Xms8g -Xmx16g) 
 
-### Summary of Open Source Technologies/Programs Used
+## Summary of Open Source Technologies/Systems Used
 * NVIP uses WEKA (The workbench for machine learning) to train Machine Learning models for CVE characterization: https://www.cs.waikato.ac.nz/ml/weka/
 * MySQL database is used to store crawled and characterized CVEs: https://www.mysql.com/
 * The Apache Open NLP is used for CVE reconciliation: https://opennlp.apache.org/ 
 * The Deeplearning4j framework is used to train Deep Learning (LSTM) models for product name extraction: https://deeplearning4j.org/
 
-### How to Import as Eclipse Maven Project
+## How to Import as Eclipse Maven Project
 Eclipse IDE is suggested for development.
-NVIP can be imported as an Eclipse Maven project by following the steps listed below:
+The backend project can be imported as an Eclipse Maven project by following the simple steps listed below:
 
 * Open Eclipse.
 * Click File > Import.
@@ -38,7 +36,7 @@ NVIP can be imported as an Eclipse Maven project by following the steps listed b
 * Click Browse and select the root folder of the nvip backend project (which contains the pom.xml file).
 * Click Next and then click Finish. 
 
-### How To Run from Eclipse
+## How To Run from Eclipse
 Follow the steps below to run NVIP from Eclipse:
 
 * Double click on (open) the edu.rit.se.nvip.NVPMain.java, right click and select "Run As > Java Application".
@@ -47,7 +45,7 @@ Follow the steps below to run NVIP from Eclipse:
 To load source URLs from a file, right click and then go to Run As->Run Configurations->Arguments and enter the file path, stg. like 'src/test/resources/cve-source-2URLs.txt'
 * To configure nvip for MySQL database, please follow instrustions at the "Download and Integrate MySQL" section below.
 
-### Important Notes - Troubleshooing
+## Important Notes - Troubleshooing
 - There are two config files used. 'nvip.properties' is used to set program parameters, and 'db-mysql.properties' is used to set database parameters. 
 When the system is run, the config files are first searched in the application root, if they are not found there the ones at '\src\main\resources' are used!
 
@@ -58,14 +56,20 @@ The data directory of the NVIP project can be set by the "dataDir" in the nvip.p
 
 > Ex: assuming you have the data directory at C:/nvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to set dataDir = ../nvip_data in the nvip.properties.
 
-### How to Build & Package
+## How to Build & Package
 Follow the steps below to generate NVIP output jars:
 
 * After the project is imported, right click on the pom.xml and click "Run As > Maven Build" to generate output jars. 
 * Set "package" as Maven goal.
 * After the build process, the output jar will be located under the "target" directory of the project root.
 
-### Download and Integrate MySQL
+## How To Run
+* Run the jar file (nvip-1.0.jar), by opening the command prompt and executing the command "java -Xms8G -Xmx16G -jar nvip-1.0.jar".
+* Make sure the two properties files (<nvip.properties> and <db-mysql.properties>) are in the same directory where you have the jar file. Otherwise, properties files in the jar (under resources) will be used.
+* Make sure the <dataDir> (in nvip.properties) points to the nvip_data directory and the database user and password in the <db-mysql.properties> are correct.
+
+
+## Download and Integrate MySQL
 * Download “mysql-installer-community-8.0.20.0.msi” from  https://dev.mysql.com/downloads/installer/.
 * Click on the downloaded file, choose “Full” installation and continue with default options.
 * During the configuration of MySQL Server, when prompted for a password (for user "root"), make sure you use the "same password" that you have at "\src\main\resources\db-mysql.properties". 
