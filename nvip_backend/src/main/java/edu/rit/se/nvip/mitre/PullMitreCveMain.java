@@ -46,10 +46,10 @@ public class PullMitreCveMain {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-		String remotePath = propertiesNvip.getMitreRemoteRepoPath();
-		String localPath = propertiesNvip.getMitreLocalRepoFullPath();
-		String outputCSVpath = propertiesNvip.getMitreOutputCsvFullPath();
-
+		String remotePath = "https://github.com/CVEProject/cvelist.git";
+		String localPath = propertiesNvip.getDataDir() + "/mitre-cve";
+		String outputCSVpath = propertiesNvip.getDataDir() + "/mitre-cve.csv";
+ 
 		new MitreCveController().getMitreCVEsFromGitRepo(localPath, remotePath, outputCSVpath);
 
 		// UtilHelper.checkCveIdAtNvd("CVE-2108-6150");

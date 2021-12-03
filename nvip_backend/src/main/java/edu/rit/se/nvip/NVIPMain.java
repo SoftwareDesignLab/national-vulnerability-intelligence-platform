@@ -286,8 +286,8 @@ public class NVIPMain {
 
 		// process
 		logger.info("Comparing CVES against NVD & MITRE..");
-		String cveDataPathNvd = propertiesNvip.getNvdOutputCsvFullPath();
-		String cveDataPathMitre = propertiesNvip.getMitreOutputCsvFullPath();
+		String cveDataPathNvd = propertiesNvip.getDataDir()+ "/nvd-cve.csv";
+		String cveDataPathMitre = propertiesNvip.getDataDir() + "/mitre-cve.csv";
 		CveProcessor cveProcessor = new CveProcessor(cveDataPathNvd, cveDataPathMitre);
 		HashMap<String, List<Object>> cveListMap = cveProcessor.checkAgainstNvdMitre(cveHashMapAll); // CVEs not in Nvd, Mitre
 

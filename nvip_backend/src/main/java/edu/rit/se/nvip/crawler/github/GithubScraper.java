@@ -48,9 +48,9 @@ public class GithubScraper {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-		String remotePath = propertiesNvip.getMitreRemoteRepoPath();
-		String localPath = propertiesNvip.getMitreLocalRepoFullPath();
-		String outputCSVpath = propertiesNvip.getMitreOutputCsvFullPath();
+		String remotePath = "https://github.com/CVEProject/cvelist.git";
+		String localPath = propertiesNvip.getDataDir() + "/mitre-cve";
+		String outputCSVpath = propertiesNvip.getDataDir() + "/mitre-cve.csv";
 
 		return new MitreCveController().getMitreCVEsFromGitRepo(localPath, remotePath, outputCSVpath);
 	}

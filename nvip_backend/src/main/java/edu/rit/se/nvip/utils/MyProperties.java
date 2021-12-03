@@ -57,31 +57,7 @@ public class MyProperties extends Properties {
 	public String getDatabaseType() {
 		return getProperty("database");
 	}
-
-	public String getNvdOutputCsvFullPath() {
-		return getDataDir() + "/" + getProperty("nvdOutputCsvPath");
-	}
-
-	public String getMitreLocalRepoFullPath() {
-		return getDataDir() + "/" + getProperty("mitreLocalRepoPath");
-	}
-
-	public String getMitreRemoteRepoPath() {
-		return getProperty("mitreRemoteRepoPath");
-	}
-
-	public String getMitreOutputCsvFullPath() {
-		return getDataDir() + "/" + getProperty("mitreOutputCsvpath");
-	}
-
-	public String getCnnvdLocalRepoFullPath() {
-		return getDataDir() + "/" + getProperty("cnnvdLocalRepoPath");
-	}
-
-	public String getCnnvdOutputFileFullPath() {
-		return getDataDir() + "/" + getProperty("cnnvdOutputFilePath");
-	}
-
+	
 	public String getPathAllCrawledCVEs() {
 		return getProperty("pathAllCrawledCVEs");
 	}

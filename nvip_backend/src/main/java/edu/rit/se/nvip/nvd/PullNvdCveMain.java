@@ -47,7 +47,7 @@ public class PullNvdCveMain {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-		String filepath = propertiesNvip.getNvdOutputCsvFullPath();
+		String filepath = propertiesNvip.getDataDir()+ "/nvd-cve.csv"; 
 		new NvdCveController().pullNvdCve(filepath, false);
 	}
 
