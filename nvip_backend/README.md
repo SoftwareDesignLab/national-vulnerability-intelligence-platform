@@ -58,7 +58,7 @@ Follow the steps below to generate NVIP output jars:
 * Make sure the two properties files (<nvip.properties> and <db-mysql.properties>) are in the same directory where you have the jar file. Otherwise, properties files in the jar (under resources) will be used.
 * Make sure the <dataDir> (in nvip.properties) points to the nvip_data directory and the database user and password in the <db-mysql.properties> are correct.
 
-## Installation & Configuration checklist
+## Installation & Configuration Checklist
 - There are two config files used. 'nvip.properties' is used to set program parameters, and 'db-mysql.properties' is used to set database parameters. When the system is run, the config files are first searched in the application root, if they are not found there the ones at '\src\main\resources' are used!
 - Please make sure the user name and password parameters in the 'db-mysql.properties' are set correctly! The user (root) and password parameters should be the ones set while installing MySQL. 
 - Required training data and resources are stored under the nvip\_data (the data directory). You need to configure the data directory of the project (in the nvip.properties) to point to the nvip_data directory. 
