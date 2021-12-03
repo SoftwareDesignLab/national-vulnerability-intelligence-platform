@@ -63,13 +63,13 @@ Follow the steps below to generate NVIP output jars:
 * Set "package" as Maven goal.
 * After the build process, the output jar will be located under the "target" directory of the project root.
 
-## How To Run
+## How to Run the Packaged Jar
 * Run the jar file (nvip-1.0.jar), by opening the command prompt and executing the command "java -Xms8G -Xmx16G -jar nvip-1.0.jar".
 * Make sure the two properties files (<nvip.properties> and <db-mysql.properties>) are in the same directory where you have the jar file. Otherwise, properties files in the jar (under resources) will be used.
 * Make sure the <dataDir> (in nvip.properties) points to the nvip_data directory and the database user and password in the <db-mysql.properties> are correct.
 
 
-## Download and Integrate MySQL
+## Download & Install MySQL, Create the Database
 * Download “mysql-installer-community-8.0.20.0.msi” from  https://dev.mysql.com/downloads/installer/.
 * Click on the downloaded file, choose “Full” installation and continue with default options.
 * During the configuration of MySQL Server, when prompted for a password (for user "root"), make sure you use the "same password" that you have at "\src\main\resources\db-mysql.properties". 
