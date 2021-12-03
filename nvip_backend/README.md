@@ -3,7 +3,6 @@
 The NVIP back end system is scheduled to run periodically to find CVEs as soon as they are disclosed at CVE Numbering Authority(CNA) web pages. 
 It scrapes disclosed CVEs, scores/characterizes them automatically and stores them into the database.
 
-## Main Modules & Features
 * NVIP is a full open source software vulnerability management platform developed in Java.
 * It crawls provided list of vulnerability sources and creates a dynamic database of Common Vulnerabilities and Exposures (CVE). 
 * NVIP provides near real time detection of disclosed vulnerabilities, characterizes them based on the NIST's Vulnerability Description Ontology (VDO). 
