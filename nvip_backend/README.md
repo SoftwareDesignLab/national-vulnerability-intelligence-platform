@@ -68,11 +68,7 @@ Follow the steps below to generate NVIP output jars:
 ### Download and Integrate MySQL
 * Download “mysql-installer-community-8.0.20.0.msi” from  https://dev.mysql.com/downloads/installer/.
 * Click on the downloaded file, choose “Full” installation and continue with default options.
-* During the configuration of MySQL Server, when prompted for a password (for user "root"), use the "same password" that you see at "\src\main\resources\db-mysql.properties". You may select some other password if you wish, if you do so, then please update the password in the "db-mysql.properties" before running nvip.
+* During the configuration of MySQL Server, when prompted for a password (for user "root"), make sure you use the "same password" that you have at "\src\main\resources\db-mysql.properties". 
 * After the setup process is finished open "MySQL Workbench" program (Click start and search for "MySQL Workbench" to find it).
-* Clikc on "Database/Connect To Database" menu on MySQL Workbench and Click "Ok". Enter the password you set for user "root" earlier. You should be connected to the MySQL database now.
-* Click on the "Home" button of MySQL Workbench (The home icon at the up left corner). Then click on the gray box seen under the "MySQL Connections" on the left-middle side of the home screen. If asked enter your password again. 
-* In the “Navigator” pane (left-bottom side), click "Schemas" (the second tab)
-* Click on the "Schemas" window (left-up), right click your mouse and click on the "Create Schema" menu item. Then add a new schema named “nvip” and click on "Apply/Apply/Finish" buttons to create an empty MySQL database named "nvip"
-* Click "Server > Data Import" menu, and choose the location of the nvip backup dump and import it. If you do not have the dump directory, you may get it from "NVIPData\db-backup\mysql\" under the nvip data directory. Wait until the import process finishes. If import is completed witout any errors, configure your nvip project to start using the new MySQL database.
-* Go to the "nvip.properties" file and make sure you have the correct database configuration for your project (database=mysql).
+* Click on "Database/Connect To Database" menu on MySQL Workbench and Click "Ok". Enter the password you set for user "root" earlier. You should be connected to the MySQL database.
+* Open a new query editor in MySQL Workbench and execute the script provided at '\nvip_data\mysql-database\' to create and initialize the MySQL database.
