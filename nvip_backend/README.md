@@ -35,12 +35,32 @@ The backend project can be imported as an Eclipse Maven project by following the
 * Click Browse and select the root folder of the nvip backend project (which contains the pom.xml file).
 * Click Next and then click Finish. 
 
-## How To Run from Eclipse
-Follow the steps below to run NVIP from Eclipse:
+# Installation Guide
 
-* Double click on (open) the edu.rit.se.nvip.NVPMain.java, right click and select "Run As - Java Application". NVIP will load source URLs from the datasabe and start the backend process.
->If you want to provide the list of source urls from the command line, right click on NVPMain and then go to "Run As-Run Configurations-Arguments" and enter the file path, stg. like 'src/test/resources/cve-source-2URLs.txt'
->The MySQL database must be ready. For instructions please see the "Download and Integrate MySQL" section below.
+## 1. Download & Install MySQL
+* Download “mysql-installer-community-8.0.20.0.msi” from  https://dev.mysql.com/downloads/installer/.
+* Click on the downloaded file, choose “Full” installation and continue with default options.
+* During the configuration of MySQL Server, when prompted for a password (for user "root"), make sure you use the "same password" that you have at "\src\main\resources\db-mysql.properties". 
+
+### Create & Initialize Database
+* After the setup process is finished open "MySQL Workbench" program (Click start and search for "MySQL Workbench" to find it).
+* Click on "Database/Connect To Database" menu on MySQL Workbench and Click "Ok". Enter the password you set for user "root" earlier. You should be connected to the MySQL database.
+* Open a new query editor in MySQL Workbench and execute the script provided at '\nvip_data\mysql-database\' to create and initialize the MySQL database.
+> Please make sure the MySQL user name and password parameters in the 'db-mysql.properties' are updated! 
+
+## 2. Build & Package
+Follow the steps below to generate NVIP output jars:
+
+* After the project is imported, right click on the pom.xml and click "Run As > Maven Build" to generate output jars. 
+* Set "package" as Maven goal.
+* After the build process, the output jar will be located under the "target" directory of the project root.
+
+## 3. Run the Packaged Jar
+* Run the jar file (nvip-1.0.jar), by opening the command prompt and executing the command "java -Xms8G -Xmx16G -jar nvip-1.0.jar".
+* Make sure the two properties files (<nvip.properties> and <db-mysql.properties>) are in the same directory where you have the jar file. Otherwise, properties files in the jar (under resources) will be used.
+* Make sure the <dataDir> (in nvip.properties) points to the nvip_data directory and the database user and password in the <db-mysql.properties> are correct.
+
+
 
 ## Important Notes - Troubleshooing
 - There are two config files used. 'nvip.properties' is used to set program parameters, and 'db-mysql.properties' is used to set database parameters. 
@@ -52,27 +72,3 @@ When the system is run, the config files are first searched in the application r
 The data directory of the project can be set by the "dataDir" in the nvip.properties file.
 
 > Ex: assuming you have the data directory at C:/nvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to have dataDir=../nvip_data in the nvip.properties.
-
-## How to Build & Package
-Follow the steps below to generate NVIP output jars:
-
-* After the project is imported, right click on the pom.xml and click "Run As > Maven Build" to generate output jars. 
-* Set "package" as Maven goal.
-* After the build process, the output jar will be located under the "target" directory of the project root.
-
-## How to Run the Packaged Jar
-* Run the jar file (nvip-1.0.jar), by opening the command prompt and executing the command "java -Xms8G -Xmx16G -jar nvip-1.0.jar".
-* Make sure the two properties files (<nvip.properties> and <db-mysql.properties>) are in the same directory where you have the jar file. Otherwise, properties files in the jar (under resources) will be used.
-* Make sure the <dataDir> (in nvip.properties) points to the nvip_data directory and the database user and password in the <db-mysql.properties> are correct.
-
-
-## Download & Install MySQL
-* Download “mysql-installer-community-8.0.20.0.msi” from  https://dev.mysql.com/downloads/installer/.
-* Click on the downloaded file, choose “Full” installation and continue with default options.
-* During the configuration of MySQL Server, when prompted for a password (for user "root"), make sure you use the "same password" that you have at "\src\main\resources\db-mysql.properties". 
-
-### Create & Initialize Database
-* After the setup process is finished open "MySQL Workbench" program (Click start and search for "MySQL Workbench" to find it).
-* Click on "Database/Connect To Database" menu on MySQL Workbench and Click "Ok". Enter the password you set for user "root" earlier. You should be connected to the MySQL database.
-* Open a new query editor in MySQL Workbench and execute the script provided at '\nvip_data\mysql-database\' to create and initialize the MySQL database.
-> Please make sure the MySQL user name and password parameters in the 'db-mysql.properties' are updated! 
