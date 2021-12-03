@@ -10,20 +10,15 @@ It scrapes disclosed CVEs, scores/characterizes them automatically and stores th
 * NVIP automatically scores each CVE based on the Common Vulnerability Scoring System Version 3.1 specification.
 * It reconciles scraped CVEs using Apache Open NLP. 
 * Automatically extracts affected Common Platform Enumeration (CPE) products from free-form CVE descriptions.
-* Includes utilities to pull CVEs from the US National Vulnerability Database [(NVD)](https://nvd.nist.gov/), [MITRE CVE](https://cve.mitre.org/) and Chinese National Vulnerability Database [(CNNVD)](http://www.cnnvd.org.cn/).
-
 
 ### Additional Utilities & Functions
-* Pulls NVD CVEs from https://nvd.nist.gov and maintains a local comma separated file (CSV) for NVD CVEs.
-* Pulls MITRE CVEs from https://github.com/CVEProject/cvelist.git and maintains a local CSV for MITRE CVEs.
-* Includes a scraper for Chinese National Vulnerability Database(CNNVD) that scrapes CVEs from http://www.cnnvd.org.cn and stores them in a CSV file. 
 * Maintains an updated list of CVE source URLs, takes a seed URL list as input and searches for additional CVE sources. 
 * Compares crawled CVEs against NVD and MITRE and records the comparison results under the "output" directory. 
 (If NVIP is run at date "MM/dd/yyyy", the output will be at "output//yyyyMMdd" path.) 
 
 ### System Requirements
 * NVIP requires Java 8.
-* It uses MySQL (version 8) to store CVEs. The database muste be created before running the system. The database dump is provided at '../nvip_data/mysql-database'. 
+* It uses MySQL (version 8) to store CVEs. The database muste be created before running the system. The database dump is provided at '/nvip_data/mysql-database'. 
 * Because the crawling process is a multi-threaded process and the characterization and product name extraction trains AI/ML models, minimum 8GB RAM is needed to run the system.
 (Suggested JVM parameters: -Xms8g -Xmx16g) 
 
@@ -60,7 +55,7 @@ When the system is run, the config files are first searched in the application r
 
 - Required training data and resources are stored under the nvip_data (the data directory). You need to configure the NVIP data directory of the project (in the nvip.properties) to point to the nvip_data directory. 
 The data directory of the NVIP project can be set by the "dataDir" in the nvip.properties file at src/main/resources/nvip.properties.
-- Ex: assuming you have the data directory at C:/mvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to set dataDir = ../nvip_data in the nvip.properties.
+> Ex: assuming you have the data directory at C:/mvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to set dataDir = ../nvip_data in the nvip.properties.
 
 ### How to Build & Package
 Follow the steps below to generate NVIP output jars:
