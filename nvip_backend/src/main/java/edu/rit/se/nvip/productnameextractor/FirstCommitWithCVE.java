@@ -86,7 +86,7 @@ public class FirstCommitWithCVE {
 			MyProperties properties = new MyProperties();
 			properties = new PropertyLoader().loadConfigFile(properties);
 
-			String filename = properties.getDataDir() + "/" + properties.getRepositoriesDataDir() + "/" + properties.getGitHubData();
+			String filename = properties.getDataDir() + "/repositoriesdata/githubdata.ser";
 			reposDataset = loadRepoWithTagsSerialization(filename);
 		}
 		catch (Exception e) {
