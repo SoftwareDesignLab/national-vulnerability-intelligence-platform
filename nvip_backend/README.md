@@ -55,6 +55,7 @@ When the system is run, the config files are first searched in the application r
 
 - Required training data and resources are stored under the nvip_data (the data directory). You need to configure the NVIP data directory of the project (in the nvip.properties) to point to the nvip_data directory. 
 The data directory of the NVIP project can be set by the "dataDir" in the nvip.properties file at src/main/resources/nvip.properties.
+
 > Ex: assuming you have the data directory at C:/mvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to set dataDir = ../nvip_data in the nvip.properties.
 
 ### How to Build & Package
