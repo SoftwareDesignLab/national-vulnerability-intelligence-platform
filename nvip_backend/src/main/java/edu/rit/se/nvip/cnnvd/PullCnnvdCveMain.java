@@ -46,8 +46,8 @@ public class PullCnnvdCveMain {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-		String localPath = propertiesNvip.getCnnvdLocalRepoFullPath();
-		String outputFile = propertiesNvip.getCnnvdOutputFileFullPath();
+		String localPath =propertiesNvip.getDataDir() + "/cnnvd-cve/";
+		String outputFile = propertiesNvip.getDataDir() + "/cnnvd-cve.csv";
 
 		CnnvdCveController chinaCveController = new CnnvdCveController(localPath, outputFile, 10);
 

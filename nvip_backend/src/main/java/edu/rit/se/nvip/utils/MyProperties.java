@@ -58,54 +58,6 @@ public class MyProperties extends Properties {
 		return getProperty("database");
 	}
 
-	public String getNvdOutputCsvFullPath() {
-		return getDataDir() + "/" + getProperty("nvdOutputCsvPath");
-	}
-
-	public String getMitreLocalRepoFullPath() {
-		return getDataDir() + "/" + getProperty("mitreLocalRepoPath");
-	}
-
-	public String getMitreRemoteRepoPath() {
-		return getProperty("mitreRemoteRepoPath");
-	}
-
-	public String getMitreOutputCsvFullPath() {
-		return getDataDir() + "/" + getProperty("mitreOutputCsvpath");
-	}
-
-	public String getCnnvdLocalRepoFullPath() {
-		return getDataDir() + "/" + getProperty("cnnvdLocalRepoPath");
-	}
-
-	public String getCnnvdOutputFileFullPath() {
-		return getDataDir() + "/" + getProperty("cnnvdOutputFilePath");
-	}
-
-	public String getPathAllCrawledCVEs() {
-		return getProperty("pathAllCrawledCVEs");
-	}
-
-	public String getPathCVEsNotInNvd() {
-		return getProperty("pathCVEsNotInNvd");
-	}
-
-	public String getPathCVEsNotInMitre() {
-		return getProperty("pathCVEsNotInMitre");
-	}
-
-	public String getPathCVEsNotInNvdAndMitre() {
-		return getProperty("pathCVEsNotInNvdAndMitre");
-	}
-
-	public String getPathCVEsNewToday() {
-		return getProperty("pathCVEsNewToday");
-	}
-
-	public String getPathCVEsDisappearedToday() {
-		return getProperty("pathCVEsDisappearedToday");
-	}
-
 	public String getNvipUrlSources() {
 		return getProperty("nvipUrlSources");
 	}
@@ -149,10 +101,6 @@ public class MyProperties extends Properties {
 	public String getNameExtractorDir() {
 		return getProperty("nameextractorDir");
 	}
-	
-	public String getRepositoriesDataDir() {
-		return getProperty("repositoriesDataDir");
-	}
 
 	public String getChar2VecModelConfigPath() {
 		return getProperty("char2vecConfig");
@@ -178,9 +126,6 @@ public class MyProperties extends Properties {
 		return getProperty("cpeSerialized");
 	}
 	
-	public String getGitHubData() {
-		return getProperty("githubDataset");
-	}
 
 	/**
 	 * Hash map storing the list of known Cve sources (domains) that the system has

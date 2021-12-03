@@ -94,7 +94,7 @@ public class CveLogDiff {
 			String filepath;
 			int totCount = 0;
 			try {
-				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/" + propertiesNvip.getPathAllCrawledCVEs();
+				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_all.csv";
 				String[] header = new String[] { "CVE-ID", "Version", "Description", "SourceURL" };
 				csvLogger.writeHeaderToCSV(filepath, header, false);
 
@@ -110,21 +110,21 @@ public class CveLogDiff {
 			try {
 				int count = 0;
 
-				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/" + propertiesNvip.getPathCVEsNotInNvd();
+				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_not_in_nvd.csv";
 				count = csvLogger.writeObjectListToCSV(newCVEListMap.get("nvd"), filepath, false);
 				if (count > 0) {
 					logger.info("\tWrote " + count + " New CVEs *** Not exist in NVD *** to CSV: " + filepath);
 				}
 
 				// CVEs not in MITRE
-				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/" + propertiesNvip.getPathCVEsNotInMitre();
+				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_not_in_mitre.csv";
 				count = csvLogger.writeObjectListToCSV(newCVEListMap.get("mitre"), filepath, false);
 				if (count > 0) {
 					logger.info("\tWrote " + count + " New CVEs *** Not exist in MITRE ***  to CSV: " + filepath);
 				}
 
 				// CVEs not in NVD & MITRE
-				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/" + propertiesNvip.getPathCVEsNotInNvdAndMitre();
+				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_not_in_nvd_and_mitre.csv";
 				count = csvLogger.writeObjectListToCSV(newCVEListMap.get("nvd-mitre"), filepath, false);
 				if (count > 0) {
 					logger.info("\tWrote " + count + " New CVEs *** Not exist in NVD && MITRE ***  to CSV: " + filepath);
@@ -215,7 +215,7 @@ public class CveLogDiff {
 			File pathPreviousNvipResults = null;
 			while (days < dayLimit) {
 				String sDate = UtilHelper.getPastDayAsShortDate(cal, days);
-				pathPreviousNvipResults = new File(propertiesNvip.getOutputDir() + "/" + sDate + "/" + propertiesNvip.getPathCVEsNotInNvdAndMitre());
+				pathPreviousNvipResults = new File(propertiesNvip.getOutputDir() + "/" + sDate + "/cve_not_in_nvd_and_mitre.csv");
 				if (pathPreviousNvipResults.exists())
 					break;
 
@@ -255,7 +255,7 @@ public class CveLogDiff {
 			}
 
 			// log the new ones
-			String filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/" + propertiesNvip.getPathCVEsNewToday();
+			String filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_new_today.csv";
 			int count = csvLogger.writeObjectListToCSV(cveNewToday, filepath, false);
 			String str = "";
 			if (count > 0) {
@@ -286,7 +286,7 @@ public class CveLogDiff {
 			}
 
 			// Now arrPrev gives CVEs that disappeared today
-			filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/" + propertiesNvip.getPathCVEsDisappearedToday();
+			filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_disappeared_today.csv";
 			// new File(filepath).createNewFile();
 			FileUtils.writeLines(new File(filepath), cveDisappearedToday, false);
 			if (cveDisappearedToday.size() > 0)

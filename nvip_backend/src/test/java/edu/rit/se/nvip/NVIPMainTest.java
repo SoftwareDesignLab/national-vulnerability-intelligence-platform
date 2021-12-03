@@ -23,8 +23,8 @@ public class NVIPMainTest {
 		 * characterization, Source URLS to crawl etc.
 		 */
 
-		String nvdPath = propertiesNvip.getNvdOutputCsvFullPath();
-		String mitrePath = propertiesNvip.getMitreOutputCsvFullPath();
+		String nvdPath = propertiesNvip.getDataDir()+ "/nvd-cve.csv"; 
+		String mitrePath = propertiesNvip.getDataDir() + "/mitre-cve.csv";
 		String[] trainingDataInfo = propertiesNvip.getCveCharacterizationTrainingDataInfo();
 		String urlSources = propertiesNvip.getNvipUrlSourcesFullPath(); // crawled url sources stored here
 		int kbyte = 1024;

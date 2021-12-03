@@ -62,7 +62,7 @@ public class VendorAssessment {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
 		// refresh CVEs from NVD (including patches/advisories)
-		return propertiesNvip.getNvdOutputCsvFullPath();
+		return propertiesNvip.getDataDir()+ "/nvd-cve.csv";
 	}
 
 	private String getDataPath() {
