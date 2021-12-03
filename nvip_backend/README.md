@@ -48,10 +48,10 @@ When the system is run, the config files are first searched in the application r
 
 - Please make sure the user name and password parameters in the 'db-mysql.properties' are set correctly! The user (root) and password parameters should be the ones set while installing MySQL.   
 
-- Required training data and resources are stored under the nvip_data (the data directory). You need to configure the NVIP data directory of the project (in the nvip.properties) to point to the nvip_data directory. 
-The data directory of the NVIP project can be set by the "dataDir" in the nvip.properties file at src/main/resources/nvip.properties.
+- Required training data and resources are stored under the nvip_data (the data directory). You need to configure the data directory of the project (in the nvip.properties) to point to the nvip_data directory. 
+The data directory of the project can be set by the "dataDir" in the nvip.properties file.
 
-> Ex: assuming you have the data directory at C:/nvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to set dataDir = ../nvip_data in the nvip.properties.
+> Ex: assuming you have the data directory at C:/nvip/nvip_data, and the NVIP backend project at C:/nvip/nvip_backend, then you need to have dataDir=../nvip_data in the nvip.properties.
 
 ## How to Build & Package
 Follow the steps below to generate NVIP output jars:
