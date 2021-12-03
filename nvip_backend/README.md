@@ -38,7 +38,7 @@ The backend project can be imported as an Eclipse Maven project by following the
 ## How To Run from Eclipse
 Follow the steps below to run NVIP from Eclipse:
 
-* Double click on (open) the edu.rit.se.nvip.NVPMain.java, right click and select "Run As > Java Application". NVIP will load source URLs from the datasabe and start the crawl process automatically.
+* Double click on (open) the edu.rit.se.nvip.NVPMain.java, right click and select "Run As > Java Application". NVIP will load source URLs from the datasabe and start the backend process.
 > If you want to provide the list of source urls from the command line, right click on NVPMain and then go to Run As->Run Configurations->Arguments and enter the file path, stg. like 'src/test/resources/cve-source-2URLs.txt'
 > The MySQL database must be ready. For instructions please see the "Download and Integrate MySQL" section below.
 
