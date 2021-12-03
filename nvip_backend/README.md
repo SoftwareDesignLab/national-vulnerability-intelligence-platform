@@ -1,5 +1,5 @@
 
-# National Vulnerability Intelligence Platform (NVIP) - The Backend System
+# NVIP - The Backend System
 The NVIP back end system is scheduled to run periodically to find CVEs as soon as they are disclosed at CVE Numbering Authority(CNA) web pages. 
 It scrapes disclosed CVEs, scores/characterizes them automatically and stores them into the database.
 
