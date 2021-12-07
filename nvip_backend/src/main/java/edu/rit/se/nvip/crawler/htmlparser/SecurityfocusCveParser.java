@@ -50,7 +50,7 @@ import edu.rit.se.nvip.productnameextractor.CpeLookUp;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
- * Parse CVES from SEcurity Focus
+ * Parse CVEs from Security Focus
  * 
  * @author axoeec
  *
@@ -124,7 +124,7 @@ public class SecurityfocusCveParser extends AbstractCveParser implements CvePars
 		try {
 			document = Jsoup.connect(descUrl).get();
 			description += document.getElementById("vulnerability").text();
-		} catch (IOException e) {
+		} catch (Exception e) {
 		}
 
 		for (AffectedRelease a : affectedReleases) {

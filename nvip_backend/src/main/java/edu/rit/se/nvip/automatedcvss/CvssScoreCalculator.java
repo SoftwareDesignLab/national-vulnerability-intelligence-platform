@@ -67,7 +67,7 @@ public class CvssScoreCalculator {
 		String workingDir = propertiesNvip.getDataDir() + "/cvss/";
 		logger.info("Importing os for jython...");
 		myPythonInterpreter.exec("import os");
-		logger.info("Changing dir to {} for jython...", workingDir);
+		logger.info("Changing dir to {} for jython. Current directory is {}", workingDir, System.getProperty("user.dir"));
 		myPythonInterpreter.exec("os.chdir(\"" + workingDir + "\")");
 		logger.info("Executing {} ", pythonPyFile);
 		myPythonInterpreter.execfile(pythonPyFile);

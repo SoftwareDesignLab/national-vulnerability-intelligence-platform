@@ -26,17 +26,10 @@ public class TalosIntelligenceParserTest {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 		
-		String url = "https://talosintelligence.com/vulnerability_reports/TALOS-2016-0036";
-		String html = IOUtils.toString(new URL(url));
-		List<CompositeVulnerability> list = new CveCrawler(propertiesNvip).parseWebPage(url, html);
-		boolean fine = list.size() == 1;
-
-		url = "https://talosintelligence.com/vulnerability_reports/TALOS-2016-0259";
-		html = IOUtils.toString(new URL(url));
-		list = new CveCrawler(propertiesNvip).parseWebPage(url, html);
-		fine = fine && list.size() == 1;
-
-		assertEquals(true, fine);
+		CveCrawler crawler = new CveCrawler(propertiesNvip);
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-talos.html"));
+		List<CompositeVulnerability> list = crawler.parseWebPage("talosintelligence", html);
+		assertEquals(true, list.size()>0);
 	}
 
 }

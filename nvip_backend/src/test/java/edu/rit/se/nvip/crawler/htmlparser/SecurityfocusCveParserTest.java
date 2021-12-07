@@ -24,14 +24,12 @@ public class SecurityfocusCveParserTest {
 	public void testSecurityfocusParser() throws IOException {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-		CveCrawler crawler = new CveCrawler(propertiesNvip);
-	
-		String link = "https://www.securityfocus.com/bid/76394";
-		String html = IOUtils.toString(new URL(link));
-		List<CompositeVulnerability> list = crawler.parseWebPage(link, html);
-		boolean fine = list.size() == 1;
+		CveCrawler crawler = new CveCrawler(propertiesNvip);		
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-securityfocus.html"));
+		List<CompositeVulnerability> list = crawler.parseWebPage("https://www.securityfocus.com/bid/76394", html);
+		boolean foundCve = list.size() == 1;
 
-		assertEquals(true, fine);
+		assertEquals(true, foundCve);
 	}
 
 }

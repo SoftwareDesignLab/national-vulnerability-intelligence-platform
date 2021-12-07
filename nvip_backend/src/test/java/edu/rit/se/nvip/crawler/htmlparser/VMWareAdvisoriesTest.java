@@ -5,9 +5,12 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.rit.se.nvip.utils.UtilHelper;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -17,24 +20,17 @@ import static org.junit.Assert.assertTrue;
 
 public class VMWareAdvisoriesTest {
 
-    @Test
-    public void testVMWareAdvisories() throws IOException {
-        String url = "https://www.vmware.com/security/advisories/VMSA-2014-0012.html";
-        String html = IOUtils.toString(new URL(url));
+	@Test
+	public void testVMWareAdvisories() throws IOException {
+		MyProperties propertiesNvip = new MyProperties();
+		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-        MyProperties propertiesNvip = new MyProperties();
-        propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
+		CveCrawler crawler = new CveCrawler(propertiesNvip);
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware.html"));
+		List<CompositeVulnerability> list = crawler.parseWebPage("https://www.vmware.com/security/advisories/VMSA-2009-0010.html", html);
 
-        List<CompositeVulnerability> list = new CveCrawler(propertiesNvip).parseWebPage(url, html);
+		assertEquals(list.size() > 0, true);
 
-        assertEquals( list.size(), 8);
-
-        url = "https://www.vmware.com/security/advisories/VMSA-2019-0014.html";
-        html = IOUtils.toString(new URL(url));
-        list = new CveCrawler(propertiesNvip).parseWebPage(url, html);
-
-        assertEquals( list.size(), 2);
-
-    }
+	}
 
 }

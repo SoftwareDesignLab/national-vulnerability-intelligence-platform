@@ -19,27 +19,18 @@ public class NVIPMainTest {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
 		/**
-		 * Test the existence essential data files: NVD/MITRE CVEs to compare against, VDO training data for
-		 * characterization, Source URLS to crawl etc.
+		 * Test the existence of VDO training data for characterization
 		 */
 
-		String nvdPath = propertiesNvip.getDataDir()+ "/nvd-cve.csv"; 
-		String mitrePath = propertiesNvip.getDataDir() + "/mitre-cve.csv";
 		String[] trainingDataInfo = propertiesNvip.getCveCharacterizationTrainingDataInfo();
-		String urlSources = propertiesNvip.getNvipUrlSourcesFullPath(); // crawled url sources stored here
 		int kbyte = 1024;
 		int mbyte = kbyte * 1024;
-		File f1 = new File(nvdPath);
-		File f2 = new File(mitrePath);
-		
+
 		String vdoTrainingFile = trainingDataInfo[0] + trainingDataInfo[1].split(",")[0];
 		File f3 = new File(vdoTrainingFile);
-		File f4 = new File(urlSources);
 
-		int f1Length = (int) f1.length() / mbyte;
-		int f2Length = (int) f2.length() / mbyte;
-		int f3Length = (int) f1.length() / kbyte;
+		int f3Length = (int) f3.length() / kbyte;
 
-		assertEquals(true, f1.exists() && (f1Length > 30) && f2.exists() && (f2Length > 40) && f3.exists() && (f3Length > 80) && f4.exists());
+		assertEquals(true, f3.exists() && (f3Length > 10));
 	}
 }
