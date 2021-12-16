@@ -1,11 +1,32 @@
+/**
+ * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * government support under contract 70RSAT19CB0000020 awarded by the United
+ * States Department of Homeland Security.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package edu.rit.se.nvip.utils;
 
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,22 +55,16 @@ public class VendorAssessment {
 	private Logger logger = LogManager.getLogger(VendorAssessment.class);
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		VendorAssessment vendorAnalyzer = new VendorAssessment();
 		String cvePath = vendorAnalyzer.initCvePath();
 		vendorAnalyzer.refreshAdvisoriesAndPatches(cvePath);
 
-		// "Quectel";// "SimCom";//"Espressif";//NXP, TI, Microchip
-		//String[] vendors = new String[] { "Espressif", "NXP", "Microchip" };
-		String[] vendors = new String[] {"STMicroelectronics"};
+		String[] vendors = new String[] { "NXP" };
 		if (args.length > 0)
 			vendors = args[0].split(",");
 
 		List<String[]> additionalCvesForVendors = new ArrayList<>();
-//		String[] espressifCVEs = new String[] { "CVE-2020-24587", "CVE-2020-24588", "CVE-2020-26146", "CVE-2020-26147", "CVE-2020-24586", "CVE-2021-27926", "CVE-2020-15048", "CVE-2020-13629",
-//				"CVE-2021-31571", "CVE-2020-26555", "CVE-2020-26558", "CVE-2020-26556", "CVE-2020-26560", "CVE-2020-26559", "CVE-2020-26557", "CVE-2021-27926", "CVE-2021-34173" };
-//		additionalCvesForVendors.add(espressifCVEs);
-//		additionalCvesForVendors.add(new String[] {});
 		additionalCvesForVendors.add(new String[] {});
 
 		vendorAnalyzer.filterCVEs(vendors, cvePath, additionalCvesForVendors);
@@ -62,7 +77,7 @@ public class VendorAssessment {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
 		// refresh CVEs from NVD (including patches/advisories)
-		return propertiesNvip.getDataDir()+ "/nvd-cve.csv";
+		return propertiesNvip.getDataDir() + "/nvd-cve.csv";
 	}
 
 	private String getDataPath() {
@@ -94,6 +109,11 @@ public class VendorAssessment {
 			String vendor = vendorList[i];
 			String outputDataPath = getDataPath() + "/vendors/" + vendor + ".csv";
 
+			if (!(new File(outputDataPath)).exists()) {
+				logger.warn("No csv file found for vendor {}", vendor);
+				continue;
+			}
+
 			logger.info("Adding CVEs for {} to {}", vendor, outputDataPath);
 
 			logger.info("Initializing exploit scraper...");
@@ -103,13 +123,10 @@ public class VendorAssessment {
 			logger.info("Filtering CVEs...");
 			List<String[]> cveData = csvUtils.getDataFromCsv(fileCve);
 			int count = 0;
-			try {
-				// truncate file
-				Files.writeString(Paths.get(outputDataPath), "", Charset.forName("ISO-8859-1"));
-
+			try (FileWriter fw = new FileWriter(outputDataPath, true)) {
 				// add header
 				String header = "CveId,cvss,description,advisory,patch,exploit\n";
-				Files.writeString(Paths.get(outputDataPath), header, Charset.forName("ISO-8859-1"), StandardOpenOption.APPEND);
+				fw.write(header);
 
 				for (String[] tokens : cveData) {
 
@@ -139,8 +156,7 @@ public class VendorAssessment {
 								exploitUrl = exploitUrl + exploit.getPublisherUrl() + ";";
 
 						String line = cveId + "," + cvss + "," + description + "," + advisories + "," + patches + "," + exploitUrl + "\n";
-//					line = line.replace(";", ",");
-						Files.writeString(Paths.get(outputDataPath), line, Charset.forName("ISO-8859-1"), StandardOpenOption.APPEND);
+						fw.write(line);
 					}
 				}
 			} catch (IOException e) {
@@ -200,6 +216,11 @@ public class VendorAssessment {
 		Map<String, Map<String, CveStatYear>> cveStatMap = new HashMap<>();
 
 		String outputMetricsPath = getDataPath() + "/vendors/vendors.csv";
+		if (!(new File(outputMetricsPath)).exists()) {
+			logger.warn("No vendor data at {}", outputMetricsPath);
+			return;
+		}
+
 		for (String vendor : vendorList) {
 
 			try {
@@ -211,7 +232,10 @@ public class VendorAssessment {
 				String vendorData = getDataPath() + "/vendors/" + vendor + ".csv";
 
 				List<String[]> cveData = csvUtils.getDataFromCsv(vendorData, ',');
-				int count = 0;
+				if (cveData == null) {
+					logger.warn("No data found for vendor {} at path {}", vendor, vendorData);
+					continue;
+				}
 
 				// csv columns: CveId, cvss, description, advisory, patch, exploit
 				for (int i = 1; i < cveData.size(); i++) { // skip header
@@ -259,13 +283,11 @@ public class VendorAssessment {
 			logger.info("Calculated yearly stats for vendors {}", Arrays.deepToString(vendorList));
 		}
 
-		try {
-			// truncate file
-			Files.writeString(Paths.get(outputMetricsPath), "", Charset.forName("ISO-8859-1"));
+		try (FileWriter fw = new FileWriter(outputMetricsPath, true)) {
 
 			// add header
 			String header = "vendor,year,cve count,advisory count,patch count,exploit count\n";
-			Files.writeString(Paths.get(outputMetricsPath), header, Charset.forName("ISO-8859-1"), StandardOpenOption.APPEND);
+			fw.write(header);
 
 			for (String vendor : cveStatMap.keySet()) {
 				Map<String, CveStatYear> vendorData = cveStatMap.get(vendor);
@@ -275,11 +297,10 @@ public class VendorAssessment {
 				for (String year : keySet) {
 					CveStatYear stat = vendorData.get(year);
 					String line = vendor + "," + year + "," + stat.cveCount + "," + stat.advisoryCount + "," + stat.patchCount + "," + stat.exploitCount + "\n";
-					Files.writeString(Paths.get(outputMetricsPath), line, Charset.forName("ISO-8859-1"), StandardOpenOption.APPEND);
+					fw.write(line);
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

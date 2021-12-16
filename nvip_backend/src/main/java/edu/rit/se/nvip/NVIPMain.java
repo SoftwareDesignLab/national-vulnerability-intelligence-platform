@@ -286,7 +286,7 @@ public class NVIPMain {
 
 		// process
 		logger.info("Comparing CVES against NVD & MITRE..");
-		String cveDataPathNvd = propertiesNvip.getDataDir()+ "/nvd-cve.csv";
+		String cveDataPathNvd = propertiesNvip.getDataDir() + "/nvd-cve.csv";
 		String cveDataPathMitre = propertiesNvip.getDataDir() + "/mitre-cve.csv";
 		CveProcessor cveProcessor = new CveProcessor(cveDataPathNvd, cveDataPathMitre);
 		HashMap<String, List<Object>> cveListMap = cveProcessor.checkAgainstNvdMitre(cveHashMapAll); // CVEs not in Nvd, Mitre
@@ -323,8 +323,10 @@ public class NVIPMain {
 		recordAdditionalStats(databaseHelper, runId, dailyRunStats, crawlStartTime, crawlEndTime, dbTime);
 
 		// Extract and save exploits
-		logger.info("Identifying exploits for {} exploits...", crawledVulnerabilityList.size());
-		extractExploits(crawledVulnerabilityList, databaseHelper);
+		if (propertiesNvip.isExploitScrapingEnabled()) {
+			logger.info("Identifying exploits for {} exploits...", crawledVulnerabilityList.size());
+			extractExploits(crawledVulnerabilityList, databaseHelper);
+		}
 
 		// save affected releases
 		// this should be the last process, it is shutting down db connections!

@@ -125,7 +125,6 @@ public class MyProperties extends Properties {
 	public String getCPEserialized() {
 		return getProperty("cpeSerialized");
 	}
-	
 
 	/**
 	 * Hash map storing the list of known Cve sources (domains) that the system has
@@ -170,6 +169,10 @@ public class MyProperties extends Properties {
 		if (val == null)
 			val = "150"; // if not set in the property file
 		return Integer.parseInt(val);
+	}
+
+	public boolean isExploitScrapingEnabled() {
+		return Boolean.parseBoolean(getProperty("exploitScrapingEnabled"));
 	}
 
 }
