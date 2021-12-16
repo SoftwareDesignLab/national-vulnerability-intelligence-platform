@@ -90,60 +90,60 @@ public class DatabaseHelper {
 	 * SQL sentences. Please include the INSERT/UPDATE/DELETE SQL sentences of each
 	 * entity in this section!
 	 */
-	private String insertVulnSql = "INSERT INTO Vulnerability (cve_id, description, platform, introduced_date, published_date, created_date, last_modified_date, "
+	private String insertVulnSql = "INSERT INTO vulnerability (cve_id, description, platform, introduced_date, published_date, created_date, last_modified_date, "
 			+ "fixed_date, exists_at_nvd, exists_at_mitre, time_gap_nvd, time_gap_mitre) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
-	private String insertVulnDescriptionSql = "INSERT INTO Vulnerability (cve_id, description) VALUES (?,?);";
-	private String updateVulnSql = "UPDATE Vulnerability SET description = ?," + "platform = ?," + "introduced_date = ?," + "published_date = ?," + "last_modified_date = ?,"
+	private String insertVulnDescriptionSql = "INSERT INTO vulnerability (cve_id, description) VALUES (?,?);";
+	private String updateVulnSql = "UPDATE vulnerability SET description = ?," + "platform = ?," + "introduced_date = ?," + "published_date = ?," + "last_modified_date = ?,"
 			+ "fixed_date = ? WHERE (cve_id = ?);";
-	private String updateVulnDescriptionSql = "UPDATE Vulnerability SET description = ? WHERE cve_id = ?;";
+	private String updateVulnDescriptionSql = "UPDATE vulnerability SET description = ? WHERE cve_id = ?;";
 
-	private String updateNvdTimeGapSql = "UPDATE Vulnerability SET time_gap_nvd = ? WHERE cve_id = ?;";
-	private String updateNvdStatusSql = "UPDATE Vulnerability SET exists_at_nvd = ? WHERE cve_id = ?;";
-	private String updateMitreTimeGapSql = "UPDATE Vulnerability SET time_gap_mitre = ? WHERE cve_id = ?;";
-	private String updateMitreStatusSql = "UPDATE Vulnerability SET exists_at_mitre = ? WHERE cve_id = ?;";
-	private String selectVulnSql = "SELECT * FROM Vulnerability;";
-	private String deleteVulnSql = "DELETE FROM Vulnerability WHERE cve_id=?;";
+	private String updateNvdTimeGapSql = "UPDATE vulnerability SET time_gap_nvd = ? WHERE cve_id = ?;";
+	private String updateNvdStatusSql = "UPDATE vulnerability SET exists_at_nvd = ? WHERE cve_id = ?;";
+	private String updateMitreTimeGapSql = "UPDATE vulnerability SET time_gap_mitre = ? WHERE cve_id = ?;";
+	private String updateMitreStatusSql = "UPDATE vulnerability SET exists_at_mitre = ? WHERE cve_id = ?;";
+	private String selectVulnSql = "SELECT * FROM vulnerability;";
+	private String deleteVulnSql = "DELETE FROM vulnerability WHERE cve_id=?;";
 	private String insertCveStatusSql = "INSERT INTO cvestatuschange (vuln_id, cve_id, cpmpared_against, old_status_code, new_status_code, cve_description, time_gap_recorded, time_gap_hours, status_date, cve_create_date) VALUES (?,?,?,?,?,?,?,?,?,?);";
 
-	private String insertVulnSourceSql = "INSERT INTO VulnSourceUrl (cve_id, url) VALUES (?,?);";
-	private String selectVulnSourceSql = "SELECT * FROM VulnSourceUrl;";
-	private String deleteVulnSourceSql = "DELETE FROM VulnSourceUrl WHERE cve_id=?;";
+	private String insertVulnSourceSql = "INSERT INTO vulnsourceurl (cve_id, url) VALUES (?,?);";
+	private String selectVulnSourceSql = "SELECT * FROM vulnsourceurl;";
+	private String deleteVulnSourceSql = "DELETE FROM vulnsourceurl WHERE cve_id=?;";
 
-	private String insertNvipSourceSql = "INSERT INTO NvipSourceUrl (url, description, http_status) VALUES (?,?,?);";
-	private String updateNvipSourceSql = "UPDATE NvipSourceUrl SET http_status = ? WHERE (url = ?);";
-	private String deleteNvipSourceSql = "DELETE FROM NvipSourceUrl WHERE url = ?;";
-	private String deleteAllNvipSourceSql = "DELETE FROM NvipSourceUrl;";
-	private String selectAllNvipSourceSql = "SELECT * FROM NvipSourceUrl;";
-	private String selectNvipSourceSql = "SELECT count(*) FROM NvipSourceUrl WHERE (url = ?);";
+	private String insertNvipSourceSql = "INSERT INTO nvipsourceurl (url, description, http_status) VALUES (?,?,?);";
+	private String updateNvipSourceSql = "UPDATE nvipsourceurl SET http_status = ? WHERE (url = ?);";
+	private String deleteNvipSourceSql = "DELETE FROM nvipsourceurl WHERE url = ?;";
+	private String deleteAllNvipSourceSql = "DELETE FROM nvipsourceurl;";
+	private String selectAllNvipSourceSql = "SELECT * FROM nvipsourceurl;";
+	private String selectNvipSourceSql = "SELECT count(*) FROM nvipsourceurl WHERE (url = ?);";
 
-	private String insertCveActualSql = "INSERT INTO CVEActual (cve_id, full_page_url, processed_date, cve_content) VALUES (?,?,?,?);";
-	private String updateCveActualSql = "UPDATE CVEActual SET processed_date = ?, cve_content = ? WHERE (cve_id = ? AND full_page_url = ?);";
-	private String selectCveActualSql = "SELECT * FROM CVEActual;";
+	private String insertCveActualSql = "INSERT INTO cveactual (cve_id, full_page_url, processed_date, cve_content) VALUES (?,?,?,?);";
+	private String updateCveActualSql = "UPDATE cveactual SET processed_date = ?, cve_content = ? WHERE (cve_id = ? AND full_page_url = ?);";
+	private String selectCveActualSql = "SELECT * FROM cveactual;";
 
-	private String insertCveHistorySql = "INSERT INTO CVEHistory (cve_id, full_page_url, processed_date, cve_content) VALUES (?,?,?,?);";
-	private String updateCveHistorySql = "UPDATE CVEHistory SET cve_content = ? WHERE (cve_id = ? AND full_page_url = ? AND processed_date = ?);";
-	private String selectCveHistorySql = "SELECT * FROM CveHistory;";
+	private String insertCveHistorySql = "INSERT INTO cvehistory (cve_id, full_page_url, processed_date, cve_content) VALUES (?,?,?,?);";
+	private String updateCveHistorySql = "UPDATE cvehistory SET cve_content = ? WHERE (cve_id = ? AND full_page_url = ? AND processed_date = ?);";
+	private String selectCveHistorySql = "SELECT * FROM cvehistory;";
 
-	private String insertDailyRunSql = "INSERT INTO DailyRunHistory (run_date_time, crawl_time_min, total_cve_count, not_in_nvd_count, not_in_mitre_count,"
+	private String insertDailyRunSql = "INSERT INTO dailyrunhistory (run_date_time, crawl_time_min, total_cve_count, not_in_nvd_count, not_in_mitre_count,"
 			+ "not_in_both_count, new_cve_count, added_cve_count, updated_cve_count) VALUES (?,?,?,?,?,?,?,?,?);";
-	private String updateDailyRunSql = "UPDATE DailyRunHistory SET crawl_time_min = ?, db_time_min = ?, total_cve_count = ?, not_in_nvd_count = ?, "
+	private String updateDailyRunSql = "UPDATE dailyrunhistory SET crawl_time_min = ?, db_time_min = ?, total_cve_count = ?, not_in_nvd_count = ?, "
 			+ "not_in_mitre_count = ?, not_in_both_count = ?, new_cve_count = ?, avg_time_gap_nvd = ?, avg_time_gap_mitre = ? WHERE (run_id = ?);";
-	private String selectDailyRunSql = "SELECT * FROM DailyRunHistory;";
-	private String deleteDailyRunSql = "DELETE FROM DailyRunHistory WHERE run_date_time=?;";
+	private String selectDailyRunSql = "SELECT * FROM dailyrunhistory;";
+	private String deleteDailyRunSql = "DELETE FROM dailyrunhistory WHERE run_date_time=?;";
 
-	private String insertVdoCharacteristicSql = "INSERT INTO VdoCharacteristic (cve_id, vdo_label_id,vdo_confidence,vdo_noun_group_id) VALUES (?,?,?,?);";
-	private String deleteVdoCharacteristicSql = "DELETE FROM VdoCharacteristic WHERE cve_id=?;";
+	private String insertVdoCharacteristicSql = "INSERT INTO vdocharacteristic (cve_id, vdo_label_id,vdo_confidence,vdo_noun_group_id) VALUES (?,?,?,?);";
+	private String deleteVdoCharacteristicSql = "DELETE FROM vdocharacteristic WHERE cve_id=?;";
 
-	private String insertCvssScoreSql = "INSERT INTO CvssScore (cve_id, cvss_severity_id, severity_confidence, impact_score, impact_confidence) VALUES (?,?,?,?,?);";
-	private String deleteCvssScoreSql = "DELETE FROM CvssScore WHERE cve_id=?;";
+	private String insertCvssScoreSql = "INSERT INTO cvssscore (cve_id, cvss_severity_id, severity_confidence, impact_score, impact_confidence) VALUES (?,?,?,?,?);";
+	private String deleteCvssScoreSql = "DELETE FROM cvssscore WHERE cve_id=?;";
 
 	private String selectCvssSeveritySql = "SELECT * FROM cvssseverity;";
 
-	private String insertProductSql = "INSERT INTO Product (CPE, domain) VALUES (?, ?);";
-	private String deleteProductSql = "DELETE FROM Product WHERE CPE=?;";
-	private String getProductCountFromCpeSql = "SELECT count(*) from Product where cpe = ?";
-	private String getProductFromCpeSql = "SELECT * from Product where cpe = ?";
-	private String getCpeFromDomainSql = "SELECT p.product_id FROM Product p where p.Domain like \"%?%\" order by p.cpe";
+	private String insertProductSql = "INSERT INTO product (CPE, domain) VALUES (?, ?);";
+	private String deleteProductSql = "DELETE FROM product WHERE CPE=?;";
+	private String getProductCountFromCpeSql = "SELECT count(*) from product where cpe = ?";
+	private String getProductFromCpeSql = "SELECT * from product where cpe = ?";
+	private String getCpeFromDomainSql = "SELECT p.product_id FROM product p where p.Domain like \"%?%\" order by p.cpe";
 	private String productTableSelectAllSql = "SELECT * FROM product";
 	private String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
 
@@ -159,20 +159,20 @@ public class DatabaseHelper {
 	private String selectCpesByCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL AND v.cve_id = ?;";
 	private String selectCpesAndCve = "SELECT v.vuln_id, v.cve_id, p.cpe FROM vulnerability v LEFT JOIN affectedrelease ar ON ar.cve_id = v.cve_id LEFT JOIN product p ON p.product_id = ar.product_id WHERE p.cpe IS NOT NULL;";
 
-	private String insertAffectedReleaseSql = "INSERT INTO AffectedRelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
-	private String updateAffectedReleaseSql = "UPDATE AffectedRelease set release_date = ?, version = ? where cve_id = ? and product_id = ?;";
-	private String deleteAffectedReleaseSql = "DELETE FROM AffectedRelease where cve_id = ?;";
+	private String insertAffectedReleaseSql = "INSERT INTO affectedrelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
+	private String updateAffectedReleaseSql = "UPDATE affectedrelease set release_date = ?, version = ? where cve_id = ? and product_id = ?;";
+	private String deleteAffectedReleaseSql = "DELETE FROM affectedrelease where cve_id = ?;";
 
-	private String insertVulnerabilityUpdateSql = "INSERT INTO VulnerabilityUpdate (vuln_id, column_name, column_value, run_id) VALUES (?,?,?,?);";
-	private String deleteVulnerabilityUpdateSql = "DELETE FROM VulnerabilityUpdate WHERE run_id=?;";
+	private String insertVulnerabilityUpdateSql = "INSERT INTO vulnerabilityupdate (vuln_id, column_name, column_value, run_id) VALUES (?,?,?,?);";
+	private String deleteVulnerabilityUpdateSql = "DELETE FROM vulnerabilityupdate WHERE run_id=?;";
 	private String selectVulnerabilityIdSql = "SELECT vuln_id FROM nvip.vulnerability WHERE cve_id = ?";
 	private String selectCVEIdSql = "SELECT cve_id FROM vulnerability WHERE vuln_id = ?";
 
 	private String selectVdoLabelSql = "SELECT * FROM vdolabel;";
 	private String selectVdoNounGroupSql = "SELECT * FROM vdonoungroup;";
 
-	private String insertExploitSql = "INSERT INTO Exploit (vuln_id, cve_id, publisher_id, publish_date, publisher_url, description, exploit_code, nvip_record_date) VALUES (?,?,?,?,?,?,?,?);";
-	private String deleteExploitSql = "DELETE FROM Exploit WHERE vuln_id=?;";
+	private String insertExploitSql = "INSERT INTO exploit (vuln_id, cve_id, publisher_id, publish_date, publisher_url, description, exploit_code, nvip_record_date) VALUES (?,?,?,?,?,?,?,?);";
+	private String deleteExploitSql = "DELETE FROM exploit WHERE vuln_id=?;";
 
 	private String selEmailsSql = "SELECT email, role_id, first_name FROM user;";
 	private String selEmailsByUserNameSql = "SELECT email, role_id, first_name FROM user WHERE user_name = ?";
@@ -704,7 +704,7 @@ public class DatabaseHelper {
 	 * @return
 	 */
 	public Map<Integer, List<String>> getProductCveMapFromDb() {
-		String selectSql = "SELECT * FROM AffectedRelease";
+		String selectSql = "SELECT * FROM affectedrelease";
 		Map<Integer, List<String>> map = new HashMap<>();
 		try (Connection conn = getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(selectSql);) {
 			while (rs.next()) {
@@ -742,7 +742,7 @@ public class DatabaseHelper {
 					existingVulnMap = new HashMap<String, Vulnerability>();
 					try (Connection connection = getConnection();) {
 
-						String selectSql = "SELECT vuln_id, cve_id, description, created_date, exists_at_nvd, exists_at_mitre from Vulnerability";
+						String selectSql = "SELECT vuln_id, cve_id, description, created_date, exists_at_nvd, exists_at_mitre from vulnerability";
 						PreparedStatement pstmt = connection.prepareStatement(selectSql);
 						ResultSet rs = pstmt.executeQuery();
 
@@ -1538,7 +1538,7 @@ public class DatabaseHelper {
 			for (int i = 0; i < cveList.size(); i++) {
 				CVE cve = cveList.get(i);
 
-				String selectSql = "SELECT * FROM CVEActual WHERE (cve_id = ? AND full_page_url = ?);";
+				String selectSql = "SELECT * FROM cveactual WHERE (cve_id = ? AND full_page_url = ?);";
 				PreparedStatement pstmt = conn.prepareStatement(selectSql);
 				pstmt.setString(1, cve.getCveId());
 				pstmt.setString(2, cve.getFullPageUrl());
@@ -1613,7 +1613,7 @@ public class DatabaseHelper {
 	 */
 	private void insertCveHistory(Connection conn, CVE cve) throws SQLException {
 
-		String selectSql = "SELECT * FROM CVEHistory WHERE (cve_id = ? AND full_page_url = ? AND processed_date = ?);";
+		String selectSql = "SELECT * FROM cvehistory WHERE (cve_id = ? AND full_page_url = ? AND processed_date = ?);";
 		PreparedStatement pstmt = conn.prepareStatement(selectSql);
 		pstmt.setString(1, cve.getCveId());
 		pstmt.setString(2, cve.getFullPageUrl());
@@ -1780,12 +1780,12 @@ public class DatabaseHelper {
 			 * calculate avg nvd and mitre times
 			 */
 			Statement stmt = conn.createStatement();
-			String cvgTimeSql = "SELECT avg(time_gap_mitre) as mitre FROM Vulnerability where time_gap_mitre > 0";
+			String cvgTimeSql = "SELECT avg(time_gap_mitre) as mitre FROM vulnerability where time_gap_mitre > 0";
 			ResultSet rs = stmt.executeQuery(cvgTimeSql);
 			if (rs.next())
 				dailyRun.setAvgTimeGapMitre(Double.parseDouble(formatter.format(rs.getDouble("mitre"))));
 
-			cvgTimeSql = "SELECT avg(time_gap_nvd) as nvd FROM Vulnerability where time_gap_nvd > 0";
+			cvgTimeSql = "SELECT avg(time_gap_nvd) as nvd FROM vulnerability where time_gap_nvd > 0";
 			rs = stmt.executeQuery(cvgTimeSql);
 			if (rs.next())
 				dailyRun.setAvgTimeGapNvd(Double.parseDouble(formatter.format(rs.getDouble("nvd"))));
