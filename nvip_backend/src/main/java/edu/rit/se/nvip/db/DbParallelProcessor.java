@@ -58,9 +58,12 @@ public class DbParallelProcessor {
 	public boolean executeInParallel(List<CompositeVulnerability> vulnList, int runId) {
 		boolean done = false;
 		long start = System.currentTimeMillis();
-		List<List<CompositeVulnerability>> vulnList2 = ListUtils.partition(vulnList, 1000);
 
-		int numberOfThreads = vulnList.size() / 1000 + 1;
+		int numOfRecordsPErThread = 25000;
+		List<List<CompositeVulnerability>> vulnList2 = ListUtils.partition(vulnList, numOfRecordsPErThread);
+
+		int numberOfThreads = vulnList.size() / numOfRecordsPErThread + 1;
+		logger.info("Spawning {} threads to record {} CVEs", numOfRecordsPErThread, vulnList.size());
 		ExecutorService pool = Executors.newFixedThreadPool(numberOfThreads);
 		for (List<CompositeVulnerability> subList : vulnList2) {
 			Runnable runnable = new VulnRecordThread(subList, runId);
@@ -79,7 +82,8 @@ public class DbParallelProcessor {
 
 			DatabaseHelper.clearExistingVulnMap(); // clear existing CVEs map!
 		} catch (InterruptedException e2) {
-			logger.error("Error while awaiting task completion! # of threads: " + numberOfThreads + " # of lists in the partitioned large vuln list: " + vulnList2.size() + " Exception: " + e2.toString());
+			logger.error(
+					"Error while awaiting task completion! # of threads: " + numberOfThreads + " # of lists in the partitioned large vuln list: " + vulnList2.size() + " Exception: " + e2.toString());
 		}
 
 		return done;
