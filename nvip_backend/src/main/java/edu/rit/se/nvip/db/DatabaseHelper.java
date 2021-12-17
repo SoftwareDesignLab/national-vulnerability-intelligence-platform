@@ -855,9 +855,9 @@ public class DatabaseHelper {
 					/**
 					 * record updates
 					 */
-					List<Integer> vulnIdList = getVulnerabilityIdList(vuln.getCveId());
+					List<Integer> vulnIdList = getVulnerabilityIdList(vuln.getCveId(), connection);
 					for (Integer vulnId : vulnIdList)
-						insertVulnerabilityUpdate(vulnId, "description", "New CVE: " + vuln.getCveId(), runId);
+						insertVulnerabilityUpdate(vulnId, "description", "New CVE: " + vuln.getCveId(), runId, connection);
 
 					insertCount++;
 				} catch (Exception e) {
@@ -946,7 +946,7 @@ public class DatabaseHelper {
 		 * record updates if there is an existing vuln
 		 */
 		if (existingAttribs != null)
-			insertVulnerabilityUpdate(existingAttribs.getVulnID(), "description", existingAttribs.getDescription(), runId);
+			insertVulnerabilityUpdate(existingAttribs.getVulnID(), "description", existingAttribs.getDescription(), runId, connection);
 
 		return 1; // done
 	} // updateVuln
@@ -960,11 +960,9 @@ public class DatabaseHelper {
 	 * @param runId
 	 * @return
 	 */
-	public boolean insertVulnerabilityUpdate(int vulnId, String columnName, String columnValue, int runId) {
-		Connection conn = null;
+	public boolean insertVulnerabilityUpdate(int vulnId, String columnName, String columnValue, int runId, Connection conn) {
 		PreparedStatement pstmt = null;
 		try {
-			conn = getConnection();
 			pstmt = conn.prepareStatement(insertVulnerabilityUpdateSql);
 			pstmt.setInt(1, vulnId);
 			pstmt.setString(2, columnName);
@@ -976,7 +974,8 @@ public class DatabaseHelper {
 			return false;
 		} finally {
 			try {
-				conn.close();
+				if (pstmt != null)
+					pstmt.close();
 			} catch (SQLException e) {
 			}
 		}
@@ -1252,7 +1251,8 @@ public class DatabaseHelper {
 			logger.error(e.getMessage());
 		} finally {
 			try {
-				conn.close();
+				if (conn != null)
+					conn.close();
 			} catch (SQLException e) {
 
 			}
@@ -1467,7 +1467,8 @@ public class DatabaseHelper {
 			logger.error(e.getMessage());
 		} finally {
 			try {
-				conn.close();
+				if (conn != null)
+					conn.close();
 			} catch (SQLException e) {
 
 			}
@@ -1813,7 +1814,8 @@ public class DatabaseHelper {
 			logger.error("Error in updateDailyRun()!  " + e.getMessage() + "\nSQL:" + pstmt.toString());
 		} finally {
 			try {
-				conn.close();
+				if (conn != null)
+					conn.close();
 			} catch (SQLException e) {
 
 			}
@@ -1854,7 +1856,8 @@ public class DatabaseHelper {
 			logger.error(e.getMessage());
 		} finally {
 			try {
-				conn.close();
+				if (conn != null)
+					conn.close();
 			} catch (SQLException e) {
 
 			}
@@ -2077,15 +2080,14 @@ public class DatabaseHelper {
 	 * @param cveId
 	 * @return
 	 */
-	public List<Integer> getVulnerabilityIdList(String cveId) {
+	public List<Integer> getVulnerabilityIdList(String cveId, Connection conn) {
 		List<Integer> vulnIdList = new ArrayList<Integer>();
-		Connection conn = null;
+		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = getConnection();
 			pstmt = conn.prepareStatement(selectVulnerabilityIdSql);
 			pstmt.setString(1, cveId);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				vulnIdList.add(rs.getInt("vuln_id"));
 			}
@@ -2093,10 +2095,10 @@ public class DatabaseHelper {
 			logger.error(e.toString());
 		} finally {
 			try {
+				if (rs != null)
+					rs.close();
 				if (pstmt != null)
 					pstmt.close();
-				if (conn != null)
-					conn.close();
 			} catch (SQLException ignored) {
 			}
 		}
@@ -2197,15 +2199,10 @@ public class DatabaseHelper {
 	 */
 	public boolean saveExploits(CompositeVulnerability vulnerability, List<Exploit> exploitList, Map<String, Vulnerability> existingVulnMap) {
 
-		Connection connection;
+		Connection connection = null;
 		try {
 			connection = getConnection();
-		} catch (SQLException e1) {
-			logger.error("Error while obtaining db connection, Error: {}", e1.toString());
-			return false;
-		}
 
-		try {
 			if (!existingVulnMap.containsKey(vulnerability.getCveId())) {
 				logger.warn("Vulnerability does not exist in the database, you can not add exploits for it! Vulnerability: {}", vulnerability);
 				return false;
@@ -2227,7 +2224,8 @@ public class DatabaseHelper {
 			return false;
 		} finally {
 			try {
-				connection.close();
+				if (connection != null)
+					connection.close();
 			} catch (Exception e) {
 			}
 		}
@@ -2288,8 +2286,9 @@ public class DatabaseHelper {
 	}
 
 	public int updateVulnerabilityDataFromCsv(CompositeVulnerability vuln, Map<String, Vulnerability> existingVulnMap, int runId) throws SQLException {
-		Connection connection = getConnection();
+		Connection connection = null;
 		try {
+			connection = getConnection();
 			Vulnerability existingAttribs = existingVulnMap.get(vuln.getCveId());
 			if (existingAttribs == null) {
 				try (PreparedStatement pstmt = connection.prepareStatement(insertVulnDescriptionSql);) {
@@ -2324,7 +2323,8 @@ public class DatabaseHelper {
 		} catch (Exception e) {
 			logger.error(e.toString());
 		} finally {
-			connection.close();
+			if (connection != null)
+				connection.close();
 		}
 
 		return 0;
