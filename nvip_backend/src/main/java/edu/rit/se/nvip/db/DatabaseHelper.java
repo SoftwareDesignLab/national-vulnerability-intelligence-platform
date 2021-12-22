@@ -63,7 +63,6 @@ import edu.rit.se.nvip.model.Product;
 import edu.rit.se.nvip.model.VdoCharacteristic;
 import edu.rit.se.nvip.model.VulnSource;
 import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.utils.CveUtils;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
@@ -177,6 +176,9 @@ public class DatabaseHelper {
 	private String selEmailsSql = "SELECT email, role_id, first_name FROM user;";
 	private String selEmailsByUserNameSql = "SELECT email, role_id, first_name FROM user WHERE user_name = ?";
 	private String getCVEByDate = "SELECT cve_id, description FROM vulnerabilityaggregate WHERE run_date_time >= ? AND run_date_time < ?";
+
+	private String getCVEAndDescription = "SELECT cve_id, description FROM vulnerability WHERE description NOT LIKE '%** RESERVED **%' AND cve_id LIKE '%CVE-2021%'";
+	private String getVulnIdByCveId = "SELECT vuln_id FROM vulnerability WHERE cve_id = ?";
 
 	private static DatabaseHelper databaseHelper = null;
 	private static Map<String, Vulnerability> existingVulnMap = new HashMap<String, Vulnerability>();
@@ -2500,4 +2502,42 @@ public class DatabaseHelper {
 		return data;
 	}
 
+
+	/**
+	 * Gets all CVE-IDs from the vulnerability tale with their descriptions
+	 * @return
+	 */
+	public Map<String, String> getAllCveIdAndDescriptions() {
+		HashMap<String, String> results = new HashMap<>();
+
+		try (Connection connection = getConnection(); ResultSet rs = connection.createStatement().executeQuery(getCVEAndDescription)) {
+			while (rs.next()) {
+				results.put(rs.getString("cve_id"), rs.getString("description"));
+			}
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+		return results;
+	}
+
+	/**
+	 * Collects the vulnId for a specific CVE with a given CVE-ID
+	 * @param cveId
+	 * @return
+	 */
+	public int getVulnIdByCveId(String cveId) {
+		int result = -1;
+		try (Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement(getVulnIdByCveId);) {
+			pstmt.setString(1, cveId);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt("vuln_id");
+			}
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
+
+		return result;
+	}
 }

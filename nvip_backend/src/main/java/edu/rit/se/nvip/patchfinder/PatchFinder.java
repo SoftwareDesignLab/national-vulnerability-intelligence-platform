@@ -54,6 +54,7 @@ import javax.sound.midi.Patch;
 public class PatchFinder {
 
 	private static final Logger logger = LogManager.getLogger(PatchFinder.class.getName());
+	private static final String GOOGLE_SEARCH_URL = "https://www.google.com/search?q=";
 
 	private static DatabaseHelper db;
 	private static final String[] ADDRESS_BASES = { "https://github.com/" };
@@ -80,14 +81,15 @@ public class PatchFinder {
 		db = DatabaseHelper.getInstance();
 		Map<String, ArrayList<String>> cpes = db.getCPEsAndCVE();
 
-		if (args.length > 1) {
+		if (args.length >= 1) {
 
-			if (args[0].equals("true")) {
+			if (args[0].equals("productId")) {
 				main.parseURLByProductId(Integer.parseInt(args[1]));
+			} else if (args[0].equals("searchByGoogle")) {
+				main.googleSearchAdditionalSources();
 			} else {
 				main.parseURLByCVE(args[1]);
 			}
-
 		} else {
 			main.parseMassURLs(cpes);
 		}
@@ -248,9 +250,6 @@ public class PatchFinder {
 
 		for (String base : ADDRESS_BASES) {
 			addresses.add(base + keyword1 + "/");
-//			addresses.add(base + keyword1 + "_");
-//			addresses.add(base + keyword1 + "-");
-//			addresses.add(base + keyword1);
 		}
 
 		return addresses;
@@ -500,6 +499,53 @@ public class PatchFinder {
 				logger.error(e.getMessage());
 			}
 
+		}
+	}
+
+
+	/**
+	 * Grab vulnerability data and parse through the descriptions,
+	 * in which a Google search will be performed to make sure a repo for the CVE doesn't exist
+	 */
+	private void googleSearchAdditionalSources() {
+		try {
+			logger.info("Checking all vulnerabilities for additional patches");
+			int gSearchCount = 0;
+			for (Entry<String, String> cve : db.getAllCveIdAndDescriptions().entrySet()) {
+				String[] words = cve.getValue().split(" ");
+				StringBuilder searchParams = new StringBuilder();
+				logger.info("Parsing through description words for cve " + cve.getKey());
+				for (String word : words) {
+					if (word.length() > 1 && word.charAt(0) > 64 && word.charAt(0) < 91) {
+						searchParams.append(word).append(" ");
+					} else if (searchParams.length() > 0) {
+
+						//As per Google's search API limit (100 requests per 100 seconds)
+						if (gSearchCount >= 100) {
+							logger.info("Performing Sleep before continuing: 1 minute");
+							Thread.sleep(100000);
+							gSearchCount = 0;
+						}
+
+						Document doc = Jsoup.connect(GOOGLE_SEARCH_URL + searchParams + " github").get();
+						Elements searchResults = doc.select("a");
+						gSearchCount++;
+
+						for (Element link : searchResults) {
+							if (link.attr("href").contains("github")) {
+								logger.info("Found repo link for CVE " + cve.getKey() + " with link " + link.attr("href"));
+								int vulnID = db.getVulnIdByCveId(cve.getKey());
+								if (vulnID > -1) {
+									db.insertPatchSourceURL(db.getVulnIdByCveId(cve.getKey()), link.attr("href"));
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e);
 		}
 	}
 
