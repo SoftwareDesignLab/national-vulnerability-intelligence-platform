@@ -515,30 +515,43 @@ public class PatchFinder {
 				String[] words = cve.getValue().split(" ");
 				StringBuilder searchParams = new StringBuilder();
 				logger.info("Parsing through description words for cve " + cve.getKey());
-				for (String word : words) {
-					if (word.length() > 1 && word.charAt(0) > 64 && word.charAt(0) < 91) {
-						searchParams.append(word).append(" ");
-					} else if (searchParams.length() > 0) {
 
-						//As per Google's search API limit (100 requests per 100 seconds)
-						if (gSearchCount >= 100) {
-							logger.info("Performing Sleep before continuing: 1 minute");
-							Thread.sleep(100000);
-							gSearchCount = 0;
-						}
+				outerLoop: {
 
-						Document doc = Jsoup.connect(GOOGLE_SEARCH_URL + searchParams + " github").get();
-						Elements searchResults = doc.select("a");
-						gSearchCount++;
+					// Collect all words from the description and find the product names mentioned
+					// When found, combine those words to create a search parameter for the Google Search API
+					// And check if there are any github related results
+					for (String word : words) {
+						if (word.length() > 1 && word.charAt(0) > 64 && word.charAt(0) < 91) {
+							searchParams.append(word).append(" ");
+						} else if (searchParams.length() > 0) {
 
-						for (Element link : searchResults) {
-							if (link.attr("href").contains("github")) {
-								logger.info("Found repo link for CVE " + cve.getKey() + " with link " + link.attr("href"));
-								int vulnID = db.getVulnIdByCveId(cve.getKey());
-								if (vulnID > -1) {
-									db.insertPatchSourceURL(db.getVulnIdByCveId(cve.getKey()), link.attr("href"));
+							//As per Google's search API limit (100 requests per 100 seconds)
+							if (gSearchCount >= 100) {
+								logger.info("Performing Sleep before continuing: 1 minute");
+								Thread.sleep(100000);
+								gSearchCount = 0;
+							}
+
+							Document doc = Jsoup.connect(GOOGLE_SEARCH_URL + searchParams + " github").get();
+							Elements searchResults = doc.select("a");
+							gSearchCount++;
+
+							for (Element link : searchResults) {
+								try {
+									Document githubDoc = Jsoup.connect(link.attr("href")).get();
+
+									if (githubDoc.location().contains("github")) {
+										logger.info("Found repo link for CVE " + cve.getKey() + " with link " + githubDoc.location());
+										int vulnID = db.getVulnIdByCveId(cve.getKey());
+										if (vulnID > -1) {
+											db.insertPatchSourceURL(db.getVulnIdByCveId(cve.getKey()), githubDoc.location());
+										}
+										break outerLoop;
+									}
+								} catch (Exception e) {
+									logger.error("Incorrect URL " + e);
 								}
-								break;
 							}
 						}
 					}
