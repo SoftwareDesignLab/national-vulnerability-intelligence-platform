@@ -28,6 +28,13 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<repositories>
+
+		<repository>
+			<id>data-local</id>
+			<name>data</name>
+			<url>${project.basedir}/local_deps</url>
+		</repository>
+
 		<repository>
 			<id>central</id>
 			<name>Central Repository</name>
@@ -51,7 +58,7 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/nvip_lib</outputDirectory>
+							<outputDirectory>${project.build.directory}\nvip_lib</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -194,7 +201,7 @@
 			<groupId>edu.uci.ics</groupId>
 			<artifactId>crawler4j</artifactId>
 			<version>4.4.0</version>
-		</dependency>
+		</dependency> 
 
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
