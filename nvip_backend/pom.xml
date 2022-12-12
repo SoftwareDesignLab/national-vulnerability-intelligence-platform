@@ -28,13 +28,6 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<repositories>
-
-		<repository>
-			<id>data-local</id>
-			<name>data</name>
-			<url>${project.basedir}/local_deps</url>
-		</repository>
-
 		<repository>
 			<id>central</id>
 			<name>Central Repository</name>
@@ -194,6 +187,13 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.7</version>
 			<type>jar</type>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.sleepycat/je -->
+		<dependency>
+			<groupId>com.sleepycat</groupId>
+			<artifactId>je</artifactId>
+			<version>5.0.84</version>
 		</dependency>
 
 		<!-- Crawler4J -->
