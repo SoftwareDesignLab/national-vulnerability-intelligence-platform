@@ -3,6 +3,7 @@ https://lists.apache.org/
 https://seclists.org/
 https://www.ibm.com/support/pages/ibmsearch?q=security%20bulletin
 https://access.redhat.com/search/#/?q=CVE
+https://access.redhat.com/security/security-updates/#/cve
 https://backstage.forgerock.com/knowledge/kb/home/g46685661
 https://blogs.gentoo.org/ago/advisories/
 https://bugs.chromium.org

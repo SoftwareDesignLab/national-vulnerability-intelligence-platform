@@ -81,6 +81,12 @@ public class CveParserFactory implements AbstractCveParserFactory<Object> {
 			return new AnquankeParser("anquanke");
 		else if (sPageUrl.contains("seclists"))
 			return new SeclistsParser("seclists");
+		else if (sPageUrl.conatins("redhat")) {
+			if (sPageUrl.conatins("search"))
+				return new SearchRedHatParser("redhat");
+			else if (sPageUrl.conatins("security"))
+				return new SecurityRedHatParser("redhat")
+		}
 
 		// sources that you want to ignore
 		// we ignore mitre/nvd because we pull their up to date CVEs from Github

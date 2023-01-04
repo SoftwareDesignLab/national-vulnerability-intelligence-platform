@@ -23,67 +23,63 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import edu.rit.se.nvip.model.AffectedRelease;
-import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Product;
-import edu.rit.se.nvip.productnameextractor.CpeLookUp;
-import edu.rit.se.nvip.utils.UtilHelper;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import edu.rit.se.nvip.model.CompositeVulnerability;
+import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
 
-    Parse Google Cloud Support Bulletin
+    Parser for RedHat Security Page
 
-    (Currently unfinished but might want to use it for patchfinder)
+    @author Andrew Pickard    
 
-    @author Andrew Pickard
  */
 
 
-public class GoogleCloudParser extends AbstractCveParser implements CveParserInterface {
+public class SearchRedHatParser extends AbstractCveParser implements CveParserInterface {
 
     private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-
-	public GoogleCloudParser(String domainName) {
+	
+	public SearchRedHatParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 
 
     @Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulns = new ArrayList<>();
-
-		Document doc = Jsoup.parse(sCVEContentHTML);
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
+        Document doc = Jsoup.parse(sCVEContentHTML);
         String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
-
         Pattern pattern = Pattern.compile(regexCVEID);
 
-        Elements tables = doc.select("div.devsite-table-wrapper");
+        Elements rows = doc.select("tr");
 
-        for (Element table: tables) {
-            
-            Elements body = table.select("tbody").first().select("td");
-            Element description = body.get(0).text()
-            Matcher matcher = pattern.matcher(description);
+        for (Element row: rows) {
+            String cve = row.select("th.td-cve").text();
+            String description = row.select("td.td-synopsis").text();
+            String impact = row.select("td-impact").text();
+            String date = row.select("td-date").text();
 
-            /*if (matcher.find()) {
-
-            }
-
-            for (Element bodyCol: body) {
-                
-            }*/
+            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
         }
+		
+        return vulnerabilities;
 
-    }
+	}
 
 }
