@@ -147,11 +147,11 @@ public class EmailDailyCveList {
 			MimeBodyPart body = new MimeBodyPart();
 			body.setContent(doc.toString(), "text/html; charset=ISO-8859-1");
 			content.addBodyPart(body);
-
+			
 			sendFromGMail(paramsFromConfigFile.get("email"), paramsFromConfigFile.get("password"), new String[] { toEmail }, "Daily CVE Notification", doc.toString(), true);
 			logger.info("Message sent to successfully!", toEmail);
 		} catch (AuthenticationFailedException e) {
-			logger.error("Username or Password for sending address is incorrect, please check your password in the config file!");
+			logger.error("Username or Password for sending address is incorrect, please check your password in the config file! " + e.toString());
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
