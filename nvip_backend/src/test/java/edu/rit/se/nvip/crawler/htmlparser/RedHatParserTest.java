@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class SearchRedHatParserTest {
+public class RedHatParserTest {
 
 	@Test
 	public void testSearchRedHat() throws IOException {
@@ -22,13 +22,23 @@ public class SearchRedHatParserTest {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 		CveCrawler crawler = new CveCrawler(propertiesNvip);
 
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-seclist-cvedetail.html"));
-		List<CompositeVulnerability> list = crawler.parseWebPage("seclists", html);
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-search.html"));
+		List<CompositeVulnerability> list = crawler.parseWebPage("redhat", html);
 		assertEquals(1, list.size());
 
-		html = FileUtils.readFileToString(new File("src/test/resources/test-seclist-date.html"));
-		list = crawler.parseWebPage("seclists", html);
+	}
+
+    @Test
+	public void testSecurityRedHat() throws IOException {
+
+		MyProperties propertiesNvip = new MyProperties();
+		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
+		CveCrawler crawler = new CveCrawler(propertiesNvip);
+
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-security.html"));
+		List<CompositeVulnerability> list = crawler.parseWebPage("redhat", html);
 		assertEquals(1, list.size());
+
 	}
 
 }
