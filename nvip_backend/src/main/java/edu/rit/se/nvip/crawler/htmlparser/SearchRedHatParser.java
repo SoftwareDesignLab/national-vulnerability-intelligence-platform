@@ -26,11 +26,13 @@ package edu.rit.se.nvip.crawler.htmlparser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,3 +43,40 @@ import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.UtilHelper;
+
+
+public class SearchRedHatParser extends AbstractCveParser implements CveParserInterface {
+
+    private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	
+	public SearchRedHatParser(String domainName) {
+		sourceDomainName = domainName;
+	}
+
+    @Override
+	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
+        Document doc = Jsoup.parse(sCVEContentHTML);
+        String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
+        Pattern pattern = Pattern.compile(regexCVEID);
+
+        Elements cveResults = doc.select("a.list-result-Cve");
+
+        for (Element cveResult: cveResults) {
+            Document cvePage = Jsoup.connect(cveResult.select("a[href]")).get();
+
+            String cve = cveResult.select("h3").text();
+            String description = cvePage.select("#cve-details-description").select("p").text();
+            
+            String lastModifiedText = cvePage.select("p.cve-last-modified").text();
+            String[] parts = lastModifiedText.split(" ");
+            String date = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(parts[0] + " " + parts[1] + " " + parts[2]));
+
+            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
+        }
+		
+        return vulnerabilities;
+
+	}
+
+}

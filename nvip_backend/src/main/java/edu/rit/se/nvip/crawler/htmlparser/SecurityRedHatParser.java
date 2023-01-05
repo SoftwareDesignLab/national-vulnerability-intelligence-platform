@@ -56,7 +56,6 @@ public class SearchRedHatParser extends AbstractCveParser implements CveParserIn
 		sourceDomainName = domainName;
 	}
 
-
     @Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
