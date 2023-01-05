@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -48,11 +49,11 @@ import edu.rit.se.nvip.utils.UtilHelper;
  */
 
 
-public class SearchRedHatParser extends AbstractCveParser implements CveParserInterface {
+public class SecurityRedHatParser extends AbstractCveParser implements CveParserInterface {
 
     private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
-	public SearchRedHatParser(String domainName) {
+	public SecurityRedHatParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 

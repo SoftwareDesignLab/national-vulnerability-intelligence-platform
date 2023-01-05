@@ -33,6 +33,9 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,7 +75,7 @@ public class GoogleCloudParser extends AbstractCveParser implements CveParserInt
         for (Element table: tables) {
             
             Elements body = table.select("tbody").first().select("td");
-            Element description = body.get(0).text()
+            String description = body.get(0).text();
             Matcher matcher = pattern.matcher(description);
 
             /*if (matcher.find()) {
@@ -83,6 +86,8 @@ public class GoogleCloudParser extends AbstractCveParser implements CveParserInt
                 
             }*/
         }
+
+        return null;
 
     }
 

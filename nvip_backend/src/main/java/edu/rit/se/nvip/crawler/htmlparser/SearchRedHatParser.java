@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.time;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,17 +61,21 @@ public class SearchRedHatParser extends AbstractCveParser implements CveParserIn
 
         Elements cveResults = doc.select("a.list-result-Cve");
 
-        for (Element cveResult: cveResults) {
-            Document cvePage = Jsoup.connect(cveResult.select("a[href]")).get();
+        try {
+            for (Element cveResult: cveResults) {
+                Document cvePage = Jsoup.connect(cveResult.select("a[href]").attr("href")).get();
 
-            String cve = cveResult.select("h3").text();
-            String description = cvePage.select("#cve-details-description").select("p").text();
-            
-            String lastModifiedText = cvePage.select("p.cve-last-modified").text();
-            String[] parts = lastModifiedText.split(" ");
-            String date = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(parts[0] + " " + parts[1] + " " + parts[2]));
+                String cve = cveResult.select("h3").text();
+                String description = cvePage.select("#cve-details-description").select("p").text();
+                
+                String lastModifiedText = cvePage.select("p.cve-last-modified").text();
+                String[] parts = lastModifiedText.split(" ");
+                String date = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(parts[0] + " " + parts[1] + " " + parts[2]));
 
-            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
+                vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
 		
         return vulnerabilities;
