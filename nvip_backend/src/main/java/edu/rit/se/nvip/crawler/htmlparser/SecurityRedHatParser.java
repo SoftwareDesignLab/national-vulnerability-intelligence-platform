@@ -64,7 +64,7 @@ public class SecurityRedHatParser extends AbstractCveParser implements CveParser
         String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
         Pattern pattern = Pattern.compile(regexCVEID);
 
-        Elements rows = doc.select("tr");
+        Elements rows = doc.select("#DataTables_Table_0").select("tbody > tr");
 
         for (Element row: rows) {
             String cve = row.select("th.td-cve").text();

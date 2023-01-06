@@ -37,7 +37,7 @@ public class RedHatParserTest {
 		SecurityRedHatParser parser = new SecurityRedHatParser("redhat");
 		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-security.html"));
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);
-		assertEquals(1, list.size());
+		assertEquals(10, list.size());
 
 	}
 
