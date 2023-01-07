@@ -55,31 +55,29 @@ public class SearchRedHatParser extends AbstractCveParser implements CveParserIn
     @Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
-        Document doc = Jsoup.parse(sCVEContentHTML);
-        String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
-        Pattern pattern = Pattern.compile(regexCVEID);
-
-        Elements cveResults = doc.select("li.list-result-Cve");
+        List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 
         try {
+            Document doc = Jsoup.parse(sCVEContentHTML);
+            String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
+            Pattern pattern = Pattern.compile(regexCVEID);
+
+            Elements cveResults = doc.select("li.list-result-Cve");
+
             for (Element cveResult: cveResults) {
                 Document cvePage = Jsoup.connect(cveResult.select("a[href]").attr("href")).get();
 
-                String cve = cveResult.select("h3").text();
-                String description = cvePage.select("#cve-details-description").select("p").text();
+                String cve = cveResult.select("h3 > a").text();
+                String description = cvePage.select("#cve-details-description > div > div > div > p").select("p").text();
                 
                 String date = cvePage.select("p.cve-public-date > span").text();
-                //String[] parts = lastModifiedText.split(" ");
-                //String date = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(parts[0] + " " + parts[1] + " " + parts[2]));
-
                 vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
             }
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-        return vulnerabilities;
 
+        return vulnerabilities;
 	}
 
 }

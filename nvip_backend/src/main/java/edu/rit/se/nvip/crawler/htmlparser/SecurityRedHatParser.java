@@ -67,10 +67,10 @@ public class SecurityRedHatParser extends AbstractCveParser implements CveParser
         Elements rows = doc.select("#DataTables_Table_0").select("tbody > tr");
 
         for (Element row: rows) {
-            String cve = row.select("th.td-cve").text();
-            String description = row.select("td.td-synopsis").text();
-            String impact = row.select("td-impact").text();
-            String date = row.select("td-date").text();
+            String cve = row.select("th.td-cve > span").text();
+            String description = row.select("td.td-synopsis > span").text();
+            String impact = row.select("td-impact > span").text();
+            String date = row.select("td-date > span").text();
 
             vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
         }
