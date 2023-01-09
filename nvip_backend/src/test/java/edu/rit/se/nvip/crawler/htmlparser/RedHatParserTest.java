@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 public class RedHatParserTest {
 
-
 	String TEST_DESCRIPTION_CVE = "Usage of temporary files with insecure permissions by the Apache James server allows an attacker with local access to access private user data in transit. Vulnerable components includes the SMTP stack and IMAP APPEND command. This issue affects Apache James server version 3.7.2 and prior versions.";
 	String TEST_DESCRIPTION_SECURITY = "A flaw was found in PHP. This issue occurs due to an uncaught integer overflow in PDO::quote() of PDO_SQLite returning an improperly quoted string. With the implementation of sqlite3_snprintf(), it is possible to force the function to return a single apostrophe if the function is called on user-supplied input without any length restrictions in place.";
 
@@ -32,8 +31,6 @@ public class RedHatParserTest {
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);
 
 		CompositeVulnerability sample = list.get(0);
-
-		System.out.println(sample);
 
 		assertEquals(1, list.size());
 		assertEquals("CVE-2022-45935", sample.getCveId());
@@ -47,8 +44,11 @@ public class RedHatParserTest {
 		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-security.html"));
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);
 		
+		CompositeVulnerability sample = list.get(0);
+
 		assertEquals(10, list.size());
-		assertEquals(TEST_DESCRIPTION_SECURITY, list.get(0).getDescription());
+		assertEquals("CVE-2022-31631", sample.getCveId());
+		assertEquals(TEST_DESCRIPTION_SECURITY, sample.getDescription());
 
 
 	}
