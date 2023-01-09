@@ -82,10 +82,10 @@ public class CveParserFactory implements AbstractCveParserFactory<Object> {
 		else if (sPageUrl.contains("seclists"))
 			return new SeclistsParser("seclists");
 		else if (sPageUrl.contains("redhat")) {
-			if (sPageUrl.contains("search"))
-				return new SearchRedHatParser("redhat");
-			else if (sPageUrl.contains("security"))
+			if (sPageUrl.contains("security"))
 				return new SecurityRedHatParser("redhat");
+			else 
+				return new RedHatParser("redhat");
 		}
 
 		// sources that you want to ignore

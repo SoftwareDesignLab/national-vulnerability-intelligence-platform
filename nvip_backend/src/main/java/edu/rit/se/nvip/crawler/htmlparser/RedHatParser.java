@@ -44,11 +44,11 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 
-public class SearchRedHatParser extends AbstractCveParser implements CveParserInterface {
+public class RedHatParser extends AbstractCveParser implements CveParserInterface {
 
     private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
-	public SearchRedHatParser(String domainName) {
+	public RedHatParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 
@@ -62,21 +62,14 @@ public class SearchRedHatParser extends AbstractCveParser implements CveParserIn
             String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
             Pattern pattern = Pattern.compile(regexCVEID);
 
-            Elements cveResults = doc.select("li.list-result-Cve");
+            String cve = doc.select("h1.headline").text();
+            String description = doc.select("#cve-details-description > div > div > p").text();            
+            String date = doc.select("p.cve-public-date > span").text();
 
-            for (Element cveResult: cveResults) {
-                Document cvePage = Jsoup.connect(cveResult.select("a[href]").attr("href")).get();
-
-                String cve = cveResult.select("h3 > a").text();
-                String description = cvePage.select("#cve-details-description > div > div > div > p").select("p").text();
-                
-                String date = cvePage.select("p.cve-public-date > span").text();
-                vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
-            }
+            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
         return vulnerabilities;
 	}
 

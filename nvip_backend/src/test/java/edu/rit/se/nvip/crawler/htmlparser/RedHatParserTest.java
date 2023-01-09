@@ -20,24 +20,24 @@ import static org.junit.Assert.assertEquals;
 
 public class RedHatParserTest {
 
-	String TEST_DESCRIPTION_SEARCH = "A flaw was found in PHP. This issue occurs due to an uncaught integer overflow in PDO::quote() of PDO_SQLite returning an improperly quoted string. With the implementation of sqlite3_snprintf(), it is possible to force the function to return a single apostrophe if the function is called on user-supplied input without any length restrictions in place.";
+
+	String TEST_DESCRIPTION_CVE = "Usage of temporary files with insecure permissions by the Apache James server allows an attacker with local access to access private user data in transit. Vulnerable components includes the SMTP stack and IMAP APPEND command. This issue affects Apache James server version 3.7.2 and prior versions.";
 	String TEST_DESCRIPTION_SECURITY = "A flaw was found in PHP. This issue occurs due to an uncaught integer overflow in PDO::quote() of PDO_SQLite returning an improperly quoted string. With the implementation of sqlite3_snprintf(), it is possible to force the function to return a single apostrophe if the function is called on user-supplied input without any length restrictions in place.";
 
 	@Test
-	public void testSearchRedHat() throws IOException {
+	public void testRedHat() throws IOException {
 
-		SearchRedHatParser parser = new SearchRedHatParser("redhat");
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-search.html"));
+		RedHatParser parser = new RedHatParser("redhat");
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-cve.html"));
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);
 
-		//for (CompositeVulnerability vuln: list) {
-		//	System.out.println(vuln.toString());
-		//	System.out.println("");
-		//}
+		CompositeVulnerability sample = list.get(0);
 
-		assertEquals(4, list.size());
-		//assertEquals(TEST_DESCRIPTION_SEARCH, list.get(0).getDescription());
+		System.out.println(sample);
 
+		assertEquals(1, list.size());
+		assertEquals("CVE-2022-45935", sample.getCveId());
+		assertEquals(TEST_DESCRIPTION_CVE, sample.getDescription());
 	}
 
     @Test
