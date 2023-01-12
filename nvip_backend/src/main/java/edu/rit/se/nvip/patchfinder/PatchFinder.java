@@ -256,7 +256,7 @@ public class PatchFinder {
 	}
 
 	/**
-	 * Tests connetion of a crafted URL, If successful, insert in DB else, search
+	 * Tests connection of a crafted URL, If successful, insert in DB else, search
 	 * for correct repo via github company page (Assuming the link directs to it for
 	 * now)
 	 * 
@@ -306,7 +306,7 @@ public class PatchFinder {
 	}
 
 	/**
-	 * Searches for all links within a comapanies github page to find the correct
+	 * Searches for all links within a companies github page to find the correct
 	 * repo the cpe is correlated to. Uses keywords from cpe to validate and checks
 	 * for git remote connection with found links
 	 * 

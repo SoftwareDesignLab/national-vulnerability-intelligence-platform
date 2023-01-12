@@ -137,8 +137,8 @@ public final class JGitCVEPatchDownloader {
 	 * @throws GitAPIException
 	 */
 	public void parse(String clonePath, int limit) throws IOException {
-		File dir = new File(clonePath);
-		FileUtils.delete(dir, 1);
+//		File dir = new File(clonePath);
+//		FileUtils.delete(dir, 1);
 
 		try {
 			for (Entry<String, Integer> source : db.getVulnIdPatchSource(limit).entrySet()) {
