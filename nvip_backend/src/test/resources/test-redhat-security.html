@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+  <head>
+
+    
+    
+
+    <!-- CP_PRIMER_HEAD --><meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!--[if IEMobile]><meta http-equiv="cleartype" content="on"><![endif]-->
+
+<!-- metaInclude -->
+<meta name="avalon-host-info" content="dxp-kbase-prod-80-84548b94d7-fpkgh" />
+<meta name="avalon-version" content="4392075e" />
+<meta name="cp-chrome-build-date" content="2022-10-13T21:03:02.366Z" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Chrome, Firefox OS and Opera -->
+<meta name="theme-color" content="#000000">
+<!-- Windows Phone -->
+<meta name="msapplication-navbutton-color" content="#000000">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+<link rel="manifest" href="https://access.redhat.com/webassets/avalon/j/manifest.json">
+<!-- Open Search - Tap to search -->
+<link rel="search" type="application/opensearchdescription+xml" title="Red Hat Customer Portal" href="https://access.redhat.com/webassets/avalon/j/opensearch.xml" />
+<!-- title -->
+<title>Red Hat Customer Portal - Access to 24x7 support and knowledge</title>
+<!-- /title -->
+<script type="text/javascript">
+    window.portal = {
+        analytics : {},
+        host      : "https://access.redhat.com",
+        idp_url   : "https://sso.redhat.com",
+        lang      : "en", 
+        version   : "4392075e",
+        builddate : "2022-10-13T21:03:02.366Z",        fetchdate : "2022-10-20T07:42:14-0400",        nrid      : "NOLONGERSUPPORTED",
+        nrlk      : "NOLONGERSUPPORTED"
+    };
+</script>
+<script type="text/javascript">
+    if (!/\/logout.*/.test(location.pathname) && portal.host === location.origin && document.cookie.indexOf('rh_sso_session') >= 0 && !(document.cookie.indexOf('rh_jwt') >= 0)) window.location = '/login?redirectTo=' + encodeURIComponent(window.location.href);
+</script>
+<!-- cssInclude -->
+
+<link rel="shortcut icon" href="https://access.redhat.com/webassets/avalon/g/favicon.ico" /><link media="all" rel="stylesheet" type="text/css" href="https://access.redhat.com/chrome_themes/nimbus/css/bootstrap.css?v=4392075e" />
+<link media="all" rel="stylesheet" type="text/css" href="https://access.redhat.com/chrome_themes/nimbus/css/bootstrap-grid.css?v=4392075e" />
+<link media="all" rel="stylesheet" type="text/css" href="https://access.redhat.com/chrome_themes/nimbus/css/main.css?v=4392075e" />
+<link media="all" rel="stylesheet" type="text/css" href="https://access.redhat.com/chrome_themes/nimbus/css/components.css?v=4392075e" />
+<link media="all" rel="stylesheet" type="text/css" href="https://access.redhat.com/chrome_themes/nimbus/css/pages.css?v=4392075e" />
+
+<link href="https://access.redhat.com/webassets/avalon/s/chosen.css?v=4392075e" rel="stylesheet" type="text/css" />
+
+<!--[if lte IE 9]>
+<link media="all" rel="stylesheet" type="text/css" href="https://access.redhat.com/chrome_themes/nimbus/css/ie.css" />
+<![endif]--><noscript>
+    <style type="text/css" media="screen"> .primary-nav { display: block; } </style>
+</noscript>
+<link media="all" rel="stylesheet" type="text/css" href="https://access.redhat.com/webassets/avalon/j/public_modules/node_modules/@cpelements/pfe-navigation/dist/pfe-navigation--lightdom.min.css" />
+<!-- /cssInclude -->
+  <!-- TrustArc -->
+  <script src="//static.redhat.com/libs/redhat/marketing/latest/trustarc/trustarc.js"></script>
+<script src="https://access.redhat.com/webassets/avalon/j/public_modules/node_modules/@cpelements/pfe-navigation/dist/ie-polyfills.js?v=4392075e"></script><script>
+    (function () {
+        if (!(window.doNotTrack == "1" || navigator.doNotTrack == "1" || navigator.msDoNotTrack == "1" || navigator.doNotTrack == "yes")) {
+            var s = document.createElement("script");
+            s.src="//www.redhat.com/dtm.js";
+            document.head.insertBefore(s, document.head.firstElementChild);
+        }
+    })();
+</script><script type="text/javascript" src="https://access.redhat.com/webassets/avalon/j/lib/require.js?v=4392075e" data-main="/webassets/avalon/j/"></script><!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="https://access.redhat.com/chrome_themes/nimbus/js/ie8.js"></script>
+<![endif]-->
+<script type="text/javascript" src="https://access.redhat.com/chrome_themes/nimbus/js/new-nav.js?v=4392075e" ></script>
+<!-- /CP_PRIMER_HEAD -->
+
+    <!-- SPA_HEAD -->
+    <style>
+        .pagination-mobile {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          -webkit-box-flex: 1;
+          -ms-flex-positive: 1;
+          flex-grow: 1;
+          -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+          justify-content: space-between;
+          align-content: flex-end;
+        }
+
+        .pagination-mobile a {
+          width: calc(50% - 5px);
+          padding: 12px;
+          text-align: center;
+          text-transform: uppercase;
+          background: #fff;
+          border: 1px solid #0088ce;
+          font-weight: bold;
+          font-size: 14px;
+        }
+
+        .pagination-mobile a.disabled {
+          border: 1px solid #cccccc;
+          color: #cccccc;
+        }
+        .cve-buttons .btn-cve .icon-bug,
+        .cve-buttons .btn-cve .icon-magic {
+          margin-right: 4px
+        }
+
+        .btn-cve {
+          font-size: 14px !important;
+        }
+
+
+.more-wrapper .dropdown-menu-search {
+    right: 0px;
+}
+
+.open > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu-right-align {
+    left: auto;
+    right: 0px;
+    margin-top: -1px;
+}
+
+.more-wrapper .dropdown-menu-search .dropdown-search {
+    padding: 5px 10px;
+}
+
+.more-wrapper .web-icon-search {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #8d8d8d;
+}
+
+.dropdown-menu li {
+    display: list-item;
+    cursor: pointer;
+    padding: 0px 13px 0px 13px;
+    margin: 5px 0px 5px 0px;
+}
+
+.other-products .dropdown-menu, .other-filters .dropdown-menu {
+    font-weight: normal;
+    max-width: 95%;
+}
+
+.other-dropdown.ll {
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 0;
+    max-height: 13em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.other-dropdown.ll li.selected {
+  background-color: #f0f0f0;
+}
+
+.other-dropdown .dropdown-search-checkbox {
+    margin-right: 10px;
+}
+
+.other-dropdown::-webkit-scrollbar { /* make scrollbar visible on safari */
+    -webkit-appearance: none;
+}
+
+.other-dropdown::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.other-dropdown::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.other-dropdown::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.more-wrapper button {
+    width: 100%;
+    text-align: left;
+    padding: .4375rem .9375rem .4375rem .75rem;
+    margin-right: .75rem;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #fff;
+    border: 1px solid #d1d1d1;
+    color: #252525;
+    border-style: solid;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #fff;
+    color: #444;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.more-wrapper button:disabled,
+.more-wrapper button[disabled] {
+    opacity: 0.5;
+}
+
+.more-wrapper.open > button {
+    background-color: #e6e6e6;
+}
+
+.more-wrapper button:after {
+    position: absolute;
+    content: "";
+    top: 45%;
+    right: 12px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #252525;
+    z-index: 0;
+}
+
+        @media only screen and (max-width: 768px) {
+          .cve-small-screen {
+            display: -ms-flexbox;
+            display: -webkit-box;
+            display: flex;
+
+            flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            -webkit-box-flex: 1;
+
+            -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
+
+            -webkit-box-pack: justify;
+               -ms-flex-pack: justify;
+             justify-content: space-betweenn
+          }
+
+          .cve-small-screen > label,
+          .cve-small-screen > div {
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+          }
+
+          .cve-small-screen label {
+            width: 50%;
+            padding: 0px 4px 4px 4px;
+          }
+          .cve-small-screen span {
+            width:100%;
+          }
+
+          .cve-small-screen > div {
+            width:100%;
+          }
+
+          .cve-small-screen .dropdown-select {
+             margin-top: 7px;
+          }
+
+        }
+
+  </style>
+  </head>
+<body>
+    <div id="int_mbox" class="mboxDefault at-element-marker" style="display: block;"></div>
+  <!-- CP_PRIMER_HEADER -->
+<div id="page-wrap" class="page-wrap">
+    <div id="pers-top-page-wrap" class="top-page-wrap pers-loader-bg">
+
+      <div id="hero-bg-top-left" class="summit-bg-shapes"></div>
+      <div id="hero-bg-top-right" class="summit-bg-shapes"></div>
+
+        <!--googleoff: all-->
+        <header class="masthead cp-search-masthead" id="masthead">
+
+            <a href="#portal-utility-nav" id="global-skip-to-nav" class="skip-link visually-hidden">Skip to navigation</a>
+            <a href="#cp-main" class="skip-link visually-hidden">Skip to main content</a>            <nav id="portal-utility-nav" class="utility-navigation utility-navigation--bar hidden-at-mobile" data-analytics-region="utility" aria-labelledby="nav__utility-nav--desktop">
+                <h3 id="nav__utility-nav--desktop" class="element-invisible">Utilities
+                </h3>
+                <ul aria-labelledby="nav__utility-nav--desktop">
+                    <li id="nav-subscription" data-portal-tour-1="1">
+                        <a class="top-nav-subscriptions" data-analytics-level="2" data-analytics-category="Utilities" data-analytics-text="Subscription" href="https://access.redhat.com/management/">Subscriptions
+                        </a>
+                    </li>
+                    <li id="nav-downloads" data-portal-tour-1="2">
+                        <a class="top-nav-downloads" data-analytics-level="2" data-analytics-category="Utilities" data-analytics-text="Downloads" href="https://access.redhat.com/downloads/">Downloads
+                        </a>
+                    </li>
+                    <li id="nav-containers">
+                        <a class="top-nav-containers" data-analytics-level="2" data-analytics-category="Utilities" data-analytics-text="Containers" href="https://catalog.redhat.com/software/containers/explore/">Containers
+                        </a>
+                    </li>
+                    <li id="nav-support" data-portal-tour-1="3">
+                        <a class="top-nav-support-cases" data-analytics-level="2" data-analytics-category="Utilities" data-analytics-text="Support Cases" href="https://access.redhat.com/support/cases/">Support Cases
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <pfe-navigation id="pfe-navigation" data-analytics-region="mega menu" pfelement="" class="PFElement pfe-navigation--processed pfe-navigation--has-search" type="combo" has_search="" has_account="" breakpoint="desktop" lang="en">
+                <div class="pfe-navigation__logo-wrapper" id="pfe-navigation__logo-wrapper">
+                    <a href="https://access.redhat.com/" class="pfe-navigation__logo-link" data-analytics-text="logo" data-analytics-category="MM|logo">
+                        <img class="pfe-navigation__logo-image" alt="Red Hat Customer Portal" src="https://access.redhat.com/chrome_themes/nimbus/img/red-hat-customer-portal.svg">
+                    </a>
+                </div>
+
+                <nav class="pfe-navigation" aria-label="Main Navigation" data-analytics-region="main nav">
+                    <ul class="pfe-navigation__menu" id="pfe-navigation__menu">                        <li class="pfe-navigation__menu-item hidden-at-tablet hidden-at-desktop" id="nav-subscription--mobile" data-portal-tour-1="1">
+                            <a class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Subscription" href="https://access.redhat.com/management/">Subscriptions
+                            </a>
+                        </li>
+                        <li class="pfe-navigation__menu-item hidden-at-tablet hidden-at-desktop" id="nav-downloads--mobile" data-portal-tour-1="2">
+                            <a class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Downloads" href="https://access.redhat.com/downloads/">Downloads
+                            </a>
+                        </li>
+                        <li class="pfe-navigation__menu-item hidden-at-tablet hidden-at-desktop" id="nav-containers--mobile">
+                            <a class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Containers" href="https://catalog.redhat.com/software/containers/explore/">Containers
+                            </a>
+                        </li>
+                        <li class="pfe-navigation__menu-item hidden-at-tablet hidden-at-desktop" id="nav-support--mobile" data-portal-tour-1="3">
+                            <a class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Support Cases" href="https://access.redhat.com/support/cases/">Support Cases
+                            </a>
+                        </li>                        <li class="pfe-navigation__menu-item">
+                            <a href="https://access.redhat.com/products/" class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Products and Services">Products &amp; Services
+                            </a>
+                            <div class="pfe-navigation__dropdown has-primary-detail">                                <div class="desktop-col-span-2 tablet-col-span-all">
+                                    <h3>
+                                        <a data-analytics-level="2" data-analytics-category="Products and Services" data-analytics-text="Products" href="https://access.redhat.com/products/">Products
+                                        </a>
+                                    </h3>
+                                    <slot name="main-menu__dropdown--product__product-listing"></slot>
+                                </div>                                <div>
+                                    <h3 id="nav__products__support">
+                                        <a data-analytics-level="2" data-analytics-category="Products and Services" data-analytics-text="Support" href="https://access.redhat.com/support">Support
+                                        </a>
+                                    </h3>
+                                    <ul aria-labelledby="nav__products__support">
+                                        <li><a data-analytics-level="3" data-analytics-category="Products and Services|Support" data-analytics-text="Production Support" href="https://access.redhat.com/support/offerings/production/">Production Support
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-category="Products and Services|Support" data-analytics-text="Development Support" href="https://access.redhat.com/support/offerings/developer/">Development Support
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Products and Services|Support" data-analytics-text="Product Life Cycles" href="https://access.redhat.com/product-life-cycles/">Product Life Cycles
+                                                    </a></li>
+                                    </ul>
+
+                                    <h3 id="nav__products__services">
+                                        <a data-analytics-level="2" data-analytics-category="Products and Services" data-analytics-text="Services" href="https://www.redhat.com/en/services">Services
+                                        </a>
+                                    </h3>
+                                    <ul aria-labelledby="nav__products__services">
+                                        <li><a data-analytics-level="3" data-analytics-category="Products and Services|Services" data-analytics-text="Consulting" href="https://www.redhat.com/en/services/consulting">Consulting
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-category="Products and Services|Services" data-analytics-text="Technical Account Management" href="https://access.redhat.com/support/offerings/tam/">Technical Account Management
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Products and Services|Services" data-analytics-text="Training and Certifications" href="https://www.redhat.com/en/services/training-and-certification">Training &amp; Certifications
+                                                    </a></li>
+                                    </ul>
+                                </div>                                <div>
+                                    <h3 id="nav__products__documentation">
+                                        <a data-analytics-level="2" data-analytics-category="Products and Services" data-analytics-text="Documentation" href="https://access.redhat.com/documentation">Documentation
+                                        </a>
+                                    </h3>
+                                    <ul aria-labelledby="nav__products__documentation">
+                                        <li><a data-analytics-level="3" data-analytics-category="Products and Services|Documentation" data-analytics-text="Red Hat Enterprise Linux" href="https://access.redhat.com/documentation/en/red_hat_enterprise_linux">Red Hat Enterprise Linux
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-category="Products and Services|Documentation" data-analytics-text="Red Hat JBoss Enterprise Application Platform" href="https://access.redhat.com/documentation/en/red_hat_jboss_enterprise_application_platform">Red Hat JBoss Enterprise Application Platform
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Products and Services|Documentation" data-analytics-text="Red Hat OpenStack Platform" href="https://access.redhat.com/documentation/en/red_hat_openstack_platform">Red Hat OpenStack Platform
+                                                    </a></li>
+                                                    <li><a data-analytics-level="3" data-analytics-category="Products and Services|Documentation" data-analytics-text="Red Hat OpenShift Container Platform" href="https://access.redhat.com/documentation/en/openshift_container_platform">Red Hat OpenShift Container Platform
+                                                        </a></li>
+                                    </ul>
+                                    <pfe-cta pfelement="" class="PFElement" has_link="">
+                                        <a data-analytics-level="3" data-analytics-category="Products and Services|Documentation" data-analytics-text="All Documentation" data-analytics-linktype="cta" href="https://access.redhat.com/documentation">All Documentation
+                                        </a>
+                                    </pfe-cta>
+
+                                    <h3 id="nav__products__catalog"><a data-analytics-level="2" data-analytics-category="Products and Services" data-analytics-text="Ecosystem Catalog" href="https://catalog.redhat.com/">Ecosystem Catalog
+                                        </a></h3>
+                                        <ul aria-labelledby="nav__products__catalog">
+                                            <li><a data-analytics-level="3" data-analytics-category="Products and Services|Ecosystem Catalog" data-analytics-text="Red Hat Partner Ecosystem" href="https://access.redhat.com/ecosystem/">Red Hat Partner Ecosystem
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Products and Services|Ecosystem Catalog" data-analytics-text="Partner Resources" href="https://access.redhat.com/ecosystem/partner-resources">Partner Resources
+                                                    </a></li>
+                                        </ul>
+                                </div>
+                            </div>
+                        </li>                        <li class="pfe-navigation__menu-item">
+                            <a class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Tools" href="https://access.redhat.com/labs/">Tools
+                            </a>
+                            <div class="pfe-navigation__dropdown pfe-navigation__dropdown--3-column">                                <div>
+                                    <h3 id="nav__tools__tools" data-analytics-level="2" data-analytics-text="Tools" data-analytics-category="Tools">Tools
+                                    </h3>
+                                    <ul aria-labelledby="nav__tools__tools">
+                                        <li><a data-analytics-level="3" data-analytics-category="Tools|Tools" data-analytics-text="Solution Engine" href="https://access.redhat.com/support/cases/#/troubleshoot">Troubleshoot a product issue
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-category="Tools|Tools" data-analytics-text="Packages" href="https://access.redhat.com/downloads/content/package-browser">Packages
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Tools|Tools" data-analytics-text="Errata" href="https://access.redhat.com/errata/">Errata
+                                                    </a></li>
+                                    </ul>
+                                </div>                                <div>
+                                    <h3 id="nav__tools__labs">
+                                        <a data-analytics-level="2" data-analytics-category="Tools" data-analytics-text="Customer Portal Labs" href="https://access.redhat.com/labs/">Customer Portal Labs
+                                        </a>
+                                    </h3>
+                                    <ul aria-labelledby="nav__tools__labs">
+                                        <li><a data-analytics-level="3" data-analytics-category="Tools|Customer Portal Labs" data-analytics-text="Configuration" href="https://access.redhat.com/labs/#!?type=config">Configuration
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-category="Tools|Customer Portal Labs" data-analytics-text="Deployment" href="https://access.redhat.com/labs/#!?type=deploy">Deployment
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Tools|Customer Portal Labs" data-analytics-text="Security" href="https://access.redhat.com/labs/#!?type=security">Security
+                                                    </a></li>                                                    <li><a data-analytics-level="3" data-analytics-category="Tools|Customer Portal Labs" data-analytics-text="Troubleshooting" href="https://access.redhat.com/labs/#!?type=troubleshoot">Troubleshoot
+                                                        </a></li>
+                                    </ul>
+                                    <pfe-cta pfelement="" class="PFElement" has_link="">
+                                        <a data-analytics-level="3" data-analytics-category="Tools|Customer Portal Labs" data-analytics-text="All Labs" data-analytics-linktype="cta" href="https://access.redhat.com/labs/">All labs
+                                        </a>
+                                    </pfe-cta>
+                                </div>                                <div>
+                                    <h4 id="nav__tools__red-hat-insights">
+                                        <a data-analytics-level="2" data-analytics-category="Tools" data-analytics-text="Red Hat Insights" href="//www.redhat.com/en/technologies/management/insights">Red Hat Insights
+                                        </a>
+                                    </h4>
+                                    <p>Increase visibility into IT operations to detect and resolve technical issues before they impact your business.</p>
+                                    <a data-analytics-level="3" data-analytics-category="Tools|Red Hat Insights" data-analytics-text="Learn more" href="https://www.redhat.com/en/technologies/management/insights">Learn More
+                                    </a>
+                                    <br>
+                                    <a data-analytics-level="3" data-analytics-category="Tools|Red Hat Insights" data-analytics-text="Go to Insights" href="https://cloud.redhat.com/insights">Go to Insights
+                                    </a>
+                                </div>
+                            </div>
+                        </li>                        <li class="pfe-navigation__menu-item">
+                            <a class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Security" href="https://access.redhat.com/security/">Security
+                            </a>
+                            <div class="pfe-navigation__dropdown pfe-navigation__dropdown--3-column">                                <div>
+                                    <h3 id="security__security-center">
+                                        <a data-analytics-level="2" data-analytics-category="Security" data-analytics-text="Red Hat Product Security Center" href="https://access.redhat.com/security">Red Hat Product Security Center
+                                        </a>
+                                    </h3>
+                                    <p>Engage with our Red Hat Product Security team, access security updates, and ensure your environments are not exposed to any known security vulnerabilities.
+                                    </p>
+                                    <pfe-cta pfe-priority="primary" priority="primary" pfelement="" class="PFElement" has_link="">
+                                        <a data-analytics-level="3" data-analytics-category="Security|Red Hat Product Security Center" data-analytics-text="Product Security Center" data-analytics-linktype="cta" href="https://access.redhat.com/security/">Product Security Center
+                                        </a>
+                                    </pfe-cta>
+                                </div>                                <div>
+                                    <h3 id="nav__security__updates" data-analytics-level="2" data-analytics-text="Security Updates" data-analytics-category="Security">
+                                        <a data-analytics-level="2" data-analytics-category="Security" data-analytics-text="Security Updates" href="/security">Security Updates
+                                        </a>
+                                    </h3>
+                                    <ul aria-labelledby="nav__security__updates">
+                                        <li><a data-analytics-level="3" data-analytics-category="Security|Security Updates" data-analytics-text="Security Advisories" href="https://access.redhat.com/security/security-updates/#/security-advisories">Security Advisories
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-category="Security|Security Updates" data-analytics-text="Red Hat CVE Database" href="https://access.redhat.com/security/security-updates/#/cve">Red Hat CVE Database
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Security|Security Updates" data-analytics-text="Security Labs" href="https://access.redhat.com/security/security-updates/#/security-labs">Security Labs
+                                                    </a></li>
+                                    </ul>
+                                    <p class="margin-top-xl">Keep your systems secure with Red Hat's specialized responses to security vulnerabilities.
+                                    </p>
+                                    <pfe-cta pfelement="" class="PFElement" has_link="">
+                                        <a data-analytics-level="3" data-analytics-category="Security|Security Updates" data-analytics-text="View Responses" data-analytics-linktype="cta" href="https://access.redhat.com/security/vulnerability">View Responses
+                                        </a>
+                                    </pfe-cta>
+                                </div>                                <div>
+                                    <h3 id="nav__security__resources">
+                                        <a data-analytics-level="2" data-analytics-category="Security" data-analytics-text="Resources" href="https://access.redhat.com/security/overview">Resources
+                                        </a>
+                                    </h3>
+                                    <ul aria-labelledby="nav__security__resources">                                            <li><a data-analytics-level="3" data-analytics-category="Security|Resources" data-analytics-text="Security Blog" href="//redhat.com/en/blog/channel/security">Security Blog
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Security|Resources" data-analytics-text="Security Measurement" href="https://www.redhat.com/security/data/metrics/">Security Measurement
+                                                    </a></li>
+                                                    <li><a data-analytics-level="3" data-analytics-category="Security|Resources" data-analytics-text="Severity Ratings" href="https://access.redhat.com/security/updates/classification/">Severity Ratings
+                                                        </a></li>
+                                                        <li><a data-analytics-level="3" data-analytics-category="Security|Resources" data-analytics-text="Backporting Policies" href="https://access.redhat.com/security/updates/backporting/">Backporting Policies
+                                                            </a></li>
+                                                            <li><a data-analytics-level="3" data-analytics-category="Security|Resources" data-analytics-text="Product Signing (GPG) Keys" href="https://access.redhat.com/security/team/key/">Product Signing (GPG) Keys
+                                                                </a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </li>                        <li class="pfe-navigation__menu-item">
+                            <a href="https://access.redhat.com/community/" class="pfe-navigation__menu-link" data-analytics-level="1" data-analytics-text="Community">Community
+                            </a>
+                            <div class="pfe-navigation__dropdown pfe-navigation__dropdown--3-column">                                <div>
+                                    <h3 id="nav__community__cp-community">
+                                        <a href="https://access.redhat.com/community" data-analytics-level="2" data-analytics-text="Customer Portal Community" data-analytics-category="Community">Customer Portal Community
+                                        </a>
+                                    </h3>
+                                    <ul aria-labelledby="nav__community__cp-community">
+                                        <li><a data-analytics-level="3" data-analytics-category="Community|Customer Portal Community" data-analytics-text="Discussions" href="https://access.redhat.com/discussions">Discussions
+                                            </a></li>                                                <li><a data-analytics-level="3" data-analytics-category="Community|Customer Portal Community" data-analytics-text="Private Groups" href="https://access.redhat.com/groups/">Private Groups
+                                                    </a></li>
+                                    </ul>
+
+                                    <pfe-cta pfe-priority="primary" priority="primary" pfelement="" class="PFElement" has_link="">
+                                        <a data-analytics-level="3" data-analytics-category="Community|Customer Portal Community" data-analytics-text="Community Activity" data-analytics-linktype="cta" href="https://access.redhat.com/community/">Community Activity
+                                        </a>
+                                    </pfe-cta>
+                                </div>                                <div>
+                                    <h3 id="nav__community__events" data-analytics-level="2" data-analytics-text="Customer Events" data-analytics-category="Community">Customer Events
+                                    </h3>
+                                    <ul aria-labelledby="nav__community__events">
+                                        <li><a data-analytics-level="3" data-analytics-category="Community|Customer Events" data-analytics-text="Red Hat Convergence" href="https://access.redhat.com/convergence/">Red Hat Convergence
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-category="Community|Customer Events" data-analytics-text="Red Hat Summit" href="http://www.redhat.com/summit/">Red Hat Summit
+                                                </a></li>
+                                    </ul>
+                                </div>                                <div>
+                                    <h3 id="nav__community__stories" data-analytics-level="2" data-analytics-text="Stories" data-analytics-category="Community">Stories
+                                    </h3>
+                                    <ul aria-labelledby="nav__community__stories">
+                                        <li><a data-analytics-level="3" data-analytics-category="Community|Stories" data-analytics-text="Red Hat Subscription Value" href="https://access.redhat.com/subscription-value/">Red Hat Subscription Value
+                                            </a></li>
+                                            <li><a data-analytics-level="3" data-analytics-text="You Asked. We Acted." data-analytics-category="Community|Stories" href="https://access.redhat.com/you-asked-we-acted/">You Asked. We Acted.
+                                                </a></li>
+                                                <li><a data-analytics-level="3" data-analytics-category="Community|Stories" data-analytics-text="Open Source Communities" href="http://www.redhat.com/en/open-source">Open Source Communities
+                                                    </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>                </nav>                <div id="site-search" slot="search" class="utility-link site-search">
+                    <div class="content">
+                        <form class="ng-pristine ng-valid topSearchForm" id="topSearchForm" name="topSearchForm" action="/search/browse/search/" method="get" enctype="application/x-www-form-urlencoded">
+                            <cp-search-autocomplete class="push-bottom PFElement" path="/webassets/avalon/j/data.json" num-items="5" placeholder="Enter your search term" pfelement="" type="container" data-dashlane-observed="true"></cp-search-autocomplete>                            <div>Or <a href="/support/cases/#/troubleshoot">troubleshoot an issue</a>.
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div slot="secondary-links" id="localesMenu" class="pfe-navigation__custom-dropdown__wrapper--single-column pfe-navigation__custom-dropdown__wrapper">
+                    <button class="pfe-navigation__secondary-link" id="pfe-navigation__secondary-link--English" aria-controls="pfe-navigation__custom-dropdown--English" aria-expanded="false">
+                        <pfe-icon icon="web-icon-globe" size="sm" aria-hidden="true" pfelement="" class="PFElement" on="light" type="content" data-dashlane-observed="true"></pfe-icon>English
+                    </button>
+
+                    
+                <div id="pfe-navigation__custom-dropdown--English" class="pfe-navigation__dropdown-wrapper pfe-navigation__custom-dropdown--single-column pfe-navigation__dropdown-wrapper--invisible" aria-hidden="true" tabindex="-1"><pfe-navigation-dropdown dropdown-width="single" pfelement="" class="PFElement pfe-navigation__dropdown" type="container" data-id-suffix="English">
+                        <h2 class="utility-header">Select Your Language
+                        </h2>
+                        <ul class="reset">
+                            <li><a href="https://access.redhat.com/changeLanguage?language=en&amp;redirectTo=https%3A//access.redhat.com/security/security-updates/%23/cve" data-lang="en" id="en" data-analytics-text="English" class="selected">English</a></li>
+                            <li><a href="https://access.redhat.com/changeLanguage?language=ko&amp;redirectTo=https%3A//access.redhat.com/security/security-updates/%23/cve" data-lang="ko" id="ko" data-analytics-text="Korean">한국어</a></li>
+                            <li><a href="https://access.redhat.com/changeLanguage?language=ja&amp;redirectTo=https%3A//access.redhat.com/security/security-updates/%23/cve" data-lang="ja" id="ja" data-analytics-text="Japanese">日本語</a></li>
+                            <li><a href="https://access.redhat.com/changeLanguage?language=zh_CN&amp;redirectTo=https%3A//access.redhat.com/security/security-updates/%23/cve" data-lang="zh_CN" id="zh_CN" data-analytics-text="Chinese">中文 (中国)</a></li>
+                        </ul>
+
+                    </pfe-navigation-dropdown></div></div>                <rh-account-dropdown slot="account" pfelement="" class="PFElement" type="content" login-link="https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/auth?client_id=customer-portal&amp;redirect_uri=https%3A%2F%2Faccess.redhat.com%2Fwebassets%2Favalon%2Fj%2Fincludes%2Fsession%2Fscribe%2F%3FredirectTo%3Dhttps%253A%252F%252Faccess.redhat.com%252Fsecurity%252Fsecurity-updates%252F%2523%252Fcve&amp;state=3b5750de-6a13-464e-8064-4adc716de2cd&amp;nonce=4305415a-0700-4f1f-87a3-2731aa276c66&amp;response_mode=fragment&amp;response_type=code&amp;scope=openid" data-dashlane-observed="true" lang="en"></rh-account-dropdown>                <pfe-primary-detail breakpoint-width="600" class="main-menu__dropdown--product__product-listing PFElement" slot="main-menu__dropdown--product__product-listing" consistent-height="" aria-orientation="vertical" role="tablist" pfelement="" on="&quot;light&quot;" type="container" has_details="" breakpoint="compact">
+                    <button role="tab" slot="details-nav" data-was-tag="H3" id="pfe-detail-toggle-h2qvbg6o3" data-index="0" aria-controls="pfe-detail-6rgfpfj28" aria-expanded="false">Infrastructure and Management                    </button>
+                    <div slot="details" data-index="0" id="pfe-detail-6rgfpfj28" role="tabpanel" tabindex="-1" aria-labelledby="pfe-detail-toggle-h2qvbg6o3" data-processed="true" aria-hidden="true" hidden="">
+                        <ul>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Enterprise Linux" href="https://access.redhat.com/products/red-hat-enterprise-linux/">Red Hat Enterprise Linux
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Virtualization" href="https://access.redhat.com/products/red-hat-virtualization/">Red Hat Virtualization
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Identity Management" href="https://access.redhat.com/products/identity-management/">Red Hat Identity Management
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Directory Server" href="https://access.redhat.com/products/red-hat-directory-server/">Red Hat Directory Server
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Certificate System" href="https://access.redhat.com/products/red-hat-certificate-system/">Red Hat Certificate System
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Satellite" href="https://access.redhat.com/products/red-hat-satellite/">Red Hat Satellite
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Subscription Management" href="https://access.redhat.com/products/red-hat-subscription-management/">Red Hat Subscription Management
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Update Infrastructure" href="https://access.redhat.com/products/red-hat-update-infrastructure/">Red Hat Update Infrastructure
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Insights" href="https://access.redhat.com/products/red-hat-insights/">Red Hat Insights
+                                </a>
+                            </li>
+                            <li><a data-analytics-level="3" data-analytics-category="Products and Services|Products:Infrastructure and Management" data-analytics-text="Red Hat Ansible Automation Platform" href="https://access.redhat.com/products/red-hat-ansible-automation-platform/">Red Hat Ansible Automation Platform
+                                </a></li>
+                        </ul>
+                    </div>
+
+                    <button role="tab" slot="details-nav" data-was-tag="H3" id="pfe-detail-toggle-kytf6l9pc" data-index="1" aria-controls="pfe-detail-dieril8zv" aria-expanded="false">Cloud Computing                    </button>
+                    <div slot="details" data-index="1" id="pfe-detail-dieril8zv" role="tabpanel" tabindex="-1" aria-labelledby="pfe-detail-toggle-kytf6l9pc" data-processed="true" aria-hidden="true" hidden="">
+                        <ul>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat OpenShift" href="https://access.redhat.com/products/openshift">Red Hat OpenShift
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat CloudForms" href="https://access.redhat.com/products/red-hat-cloudforms/">Red Hat CloudForms
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat OpenStack Platform" href="https://access.redhat.com/products/red-hat-openstack-platform/">Red Hat OpenStack Platform
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing Platform" data-analytics-text="Red Hat OpenShift Container Platform" href="https://access.redhat.com/products/red-hat-openshift-container-platform/">Red Hat OpenShift Container Platform
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing Platform" data-analytics-text="Red Hat OpenShift Data Science" href="https://access.redhat.com/products/red-hat-openshift-data-science/">Red Hat OpenShift Data Science
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat OpenShift Online" href="https://access.redhat.com/products/openshift-online-red-hat/">Red Hat OpenShift Online
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat OpenShift Dedicated" href="https://access.redhat.com/products/openshift-dedicated-red-hat/">Red Hat OpenShift Dedicated
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing Platform" data-analytics-text="Red Hat Advanced Cluster Security for Kubernetes" href="https://access.redhat.com/products/red-hat-advanced-cluster-security-for-kubernetes/">Red Hat Advanced Cluster Security for Kubernetes
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat Advanced Cluster Management for Kubernetes" href="https://access.redhat.com/products/red-hat-advanced-cluster-management-for-kubernetes/">Red Hat Advanced Cluster Management for Kubernetes
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat Quay" href="https://access.redhat.com/products/red-hat-quay/">Red Hat Quay
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat CodeReady Workspaces" href="https://access.redhat.com/products/red-hat-codeready-workspaces/">Red Hat CodeReady Workspaces
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Cloud Computing" data-analytics-text="Red Hat OpenShift Service on AWS" href="https://access.redhat.com/products/red-hat-openshift-service-aws">Red Hat OpenShift Service on AWS
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button role="tab" slot="details-nav" data-was-tag="H3" id="pfe-detail-toggle-ih2nu14fh" data-index="2" aria-controls="pfe-detail-z7yqb1smj" aria-expanded="false">Storage                    </button>
+                    <div slot="details" data-index="2" id="pfe-detail-z7yqb1smj" role="tabpanel" tabindex="-1" aria-labelledby="pfe-detail-toggle-ih2nu14fh" data-processed="true" aria-hidden="true" hidden="">
+                        <ul>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Storage" data-analytics-text="Red Hat Gluster Storage" href="https://access.redhat.com/products/red-hat-storage/">Red Hat Gluster Storage
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Storage" data-analytics-text="Red Hat Hyperconverged Infrastructure" href="https://access.redhat.com/products/red-hat-hyperconverged-infrastructure/">Red Hat Hyperconverged Infrastructure
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Storage" data-analytics-text="Red Hat Ceph Storage" href="https://access.redhat.com/products/red-hat-ceph-storage/">Red Hat Ceph Storage
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Storage" data-analytics-text="Red Hat Openshift Container Storage" href="https://access.redhat.com/products/red-hat-openshift-data-foundation">Red Hat OpenShift Data Foundation
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button role="tab" slot="details-nav" data-was-tag="H3" id="pfe-detail-toggle-5tyhj7td4" data-index="3" aria-controls="pfe-detail-2poi1eufk" aria-expanded="false">Runtimes                    </button>
+                    <div slot="details" data-index="3" id="pfe-detail-2poi1eufk" role="tabpanel" tabindex="-1" aria-labelledby="pfe-detail-toggle-5tyhj7td4" data-processed="true" aria-hidden="true" hidden="">
+                        <ul>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat Runtimes" href="https://access.redhat.com/products/red-hat-runtimes/">Red Hat Runtimes
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat JBoss Enterprise Application Platform" href="https://access.redhat.com/products/red-hat-jboss-enterprise-application-platform/">Red Hat JBoss Enterprise Application Platform
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat Data Grid" href="https://access.redhat.com/products/red-hat-data-grid/">Red Hat Data Grid
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat JBoss Web Server" href="https://access.redhat.com/products/red-hat-jboss-web-server/">Red Hat JBoss Web Server
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat Single Sign On" href="https://access.redhat.com/products/red-hat-single-sign-on/">Red Hat Single Sign On
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat support for Spring Boot" href="https://access.redhat.com/products/spring-boot/">Red Hat support for Spring Boot
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat build of Node.js" href="https://access.redhat.com/products/nodejs/">Red Hat build of Node.js
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat build of Thorntail" href="https://access.redhat.com/products/thorntail/">Red Hat build of Thorntail
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat build of Eclipse Vert.x" href="https://access.redhat.com/products/eclipse-vertx/">Red Hat build of Eclipse Vert.x
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat build of OpenJDK" href="https://access.redhat.com/products/openjdk/">Red Hat build of OpenJDK
+                                </a>
+                            </li>                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Runtimes" data-analytics-text="Red Hat build of Quarkus" href="https://access.redhat.com/products/quarkus/">Red Hat build of Quarkus
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button role="tab" slot="details-nav" data-was-tag="H3" id="pfe-detail-toggle-rhjnarhdx" data-index="4" aria-controls="pfe-detail-ivgubc272" aria-expanded="false">Integration and Automation                    </button>
+                    <div slot="details" data-index="4" id="pfe-detail-ivgubc272" role="tabpanel" tabindex="-1" aria-labelledby="pfe-detail-toggle-rhjnarhdx" data-processed="true" aria-hidden="true" hidden="">
+                        <ul class="border-bottom" id="portal-menu-border-bottom">
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat Integration" href="https://access.redhat.com/products/red-hat-integration/">Red Hat Integration
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat Fuse" href="https://access.redhat.com/products/red-hat-fuse/">Red Hat Fuse
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat AMQ" href="https://access.redhat.com/products/red-hat-amq/">Red Hat AMQ
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat 3scale API Management" href="https://access.redhat.com/products/red-hat-3scale/">Red Hat 3scale API Management
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat JBoss Data Virtualization" href="https://access.redhat.com/products/red-hat-jboss-data-virtualization/">Red Hat JBoss Data Virtualization
+                                </a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat Process Automation" href="https://access.redhat.com/products/red-hat-process-automation/">Red Hat Process Automation
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat Process Automation Manager" href="https://access.redhat.com/products/red-hat-process-automation-manager/">Red Hat Process Automation Manager
+                                </a>
+                            </li>
+                            <li>
+                                <a data-analytics-level="3" data-analytics-category="Products and Services|Products:Integration and Automation" data-analytics-text="Red Hat Decision Manager" href="https://access.redhat.com/products/red-hat-decision-manager/">Red Hat Decision Manager
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div slot="details-nav--footer">
+                        <pfe-cta pfe-priority="primary" priority="primary" pfelement="" class="PFElement" on="&quot;light&quot;" has_link="">
+                            <a href="https://access.redhat.com/products/" class="pfe-navigation__menu-link" data-analytics-level="2" data-analytics-text="All Products" data-analytics-category="Products and Services|Products:" data-analytics-linktype="cta">All Products
+                            </a>
+                        </pfe-cta>
+                    </div>
+                </pfe-primary-detail>
+
+            <div slot="secondary-links" class="pfe-navigation__site-switcher pfe-navigation__custom-dropdown__wrapper--full pfe-navigation__custom-dropdown__wrapper" mobile-slider=""><button class="pfe-navigation__secondary-link" id="pfe-navigation__secondary-link--All-Red-Hat" aria-controls="pfe-navigation__custom-dropdown--All-Red-Hat" aria-expanded="false"><pfe-icon icon="web-icon-grid-3x3" size="sm" aria-hidden="true" pfelement="" class="PFElement" on="light" type="content" data-dashlane-observed="true"></pfe-icon>All Red Hat</button> <div id="pfe-navigation__custom-dropdown--All-Red-Hat" class="pfe-navigation__dropdown-wrapper pfe-navigation__custom-dropdown--full pfe-navigation__dropdown-wrapper--invisible" aria-hidden="true" tabindex="-1"><pfe-navigation-dropdown dropdown-width="full" pfelement="" class="PFElement pfe-navigation__dropdown" type="container" data-id-suffix="All-Red-Hat"><div class="pfe-navigation__site-switcher__back-wrapper"><button class="pfe-navigation__site-switcher__back-button" aria-label="Close undefined and return to menu">Back to menu</button></div><site-switcher pfelement="" class="PFElement" type="content" lang="en"><article class="node-355871 node node-page clearfix">
+
+  
+  <div class="field field-name-body field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+          <div class="field-item even"><!--linking to stylesheets so /cms/ajax/site-switcher will load with styles -->
+<link type="text/css" rel="stylesheet" href="https://www.redhat.com/profiles/rh/themes/redhatdotcom/css/site-switcher.css" media="all">
+
+<!-- overriding css variables to get the redhat.com logo box and text to change style indicating you are on this site-->
+
+<style>
+:root {
+  --rhdc--logo:            var(--rhdc--logo--you-are-here);
+  --rhdc--backgroundColor: var(--background--you-are-here);
+  --rhdc--label:           var(--label--you-are-here);
+  --rhdc--margin-top: 0px;
+}
+</style>
+
+<section class="site-switcher-tray" data-analytics-region="site-switcher">
+    <div class="content">
+        <div class="container">
+            <section class="site-switcher-container">
+                <ul class="site-switcher-primary-list">
+                    <li class="rhdc">
+                        <a href="https://www.redhat.com?intcmp=701f20000012k69AAA" data-analytics-category="Websites" data-analytics-text="redhat">
+                            <p class="location-label">You are here</p>
+                            <div class="tntLogo">
+                                <div class="image"></div>
+                            </div>
+                            <h3>Red Hat</h3>
+                            <p>Learn about our open source products, services, and company.</p>
+                        </a>
+                    </li>
+                    <li class="customer-portal">
+                        <a href="https://access.redhat.com?intcmp=701f20000012k6EAAQ" data-analytics-category="Websites" data-analytics-text="access_redhat">
+                            <p class="location-label">You are here</p>
+                            <div class="tntLogo">
+                                <!-- Customer portal -->
+                                <div class="image"></div>
+                            </div>
+                            <h3>Red Hat Customer Portal</h3>
+                            <p>Get product support and knowledge from the open source experts.</p>
+                        </a>
+                    </li>
+                    <li class="developers">
+                        <a href="https://developers.redhat.com?intcmp=701f20000012k6JAAQ" data-analytics-category="Websites" data-analytics-text="developers_redhat">
+                            <p class="location-label">You are here</p>
+                            <div class="tntLogo">
+                                <!-- Red Hat Developer -->
+                                <div class="image"></div>
+                            </div>
+                            <h3>Red Hat Developer</h3>
+                            <p>Read developer tutorials and download Red Hat software for cloud application development.</p>
+                        </a>
+                    </li>
+                    <li class="connect">
+                        <a href="https://connect.redhat.com/" data-analytics-category="Websites" data-analytics-text="connect_redhat">
+                              <p class="location-label">You are here</p>
+                            <div class="tntLogo">
+                                <!-- Red Hat Partner Connect -->
+                                <div class="image"></div>
+                            </div>
+                            <h3>Red Hat Partner Connect</h3>
+                            <p>Become a Red Hat partner and get support in building customer solutions.</p>
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+
+                <ul class="site-switcher-secondary-list">
+                    <li>
+                        <h2>Products</h2>
+                        <ul>
+                            <li><a href="https://www.ansible.com?intcmp=701f20000012k6TAAQ" data-analytics-category="Websites" data-analytics-text="ansible"><h3>Ansible.com</h3></a>Learn about and try our IT automation product.</li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <h2>Try, Buy, Sell</h2>
+                        <ul>
+<li><a href="https://cloud.redhat.com" data-analytics-category="Websites" data-analytics-text="hybrid-cloud"><h3>Red Hat Hybrid Cloud</h3></a>Access technical how-tos, tutorials, and learning paths focused on Red Hat’s hybrid cloud managed services.</li>
+
+                            <li><a href="https://www.redhat.com/store?intcmp=701f20000012k6nAAA" data-analytics-category="Websites" data-analytics-text="store"><h3>Red Hat Store</h3></a>Buy select Red Hat products and services online.</li>
+
+<li><a href="https://marketplace.redhat.com" data-analytics-category="Websites" data-analytics-text="marketplace"><h3>Red Hat Marketplace</h3></a>Try, buy, sell, and manage certified enterprise software for container-based environments.</li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <h2>Community &amp; Open Source</h2>
+                        <ul>
+                            <li><a href="https://enterprisersproject.com?intcmp=701f20000012k6sAAA" data-analytics-category="Websites" data-analytics-text="enterprisersproject"><h3>The Enterprisers Project</h3></a>Read analysis and advice articles written by CIOs, for CIOs.</li>
+                            <li><a href="https://opensource.com?intcmp=701f20000012k6OAAQ" data-analytics-category="Websites" data-analytics-text="opensource"><h3>Opensource.com</h3></a>Read articles on a range of topics about open source.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h2>&nbsp;</h2>
+                        <ul>
+                            <li><a href="https://www.redhat.com/summit?intcmp=701f20000012k6xAAA" data-analytics-category="Websites" data-analytics-text="summit"><h3>Red Hat Summit</h3></a>Register for and learn about our annual open source IT industry event.</li>
+                            <li><a href="https://catalog.redhat.com/" data-analytics-category="Websites" data-analytics-text="catalog"><h3>Red Hat Ecosystem Catalog</h3></a>Find hardware, software, and cloud providers―and download container images―certified to perform with Red Hat technologies.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</section>
+</div>
+      </div>
+</div>
+
+  
+  
+</article></site-switcher></pfe-navigation-dropdown></div></div></pfe-navigation>
+
+            <div id="scroll-anchor"></div>
+
+            <!--[if IE 8]>
+                <div class="portal-messages">
+                <div class="alert alert-warning alert-portal alert-w-icon">
+                <span class="icon-warning alert-icon" aria-hidden="true"></span>
+                You are using an unsupported web browser. Update to a supported browser for the best experience. <a href="/announcements/2120951">Read the announcement</a>.
+                </div>
+                </div>
+            <![endif]-->
+            <!--[if IE 9]>
+                <div class="portal-messages">
+                <div class="alert alert-warning alert-portal alert-w-icon">
+                <span class="icon-warning alert-icon" aria-hidden="true"></span>As of March 1, 2016, the Red Hat Customer Portal will no longer support Internet Explorer 9. See our new <a href="/help/browsers">browser support policy</a> for more information.
+                </div>
+                </div>
+            <![endif]-->
+            <div id="site-section"><div class="site-section-banner"><div class="container"></div></div></div>
+        <div class="breadcrumbs"><div id="breadcrumbs" class="container"><ul><li><a href="/security">Security Updates</a></li><li>Red Hat CVE Database</li></ul></div></div></header>
+        <!--googleon: all-->
+
+        <main id="cp-main" class="portal-content-area">
+            <div id="cp-content" class="main-content">                            <!-- /CP_PRIMER_HEADER -->
+
+  <!-- SPA_HEADER -->
+  <div id="searchbrowseapp" style="">
+      <!-- uiView: --><div data-ui-view="" class="ng-scope"><div class="cp-search ng-scope">
+    <div class="container">
+        <div class="row push-bottom-wide clearfix list-eh">
+            <div>
+              <!-- Card  -->
+                <div class="flex-grid card-tabs hidden-sm hidden-xs" data-anchors="true">
+                    <a href="#/security-advisories" class="flex-item card card-tab card-light ng-binding" aria-controls="card-tab1">Security Advisories</a>
+                    <a href="#/cve" class="flex-item card card-tab card-active card-accent ng-binding" aria-controls="card-tab2">Red Hat CVE Database</a>
+                    <a href="#/security-labs" class="flex-item card card-tab card-light ng-binding" aria-controls="card-tab3">Security Labs</a>
+                </div>
+                <!-- Card dropdown for mobile -->
+                <div class="card-tabs-dropdown visible-sm-block visible-xs text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-open btn-lg dropdown-toggle ng-binding" type="button" id="example-card-tab-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Red Hat CVE Database <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-tabs" role="menu" aria-labelledby="example-card-tab-toggle" data-anchors="true">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#/security-advisories" class="ng-binding">Security Advisories</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#/cve" class="ng-binding">Red Hat CVE Database</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#/security-labs" class="ng-binding">Security Labs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="browse" class="band band-narrow band-last band-first browse-minimal">
+        <div id="jumpPoint" class="container">
+            <!-- uiView: header --><div ui-view="header" class="ng-scope">
+            </div>
+            <div class="row">
+                <div class="search-facets col-sm-3 ng-scope" ng-controller="BrowseKeywordSearchCtrl" style="margin: 0px;">
+                    <form id="keywordInputForm" name="keywordInputForm" data-ng-submit="goSearch()" class="ng-pristine ng-valid" data-dashlane-rid="c7076174476fded4" data-form-type="">
+                        <div class="form-group search-facet-keyword">
+                            <div class="input-group">
+                                <label for="keywordInputx" class="sr-only ng-binding">Keyword</label>
+                                <input id="keywordInputx" placeholder="Keyword" ng-model="query" autocomplete="off" role="search" type="search" aria-autocomplete="list" aria-haspopup="true" data-typeahead-on-select="goSearch()" data-typeahead-focus-first="false" data-typeahead-wait-ms="200" data-typeahead="suggestion for suggestion in getSearchSuggestions($viewValue)" class="form-control ng-pristine ng-untouched ng-valid ng-empty" data-dashlane-rid="b314c9410160d9fc" data-form-type="">
+                                <span class="input-group-btn">
+                                    <a ng-show="query !== ''" ng-click="clearSearch()" class="close ng-hide">
+                                        <span title="Close" class="web-icon-close">
+                                        </span>
+                                    </a>
+                                    <input id="keywordInput_searchbutton" type="submit" class="btn" value="Go" data-dashlane-rid="27c8a2780c2f6e1f" data-form-type="">
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="cve-buttons col-sm-6 cve-small-screen ng-scope" style="margin-left:0px;top:0px;" ng-controller="BrowseSeveritySearchCtrl">
+                    <label ctype="collection" rank="0" ng-click="searchAll($event, 'cve_threatSeverity')">
+                        <input type="radio" class="severity ng-pristine ng-untouched ng-valid ng-empty" name="severityAll" ng-model="filterQuery['cve_threatSeverity'][0]" ng-value="">
+                        <span class="btn btn-app btn-sm btn-cve">
+                            <span aria-hidden="true" class="icon-cve"></span> All
+                        </span>
+                    </label><!-- ngRepeat: value in cve_severities --><label ctype="collection" rank="0" ng-click="facetSearchCombo($event, filterQuery['cve_threatSeverity'][0], 'cve_threatSeverity')" ng-repeat="value in cve_severities" class="ng-scope">
+                        <input type="radio" class="severity ng-pristine ng-untouched ng-valid ng-empty" name="severity" ng-model="filterQuery['cve_threatSeverity'][0]" ng-value="value" value="Low">
+                        <span class="btn btn-app btn-sm btn-cve ng-binding">
+                            <span aria-hidden="true" class="icon-cve color-low" ng-class="{'color-critical': value === 'Critical', 'color-important': value === 'Important', 'color-moderate': value === 'Moderate', 'color-low': value === 'Low'}"></span> Low
+                        </span>
+                    </label><!-- end ngRepeat: value in cve_severities --><label ctype="collection" rank="0" ng-click="facetSearchCombo($event, filterQuery['cve_threatSeverity'][0], 'cve_threatSeverity')" ng-repeat="value in cve_severities" class="ng-scope">
+                        <input type="radio" class="severity ng-pristine ng-untouched ng-valid ng-empty" name="severity" ng-model="filterQuery['cve_threatSeverity'][0]" ng-value="value" value="Moderate">
+                        <span class="btn btn-app btn-sm btn-cve ng-binding">
+                            <span aria-hidden="true" class="icon-cve color-moderate" ng-class="{'color-critical': value === 'Critical', 'color-important': value === 'Important', 'color-moderate': value === 'Moderate', 'color-low': value === 'Low'}"></span> Moderate
+                        </span>
+                    </label><!-- end ngRepeat: value in cve_severities --><label ctype="collection" rank="0" ng-click="facetSearchCombo($event, filterQuery['cve_threatSeverity'][0], 'cve_threatSeverity')" ng-repeat="value in cve_severities" class="ng-scope">
+                        <input type="radio" class="severity ng-pristine ng-untouched ng-valid ng-empty" name="severity" ng-model="filterQuery['cve_threatSeverity'][0]" ng-value="value" value="Important">
+                        <span class="btn btn-app btn-sm btn-cve ng-binding">
+                            <span aria-hidden="true" class="icon-cve color-important" ng-class="{'color-critical': value === 'Critical', 'color-important': value === 'Important', 'color-moderate': value === 'Moderate', 'color-low': value === 'Low'}"></span> Important
+                        </span>
+                    </label><!-- end ngRepeat: value in cve_severities --><label ctype="collection" rank="0" ng-click="facetSearchCombo($event, filterQuery['cve_threatSeverity'][0], 'cve_threatSeverity')" ng-repeat="value in cve_severities" class="ng-scope">
+                        <input type="radio" class="severity ng-pristine ng-untouched ng-valid ng-empty" name="severity" ng-model="filterQuery['cve_threatSeverity'][0]" ng-value="value" value="Critical">
+                        <span class="btn btn-app btn-sm btn-cve ng-binding">
+                            <span aria-hidden="true" class="icon-cve color-critical" ng-class="{'color-critical': value === 'Critical', 'color-important': value === 'Important', 'color-moderate': value === 'Moderate', 'color-low': value === 'Low'}"></span> Critical
+                        </span>
+                    </label><!-- end ngRepeat: value in cve_severities -->
+                </div>
+                <div class="col-sm-3 ng-scope ng-binding" ng-controller="BrowseCveYearSearchCtrl">
+                    Filter By Year&nbsp; <div class="dropdown-select dropdown-select-horizontal">
+                        <select ng-change="facetSearchDateCombo(yearFacet, 'cve_publicDate');" ng-model="yearFacet" ng-options="value.title as value.title for value in dateFacet['cve_publicDate']| orderBy:'-title'" class="ng-pristine ng-untouched ng-valid ng-empty"><option value="" class="" selected="selected">All</option><option label="2023" value="string:2023">2023</option><option label="2022" value="string:2022">2022</option><option label="2021" value="string:2021">2021</option><option label="2020" value="string:2020">2020</option><option label="2019" value="string:2019">2019</option><option label="2018" value="string:2018">2018</option><option label="2017" value="string:2017">2017</option><option label="2016" value="string:2016">2016</option><option label="2015" value="string:2015">2015</option><option label="2014" value="string:2014">2014</option><option label="2013" value="string:2013">2013</option><option label="2012" value="string:2012">2012</option><option label="2011" value="string:2011">2011</option><option label="2010" value="string:2010">2010</option><option label="2009" value="string:2009">2009</option><option label="2008" value="string:2008">2008</option></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row push-top">
+                <div class="col-sm-12">
+                    <div class="search-results-wrap">
+                        <div ng-show="searching === true" class="spinner-wrapper ng-hide">
+                            <div id="loading" class="spinner spinner-lg">
+                            </div>
+                        </div>
+
+                        <div class="table-data-wrapper ng-scope" ng-controller="BrowsePaginationCtrl">
+                            <table class="cve-table table-respond table table-cp table-bordered table-striped table-data dataTable no-footer" summary="Common Vulnerabilities and Exposures(CVE) List" id="DataTables_Table_0" role="grid" aria-describedby="Common Vulnerabilities and Exposures(CVE) List">
+                                <thead>
+                                    <tr role="row">
+                                        <th scope="col" id="th-icon" class="th-icon hidden-sm hidden-xs">
+                                            <span class="sr-only">Severity Icons</span>
+                                        </th>
+                                        <th scope="col" id="th-cve" rowspan="1" colspan="1" aria-controls="DataTables_Table_0" aria-label="CVE: activate to sort column ascending" ng-click="searchTableSort($event, 'allTitle');" ng-class="{ 'sorting': sortValue !== 'allTitle asc' &amp;&amp; sortValue !== 'allTitle desc',
+                                                        'sorting_asc': sortValue === 'allTitle asc',
+                                                        'sorting_desc': sortValue === 'allTitle desc'}" class="th-cve ng-binding sorting">
+                                            CVE
+                                        </th>
+                                        <th scope="col" id="th-synopsis" rowspan="1" colspan="1" aria-controls="DataTables_Table_0" aria-label="Synopsis: activate to sort column ascending" class="th-synopsis hidden-sm hidden-xs ng-binding">
+                                            Synopsis
+                                        </th>
+                                        <th scope="col" id="th-impact" tabindex="0" rowspan="1" colspan="1" style="width: 134px;" aria-controls="DataTables_Table_0" aria-label="Impact: activate to sort column ascending" ng-click="searchTableSort($event, 'cve_threatSeverity');" ng-class="{ 'sorting': sortValue !== 'cve_threatSeverity asc' &amp;&amp; sortValue !== 'cve_threatSeverity desc',
+                                                        'sorting_asc': sortValue === 'cve_threatSeverity asc',
+                                                        'sorting_desc': sortValue === 'cve_threatSeverity desc'}" class="th-impact ng-binding sorting">
+                                            Impact
+                                        </th>
+                                        <th scope="col" id="th-date" tabindex="0" rowspan="1" colspan="1" style="width: 130px;" aria-controls="DataTables_Table_0" aria-label="Public Date: activate to sort column descending" aria-sort="ascending" ng-click="searchTableSort($event, 'cve_publicDate');" ng-class="{ 'sorting': sortValue !== 'cve_publicDate asc' &amp;&amp; sortValue !== 'cve_publicDate desc',
+                                                        'sorting_asc': sortValue === 'cve_publicDate asc',
+                                                        'sorting_desc': sortValue === 'cve_publicDate desc'}" class="th-date ng-binding sorting_desc">
+                                            Publish Date
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6993132" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6993132" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2022-31631" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2022-31631">CVE-2022-31631</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6993132" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">A flaw was found in PHP. This issue occurs due to an uncaught integer overflow in PDO::quote() of PDO_SQLite returning an improperly quoted string. With the implementation of sqlite3_snprintf(), it is possible to force the function to return a single apostrophe if the function is called on user-supplied input without any length restrictions in place.</span>
+                                        </td>
+                                        <td headers="th-impact th-6993132" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Moderate</span>
+                                        </td>
+                                        <td headers="th-date th-6993132" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2023-01-05T00:00:00Z" class="ng-binding">04 Jan 2023</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992775" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992775" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2023-0044" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2023-0044">CVE-2023-0044</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992775" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">No description is available for this CVE.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992775" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Low</span>
+                                        </td>
+                                        <td headers="th-date th-6992775" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2023-01-04T00:00:00Z" class="ng-binding">03 Jan 2023</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6993076" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6993076" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2022-45143" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2022-45143">CVE-2022-45143</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6993076" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">The JsonErrorReportValve in Apache Tomcat 8.5.83, 9.0.40 to 9.0.68 and 10.1.0-M1 to 10.1.1 did not escape the type, message or description values. In some circumstances these are constructed from user provided data and it was therefore possible for users to supply values that invalidated or manipulated the JSON output.</span>
+                                        </td>
+                                        <td headers="th-impact th-6993076" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Low</span>
+                                        </td>
+                                        <td headers="th-date th-6993076" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2023-01-03T00:00:00Z" class="ng-binding">02 Jan 2023</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992588" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992588" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2022-48195" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2022-48195">CVE-2022-48195</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992588" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">An issue was discovered in Mellium mellium.im/sasl before 0.3.1. When performing SCRAM-based SASL authentication, if the remote end advertises support for channel binding, no random nonce is generated (instead, the nonce is empty). This causes authentication to fail in the best case, but (if paired with a remote end that does not validate the length of the nonce) could lead to insufficient randomness being used during authentication.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992588" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Low</span>
+                                        </td>
+                                        <td headers="th-date th-6992588" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2022-12-31T00:00:00Z" class="ng-binding">30 Dec 2022</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992923" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992923" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2022-46174" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2022-46174">CVE-2022-46174</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992923" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">A potential race condition issue exists within the Amazon EFS mount helper in efs-utils and aws-efs-csi-driver when using TLS to mount file systems. The mount helper allocates a local port for stunnel to receive NFS connections prior to applying the TLS tunnel. In affected versions, concurrent mount operations can allocate the same local port, leading to either failed mount operations or an inappropriate mapping from an EFS customer’s local mount points to that customer’s EFS file systems.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992923" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Moderate</span>
+                                        </td>
+                                        <td headers="th-date th-6992923" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2022-12-28T00:00:00Z" class="ng-binding">27 Dec 2022</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992354" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992354" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2021-4294" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2021-4294">CVE-2021-4294</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992354" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">A vulnerability was found in OpenShift OSIN. It has been classified as problematic. This affects the function ClientSecretMatches/CheckClientSecret. The manipulation of the argument secret leads to observable timing discrepancy. The name of the patch is 8612686d6dda34ae9ef6b5a974e4b7accb4fea29. It is recommended to apply a patch to fix this issue. The associated identifier of this vulnerability is VDB-216987.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992354" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-low" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Low</span>
+                                        </td>
+                                        <td headers="th-date th-6992354" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2022-12-28T00:00:00Z" class="ng-binding">27 Dec 2022</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992353" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992353" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2014-125026" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2014-125026">CVE-2014-125026</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992353" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">A flaw was found in the golz4 package. LZ4 bindings use a deprecated C API that is vulnerable to memory corruption, which could lead to arbitrary code execution if called with untrusted user input.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992353" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Moderate</span>
+                                        </td>
+                                        <td headers="th-date th-6992353" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2022-12-27T00:00:00Z" class="ng-binding">26 Dec 2022</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992593" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-important" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992593" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2018-25046" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2018-25046">CVE-2018-25046</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992593" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">Due to improper path santization, archives containing relative file paths can cause files to be written (or overwritten) outside of the target directory.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992593" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-important" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Important</span>
+                                        </td>
+                                        <td headers="th-date th-6992593" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2022-12-27T00:00:00Z" class="ng-binding">26 Dec 2022</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992300" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992300" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2020-36567" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2020-36567">CVE-2020-36567</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992300" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">A flaw was found in gin. This issue occurs when the default Formatter for the Logger middleware (LoggerConfig.Formatter), which is included in the Default engine, allows attackers to inject arbitrary log entries by manipulating the request path.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992300" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Moderate</span>
+                                        </td>
+                                        <td headers="th-date th-6992300" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2022-12-27T00:00:00Z" class="ng-binding">26 Dec 2022</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' --><tr role="row" pagination-id="CVE" current-page="currentPageNum" total-items="totalResults" ng-repeat="result in results.response.docs | itemsPerPage: pageSize : 'CVE'" class="ng-scope">
+
+                                        <td headers="th-icon th-6992320" class="td-icon hidden-sm hidden-xs">
+                                            <span aria-hidden="true" class="icon-cve color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}"></span>
+                                        </td>
+                                        <th id="th-6992320" headers="th-cve" scope="row" class="td-cve">
+                                            <b class="cell-label ng-binding">CVE</b>
+                                            <span class="cell-content"><a ng-href="https://access.redhat.com/security/cve/cve-2021-4235" ctype="c" rank="1" class="ng-binding" href="https://access.redhat.com/security/cve/cve-2021-4235">CVE-2021-4235</a></span>
+                                        </th>
+                                        <td headers="th-synopsis th-6992320" class="td-synopsis hidden-sm hidden-xs">
+                                            <b class="cell-label ng-binding">Synopsis</b>
+                                            <span class="cell-content ng-binding" ng-bind-html="result.cve_details">A flaw was found in go-yaml. This issue occurs due to unbounded alias chasing, where a maliciously crafted YAML file can cause the system to consume significant system resources. If parsing user input, this may be used as a denial of service vector.</span>
+                                        </td>
+                                        <td headers="th-impact th-6992320" class="td-impact">
+                                            <b class="cell-label ng-binding">Impact</b>
+                                            <span class="cell-content ng-binding color-moderate" ng-class="{'color-critical': result.cve_threatSeverity === 'Critical', 'color-important': result.cve_threatSeverity === 'Important', 'color-moderate': result.cve_threatSeverity === 'Moderate', 'color-low': result.cve_threatSeverity === 'Low'}">Moderate</span>
+                                        </td>
+                                        <td headers="th-date th-6992320" class="td-date">
+                                            <b class="cell-label ng-binding">Publish Date</b>
+                                            <span class="cell-content"><time datetime="2022-12-27T00:00:00Z" class="ng-binding">26 Dec 2022</time></span>
+                                        </td>
+                                    </tr><!-- end ngRepeat: result in results.response.docs | itemsPerPage: pageSize : 'CVE' -->
+                                </tbody>
+                            </table>
+
+                            <div class="flex-grid">
+                                <div class="flex-item hidden-xs pagination">
+                                    <form class="form-inline ng-pristine ng-valid" ng-hide="results.response.docs.length === 0">
+                                        <label for="Page" class="ng-binding">Show: </label>
+                                        <div class="dropdown-select dropdown-select-horizontal">
+                                            <select ng-model="pageSize" ng-change="pageSizeChange();" convert-to-number="" class="ng-pristine ng-untouched ng-valid ng-not-empty">
+                                                <option value="10" selected="selected">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                        <label class="ng-binding">Per Page</label>
+                                    </form>
+                                </div>
+                                <div class="flex-item">
+                                    <dir-pagination-controls boundary-links="true" pagination-id="CVE" on-page-change="pageChange(newPageNumber);" class="ng-isolate-scope"><!-- ngIf: 1 < pages.length || !autoHide --><div class="pagination-mobile hidden-sm hidden-md hidden-lg ng-scope" ng-if="1 < pages.length || !autoHide">
+    <a href="" ng-click="setCurrent(pagination.current - 1)" ng-class="{ disabled : pagination.current == 1 }" class="disabled">Previous</a>
+    <a href="" ng-click="setCurrent(pagination.current + 1)" ng-class="{ disabled : pagination.current == pagination.last }">Next</a>
+</div><!-- end ngIf: 1 < pages.length || !autoHide -->
+
+<!-- ngIf: 1 < pages.length || !autoHide --><ul class="pagination hidden-xs ng-scope" ng-if="1 < pages.length || !autoHide" style="-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;">
+    <!-- ngIf: boundaryLinks --><li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }" class="ng-scope disabled">
+        <a href="" ng-click="setCurrent(1)">«</a>
+    </li><!-- end ngIf: boundaryLinks -->
+    <!-- ngIf: directionLinks --><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }" class="ng-scope disabled">
+        <a href="" ng-click="setCurrent(pagination.current - 1)">‹</a>
+    </li><!-- end ngIf: directionLinks -->
+    <!-- ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope active">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">1</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">2</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">3</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">4</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">5</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">6</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">7</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope disabled">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">...</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) --><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">1000</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by tracker(pageNumber, $index) -->
+
+    <!-- ngIf: directionLinks --><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pagination.current + 1)">›</a>
+    </li><!-- end ngIf: directionLinks -->
+    <!-- ngIf: boundaryLinks --><li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pagination.last)">»</a>
+    </li><!-- end ngIf: boundaryLinks -->
+</ul><!-- end ngIf: 1 < pages.length || !autoHide -->
+</dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="results.response.docs.length === 0 &amp;&amp; results.responseHeader.params.q !== ''" class="no-results clear ng-hide">
+                            <div role="alert" class="alert alert-warning alert-w-icon">
+                                <span aria-hidden="true" class="icon-warning alert-icon"></span>
+                                <p class="ng-binding">No matching CVEs found. This may be for one of the following reasons:</p>
+                                <ul>
+                                    <li class="ng-binding">The CVE does not affect Red Hat</li>
+                                    <li class="ng-binding">The CVE exists and is public but was discovered in a different year. Ensure that you are viewing CVEs named CVE-YYYY-XXXX, where YYYY is the year you are interested in.</li>
+                                    <li class="ng-binding">We have assigned the CVE name but the issue is not yet public, or our advisory is not yet ready. In some cases, a name may be used before the corresponding information has been added to the Red Hat website. This may happen when a security problem is new.</li>
+                                </ul>
+                                <p class="push-top-narrow ng-scope" translate="CVEError5">If you think the CVE name does apply to Red Hat or would like more information, please contact the <a class="internal" href="https://access.redhat.com/security/team/contact/">Security Response Team.</a></p>
+                                <p translate="CVEError6" class="ng-scope">In addition, the MITRE CVE dictionary may <a href="http://cve.mitre.org/cve/cve.html">provide information about your CVE.</a></p>
+                            </div>
+                        </div>
+                        <div ng-show="searchFail === true" class="no-results clear ng-hide">
+                            <div role="alert" class="alert alert-danger alert-w-icon ng-binding">
+                                <span aria-hidden="true" class="icon-warning alert-icon"></span>&nbsp; Please try again. There is something wrong with our service.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top">
+                <div class="push-top">
+                    <p translate="CVEFootNote1" class="ng-scope">The Common Vulnerabilities and Exposures (CVE) project, maintained by <a href="https://cve.mitre.org/">The MITRE Corporation</a>, is a list of standardized names for vulnerabilities and security exposures.</p>
+                    <div class="disclaimer">
+                        <p><small translate="CVEFootNote2" class="ng-scope">This page is generated automatically and has not been checked for errors or omissions. For clarification or corrections please contact <a href="https://access.redhat.com/security/team/contact/" class="internal">Red Hat Product Security</a>.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- uiView: footer --><div ui-view="footer" class="ng-scope"></div>
+</div>
+  </div>
+
+  <script type="text/javascript" charset="utf-8" src="/security/security-updates/app/require.config.js?v=ff80192"></script>
+  <script type="text/javascript" charset="utf-8" src="/security/security-updates/app/loader.js?v=ff80192"></script>
+  <!-- CP_PRIMER_FOOTER -->            </div>
+        </main>
+    </div>
+    <!--googleoff: all-->
+    <div id="to-top"><a class="btn_slideto affix-top" href="#masthead" aria-label="Back to Top"><span class="web-icon-upload"></span></a></div>
+    <footer class="footer-main">
+        <div class="footer-top">
+            <div class="container">
+
+              <div class="brand">
+                <a href="https://redhat.com">
+                  <svg class="rh-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 613 145">
+                    <defs>
+                      <style>
+                        .rh-logo-hat {
+                          fill: #e00;
+                        }
+                        .rh-logo-type {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <title>Red Hat</title>
+                    <path class="rh-logo-hat" d="M127.47,83.49c12.51,0,30.61-2.58,30.61-17.46a14,14,0,0,0-.31-3.42l-7.45-32.36c-1.72-7.12-3.23-10.35-15.73-16.6C124.89,8.69,103.76.5,97.51.5,91.69.5,90,8,83.06,8c-6.68,0-11.64-5.6-17.89-5.6-6,0-9.91,4.09-12.93,12.5,0,0-8.41,23.72-9.49,27.16A6.43,6.43,0,0,0,42.53,44c0,9.22,36.3,39.45,84.94,39.45M160,72.07c1.73,8.19,1.73,9.05,1.73,10.13,0,14-15.74,21.77-36.43,21.77C78.54,104,37.58,76.6,37.58,58.49a18.45,18.45,0,0,1,1.51-7.33C22.27,52,.5,55,.5,74.22c0,31.48,74.59,70.28,133.65,70.28,45.28,0,56.7-20.48,56.7-36.65,0-12.72-11-27.16-30.83-35.78"></path>
+                      <path class="rh-logo-band" d="M160,72.07c1.73,8.19,1.73,9.05,1.73,10.13,0,14-15.74,21.77-36.43,21.77C78.54,104,37.58,76.6,37.58,58.49a18.45,18.45,0,0,1,1.51-7.33l3.66-9.06A6.43,6.43,0,0,0,42.53,44c0,9.22,36.3,39.45,84.94,39.45,12.51,0,30.61-2.58,30.61-17.46a14,14,0,0,0-.31-3.42Z"></path>
+                      <path class="rh-logo-type" d="M579.74,92.8c0,11.89,7.15,17.67,20.19,17.67a52.11,52.11,0,0,0,11.89-1.68V95a24.84,24.84,0,0,1-7.68,1.16c-5.37,0-7.36-1.68-7.36-6.73V68.3h15.56V54.1H596.78v-18l-17,3.68V54.1H568.49V68.3h11.25Zm-53,.32c0-3.68,3.69-5.47,9.26-5.47a43.12,43.12,0,0,1,10.1,1.26v7.15a21.51,21.51,0,0,1-10.63,2.63c-5.46,0-8.73-2.1-8.73-5.57m5.2,17.56c6,0,10.84-1.26,15.36-4.31v3.37h16.82V74.08c0-13.56-9.14-21-24.39-21-8.52,0-16.94,2-26,6.1l6.1,12.52c6.52-2.74,12-4.42,16.83-4.42,7,0,10.62,2.73,10.62,8.31v2.73a49.53,49.53,0,0,0-12.62-1.58c-14.31,0-22.93,6-22.93,16.73,0,9.78,7.78,17.24,20.19,17.24m-92.44-.94h18.09V80.92h30.29v28.82H506V36.12H487.93V64.41H457.64V36.12H439.55ZM370.62,81.87c0-8,6.31-14.1,14.62-14.1A17.22,17.22,0,0,1,397,72.09V91.54A16.36,16.36,0,0,1,385.24,96c-8.2,0-14.62-6.1-14.62-14.09m26.61,27.87h16.83V32.44l-17,3.68V57.05a28.3,28.3,0,0,0-14.2-3.68c-16.19,0-28.92,12.51-28.92,28.5a28.25,28.25,0,0,0,28.4,28.6,25.12,25.12,0,0,0,14.93-4.83ZM320,67c5.36,0,9.88,3.47,11.67,8.83H308.47C310.15,70.3,314.36,67,320,67M291.33,82c0,16.2,13.25,28.82,30.28,28.82,9.36,0,16.2-2.53,23.25-8.42l-11.26-10c-2.63,2.74-6.52,4.21-11.14,4.21a14.39,14.39,0,0,1-13.68-8.83h39.65V83.55c0-17.67-11.88-30.39-28.08-30.39a28.57,28.57,0,0,0-29,28.81M262,51.58c6,0,9.36,3.78,9.36,8.31S268,68.2,262,68.2H244.11V51.58Zm-36,58.16h18.09V82.92h13.77l13.89,26.82H292l-16.2-29.45a22.27,22.27,0,0,0,13.88-20.72c0-13.25-10.41-23.45-26-23.45H226Z"></path>
+                  </svg>
+                </a>
+              </div>
+
+              <div role="navigation">
+                  <h3>Quick Links</h3>
+                  <ul>
+                      <li><a class="download-software" href="https://access.redhat.com/downloads/">Downloads</a></li>
+                      <li><a class="manage-subscriptions" href="https://access.redhat.com/management">Subscriptions</a></li>
+                      <li><a class="support-cases" href="https://access.redhat.com/support">Support Cases</a></li>
+                      <li><a class="customer-service" href="https://access.redhat.com/support/customer-service">Customer Service</a></li>
+                      <li><a class="quick-docs" href="https://access.redhat.com/documentation">Product Documentation</a></li>
+                  </ul>
+              </div>
+
+              <div role="navigation">
+                  <h3>Help</h3>
+                  <ul>
+                      <li><a class="contact-us" href="https://access.redhat.com/support/contact/">Contact Us</a></li>
+                      <li><a class="cp-faqs" href="https://access.redhat.com/articles/33844">Customer Portal FAQ</a></li>
+                      <li><a class="login-problems" href="https://access.redhat.com/help/login_assistance">Log-in Assistance</a></li>
+                  </ul>
+              </div>
+
+              <div role="navigation">
+                  <h3>Site Info</h3>
+                  <ul>
+                      <li><a class="trust-red-hat" href="https://www.redhat.com/en/trust">Trust Red Hat</a></li>
+                      <li><a class="browser-support-policy" href="https://www.redhat.com/en/about/browser-support">Browser Support Policy</a></li>
+                      <li><a class="accessibility" href="https://access.redhat.com/help/accessibility/">Accessibility</a></li>
+                      <li><a class="recognition" href="https://access.redhat.com/recognition/">Awards and Recognition</a></li>
+                      <li><a class="colophon" href="https://access.redhat.com/help/colophon/">Colophon</a></li>
+                  </ul>
+              </div>
+
+              <div role="navigation">
+                  <h3>Related Sites</h3>
+                  <ul>
+                      <li><a href="https://www.redhat.com/" class="red-hat-com">redhat.com</a></li>
+                      <li><a href="http://developers.redhat.com/" class="red-hat-developers">developers.redhat.com</a></li>
+                      <li><a href="https://connect.redhat.com/" class="partner-connect">connect.redhat.com</a></li>
+                      <li><a href="https://cloud.redhat.com/" class="cloud-com">cloud.redhat.com</a></li>
+                  </ul>
+              </div>
+
+              <div role="navigation">
+                  <h3>About</h3>
+                  <ul>
+                      <li><a href="https://access.redhat.com/subscription-value" class="subscription-value">Red Hat Subscription Value</a></li>
+                      <li><a href="https://www.redhat.com/about/" class="about-red-hat">About Red Hat</a></li>
+                      <li><a href="http://jobs.redhat.com" class="about-jobs">Red Hat Jobs</a></li>
+                  </ul>
+              </div>
+
+            </div>
+        </div>
+
+        <div class="anchor">
+            <div class="container">
+                <div class="status-legal">
+                    <a href="https://status.redhat.com" class="status-page-widget">
+                        <span class="status-description">All systems operational</span>
+                        <span class="status-dot shape-circle shape-dash-lime"></span>
+                    </a>
+                    <div class="legal-copyright">
+                        <div class="copyright">Copyright © 2022 Red Hat, Inc.</div>
+
+                        <div role="navigation" class="legal">
+                            <ul>
+                                <li><a href="http://www.redhat.com/en/about/privacy-policy" class="privacy-policy">Privacy Statement</a></li>
+                                <li><a href="https://access.redhat.com/help/terms/" class="terms-of-use">Customer Portal Terms of Use</a></li>
+                                <li><a href="http://www.redhat.com/en/about/all-policies-guidelines" class="all-policies">All Policies and Guidelines</a></li>
+                                <li><a id="teconsent" consent="0,1,2" aria-label="Open Cookie Preferences Modal" role="complementary"><a role="link" id="icon-id07222312440192863" tabindex="0" aria-haspopup="true" aria-label="Cookie Preferences" class="truste_cursor_pointer" lang="en">Cookie Preferences</a></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="social">
+                    <a href="http://www.redhat.com/summit/" class="summit">
+                        <img src="https://access.redhat.com/chrome_themes/nimbus/img/rh-summit-red-a.svg" alt="Red Hat Summit">
+                    </a>
+
+                    <div class="social-media">
+                        <a href="https://twitter.com/RedHatSupport" class="sm-icon twitter"><span class="nicon-twitter"></span><span class="offscreen">Twitter</span></a>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- TrustArc -->
+    <div id="consent_blackbar"></div> 
+    <!--googleon: all-->
+</div><script src="https://consent.trustarc.com/asset/notice.js/v/v1.7-10255" async="async" crossorigin="" importance="high"></script>
+<!-- /CP_PRIMER_FOOTER -->
+
+  <!-- SPA_FOOTER -->
+
+
+<script>_satellite["_runScript1"](function(event, target, Promise) {
+var targetWaitAttempts = 0;
+
+var awaitBody = function(offer){
+	//mbox call has returned, ensure <body> exists, then add the mbox DIV
+	var docBody  = document.getElementsByTagName("body"),
+		int_mbox;
+	if(docBody.length){
+		int_mbox = document.createElement("div");
+		docBody = docBody[0];
+		int_mbox.id = "int_mbox";
+		int_mbox.classList.add("mboxDefault");
+		int_mbox.style.display = "none";
+		//place mbox DIV as first tag within BODY
+		docBody.insertBefore(int_mbox, docBody.firstChild);
+	
+		//now that receiving DIV is in place, inject the offer code
+		adobe.target.applyOffer({
+			"mbox": "int_mbox",
+			"selector": "#int_mbox",
+			"offer": offer
+		});
+	
+		//and then un-hide the mbox DIV
+		int_mbox.style.display = "block";
+	}else{
+		setTimeout(function(){awaitBody(offer)},100);
+	}
+}
+
+var awaitTarget = function(){
+	if (typeof adobe !== "undefined" && typeof adobe.target !== "undefined" && typeof adobe.target.getOffer !== "undefined") {
+		//First get the mbox call going out
+		adobe.target.getOffer({
+			"mbox": "int_mbox",
+			"success": function(offer) {
+				awaitBody(offer);
+			},
+			// Handle errors gracefully
+			"error": function(status, error) {}
+		});
+	}else{
+		if(++targetWaitAttempts < 50){
+			setTimeout(awaitTarget,100);
+		}
+	}
+}
+awaitTarget();
+});</script><div id="ZN_bCxD2jjWRr4bfVQ"></div><script type="text/javascript" src="https://znbcxd2jjwrr4bfvq-redhatvoc.siteintercept.qualtrics.com/WRSiteInterceptEngine/?Q_ZID=ZN_bCxD2jjWRr4bfVQ"></script><script>_satellite["_runScript2"](function(event, target, Promise) {
+window._sdi=window._sdi||{},window._sdi.addEventHandler=window.addEventListener?function(e,i,t){e.addEventListener(i,t,!1)}:function(e,i,t){e.attachEvent("on"+i,t)},window._sdi.addEventHandler(window,"message",(function(e){var i={},t=0;(-1!==e.origin.indexOf("loop=1")||e.srcElement&&e.srcElement.playerOptions&&1==e.srcElement.playerOptions.loop)&&(t=1);var a=0;if(e.srcElement&&e.srcElement.playerOptions&&1==e.srcElement.playerOptions.autoplay&&(a=1),e.origin.match(/youtube\.com/)&&"undefined"!=typeof JSON&&!t&&!a){i=JSON.parse(e.data);var n=window._sdi.yt.videos;if("infoDelivery"==i.event){var d,o={};for(var r in i.info.videoData&&((o=n[d=i.info.videoData.video_id]||{}).info=i.info,o.id=i.id,n[d]=o),window._sdi.yt.videos){(c=window._sdi.yt.videos[r]).id==i.id&&(o=c)}var s=window._sdi.yt.sc||{};o.info&&(Math.abs(i.info.currentTime-o.info.currentTime)>1.5&&!0===s.track&&(s.s().Media.stop(o.info.videoData.title,o.info.currentTime),"paused"!=o.state&&s.s().Media.play(o.info.videoData.title,i.info.currentTime)),o.info.currentTime=i.info.currentTime),2==i.info.playerState&&(s.s().Media.stop(o.info.videoData.title,o.info.currentTime),o.state="paused"),1==i.info.playerState&&(o.started?!0===s.track&&s.s().Media.play(o.info.videoData.title,o.info.currentTime):(o.started=!0,!0===s.track&&(s.s().Media.open(o.info.videoData.title,o.info.duration,"youtube"),s.s().Media.play(o.info.videoData.title,o.info.currentTime))),o.state="playing"),3==i.info.playerState&&o.started&&(!0===s.track&&s.s().Media.stop(o.info.videoData.title,o.info.currentTime),o.state="paused"),0===i.info.playerState&&(!0===s.track&&(s.s().Media.stop(o.info.videoData.title,o.info.currentTime),s.s().Media.close(o.info.videoData.title)),o.state="completed")}else if("onStateChange"==i.event){for(var r in window._sdi.yt.videos){var c;(c=window._sdi.yt.videos[r]).id==i.id&&(o=c)}s=window._sdi.yt.sc||{};1==i.info&&(o.started?!0===s.track&&s.s().Media.play(o.info.videoData.title,o.info.currentTime):(o.started=!0,!0===s.track&&(s.s().Media.open(o.info.videoData.title,o.info.duration,"youtube"),"paused"!=o.state&&s.s().Media.play(o.info.videoData.title,i.info.currentTime))),o.state="playing"),2==i.info&&(!0===s.track&&s.s().Media.stop(o.info.videoData.title,o.info.currentTime),o.state="paused"),3==i.info&&o.started&&(!0===s.track&&s.s().Media.stop(o.info.videoData.title,o.info.currentTime),o.state="paused"),0===i.info&&(!0===s.track&&(s.s().Media.stop(o.info.videoData.title,o.info.currentTime),s.s().Media.close(o.info.videoData.title)),o.state="completed")}}})),window._sdi.loadScript=function(e,i){var t=document.createElement("script");t.type="text/javascript",i&&"function"==typeof i&&(t.readyState?t.onreadystatechange=function(){"loaded"!==t.readyState&&"complete"!==t.readyState||(t.onreadystatechange=null,i())}:t.onload=function(){i()}),t.src=e,document.getElementsByTagName("head")[0].appendChild(t)},window._sdi.yt={stages:{},players:{},sc:{track:!0,s:function(){return window.s}},init:function(){for(var e=document.getElementsByTagName("script"),i=!1,t=(window._sdi.yt.videos,0);t<e.length;t++){(e[t].src||"").match(/youtube\.com\/iframe_api/)&&(i=!0)}!1===i?window._sdi.loadScript("//www.youtube.com/iframe_api",(function(){window._sdi.yt.ready("api")})):window._sdi.yt.ready("api")},ready:function(e){window._sdi.yt.stages[e]=!0,window._sdi.yt.stages.dom&&window._sdi.yt.stages.api&&window._sdi.yt.checkIframes()},checkIframes:function(){var e=window._sdi.yt.videos,i=1e3,t=0;document.querySelectorAll("iframe[src*=youtube][data-sdiyt]").forEach((a=>{if("true"==a.dataset.sdiyt)return!1;if(-1!=a.src.indexOf("loop=1"))var n=null;else{var d;n=a.src.match(/h?t?t?p?s?\:?\/\/www\.youtube(-nocookie)?\.com\/embed\/([\w-]{11})(?:\?.*)?/)}if(n){d=n.length>2?n[2]:"",a.id||(a.id=d+t,t++);var o=!1;if(a.src.match(/enablejsapi=1/)||(a.src+=(a.src.indexOf("?")>-1?"&":"?")+"enablejsapi=1",o=!0),o){var r=a.cloneNode(!0);r.src=a.src,r.id=a.id,a.replaceWith(r)}else"undefined"!=typeof YT&&void 0!==YT.get?(ready=!0,e[d]={},(!YT.get(a.id)||void 0===YT.get(a.id).v&&void 0!==YT.get(a.id).v.videoId)&&(e[d].player=new YT.Player(a.id,{events:{onReady:function(){},onStateChange:function(){},videoId:a.id}})),a.setAttribute("data-sdiyt","true")):i=100}})),setTimeout((function(){window._sdi.yt.checkIframes()}),i)},videos:{}},void 0!==window._sdi&&void 0!==window._sdi.addEventHandler&&window._sdi.addEventHandler(window,"load",(function(){document.querySelectorAll('iframe[src*="youtube"]').length>=1?(window._sdi.yt.init(),window._sdi.yt.ready("dom")):window._sdi.ytinterval=setInterval((function(){document.querySelectorAll('iframe[src*="youtube"]').length>=1&&(window._sdi.yt.init(),window._sdi.yt.ready("dom"),clearInterval(window._sdi.ytinterval))}),500)}));
+});</script><script>_satellite["_runScript3"](function(event, target, Promise) {
+var dataLayerName="appEventData",reservedAttributes=["event"],internalDomains=[],downloadExtensions=["doc","docx","eps","jpg","png","svg","xls","ppt","pptx","pdf","xlsx","tab","csv","zip","txt","vsd","vxd","xml","js","css","rar","exe","wma","mov","avi","wmv","mp3","wav","m4v"],parseAttributes=function(t){var e={};for(var n in t.dataset)if("analytics"===n.substr(0,9)){var a=n.replace("analytics","");e[a[0]?a[0].toLocaleLowerCase()+a.slice(1):""]=t.dataset[n]}return e},addAttributes=function(t,e){return isJavascript(t)&&(e.isJavascript=!0),isDownload(t)&&(e.isDownload=!0),isCrossPropertyDomain(t)&&(e.isCrossPropertyDomain=!0,e.linkTypeName="cross property link"),isCta(t)&&(e.isCta=!0,e.linkTypeName="cta link"),isExitLink(t)&&(e.isExitLink=!0,e.linkTypeName="exit link"),isFooter(t)&&(e.isFooter=!0),isInternalCampaign(t)&&(e.isInternalCampaign=!0),isPromoSection(t)&&(e.isPromoSection=!0),isSearchContainer(t)&&(e.isSearchContainer=!0),e.targetHost=getHostName(t.href),e.internalCampaign=window._sdi.util.getQueryParam("icid",t.href)||window._sdi.util.getQueryParam("intcmp",t.href),e},getLinkText=function(t){return t.getAttribute("data-analytics-text")||t.getAttribute("sObjectId")||t.getAttribute("s-object-id")||t.getAttribute("sObjectID")||t.getAttribute("data-s-object-id")||t.innerText&&""!==t.innerText.trim()&&t.innerText.trim()||t.textContent&&""!==t.textContent.trim()&&t.textContent.trim()||t.querySelector("[alt]")&&t.querySelector("[alt]").getAttribute("alt")||t.querySelector("[title]")&&t.querySelector("[title]").getAttribute("title")||t.getAttribute("aria-label")||t.href||"unknown"},getRegions=function(t,e){if(e=e||[],!t)return e;var n=t.closest("[data-analytics-region]");return n?(e.push(n.dataset.analyticsRegion),e=getRegions(n.parentElement,e)):e},removeReservedAttributes=function(t){return reservedAttributes.forEach((function(e){delete t[e]})),t},redactEmail=function(t){return t.replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}/gi,"email_address_redacted")},buildDataObject=function(t,e,n){return n=n||getRegions(t),{event:buildEventName(t,e,n),linkInfo:Object.assign({href:t.href,regions:n.reverse().join("|"),text:redactEmail(getLinkText(t))},removeReservedAttributes(e))}},buildEventName=function(t,e,n){if(e.event)return e.event;var a={};if(n=n||getRegions(t))for(var i=0;i<n.length;i++)if(a[n[i]])return a[n[i]];return"Master Link Clicked"},findRootElement=function(t){if(t)return t.closest("a, [data-analytics-event]")},isJavascript=function(t){return new RegExp("^javascript:","i").test(t.href)},isDownload=function(t){return new RegExp(".("+downloadExtensions.join("|")+")$","i").test(t.href)},isInternalDomain=function(t){return new RegExp(internalDomains.join("|"),"i").test(t.href)},isExitLink=function(t){return!!t.href&&!new RegExp(_satellite.getVar("exitExclusionArray").join("|"),"i").test(t.href)},isCrossPropertyDomain=function(t){return document.location.hostname!==getHostName(t.href)&&"access.cdn.redhat.com"!==getHostName(t.href)&&new RegExp(_satellite.getVar("redHatDomains").join("|"),"i").test(getHostName(t.href))},isCta=function(t){return!(!t.classList.contains("cta-primary")&&"primary"!=t.getAttribute("data-rh-cta-type")&&"primary"!=t.getAttribute("data-ux-cta-type"))},isTab=function(t){return!!(t.classList.contains('[data-toggle="tab"]')||t.classList.contains("pfe-accordion-header")||t.classList.contains('[role="tab"]')||t.classList.contains("ux-vtab-nav-link")||t.classList.contains("ux-tile-nav-link")||t.classList.contains("btn-brick")||t.classList.contains("ux-htab-nav-link")||t.classList.contains("ux-horizontal-tab-nav-link")||t.classList.contains("ux-oss-hub-filter-type-text")||t.classList.contains("ux-htabb-nav-link")||"tab"==t.getAttribute("data-toggle")||"PFE-ACCORDION-HEADER"==t.tagName||"tab"==t.getAttribute("role"))},isFooter=function(t){return el=t.closest("footer"),"undefined"!=typeof el&&null!=el},isInternalCampaign=function(t){return(""!=window._sdi.util.getQueryParam("icid",t.href)||""!=window._sdi.util.getQueryParam("intcmp",t.href))&&(linkRole=t.getAttribute("role")||"",_satellite.logger.log("isInternalCampaign: linkRole:",linkRole),"tab"!==linkRole||void 0)},isPromoSection=function(t){return el=t.closest("div.band-hero"),"undefined"!=typeof el&&null!=el},isSearchContainer=function(t){return _satellite.logger.log("isSearchContainer ran"),el=t.closest("div.cp-sidebar")||t.closest("div.cp-search-results"),_satellite.logger.log("isSearchContainer el",el),_satellite.logger.log("isSearchContainer return","undefined"!=typeof el&&null!=el&&document.location.href.indexOf("search")>-1),"undefined"!=typeof el&&null!=el&&document.location.href.indexOf("search")>-1},getHostName=function(e){return t=document.createElement("a"),t.href=e,t.hostname},pushEvent=function(t){window.appEventData=window.appEventData||[],console.info("Pushing to the dataLayer",t);var e=window[dataLayerName];Array.isArray(e)&&e.push(t)};window.analyticsHelper=window.analyticsHelper||{},window.analyticsHelper.parseCustomEvent=function(t,e,n){_satellite.logger.log("target:",t);var a=parseAttributes(t),i=null,r=getRegions(t);if(e)i=e.closest("[data-analytics-region]");else{var s=t.getRootNode();s&&s.host&&(i=t.getRootNode().host.closest("[data-analytics-region]"))}i&&(r=r.concat(getRegions(i))),"expand"===n&&r.includes("mega menu")&&(a.event="Mega Menu Expanded"),"expand"===n&&r.includes("site-switcher")&&(a.event="Site Switcher Expanded"),"true"!==a.istab&&"true"!==a.isTab||(a.event="Tab Link Clicked",tabHref=t.getAttribute("href")||getLinkText(t)||"",tabHref=tabHref.trim(),a.tabHref=tabHref),_satellite.logger.log("attributes",a),_satellite.logger.log("event type",n),_satellite.logger.log("regions",r),a=addAttributes(t,a);var o=buildDataObject(t,a,r);o.event&&pushEvent(o)};var clickHandler=function(t){if(!(t.target&&t.target.tagName&&t.target.tagName.indexOf("-")>0)){var e=findRootElement(t.target);if(e){var n=parseAttributes(e);isTab(e)&&(n.event="Tab Link Clicked",tabHref=e.getAttribute("href")||getLinkText(e)||"",tabHref=tabHref.trim(),n.tabHref=tabHref),n=addAttributes(e,n);var a=buildDataObject(e,n);a.event&&pushEvent(a)}}};document.addEventListener("click",clickHandler,!0),document.addEventListener("pfe-tabs:shown-tab",(function(t){if(window.analyticsHelper&&"function"==typeof window.analyticsHelper.parseCustomEvent){var e=t.target.closest("pfe-content-set")||t.target.closest("pfe-tabs"),n=null;if(e){if("PFE-CONTENT-SET"===e.tagName){var a=t.detail.tab.querySelector("slot");if(a)(n=e.getSlot(a.getAttribute("name")))&&(n=e.getSlot(t.detail.tab.querySelector("slot").getAttribute("name"))[0])}else n=t.detail.tab;n?(n.setAttribute("data-analytics-isTab","true"),_satellite.logger.info("Called pfe-tabs:shown-tab:parseCustomEvent clicked"),window.analyticsHelper.parseCustomEvent(n,e,"clicked")):console.warn("Wasn't able to find the tabTextWrapper")}else console.warn("Wasn't able to find the componentParent")}})),document.addEventListener("pfe-accordion:change",(function(t){if(window.analyticsHelper&&"function"==typeof window.analyticsHelper.parseCustomEvent){var e=t.target.closest("pfe-content-set")||t.target.closest("pfe-accordion");if(t.detail.expanded){var n="PFE-ACCORDION-HEADER"===t.target.tagName?t.target:t.path[0];if(e&&"PFE-CONTENT-SET"===e.tagName){var a=n.querySelector("slot");if(a){var i=e.getSlot(a.getAttribute("name"));i&&i[0]&&(n=i[0])}}n&&n.setAttribute("data-analytics-isTab","true"),_satellite.logger.info("Called pfe-accordion:change:parseCustomEvent expand"),window.analyticsHelper.parseCustomEvent(n,e,"expand")}}})),document.addEventListener("pfe-shadow-dom-event",(function(t){window.analyticsHelper&&"function"==typeof window.analyticsHelper.parseCustomEvent&&window.analyticsHelper.parseCustomEvent(t.detail.target,t.detail.parentComponent,"click")})),document.addEventListener("pfe-navigation:expanded-item",(function(t){window.analyticsHelper&&"function"==typeof window.analyticsHelper.parseCustomEvent&&window.analyticsHelper.parseCustomEvent(t.detail.toggle,t.target,"expand")}));
+});</script><script>_satellite["_runScript4"](function(event, target, Promise) {
+_satellite.getVar("eloqua_Tag");
+});</script><script>_satellite["_runScript5"](function(event, target, Promise) {
+var body=document.body,html=document.documentElement,pageHeight=Math.max(body.scrollHeight,body.offsetHeight,html.clientHeight,html.scrollHeight,html.offsetHeight),viewportHeight=window.innerHeight,initialPercent=viewportHeight/pageHeight,maxInterval=0;initialPercent=initialPercent>1?100:Math.round(100*initialPercent);var maxScroll=Math.floor(initialPercent);_satellite.cookie.set("sat_ppv",maxScroll,{domain:".redhat.com"});var ticking=!1,s=window.scrollY;document.addEventListener("scroll",(()=>{ticking||(window.requestAnimationFrame((()=>{var t=document.body,e=document.documentElement;s=window.scrollY;var i=Math.max(t.scrollHeight,t.offsetHeight,e.clientHeight,e.scrollHeight,e.offsetHeight),o=window.innerHeight,l=s/(i-o)*100;l>maxScroll&&(maxScroll=Math.floor(l)),_satellite.cookie.set("sat_ppv",maxScroll,{domain:".redhat.com"}),ticking=!1})),ticking=!0)}),{passive:!0});
+});</script><script>
+if("yes"==_satellite.getVar("tagsAllowedFunc")){var profileID=_satellite.getVar("profileID")||"";if(profileID)try{!function(e){!function(t,n,i,a,o){var c,l,r,f,s;for((o=t[a]=t[a]||{})._q=[],l=0,r=(c=["initialize","identify","updateOptions","pageLoad"]).length;l<r;++l)!function(e){o[e]=o[e]||function(){o._q[e===c[0]?"unshift":"push"]([e].concat([].slice.call(arguments,0)))}}(c[l]);(f=n.createElement(i)).async=!0,f.src="https://cdn.pendo.io/agent/static/"+e+"/pendo.js",(s=n.getElementsByTagName(i)[0]).parentNode.insertBefore(f,s)}(window,document,"script","pendo"),setTimeout((function(){"undefined"!=typeof pendo&&pendo.initialize({visitor:{id:_satellite.getVar("profileID"),internal:"",lang:""},account:{id:_satellite.getVar("accountID"),account_number:_satellite.getVar("accountID")}})}),2e3)}("f210c485-387f-43ad-4eee-f55bab22507f")}catch(e){}}
+</script>
+</body>
+</html>
