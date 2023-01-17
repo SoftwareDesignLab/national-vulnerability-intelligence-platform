@@ -54,20 +54,7 @@ import edu.rit.se.nvip.model.CnnvdVulnerability;
  */
 public class CnnvdCveParser {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	private Pattern patternUrl = null;
-
-	public static void main(String[] args) {
-		CnnvdCveParser chinaCveParser = new CnnvdCveParser();
-		try {
-			// String html = FileUtils.readFileToString(new
-			// File("data/china-cve/CNNVD-198801-001.html"));
-			String html = FileUtils.readFileToString(new File("src/test/resources/test-cnnvd2.html"), "utf-8");
-			List<String> list = chinaCveParser.getCveReferencesFromPage(html);
-			;
-		} catch (IOException e) {
-
-		}
-	}
+	private Pattern patternUrl;
 
 	public CnnvdCveParser() {
 		String regexForLink = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
@@ -82,7 +69,7 @@ public class CnnvdCveParser {
 	 * @return
 	 */
 	public List<String> getCveUrlListFromPage(String html) {
-		List<String> cveUrlList = new ArrayList<String>();
+		List<String> cveUrlList = new ArrayList<>();
 		/**
 		 * append this base URL to each CNNVD item:
 		 * 
@@ -154,7 +141,7 @@ public class CnnvdCveParser {
 	 * @return
 	 */
 	private Map<String, String> getBasicDictionary() {
-		Map<String, String> dict = new HashMap<String, String>();
+		Map<String, String> dict = new HashMap<>();
 		dict.put("CNNVDç¼–å�·", "CNNVD");
 		dict.put("CVEç¼–å�·", "CVE");
 		dict.put("å�‘å¸ƒæ—¶é—´", "Published");
@@ -185,11 +172,9 @@ public class CnnvdCveParser {
 
 		String regexUrl = "((http?|https|ftp|file)://)?((W|w){3}.)?[a-zA-Z0-9]+\\.[a-zA-Z]+";
 
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 
-		// Document document = Jsoup.parse(html);
 		Document document = Jsoup.parse(html, "", Parser.xmlParser());
-		// document.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.base);
 		try {
 			Elements itemListMain = document.select("div[class=d_ldjj m_t_20]");
 			Element relatedRefUrlElement = itemListMain.get(1); // this is the <div> that includes references
@@ -211,7 +196,7 @@ public class CnnvdCveParser {
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Error while getting reference URLs: " + e.toString() + ", HTML Content: " + html);
+			logger.error("Error while getting reference URLs: " + e + ", HTML Content: " + html);
 		}
 		return list;
 	}
@@ -223,7 +208,7 @@ public class CnnvdCveParser {
 	 * @return
 	 */
 	public List<String> matchURLsFromText(String text) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		Matcher matcher = patternUrl.matcher(text);
 
 		while (matcher.find())
