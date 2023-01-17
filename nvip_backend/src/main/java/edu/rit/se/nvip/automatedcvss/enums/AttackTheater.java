@@ -33,7 +33,7 @@ public enum AttackTheater {
 
 	private final String nounGroupValue;
 
-	private AttackTheater(final String nounGroupValue) {
+	AttackTheater(final String nounGroupValue) {
 		this.nounGroupValue = nounGroupValue;
 	}
 

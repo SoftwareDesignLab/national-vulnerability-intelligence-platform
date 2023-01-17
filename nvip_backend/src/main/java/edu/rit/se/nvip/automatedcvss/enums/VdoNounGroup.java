@@ -38,7 +38,7 @@ public enum VdoNounGroup {
 	/**
 	 * @param nounGroup
 	 */
-	private VdoNounGroup(final String nounGroup) {
+	VdoNounGroup(final String nounGroup) {
 		this.nounGroup = nounGroup;
 	}
 
