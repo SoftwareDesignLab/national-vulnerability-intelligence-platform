@@ -23,8 +23,6 @@
  */
 package edu.rit.se.nvip.automatedcvss;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +33,6 @@ import org.python.util.PythonInterpreter;
 
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
  * 
@@ -43,10 +40,8 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class CvssScoreCalculator {
-	NumberFormat formatter = new DecimalFormat("#0.00");
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
-	// String pythonPyFile = "evaluateCVSSpartials.py";
 	String pythonPyFile = "evaluateCVSSpartialsv2.0.py"; // new version
 	String pythonMethodName = "get_cvss_for_partial";
 	PyObject pyFunction = null;
@@ -83,21 +78,6 @@ public class CvssScoreCalculator {
 
 	}
 
-	public static void main(String[] args) {
-
-		CvssScoreCalculator cvssScorer = new CvssScoreCalculator();
-
-		String[] cvssVec = new String[] { "P", "X", "X", "X", "X", "H", "H", "H" };
-		cvssScorer.getCvssScoreJython(cvssVec);
-
-		cvssVec = new String[] { "P", "X", "X", "X", "X", "H", "H", "X" };
-		cvssScorer.getCvssScoreJython(cvssVec);
-
-		cvssVec = new String[] { "P", "X", "X", "X", "X", "H", "X", "X" };
-		cvssScorer.getCvssScoreJython(cvssVec);
-
-	}
-
 	/**
 	 * Get mean, minimum, maximum of the CVSS scores whose CVSS vector match with
 	 * the provided partial CVSS vector
@@ -126,8 +106,6 @@ public class CvssScoreCalculator {
 		// double[] values = calculateMeanMinMaxStdDeviation(doubleArray);
 		double[] values = calculateMedianMinMaxStdDeviation(doubleArray);
 
-//		logger.info("Median, Min, Max, Std deviation for " + Arrays.deepToString(partialCvssVector) + ": " + formatter.format(values[0]) + ", " + formatter.format(values[1]) + ", "
-//				+ formatter.format(values[2]) + ", " + formatter.format(values[3]));
 
 		return values;
 	}
@@ -165,34 +143,10 @@ public class CvssScoreCalculator {
 		Arrays.sort(numList);
 		double median;
 		if (numList.length % 2 == 0)
-			median = ((double) numList[numList.length / 2] + (double) numList[numList.length / 2 - 1]) / 2;
+			median = (numList[numList.length / 2] + (double) numList[numList.length / 2 - 1]) / 2;
 		else
-			median = (double) numList[numList.length / 2];
+			median = numList[numList.length / 2];
 		return median;
-	}
-
-	/**
-	 * calculate mean, min, max, std. deviation of the CVSS scores provided.
-	 * 
-	 * @param list
-	 * @return An array containing mean, min, max, std. deviation
-	 */
-	public double[] calculateMeanMinMaxStdDeviation(Double[] list) {
-
-		if (list.length == 0)
-			return new double[] { -1, -1, -1, -1 }; // don't divide by zero!
-
-		double sum = 0;
-		double[] meanMinMax = calculateMean(list);
-		double mean = meanMinMax[0];
-
-		for (int i = 0; i < list.length; i++) {
-			sum = sum + (list[i] - mean) * (list[i] - mean);
-		}
-		double squaredDiffMean = (sum) / (list.length);
-		double standardDev = (Math.sqrt(squaredDiffMean));
-
-		return new double[] { meanMinMax[0], meanMinMax[1], meanMinMax[2], standardDev };
 	}
 
 	/**
@@ -203,7 +157,7 @@ public class CvssScoreCalculator {
 	public double[] calculateMedianMinMaxStdDeviation(Double[] list) {
 
 		if (list.length == 0)
-			return new double[] { -1, -1, -1, -1 }; // don't divide by zero!
+			return new double[] { -1, -1, -1, -1 };
 
 		double sum = 0;
 		double median = calculateMedian(list);
@@ -216,8 +170,6 @@ public class CvssScoreCalculator {
 		double squaredDiffMean = (sum) / (list.length);
 		double standardDev = (Math.sqrt(squaredDiffMean));
 
-		// return new double[] { meanMinMax[0], meanMinMax[1], meanMinMax[2],
-		// standardDev };
 		return new double[] { median, meanMinMax[1], meanMinMax[2], standardDev };
 	}
 

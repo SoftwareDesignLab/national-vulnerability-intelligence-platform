@@ -35,7 +35,7 @@ public enum Context {
 
 	private final String nounGroupValue;
 
-	private Context(final String nounGroupValue) {
+	Context(final String nounGroupValue) {
 		this.nounGroupValue = nounGroupValue;
 	}
 

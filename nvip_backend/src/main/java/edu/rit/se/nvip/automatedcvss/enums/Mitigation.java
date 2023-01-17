@@ -35,7 +35,7 @@ public enum Mitigation {
 
 	private final String nounGroupValue;
 
-	private Mitigation(final String nounGroupValue) {
+	Mitigation(final String nounGroupValue) {
 		this.nounGroupValue = nounGroupValue;
 	}
 
