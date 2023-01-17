@@ -23,14 +23,11 @@
  */
 package edu.rit.se.nvip.characterizer.divergence;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,11 +42,11 @@ import weka.core.Instances;
 public class VdoLabelDistribution {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	private String vdoLabel = null;
-	private Map<String, Integer> histogram = new HashMap<String, Integer>();
+	private Map<String, Integer> histogram = new HashMap<>();
 	int nTotCount = 0;
 	double nBaseCount = 171476; // the # of English words in corpus
 
-	double entropy = Double.NEGATIVE_INFINITY;
+	double entropy;
 
 	/**
 	 * generate a feature histogram for the given vdo label by filtering given
@@ -74,18 +71,8 @@ public class VdoLabelDistribution {
 
 		// the entropy [0-1]
 		entropy = calculateEntropy(nTotCount);
-		// logger.info("Created a histogram for " + vdoLabel + " with " +
-		// histogram.keySet().size() + "
-		// entries and " + nTotCount + " observations. Entropy: " + entropy);
 
 		nBaseCount = data.numAttributes() - 1;
-		// printHistogramWithAndWithoutEntropyDistribution();
-	}
-
-	public VdoLabelDistribution(Map<String, Integer> histogram) {
-		this.histogram = histogram;
-		nTotCount = getTotalNumberOfFrequencies();
-		entropy = calculateEntropy(nTotCount);
 	}
 
 	/**
@@ -180,7 +167,7 @@ public class VdoLabelDistribution {
 		Map<String, Integer> cveInstanceHistogram = cveHistogram.getHistogram();
 		Map<String, Integer> cveModelHistogram = getHistogram();
 
-		double p = 0.0, q = 0.0;
+		double p, q;
 		double individualCrossEntropy = 0;
 		String sContent = "";
 		for (HashMap.Entry<String, Integer> entry : cveInstanceHistogram.entrySet()) {
@@ -195,20 +182,12 @@ public class VdoLabelDistribution {
 			} else
 				q = 0;
 
-//			sContent += featureValueKey + "," + q;
-
 			if (distributeEntropy)
 				q = q * (1 - getEntropy()) + getEntropy() / nBaseCount;
 
 			individualCrossEntropy += p * FastMath.log(q);
 
-//			sContent += "," + q + "\n";
 		}
-
-//		try {
-//			FileUtils.writeStringToFile(new File("temp/sample-distribution" + vdoLabel + ".csv"), sContent);
-//		} catch (IOException e) {
-//		}
 
 		return -1 * individualCrossEntropy;
 	}
@@ -226,39 +205,6 @@ public class VdoLabelDistribution {
 		return crossEntropy - cveEntropy;
 	}
 
-	public double calculateKLDivergence(VdoLabelDistribution cveHistogram, boolean distributeEntropy) {
-		// total alerts on the aggregate and model
-		double totalObservationsOnCveModel = getTotalNumberOfFrequencies();
-
-		double totalObservationsOnCveInstance = cveHistogram.getTotalNumberOfFrequencies();
-
-		// Only needs the number of instances
-		Map<String, Integer> cveModelHistogram = getHistogram();
-		Map<String, Integer> cveInstanceHistogram = cveHistogram.getHistogram();
-
-		double p = 0.0, q = 0.0;
-		double klDivergence = 0;
-		for (HashMap.Entry<String, Integer> entry : cveInstanceHistogram.entrySet()) {
-			String featureValueKey = entry.getKey();
-
-			// probability for cve
-			p = cveInstanceHistogram.get(featureValueKey) / totalObservationsOnCveInstance;
-
-			// probability for label histogram (model)
-			if (cveModelHistogram.get(featureValueKey) != null) {
-				q = cveModelHistogram.get(featureValueKey) / totalObservationsOnCveModel;
-			} else
-				q = 0;
-
-			if (distributeEntropy)
-				q = q * (1 - getEntropy()) + getEntropy() / nBaseCount;
-
-			klDivergence += p * FastMath.log(p / q);
-		}
-
-		return klDivergence;
-	}
-
 	/**
 	 * entropy of this distribution
 	 * 
@@ -274,7 +220,6 @@ public class VdoLabelDistribution {
 			p = (double) observedNum / totalNumOfFrequencies;
 			if (p == 0)
 				continue;
-			// p = (double) observedNum / nBaseCount;
 			entropy += p * FastMath.log(p);
 		}
 		// normalize
@@ -343,81 +288,12 @@ public class VdoLabelDistribution {
 		return vdoLabel;
 	}
 
-	public void setVdoLabel(String vdoLabel) {
-		this.vdoLabel = vdoLabel;
-	}
-
-	/**
-	 * log n in <base>
-	 * 
-	 * @param n
-	 * @param base
-	 * @return
-	 */
-	private double log(double n, int base) {
-		return (Math.log10(n) / Math.log10(2));
-	}
-
 	public double getEntropy() {
 		return entropy;
 	}
 
 	public int getTotCount() {
 		return nTotCount;
-	}
-
-	public void setTotCount(int nTotCount) {
-		this.nTotCount = nTotCount;
-	}
-
-	/**
-	 * custom divergence
-	 * 
-	 * @param cveHistogram
-	 * @return
-	 */
-	public double okutanDivergence(VdoLabelDistribution cveHistogram) {
-
-		// clone model histogram
-		Map<String, Integer> modelHistogram = new HashMap<>(histogram);
-
-		// merge model and cve histograms
-		cveHistogram.getHistogram().forEach((key, value) -> modelHistogram.merge(key, value, (v1, v2) -> v1 + v2));
-
-		// create a new VdoLabelHistogram and measure the divergence of cveHistogram
-		// from it
-		VdoLabelDistribution vdoLabelHistogram = new VdoLabelDistribution(modelHistogram);
-
-		return vdoLabelHistogram.calculateKLDivergence(cveHistogram, false);
-	}
-
-	public void printHistogramWithAndWithoutEntropyDistribution() {
-		// total alerts on the aggregate and model
-		double totalObservationsOnCveModel = getTotalNumberOfFrequencies();
-
-		// Only needs the number of instances
-		Map<String, Integer> cveModelHistogram = getHistogram();
-
-		double q = 0.0;
-		String sContent = "";
-		for (HashMap.Entry<String, Integer> entry : histogram.entrySet()) {
-			String featureValueKey = entry.getKey();
-
-			// probability for label histogram (model)
-			if (cveModelHistogram.get(featureValueKey) != null) {
-				q = cveModelHistogram.get(featureValueKey) / totalObservationsOnCveModel;
-			} else
-				q = 0;
-
-			double q2 = q * (1 - getEntropy()) + getEntropy() / nBaseCount;
-
-			sContent += featureValueKey + "," + q + "," + q2 + "\n";
-		}
-
-		try {
-			FileUtils.writeStringToFile(new File("temp/sample-distribution" + vdoLabel + ".csv"), sContent);
-		} catch (IOException e) {
-		}
 	}
 
 }

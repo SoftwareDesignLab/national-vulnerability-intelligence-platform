@@ -60,7 +60,7 @@ public class OrdinaryCveClassifier extends AbstractCveClassifier {
 	protected final double MIN_CONFIDENCE_THRESHOLD = 0.60;
 
 	protected Instances myInstances = null;
-	protected Classifier classifier = new RandomForest();
+	protected Classifier classifier;
 
 	public OrdinaryCveClassifier() {
 		Vote vClassifier = new Vote();
@@ -77,7 +77,7 @@ public class OrdinaryCveClassifier extends AbstractCveClassifier {
 		try {
 			sCommaSeparatedAttribRows = FileUtils.readFileToString(new File(preProcessedTrainingDataFile));
 		} catch (IOException e) {
-			logger.error("Error loading training data file: " + preProcessedTrainingDataFile + ": " + e.toString());
+			logger.error("Error loading training data file: " + preProcessedTrainingDataFile + ": " + e);
 		}
 
 		this.sCommaSeparatedCsvData = sCommaSeparatedAttribRows;
@@ -90,16 +90,14 @@ public class OrdinaryCveClassifier extends AbstractCveClassifier {
 		myInstances = instances;
 		classifier.buildClassifier(instances);
 
-		String info = "A CVE classifier [" + this.classifier.getClass().getSimpleName() + "] is trained with " + instances.numInstances() + " instances and " + instances.numAttributes() + " attributes!";
-		// logger.info(info);
 	}
 
 	@Override
 	public ArrayList<String[]> predict(Instance currentInstance, boolean bPredictMultiple) {
-		ArrayList<String[]> prediction = new ArrayList<String[]>();
+		ArrayList<String[]> prediction = new ArrayList<>();
 		if (currentInstance.numAttributes() != myInstances.numAttributes()) {
 			logger.error("Error! The instances in the data set has " + myInstances.numAttributes() + " attribs, but the instance you are trying to predict has " + currentInstance.numAttributes()
-					+ " atribs?\nNo prediction could be done for this instance: " + currentInstance.toString());
+					+ " atribs?\nNo prediction could be done for this instance: " + currentInstance);
 
 			return prediction;
 		}
@@ -124,12 +122,12 @@ public class OrdinaryCveClassifier extends AbstractCveClassifier {
 	 * @return
 	 */
 	protected ArrayList<String[]> classify(Classifier classifier, Instance currentInstance, boolean bPredictMultiple) {
-		ArrayList<String[]> prediction = new ArrayList<String[]>();
+		ArrayList<String[]> prediction = new ArrayList<>();
 		try {
 			double[] predictProb = classifier.distributionForInstance(currentInstance); // get the prediction probabilities
 			if (bPredictMultiple) {
 				// sort ascending
-				Map<String, Integer> indexes = new HashMap<String, Integer>();
+				Map<String, Integer> indexes = new HashMap<>();
 				for (int i = 0; i < predictProb.length; i++)
 					indexes.put(formatter.format(predictProb[i]), i);
 
@@ -172,10 +170,5 @@ public class OrdinaryCveClassifier extends AbstractCveClassifier {
 		// not applicable
 		return null;
 	}
-
-//	@Override
-//	public String getCveClassifierName() {
-//		return cveClassifierName;
-//	}
 
 }
