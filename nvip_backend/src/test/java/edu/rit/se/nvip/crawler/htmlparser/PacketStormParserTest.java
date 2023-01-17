@@ -1,21 +1,20 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-
 import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class PacketStormParserTest {
 
@@ -27,23 +26,23 @@ public class PacketStormParserTest {
 		CveCrawler crawler = new CveCrawler(propertiesNvip);
 
 		// test parsing of CVEs from different packetstorm pages
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-files.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-files.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = crawler.parseWebPage("packetstorm", html);
 		boolean fine = list.size() > 0;
 
-		html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-poc-files.html"));
+		html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-poc-files.html"), StandardCharsets.UTF_8);
 		list = crawler.parseWebPage("packetstorm", html);
 		fine = fine && list.size() > 0;
 
-		html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-advisory.html"));
+		html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-advisory.html"), StandardCharsets.UTF_8);
 		list = crawler.parseWebPage("packetstorm", html);
 		fine = fine && list.size() > 0;
 
-		html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-cvedetail.html"));
+		html = FileUtils.readFileToString(new File("src/test/resources/test-packetstorm-cvedetail.html"), StandardCharsets.UTF_8);
 		list = crawler.parseWebPage("packetstorm.html", html);
 		fine = fine && list.size() > 0;
 
-		assertEquals(true, fine);
+		assertTrue(fine);
 	}
 
 	@Test
@@ -52,9 +51,9 @@ public class PacketStormParserTest {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 		try {
 			String link = "https://packetstormsecurity.com/files/date/2021-05-04/";
-			String html = IOUtils.toString(new URL(link));
+			String html = IOUtils.toString(new URL(link), StandardCharsets.UTF_8);
 			List<CompositeVulnerability> list = new CveCrawler(propertiesNvip).parseWebPage(link, html);
-			assertEquals(true, list.size() > 0);
+			assertTrue(list.size() > 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

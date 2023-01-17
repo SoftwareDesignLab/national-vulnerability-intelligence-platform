@@ -109,7 +109,7 @@ public class CpeLookUp {
 	 *
 	 * @return assigns list of product
 	 */
-	private void loadProductFile() {
+	public void loadProductFile() {
 		try {
 			MyProperties properties = new MyProperties();
 			properties = new PropertyLoader().loadConfigFile(properties);

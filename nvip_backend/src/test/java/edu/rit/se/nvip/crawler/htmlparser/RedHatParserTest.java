@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +28,7 @@ public class RedHatParserTest {
 	public void testRedHat() throws IOException {
 
 		RedHatParser parser = new RedHatParser("redhat");
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-cve.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-cve.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);
 
 		CompositeVulnerability sample = list.get(0);
@@ -41,7 +42,7 @@ public class RedHatParserTest {
 	public void testSecurityRedHat() throws IOException {
 
 		SecurityRedHatParser parser = new SecurityRedHatParser("redhat");
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-security.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-redhat-security.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);
 		
 		CompositeVulnerability sample = list.get(0);

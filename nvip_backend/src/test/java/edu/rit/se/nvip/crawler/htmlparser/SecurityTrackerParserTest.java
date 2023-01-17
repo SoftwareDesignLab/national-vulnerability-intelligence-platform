@@ -1,22 +1,18 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import static org.junit.Assert.assertEquals;
+import edu.rit.se.nvip.crawler.CveCrawler;
+import edu.rit.se.nvip.model.CompositeVulnerability;
+import edu.rit.se.nvip.utils.MyProperties;
+import edu.rit.se.nvip.utils.PropertyLoader;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-
-import edu.rit.se.nvip.crawler.CveCrawler;
-import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
+import static org.junit.Assert.assertTrue;
 
 public class SecurityTrackerParserTest {
 
@@ -26,11 +22,11 @@ public class SecurityTrackerParserTest {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 		CveCrawler crawler = new CveCrawler(propertiesNvip);
 	
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-securitytracker-cvedetail.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-securitytracker-cvedetail.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = crawler.parseWebPage("securitytracker", html);
 		boolean fine = list.size() == 1;
 
-		assertEquals(true, fine);
+		assertTrue(fine);
 	}
 
 }

@@ -1,6 +1,7 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,11 +26,11 @@ public class BugzillaParserTest {
 		MyProperties propertiesNvip = new MyProperties();
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 		
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-bugzilla-cvedetail.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-bugzilla-cvedetail.html"), "UTF-8");
 		List<CompositeVulnerability> list = new CveCrawler(propertiesNvip).parseWebPage("bugzilla", html);
 		boolean fine = list.size() == 1;
 
-		assertEquals(true, fine);
+		assertTrue(fine);
 	}
 
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -22,11 +23,11 @@ public class SeclistParserTest {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 		CveCrawler crawler = new CveCrawler(propertiesNvip);
 
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-seclist-cvedetail.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-seclist-cvedetail.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = crawler.parseWebPage("seclists", html);
 		assertEquals(1, list.size());
 
-		html = FileUtils.readFileToString(new File("src/test/resources/test-seclist-date.html"));
+		html = FileUtils.readFileToString(new File("src/test/resources/test-seclist-date.html"), StandardCharsets.UTF_8);
 		list = crawler.parseWebPage("seclists", html);
 		assertEquals(1, list.size());
 	}
