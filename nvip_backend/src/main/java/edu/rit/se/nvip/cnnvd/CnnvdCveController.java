@@ -84,13 +84,6 @@ public class CnnvdCveController {
 
 	}
 
-	public static void main(String[] args) {
-		UrlUtils urlUtils = new UrlUtils();
-		String str = "https://android.googlesource.com/platform/frameworks/av/+/7a3246b870ddd11861eda2ab458b11d723c7f62c";
-		urlUtils.getBaseUrl(str);
-
-	}
-
 	/**
 	 * get page from url
 	 * 

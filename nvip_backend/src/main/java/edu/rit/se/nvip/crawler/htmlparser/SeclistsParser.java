@@ -46,7 +46,7 @@ import java.util.*;
  *
  */
 public class SeclistsParser extends AbstractCveParser implements CveParserInterface {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public SeclistsParser(String domainName) {
 		sourceDomainName = domainName;

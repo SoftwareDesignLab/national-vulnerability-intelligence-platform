@@ -48,7 +48,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class SecurityTrackerParser extends AbstractCveParser implements CveParserInterface {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public SecurityTrackerParser(String domainName) {
 		sourceDomainName = domainName;
@@ -118,7 +118,6 @@ public class SecurityTrackerParser extends AbstractCveParser implements CveParse
 						// Date: May 8 2018
 						String sDate = null;
 						try {
-							// sDate = elementText.replace("Date: ", "").trim();
 							sDate = getDates(elementText).get(0);
 							publishDate = UtilHelper.longDateFormat.format(dateFormat_MMMddYYYY.parse(sDate));
 							break;
@@ -140,7 +139,7 @@ public class SecurityTrackerParser extends AbstractCveParser implements CveParse
 
 	protected List<String> getDates(String text) {
 		String regexDateFormat = "([a-zA-Z]+ [0-9]+ [0-9]+)";
-		List<String> dates = new ArrayList<String>();
+		List<String> dates = new ArrayList<>();
 		Pattern cvePattern = Pattern.compile(regexDateFormat);
 		Matcher cveMatcher = cvePattern.matcher(text);
 		while (cveMatcher.find())

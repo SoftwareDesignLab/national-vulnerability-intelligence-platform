@@ -23,16 +23,10 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,7 +57,7 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 
 		if (sSourceURL.contains("blog.talosintelligence.com") || sSourceURL.contains("/newsletters/"))
 			return vulnerabilities;
@@ -89,7 +83,7 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 	 * @return
 	 */
 	private List<CompositeVulnerability> parseVulnPage(Set<String> uniqueCves, String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
@@ -132,7 +126,6 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 							str += element.nextElementSibling().text();
 							element = element.nextElementSibling();
 						} catch (Exception e) {
-							continue;
 						}
 					}
 					description += str;
@@ -167,7 +160,7 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 	}
 
 	protected List<String> getDates(String text) {
-		List<String> dates = new ArrayList<String>();
+		List<String> dates = new ArrayList<>();
 		Pattern cvePattern = Pattern.compile(regexDateFormatNumeric);
 		Matcher cveMatcher = cvePattern.matcher(text);
 		while (cveMatcher.find())

@@ -23,14 +23,10 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
+
 import java.util.List;
 
-import edu.rit.se.nvip.cvereconcile.CveReconciler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
 
 /**
  * 
@@ -40,7 +36,6 @@ import edu.rit.se.nvip.model.Vulnerability;
 public interface CveParserInterface {
 	String regexCVEID = "CVE-[0-9]+-[0-9]+";
 	String regexVersionInfo = "(?:(\\d+\\.(?:\\d+\\.)*\\d+))";
-	String regexRepeatingCVEID = "(CVE-[0-9]+-[0-9]+).{1,}\\1";
 	String regexAllCVERelatedContent = ".*(affect|attack|bypass|cve|execut|fix|flaw|permission|vulnerab|CVE|Mitigat|(?:(\\d+\\.(?:\\d+\\.)*\\d+))).*";
 	String regexDateFormat = "([a-zA-Z]+ [0-9]+, [0-9]+)";
 	String regexDateFormatNumeric = "[0-9]+[-/][0-9]+[-/][0-9]+";
