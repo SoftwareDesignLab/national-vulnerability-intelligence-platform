@@ -54,10 +54,8 @@ import edu.rit.se.nvip.model.CompositeVulnerability.CveReconcileStatus;
 import edu.rit.se.nvip.model.DailyRun;
 import edu.rit.se.nvip.model.NvipSource;
 import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.nvd.PullNvdCveMain;
 import edu.rit.se.nvip.productnameextractor.AffectedProductIdentifier;
-import edu.rit.se.nvip.utils.PrepareDataForWebUi;
 import edu.rit.se.nvip.utils.CveUtils;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.NlpUtil;
@@ -317,7 +315,7 @@ public class NVIPMain {
 
 		// log .csv files
 		logger.info("Creating output CSV files...");
-		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap, databaseHelper, runId);
+		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap);
 
 		// record additional available stats
 		recordAdditionalStats(databaseHelper, runId, dailyRunStats, crawlStartTime, crawlEndTime, dbTime);
