@@ -61,24 +61,21 @@ import edu.rit.se.nvip.utils.UtilHelper;
  */
 
 public class NvdCveController {
-	// log4j instance
-	private Logger logger = LogManager.getLogger(NvdCveController.class);
+	private final Logger logger = LogManager.getLogger(NvdCveController.class);
 
 	// Parameters
 	private static final int START_YEAR = 2002, END_YEAR = Calendar.getInstance().get(Calendar.YEAR);
-	private static String nvdJsonFeedUrl = "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-YYYY.json.zip";
+	private static final String nvdJsonFeedUrl = "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-YYYY.json.zip";
 	String[] header = new String[] { "CVE-ID", "Description", "BaseScore", "BaseSeverity", "ImpactScore", "ExploitabilityScore", "CWE", "Advisory", "Patch", "Exploit" };
-	String[] headerScore = new String[] { "Description", "BaseScore", "BaseSeverity", "ImpactScore", "ExploitabilityScore" };
 
 	boolean logCPEInfo = true;
 
 	/**
 	 * Main method of NVD_CVE_Reader
 	 * 
-	 * @param args
+	 * @param filepath
 	 */
 	public int pullNvdCve(String filepath, boolean extractNamedEntities) {
-		String scorePath = filepath + "-scores.csv";
 		CsvUtils csvLogger = new CsvUtils(); // create output CSV file and append header
 		StanfordCoreNlp coreNLP = null;
 
@@ -88,7 +85,6 @@ public class NvdCveController {
 			file.delete(); // delete
 
 		// get root path from command line
-		// String filepath = Utils.validateInputAndGetPath(args);
 		logger.info("The output CSV will be at: " + filepath);
 
 		if (extractNamedEntities) {
@@ -101,14 +97,13 @@ public class NvdCveController {
 		}
 
 		csvLogger.writeHeaderToCSV(filepath, header, false);
-		// csvLogger.writeHeaderToCSV(scorePath, headerScore, false);
 
 		// Pull yearly CVE data from NVD
 		NvdCveParser myCVEParser = new NvdCveParser(); // init parser
 		int totCount = 0;
 
-		Map<String, Integer> nvdRefUrlHash = new HashMap<String, Integer>();
-		Map<String, List<String>> nvdCveCpeHashMap = new HashMap<String, List<String>>();
+		Map<String, Integer> nvdRefUrlHash = new HashMap<>();
+		Map<String, List<String>> nvdCveCpeHashMap = new HashMap<>();
 
 		for (int year = START_YEAR; year <= END_YEAR; year++) {
 
@@ -138,9 +133,6 @@ public class NvdCveController {
 				// add references from this json list
 				nvdRefUrlHash.putAll(myCVEParser.getCveReferences(jsonList));
 
-				// scores
-				// logScoreData(scorePath, listCVEData, csvLogger);
-
 				// add references from this json list
 				nvdCveCpeHashMap.putAll(myCVEParser.getCPEs(jsonList));
 			} catch (Exception e) {
@@ -159,39 +151,6 @@ public class NvdCveController {
 		return totCount;
 	}
 
-	private void logScoreData(String filepath, List<String[]> listCVEData, CsvUtils csvLogger) {
-		List<String[]> listScoreData = new ArrayList<String[]>();
-		for (String[] arr : listCVEData) {
-			// field order: [sID, sDescription, baseScore, baseSeverity, impactScore,
-			// exploitabilityScore]
-
-			String baseScore;
-			try {
-				baseScore = String.valueOf(Math.round(Double.parseDouble(arr[2])));
-			} catch (NumberFormatException e) {
-				baseScore = arr[2];
-			}
-			// if (impactScore != 0 && impactScore != 8 && impactScore != 9)
-			String baseSeverity = arr[3];
-			String impactScore;
-			try {
-				impactScore = String.valueOf(Math.round(Double.parseDouble(arr[4])));
-			} catch (NumberFormatException e) {
-				impactScore = arr[4];
-			}
-			String exploitabilityScore;
-			try {
-				exploitabilityScore = String.valueOf(Math.round(Double.parseDouble(arr[5])));
-			} catch (NumberFormatException e) {
-				exploitabilityScore = arr[5];
-			}
-
-			listScoreData.add(new String[] { arr[1], baseScore, baseSeverity, impactScore, exploitabilityScore });
-
-		}
-		csvLogger.writeListToCSV(listScoreData, filepath, true);
-	}
-
 	/**
 	 * Process Nvd reference URLs
 	 * 
@@ -201,8 +160,8 @@ public class NvdCveController {
 	private void processCVeReferences(Map<String, Integer> nvdRefUrlHash, String filepath) {
 		UrlUtils urlUtils = new UrlUtils();
 		int count = 0;
-		Map<String, Integer> nvdBaseRefUrlHash = new HashMap<String, Integer>();
-		List<String> listFullRefUrls = new ArrayList<String>();
+		Map<String, Integer> nvdBaseRefUrlHash = new HashMap<>();
+		List<String> listFullRefUrls = new ArrayList<>();
 		try {
 			for (String sUrl : nvdRefUrlHash.keySet()) {
 				String sBaseUrl = urlUtils.getBaseUrl(sUrl);
@@ -217,9 +176,8 @@ public class NvdCveController {
 
 			}
 
-			List<String> listBaseRefUrls = new ArrayList<String>();
-			for (String item : nvdBaseRefUrlHash.keySet())
-				listBaseRefUrls.add(item);
+			List<String> listBaseRefUrls = new ArrayList<>();
+			listBaseRefUrls.addAll(nvdBaseRefUrlHash.keySet());
 
 			filepath = filepath.replace(".csv", "");
 			filepath = filepath.substring(0, filepath.lastIndexOf("/")) + "/url-sources/";
@@ -232,7 +190,7 @@ public class NvdCveController {
 			logger.info("\nScraped " + count + " total NVD full-reference URLs." + "\nThe # of invalid full-references: " + totInvalid + "\nThe # of recorded full-references " + listFullRefUrls.size()
 					+ "\nTotal # of unique base URLs: " + nvdBaseRefUrlHash.keySet().size() + "\nReference URLs are stored at: " + sFullReferencePath + " and " + sBaseReferencePath);
 		} catch (IOException e) {
-			logger.error("Error while processing NVD references! " + e.toString());
+			logger.error("Error while processing NVD references! " + e);
 		}
 	}
 
@@ -244,25 +202,17 @@ public class NvdCveController {
 	 * @return list of JSON objects (one json object for each json file in the zip)
 	 */
 	private ArrayList<JsonObject> pullCVEs(int year) {
-		// String sURL = "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-" + year +
-		// ".json.zip";
 		String sURL = nvdJsonFeedUrl.replaceAll("YYYY", year + "");
-		ArrayList<JsonObject> jsonList = new ArrayList<JsonObject>();
-		StringBuffer sBuilder = null;
+		ArrayList<JsonObject> jsonList = new ArrayList<>();
+		StringBuffer sBuilder;
 
 		try {
-			/**
-			 * get zip file from NVD JSON feeds for <year>
-			 */
 			URL url = new URL(sURL);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 			httpURLConnection.setRequestMethod("GET");
 			InputStream inputStream = httpURLConnection.getInputStream();
 			ZipInputStream zipInputStream = new ZipInputStream(inputStream);
 
-			/**
-			 * get JSON object for each JSON entry in the ZipInputStream
-			 */
 			ZipEntry zipEntry = zipInputStream.getNextEntry();
 
 			while (zipEntry != null) {
@@ -291,7 +241,7 @@ public class NvdCveController {
 			zipInputStream.close(); // close zip stream
 
 		} catch (Exception e) {
-			logger.error("Exception while reading feed from :" + sURL + "\tDetails:" + e.toString());
+			logger.error("Exception while reading feed from :" + sURL + "\tDetails:" + e);
 		}
 
 		return jsonList; // the list includes a json object for each json file in the zip
@@ -308,25 +258,18 @@ public class NvdCveController {
 			// new file object
 			File file = new File(filepath);
 
-			BufferedWriter bf = null;
-			try {
-				bf = new BufferedWriter(new FileWriter(file));
+			try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
 				for (Map.Entry<String, List<String>> entry : cpeMap.entrySet()) {
-					StringBuffer sCpe = new StringBuffer();
+					StringBuilder sCpe = new StringBuilder();
 					for (String cpe : entry.getValue()) {
-						sCpe.append(cpe.replace(",", "") + " ");
+						sCpe.append(cpe.replace(",", "")).append(" ");
 					}
-					bf.write(entry.getKey() + "," + sCpe.toString());
+					bf.write(entry.getKey() + "," + sCpe);
 					bf.newLine();
 				}
 				bf.flush();
 			} catch (IOException e) {
-				logger.error("Error logging CPE: " + e.toString());
-			} finally {
-				try {
-					bf.close();
-				} catch (Exception e) {
-				}
+				logger.error("Error logging CPE: " + e);
 			}
 		}
 	}

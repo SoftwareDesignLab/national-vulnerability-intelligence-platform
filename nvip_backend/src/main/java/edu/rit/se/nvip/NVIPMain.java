@@ -248,7 +248,7 @@ public class NVIPMain {
 
 		if (refreshNvdCveList) {
 			logger.info("Refreshing NVD feeds before running NVIP...");
-			PullNvdCveMain.main(null); // update nvd CVEs
+			PullNvdCveMain.pullFeeds(); // update nvd CVEs
 		}
 
 		/**
