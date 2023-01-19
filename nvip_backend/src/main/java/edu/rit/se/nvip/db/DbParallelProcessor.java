@@ -43,7 +43,7 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
  *
  */
 public class DbParallelProcessor {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public DbParallelProcessor() {
 
@@ -68,7 +68,7 @@ public class DbParallelProcessor {
 
 		/**
 		 * TODO: As our CVE sources grow, there's starting to be a limit on how many threads we use.
-		 * Should try and limit this to work with larger data.
+		 * TODO: Should try and limit this to work with larger data.
 		 */
 
 		int i = 0;
@@ -108,7 +108,7 @@ public class DbParallelProcessor {
 	 */
 	private class VulnRecordThread extends Thread implements Runnable {
 		DatabaseHelper databaseHelper;
-		private List<CompositeVulnerability> vulnList;
+		private final List<CompositeVulnerability> vulnList;
 		private int runId = 0;
 
 		public VulnRecordThread(List<CompositeVulnerability> vulnList, int runId) {
