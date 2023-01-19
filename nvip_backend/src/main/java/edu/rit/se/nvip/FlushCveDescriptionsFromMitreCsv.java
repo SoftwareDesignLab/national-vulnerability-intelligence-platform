@@ -12,7 +12,6 @@ import edu.rit.se.nvip.characterizer.CveCharacterizer;
 import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.utils.CsvUtils;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;

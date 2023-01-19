@@ -4,7 +4,6 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.CompositeVulnerability.CveReconcileStatus;
 import edu.rit.se.nvip.model.DailyRun;
 import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.utils.UtilHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
