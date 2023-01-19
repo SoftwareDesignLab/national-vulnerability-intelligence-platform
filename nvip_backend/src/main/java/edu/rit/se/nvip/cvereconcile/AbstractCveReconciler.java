@@ -42,23 +42,6 @@ public abstract class AbstractCveReconciler {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	protected Map<String, Integer> knownCveSources = new HashMap<>();
 
-	public boolean isCveIdCorrect(String cveId) {
-		// CVE-XXXX-YYYY
-		String[] arr = cveId.split("-");
-		boolean lengthOk = arr[1].length() >= 4 && arr[2].length() >= 4;
-		boolean rangeOk = false;
-		try {
-			int year = Integer.parseInt(arr[1]);
-			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-			if (year >= 1999 && year <= currentYear)
-				rangeOk = true;
-		} catch (NumberFormatException e) {
-			logger.error("Error: {}", e.toString());
-		}
-
-		return lengthOk && rangeOk;
-	}
-
 	/**
 	 * Add <newVuln> to <existingCveMap> if it does not already exist. If it exists
 	 * already, update its fields based on the reconciliation heuristic.
