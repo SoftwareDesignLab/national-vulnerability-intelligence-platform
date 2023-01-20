@@ -1,0 +1,576 @@
+@charset "ISO-8859-1";
+
+:root {
+	--font-size: 1em;
+	--font-size-header: 3em;
+	--line-height: calc(1.4*var(--font-size));
+	--nvip-logo-width: 12em;
+	--nvip-logo-margin-width: 1.5em;
+}
+
+/** General Styling **/
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-13 {width: 20%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+
+html {
+	min-height: 100%;
+	min-width: 100%;
+	overflow: auto;
+}
+
+body {
+	z-index:0;
+	background-color: white;
+	display: flex;
+  	flex-direction: column;
+	min-height: 100%;
+	min-height: 100vh;
+	min-width: 100%;
+	min-width: 100vh;
+	overflow: visible;
+	height:100%;
+	margin: 0;
+	/*position: relative;*/
+}
+
+div {
+	box-sizing: border-box;
+	height: inherit;
+	/*width: inherit;*/
+	position: relative;
+}
+
+li {
+	margin-bottom: 10px;
+}
+
+p {
+	font-size: 1em;
+	overflow-wrap: break-word;
+}
+
+.nvip_column_chart {
+	background-color: #F5F5F5;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-right: 1em;
+}
+
+/** Header and Footer Styles **/
+.nvip-header {
+  background-color: #F5F5F5;
+  height: 5em;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  padding: 0em;
+}
+
+.nvip-header a {
+  color: #000000;
+  text-align: center;
+  text-decoration: none;
+}
+
+.nvip-logo-container {
+	float: left;
+	width: var(--nvip-logo-width);
+	margin: 0.5em 0em 0.5em var(--nvip-logo-margin-width);
+}
+
+.nvip-logo-container .nvip-logo {
+	float: left;
+	font-weight: bold;
+}
+
+.nvip-logo > img {
+	font-size: var(--font-size);
+	height: 40px;
+	object-fit: contain;
+}
+
+.nvip-header-container {
+	float: right;
+	width: calc(100% - var(--nvip-logo-width) - var(--nvip-logo-margin-width));
+}
+
+.nvip-header-links {
+	display: flex;
+	flex-flow: wrap;
+	float: left;
+	height: 100%;
+	margin: auto 0;
+	padding-top: auto;
+}
+
+.nvip-header-link {
+	text-align: center;
+	width: 20%;
+}
+
+.nvip-header-link:hover {
+	background-color: #4b7699;
+	transition-delay: 0.2s;
+}
+
+.nvip-header-link > a {
+	display: inline-block;
+	font-size: 1.2em;
+	padding: 1em;
+}
+
+.nvip-header-link > a:hover {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.nvip-header-user-icon-container {
+	float: right;
+}
+
+.nvip-header-user-icon-container > .nvip-header-user-icon {
+	color: black;
+	font-size: 3.5em;
+	margin: 0.1em auto;
+	position: absolute;
+	right: 10%;
+}
+
+.login-button {
+	background-color: #213d55;
+	border-color: #213d55;
+}
+
+.nvip-user-label {
+	color: blue;
+	font-size: 1.2em;
+	margin-top: 1em;
+}
+
+.nvip-footer {
+  background-color: #F5F5F5;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 10em;
+  margin-top: 2em;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.nvip-footer > div {
+	height: 1em;
+	max-width: 50%;
+}
+
+.nvip-footer-contents {
+	height: 1em;
+	text-align: center;
+	width: 100%;
+}
+
+.nvip-footer-contents a {
+	color: #000000;
+}
+
+.nvip-footer-contents a:hover {
+	color: #ffffff;
+}
+
+.nvip-footer-contents a:not(:last-child)::after{
+	content: "|";
+	color: #ffffff;
+	margin: 0em 1em;
+}
+
+/** NVIP Loading Styles **/
+
+.graph-header {
+	margin: auto;
+	margin-bottom: .5em;
+	font-weight: bold;
+}
+
+.nvip-daily-graph-box {
+	background-color: white;
+	min-height: calc(1.2 * var(--circle-graph-length));
+	padding-left: 2em;
+}
+
+.about-box {
+	background-color: #FFFFFF;
+	min-height: calc(1.2 * var(--circle-graph-length));
+	padding-left: 2em;
+}
+
+.nvip-about-section {
+	background-color: white;
+}
+
+
+.nvip-about-section > p {
+	color:#000000;
+	margin: 0em 2em;
+	padding: 1em 0em;
+	font-size: 1.1em;
+}
+
+.nvip-loading-screen {
+	/** height: calc(100% - 17em);
+	height: calc(100vh - 17em); **/
+	min-height: inherit;
+	text-align: center;
+}
+
+.nvip-loading-bar {
+	background-color: #0c204c;
+	display: none;
+	max-height: 5em;
+	min-height: 5em;
+	text-align: center;
+}
+
+.nvip-loading-bar-text-ctn {
+	padding: 1em 0em;
+	margin: auto;
+}
+
+.nvip-loading-screen i, .nvip-loading-bar i {
+	color: #ffffff;
+}
+
+.nvip-loading-screen span, .nvip-loading-bar span {
+	color: #ffffff;
+	font-size: 1.5em;
+}
+
+.login-side-panel  {
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  height: 400px;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  background-color: #404040
+}
+
+.login-side-panel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #ffffff;
+  display: block;
+  transition: 0.3s;
+}
+
+.login-side-panel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+/** Generic NVIP Element Styles **/
+
+/** AngularJS support. All content contained in ng-scope div */
+
+.nvip-content-container {
+	background-color: white;
+	min-height: 100%;
+	height: revert
+	
+}
+
+.bullet-container {
+	width: 100%;
+}
+
+.bullet-header{
+	display: inline-block;
+	color: black;
+	font-size: 20px;
+	font-weight: 600
+}
+
+.nvip-bullet {
+	height: 160px;
+	background-color: #F5F5F5;
+	margin-bottom: 1.5em;
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.nvip-button {
+	background-color: #213d55;
+	border: 2px solid #213d55;
+	border-radius: 25px;
+	color: #ffffff;
+}
+.nvip-button:disabled {
+	background-color: #c2c1c1;
+	border-color: #c2c1c1;
+	color: #676767;
+}
+
+.nvip-arrow-right {
+  width: 0; 
+  height: 0; 
+  border-top: 2em solid transparent;
+  border-bottom: 2em solid transparent;
+  border-left: 1.5em solid #ffffff;
+}
+
+.nvip-arrow-left {
+  width: 0; 
+  height: 0; 
+  border-top: 2em solid transparent;
+  border-bottom: 2em solid transparent; 
+  border-right: 1.5em solid #ffffff; 
+}
+
+/** Search Bar Styles **/
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/** Login Styles  */
+
+.nvip-login-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.nvip-login-form {
+	margin-top: 4em;
+}
+
+.registration-form {
+	margin-top: 4em;
+	margin-left: 1em;
+}
+
+.login-panel {
+	/*visibility: hidden;
+	opacity: 1;*/
+	display: none;
+	z-index: 2;
+	border: 2px solid #d3d3d3;
+	border-radius: 25px;
+	background-color: #ffffff;
+	margin-top: 6.5em;
+	max-width: calc(35em + 10em);
+	min-height: 10em;
+	padding-bottom: 1em;
+	width: 100%;
+	height: 325px;
+	position:absolute;
+	/*transition: .2s ease-in;*/
+}
+
+.create-account-panel {
+	border: 2px solid #d3d3d3;
+	border-radius: 25px;
+	background-color: #ffffff;
+	margin: 6.5em auto;
+	max-width: calc(35em + 10em);
+	min-height: 10em;
+	padding-bottom: 3em;
+	width: 100%;
+}
+
+.login-form-header {
+	color: #000000;
+	font-size: 2em;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	position: absolute;
+}
+
+.login-header {
+	margin-left: .5em;
+	margin-bottom: 0;
+}
+
+.login-message {
+	font-size: 15px;
+	margin-left: 1.3em;
+	margin-bottom: 0;
+	color: red;
+	display: none;
+}
+
+.registration-message {
+	font-size: 15px;
+	margin-left: 1em;
+	margin-bottom: 0;
+	color: red;
+	display: none;
+}
+
+.form-group {
+	margin-left: 1em;
+	width: 100%;
+	color: #000000;
+}
+
+.login-submit-button {
+	position: absolute;
+}
+
+/** Form Styles **/
+
+
+/** Media Queries **/
+
+@media screen and (max-width: 1635px) {
+	
+	.nvip-bullet {
+        height: 175px;
+    }
+	
+}
+
+@media screen and (min-width: 1350px) {
+	
+	.graph-breakpoint1 {
+		display: none;
+	}
+	
+}
+
+@media screen and (max-width: 1350px) {
+	
+	.graph-breakpoint1 {
+		display: inline-block;
+		width: 100%
+	}
+	
+	.nvip_column_chart { 
+		margin-right: 10em
+	}
+	
+	.nvip-bullet {
+		margin-right: 10em;
+	}
+	
+}
+
+@media screen and (min-width: 1300px) {
+	/** Login Styles **/
+	.login-panel {
+		margin-left: 21em;
+	}
+	
+	.nvip-bullet {
+        width: 32%;
+    }
+    
+    .nvip_column_chart {
+        width: 32%;
+    }
+    
+}
+
+@media screen and (max-width: 1275px) and (min-width: 990px) {
+    .nvip-bullet {
+    	height: 235px;
+    } 
+}
+
+@media screen and (max-width: 1200px) {
+	
+	.graph-breakpoint2 {
+		display: inline-block;
+		width: 100%
+	}
+	
+}
+
+@media screen and (min-width: 1200px) {
+	
+	.graph-breakpoint2 {
+		display: none;
+	}
+	
+}
+
+@media screen and (min-width: 1000px) {
+	:root {
+		--font-size: 1.3em;
+	}
+	
+	/** Login Styles **/
+	.login-panel {
+		font-size: var(--font-size);
+		max-width: calc(40%);
+	}
+}
+
+@media screen and (max-width: 990px) and (min-width: 550px) {
+    .nvip-bullet {
+    	height: 220px;
+    } 
+}
+
+@media screen and (max-width: 550px) {
+    .nvip-bullet {
+    	height: 275px;
+    } 
+    
+    .graph-header {
+    	font-size: x-large;
+		margin-left: 3em;
+    }
+}
+
+/** Testing Styles **/
+
+
+.test-content {
+	background-color: green;
+	overflow: auto;
+}
+
+.test-div {
+	background-color: green;
+	width: 100%;
+	height: 100%;
+}
+
+
