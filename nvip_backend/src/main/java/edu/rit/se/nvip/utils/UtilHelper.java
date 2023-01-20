@@ -24,27 +24,13 @@
 package edu.rit.se.nvip.utils;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import edu.rit.se.nvip.model.NvipConstants;
-import edu.rit.se.nvip.model.Product;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * 
@@ -58,11 +44,6 @@ public class UtilHelper {
 	public static final DateFormat longDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	public static final DateFormat shortDateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	public static final DateFormat kbCertDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	public static final DateFormat longDateFormatMySQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-	private static Map<String, Product> productMap = null;
-
-	private static MyProperties properties;
 
 	/**
 	 * Print total/free/used memory
@@ -75,44 +56,6 @@ public class UtilHelper {
 	}
 
 	public static void setProperties(MyProperties properties) {
-		UtilHelper.properties = properties;
-	}
-
-	/**
-	 * get directory name from command line
-	 * 
-	 * @param args
-	 * @return
-	 */
-	public static String getPathFromCommandLine(String[] args) {
-		String path = null;
-		if (args.length > 0) {
-			try {
-				path = args[0];
-				File file = new File(path);
-
-				// full path?
-				if (file.exists() && file.isDirectory()) {
-					logger.error("Please enter a valid FULL output CSV path! Cannot use " + path + ". Example: C:/Temp/results.csv");
-					System.exit(1);
-				}
-
-				// can create?
-				if (!file.exists()) {
-					if (file.createNewFile()) {
-						file.delete(); // delete
-					}
-				}
-
-			} catch (Exception e) {
-				logger.error("Cannot set the output path to '" + path + "'. " + e.getMessage());
-				System.exit(1);
-			}
-		} else {
-			logger.error("Please enter a valid output path!");
-			System.exit(1);
-		}
-		return path;
 	}
 
 
@@ -126,32 +69,8 @@ public class UtilHelper {
 		return dateFormat.format(getPastDate(cal, days));
 	}
 
-	public static File getFileNameFromDialog() {
-		// create file chooser
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File("src/main/resources/cvesources"));
-		fileChooser.setDialogTitle("Select the txt file that stores CVE URLs");
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // set filter
-
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Text Documents", "txt"));
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		int result = fileChooser.showOpenDialog(null);
-		if (result == JFileChooser.CANCEL_OPTION) {
-			logger.error("Please select the source url input file!");
-			System.exit(1);
-		}
-		return fileChooser.getSelectedFile();
-	}
-
 	public static void initLog4j(Properties config) {
 		logger.info("log4j Log Level is: " + LogManager.getRootLogger());
-	}
-
-	public static String getDateTime(long time) {
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		Date date = new Date(time);
-		return formatter.format(date);
 	}
 
 	public static synchronized void addBadUrl(String url, String reason) {
@@ -172,15 +91,6 @@ public class UtilHelper {
 			if (url.contains(s))
 				return true;
 		return false;
-	}
-
-	public static List<String> readByJava8(String fileName) throws IOException {
-		List<String> result;
-		try (Stream<String> lines = Files.lines(Paths.get(fileName), Charset.forName("UTF-8"))) {
-			result = lines.collect(Collectors.toList());
-		}
-		return result;
-
 	}
 
 }
