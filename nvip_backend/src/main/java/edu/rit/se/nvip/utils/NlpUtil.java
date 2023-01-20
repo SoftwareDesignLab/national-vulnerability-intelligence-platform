@@ -29,8 +29,6 @@ import java.io.InputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-
 import opennlp.tools.sentdetect.SentenceDetector;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
@@ -41,7 +39,7 @@ import opennlp.tools.sentdetect.SentenceModel;
  *
  */
 public class NlpUtil {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	SentenceModel sentenceModel = null;
 	SentenceDetector sentenceDetector = null;
 	String sentenceModelPath = "nlp/en-sent.bin";

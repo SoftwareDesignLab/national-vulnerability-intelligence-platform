@@ -78,7 +78,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class NVIPMain {
-	private static Logger logger = LogManager.getLogger(NVIPMain.class);
+	private static final Logger logger = LogManager.getLogger(NVIPMain.class);
 
 	// pull most recent CVEs from NVD
 	boolean refreshNvdCveList = true;
@@ -120,7 +120,7 @@ public class NVIPMain {
 
 			// get sources from the file or the database
 			DatabaseHelper db = DatabaseHelper.getInstance();
-			List<String> urls = new ArrayList<String>();
+			List<String> urls = new ArrayList<>();
 
 			if (!db.testDbConnection()) {
 				String configFile = "src/main/resources/db-" + propertiesNvip.getDatabaseType() + ".properties";
@@ -155,7 +155,7 @@ public class NVIPMain {
 
 		for (Object key : prop.keySet()) {
 
-			sb.append(String.format("%-40s", key) + "\t->\t" + prop.getProperty(key.toString()) + "\n");
+			sb.append(String.format("%-40s", key)).append("\t->\t").append(prop.getProperty(key.toString())).append("\n");
 		}
 
 		logger.info("\n*** Parameters from Config File *** \n{}", sb.toString());
@@ -203,7 +203,6 @@ public class NVIPMain {
 				CompositeVulnerability vulnCna = cveHashMapAll.get(cveId);
 				String newDescr = "";
 
-				// if (vulnGit.getDescription().contains(reservedStr)) {
 				if (CveUtils.isCveReservedEtc(vulnGit.getDescription())) {
 					/**
 					 * CVE is reserved/rejected etc in Mitre but nvip found a description for it.
