@@ -2,13 +2,9 @@ package edu.rit.se.nvip.utils;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,13 +13,7 @@ import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.utils.email.EmailDailyCveList;
 
 public class PrepareDataForWebUi {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-
-	public static void main(String[] args) {
-		PrepareDataForWebUi prepareVulnerabilityDataForWebUi = new PrepareDataForWebUi();
-		prepareVulnerabilityDataForWebUi.prepareDataforWebUi();
-
-	}
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	/**
 	 * Generate a summary table that will be used by the Web UI.

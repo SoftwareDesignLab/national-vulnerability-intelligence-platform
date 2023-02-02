@@ -24,7 +24,6 @@
 package edu.rit.se.nvip.utils;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ import java.util.TreeSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.opencsv.CSVReader;
 
 import edu.rit.se.nvip.exploit.ExploitScraper;
 import edu.rit.se.nvip.model.Exploit;
@@ -52,7 +50,7 @@ import edu.rit.se.nvip.nvd.NvdCveController;
  *
  */
 public class VendorAssessment {
-	private Logger logger = LogManager.getLogger(VendorAssessment.class);
+	private final Logger logger = LogManager.getLogger(VendorAssessment.class);
 
 	public static void main(String[] args) {
 
@@ -148,12 +146,12 @@ public class VendorAssessment {
 						count++;
 						String advisories = tokens[7];
 						String patches = tokens[8];
-						String exploitUrl = tokens[9];
+						StringBuilder exploitUrl = new StringBuilder(tokens[9]);
 
 						List<Exploit> exploitList = exploitScraper.getExploits(cveId);
 						if (exploitList.size() > 0)
 							for (Exploit exploit : exploitList)
-								exploitUrl = exploitUrl + exploit.getPublisherUrl() + ";";
+								exploitUrl.append(exploit.getPublisherUrl()).append(";");
 
 						String line = cveId + "," + cvss + "," + description + "," + advisories + "," + patches + "," + exploitUrl + "\n";
 						fw.write(line);
@@ -176,14 +174,6 @@ public class VendorAssessment {
 
 		public CveStatYear() {
 
-		}
-
-		public CveStatYear(int cveCount, int patchCount, int advisoryCount, int exploitCount) {
-			super();
-			this.cveCount = cveCount;
-			this.patchCount = patchCount;
-			this.advisoryCount = advisoryCount;
-			this.exploitCount = exploitCount;
 		}
 
 		public void incCveCount(int cveCount) {

@@ -36,19 +36,19 @@ public class UrlCrawlerData {
 	/**
 	 * Crawled URLs that include a CVEID (can be at depth>=0)
 	 */
-	private HashMap<String, Integer> hashMapLegitimateSourceURLs = new HashMap<String, Integer>();
+	private final HashMap<String, Integer> hashMapLegitimateSourceURLs;
 
 	/**
 	 * URLs that are forbidden (depth >=0). NVIP sources that have the same base URL
 	 * with those should be marked, to have an adaptive crawler process
 	 */
-	private HashMap<String, Integer> hashMapForbiddenSourceURLs = new HashMap<String, Integer>();
+	private final HashMap<String, Integer> hashMapForbiddenSourceURLs;
 
 	/**
 	 * NVIP URLs (depth=0) with status code != HTTP_OK. Those URLs should be removed
 	 * from the NVIP URL sources!
 	 */
-	private HashMap<String, Integer> hashMapSourceURLsNotOk = new HashMap<String, Integer>();
+	private final HashMap<String, Integer> hashMapSourceURLsNotOk;
 
 	public UrlCrawlerData(HashMap<String, Integer> hashMapSourceURLs, HashMap<String, Integer> hashMapForbiddenSourceURLs, HashMap<String, Integer> hashMapSourceURLsNotOk) {
 		this.hashMapLegitimateSourceURLs = hashMapSourceURLs;
@@ -60,24 +60,12 @@ public class UrlCrawlerData {
 		return hashMapLegitimateSourceURLs;
 	}
 
-	public void setHashMapLegitimateSourceURLs(HashMap<String, Integer> hashMapLegitimateSourceURLs) {
-		this.hashMapLegitimateSourceURLs = hashMapLegitimateSourceURLs;
-	}
-
 	public HashMap<String, Integer> getHashMapForbiddenSourceURLs() {
 		return hashMapForbiddenSourceURLs;
 	}
 
-	public void setHashMapForbiddenSourceURLs(HashMap<String, Integer> hashMapForbiddenSourceURLs) {
-		this.hashMapForbiddenSourceURLs = hashMapForbiddenSourceURLs;
-	}
-
 	public HashMap<String, Integer> getHashMapSourceURLsNotOk() {
 		return hashMapSourceURLsNotOk;
-	}
-
-	public void setHashMapSourceURLsNotOk(HashMap<String, Integer> hashMapSourceURLsNotOk) {
-		this.hashMapSourceURLsNotOk = hashMapSourceURLsNotOk;
 	}
 
 }

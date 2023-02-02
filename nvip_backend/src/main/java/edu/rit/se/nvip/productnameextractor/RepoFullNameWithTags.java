@@ -31,61 +31,34 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * RepoFullNameWithTags contains information about a repository
+ *  contains information about a repository
  * 
  * @author Igor Khokhlov
  *
  */
 
 public class RepoFullNameWithTags implements Serializable{
-	
-	private String cpeName, fullName, url, cpeID, htmlUrl;
-	private boolean exactMatch = false;
+
+	private String url;
+	private final String cpeID;
 	private ArrayList<RepoTag> tags;
 
-	public RepoFullNameWithTags() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public RepoFullNameWithTags(String cpeName, String fullName) {
-		super();
-		this.cpeName = cpeName;
-		this.fullName = fullName;
-		
-		tags = new ArrayList<RepoTag>();
-	}
-	
-	public RepoFullNameWithTags(RepoFullName repo) {
-		super();
-		this.cpeName = repo.getCpeName();
-		this.fullName = repo.getFullName();
-		this.url = repo.getUrl();
-		this.cpeID = repo.getCpeID();
-		this.htmlUrl = repo.getHtmlUrl();
-		this.exactMatch = repo.isExactMatch();
-	}
-	
 	public RepoFullNameWithTags(JSONObject repo) {
 		super();
-		this.cpeName = repo.getString("cpe_name");
-		this.fullName = repo.getString("cpe_name");
 		this.url = repo.getString("url");
 		this.cpeID = repo.getString("cpe_i_d");
-		this.htmlUrl = repo.getString("html_url");
-		this.exactMatch = repo.getBoolean("exact_match");
-		
+
 		JSONArray tagsArray = repo.getJSONArray("tags");
 		if (tagsArray != null && tagsArray.length()>0) {
 			tags = parseTags(tagsArray);
 		}
 		else {
-			tags = new ArrayList<RepoTag>();
+			tags = new ArrayList<>();
 		}
 	}
 	
 	static public ArrayList<RepoTag> parseTags(JSONArray tagsArray){
-		ArrayList<RepoTag> tags = new ArrayList<RepoTag>();
+		ArrayList<RepoTag> tags = new ArrayList<>();
 		
 		for(int i=0; i<tagsArray.length(); i++) {
 			tags.add(new RepoTag(tagsArray.getJSONObject(i)));
@@ -94,22 +67,6 @@ public class RepoFullNameWithTags implements Serializable{
 		return tags;
 	}
 
-	public String getCpeName() {
-		return cpeName;
-	}
-
-	public void setCpeName(String cpeName) {
-		this.cpeName = cpeName;
-	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-	
 	public String getUrl() {
 		return url;
 	}
@@ -118,31 +75,6 @@ public class RepoFullNameWithTags implements Serializable{
 		this.url = url;
 	}
 
-	public String getCpeID() {
-		return cpeID;
-	}
-
-	public void setCpeID(String cpeID) {
-		this.cpeID = cpeID;
-	}
-	
-	public String getHtmlUrl() {
-		return htmlUrl;
-	}
-
-	public void setHtmlUrl(String htmlUrl) {
-		this.htmlUrl = htmlUrl;
-	}
-
-	public boolean isExactMatch() {
-		return exactMatch;
-	}
-
-	public void setExactMatch(boolean exactMatch) {
-		this.exactMatch = exactMatch;
-	}
-	
-	
 
 	public ArrayList<RepoTag> getTags() {
 		return tags;
@@ -170,10 +102,7 @@ public class RepoFullNameWithTags implements Serializable{
 			return false;
 		RepoFullNameWithTags other = (RepoFullNameWithTags) obj;
 		if (cpeID == null) {
-			if (other.cpeID != null)
-				return false;
-		} else if (!cpeID.equals(other.cpeID))
-			return false;
-		return true;
+			return other.cpeID == null;
+		} else return cpeID.equals(other.cpeID);
 	}
 }

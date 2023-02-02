@@ -23,11 +23,9 @@
  */
 package edu.rit.se.nvip.productnameextractor;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,11 +42,9 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
  *
  */
 public class AffectedProductIdentifier extends Thread implements Runnable {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
-	private final int maxDescLengthWords = 100;
-
-	private List<CompositeVulnerability> vulnList;
+	private final List<CompositeVulnerability> vulnList;
 
 	public AffectedProductIdentifier(List<CompositeVulnerability> vulnList) {
 		this.vulnList = vulnList;
@@ -72,10 +68,10 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 	// run process
 	public void run() {
-		identifyAffectedReleases(vulnList, false);
+		identifyAffectedReleases(vulnList);
 	}
 
-	public int identifyAffectedReleases(List<CompositeVulnerability> vulnList, boolean isUnitTest) {
+	public int identifyAffectedReleases(List<CompositeVulnerability> vulnList) {
 		logger.info("Starting to identify affected products for " + vulnList.size() + " CVEs.");
 		long start = System.currentTimeMillis();
 
@@ -120,26 +116,20 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 			}
 
 			counterOfProcessedCVEs++;
-			
-			/**
-			 * The product name extraction is a time consuming process, limiting the # of
-			 * CVEs per run to 1000! This should not happen except the very first run, or a
-			 * run after a long delay!
-			 */
-			if (counterOfProcessedCVEs > 1000) 
+
+			if (counterOfProcessedCVEs > 1000)
 				break;
 			
 
 			long startCVETime = System.currentTimeMillis();
 			try {
 				// LIMIT to 100 words
-				String descriptionWords[] = WhitespaceTokenizer.INSTANCE.tokenize(description);
+				String[] descriptionWords = WhitespaceTokenizer.INSTANCE.tokenize(description);
 
+				int maxDescLengthWords = 100;
 				if (descriptionWords.length > maxDescLengthWords) {
 					String[] subStringArray = new String[maxDescLengthWords];
-					for (int i = 0; i < maxDescLengthWords; i++) {
-						subStringArray[i] = descriptionWords[i];
-					}
+					System.arraycopy(descriptionWords, 0, subStringArray, 0, maxDescLengthWords);
 					descriptionWords = subStringArray;
 				}
 
@@ -158,14 +148,8 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 					totalNERtime = totalNERtime + nerTime;
 
 					// map identified products/version to CPE
-					StringBuilder sPlatform = new StringBuilder();
 					for (ProductItem productItem : productList) {
 
-						/**
-						 * when the productFromDomain method is called, AffectedReleaseLoader adds the
-						 * product to its hash map that is used to update the products in database.
-						 * AffectedReleaseLoader is using singleton DP!
-						 */
 						long startCPETime = System.currentTimeMillis();
 						List<String> productIDs = cpeLookUp.getCPEids(productItem);
 						long cpeTime = System.currentTimeMillis() - startCPETime;
@@ -186,10 +170,10 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 							if (counterOfProcessedCVEs > 0) {
 								averageCVEtime = totalCVEtime / counterOfProcessedCVEs;
 							}
-							logger.warn("CVEs processed: " + Integer.toString(counterOfProcessedCVEs) + " out of " + Integer.toString(totalCVEtoProcess) + "; Average NER time (ms): "
-									+ Long.toString(averageNERtime) + "; Average CPE time (ms): " + Float.toString(averageCPEtime) + "; Average CVE time (ms): " + Long.toString(averageCVEtime)
-									+ "; Current NER time (ms): " + Long.toString(nerTime) + "; Not mapped to CPE: " + Integer.toString(numOfProductsNotMappedToCPE) + "; Mapped to CPE: "
-									+ Integer.toString(numOfProductsMappedToCpe) + "; The product name (" + productItem.toString()
+							logger.warn("CVEs processed: " + counterOfProcessedCVEs + " out of " + totalCVEtoProcess + "; Average NER time (ms): "
+									+ averageNERtime + "; Average CPE time (ms): " + Float.toString(averageCPEtime) + "; Average CVE time (ms): " + averageCVEtime
+									+ "; Current NER time (ms): " + nerTime + "; Not mapped to CPE: " + numOfProductsNotMappedToCPE + "; Mapped to CPE: "
+									+ numOfProductsMappedToCpe + "; The product name (" + productItem.toString()
 									+ ") predicted by AI/ML model could not be found in the CPE dictionary!\tCVE-ID: " + vulnerability.getCveId() + "\tDescription: " + vulnerability.getDescription());
 							continue;
 						}
@@ -201,9 +185,9 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 					}
 
 					// set platform string
-					vulnerability.setPlatform(sPlatform.toString());
+					vulnerability.setPlatform("");
 
-				} // if (vuln.getAffectedReleases().size() == 0) {
+				}
 
 			} catch (Exception e) {
 				logger.error("Error {} while extracting affected releases! Processed: {} out of {} CVEs; CVE: {}", e, Integer.toString(counterOfProcessedCVEs), Integer.toString(totalCVEtoProcess),
@@ -213,11 +197,11 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 			totalCVEtime = totalCVEtime + (System.currentTimeMillis() - startCVETime);
 
 			if (counterOfProcessedCVEs % 100 == 0) {
-				double percent = (counterOfProcessedCVEs + counterOfBadDescriptionCVEs + counterOfSkippedCVEs) / 1.0 * totalCVEtoProcess * 100;
+				double percent = (counterOfProcessedCVEs + counterOfBadDescriptionCVEs + counterOfSkippedCVEs) * totalCVEtoProcess * 100;
 				logger.info("Extracted product(s) for {} out of {} CVEs so far! {} CVEs skipped (not-changed or bad description), {}% done.", counterOfProcessedCVEs, totalCVEtoProcess,
 						(counterOfBadDescriptionCVEs + counterOfSkippedCVEs), percent);
 			}
-		} // for (CompositeVulnerability vuln : vulnList) {
+		}
 
 		logger.info("Extracted product(s) for {} out of {} CVEs so far! {} CVEs skipped, bc they are flagged as 'not-changed' by reconciliation process", counterOfProcessedCVEs, totalCVEtoProcess,
 				counterOfSkippedCVEs);
@@ -225,14 +209,6 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 		// refresh db conn, it might be timed out if the process takes so much time!
 		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
 
-		/**
-		 * at this point all vulnerabilities either have a product/name scraped from
-		 * Web, or one that is predicted by AI/ML model. Update vulnerabilities in the
-		 * database.
-		 * 
-		 * First insert any products that are newly identified and do not exist in DB.
-		 * BC, AffectedReleases has product ID as foreign key
-		 */
 		int productCount = insertNewCpeItemsIntoDatabase();
 
 		// get all identified affected releases

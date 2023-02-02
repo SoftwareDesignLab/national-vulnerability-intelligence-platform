@@ -34,9 +34,9 @@ import java.util.regex.Pattern;
  *
  */
 public class Product {
-	private String domain;
-	private String cpe;
-	private int prodId;
+	private final String domain;
+	private final String cpe;
+	private final int prodId;
 
 	public Product(String domain, String cpe, int prodId) {
 		this.domain = domain;
@@ -52,10 +52,6 @@ public class Product {
 
 	public String getDomain() {
 		return domain;
-	}
-
-	public void setProdId(int prodId) {
-		this.prodId = prodId;
 	}
 
 	public String getCpe() {

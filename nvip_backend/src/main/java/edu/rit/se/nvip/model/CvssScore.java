@@ -29,12 +29,12 @@ package edu.rit.se.nvip.model;
  *
  */
 public class CvssScore {
-	private String cveId = null;
-	private int severityId = 0;
-	private double severityConfidence = 0;
+	private String cveId;
+	private final int severityId;
+	private final double severityConfidence;
 
-	private String impactScore = null;
-	private double impactConfidence = 0;
+	private final String impactScore;
+	private final double impactConfidence;
 
 	public CvssScore(String cveId, int severityId, double severityConfidence, String impactScore, double impactConfidence) {
 		super();
@@ -57,32 +57,16 @@ public class CvssScore {
 		return severityId;
 	}
 
-	public void setSeverityId(int severityId) {
-		this.severityId = severityId;
-	}
-
 	public double getSeverityConfidence() {
 		return severityConfidence;
-	}
-
-	public void setSeverityConfidence(double severityConfidence) {
-		this.severityConfidence = severityConfidence;
 	}
 
 	public String getImpactScore() {
 		return impactScore;
 	}
 
-	public void setImpactScore(String impactScore) {
-		this.impactScore = impactScore;
-	}
-
 	public double getImpactConfidence() {
 		return impactConfidence;
-	}
-
-	public void setImpactConfidence(double impactConfidence) {
-		this.impactConfidence = impactConfidence;
 	}
 
 	@Override

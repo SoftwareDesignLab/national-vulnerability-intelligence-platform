@@ -25,7 +25,6 @@ package edu.rit.se.nvip.nvd;
 
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
  * 
@@ -38,10 +37,9 @@ public class PullNvdCveMain {
 	 * Pull NVD CVE feeds and generate a csv file at the given filepath. Yearly data
 	 * for year YYYY is available at:
 	 * https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-YYYY.json.zip
-	 * 
-	 * @param args
+	 *
 	 */
-	public static void main(String[] args) {
+	public static void pullFeeds() {
 
 		// load property file
 		MyProperties propertiesNvip = new MyProperties();

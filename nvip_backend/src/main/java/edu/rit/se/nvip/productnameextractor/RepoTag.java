@@ -29,7 +29,7 @@ import java.io.Serializable;
 import org.json.JSONObject;
 
 /**
- * RepoTag contains information about the tag(version) of a commit
+ *  contains information about the tag(version) of a commit
  * 
  * @author Igor Khokhlov
  *
@@ -39,14 +39,6 @@ public class RepoTag implements Serializable{
 	
 	private String name, url, nodeID, sha;
 
-	public RepoTag(String name, String url, String nodeID, String sha) {
-		super();
-		this.name = name;
-		this.url = url;
-		this.nodeID = nodeID;
-		this.sha = sha;
-	}
-	
 	public RepoTag(JSONObject repoTag) {
 		super();
 		this.name = repoTag.getString("name");
@@ -69,14 +61,6 @@ public class RepoTag implements Serializable{
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getNodeID() {
-		return nodeID;
-	}
-
-	public void setNodeID(String nodeID) {
-		this.nodeID = nodeID;
 	}
 
 	public String getSha() {

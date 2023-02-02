@@ -29,93 +29,20 @@ package edu.rit.se.nvip.productnameextractor;
  * 
  * @author Igor Khokhlov
  *
+ * TODO: Some classes rely on this but it isn;t implemented properly, will need to update its functionality
+ *
  */
 
 public class FirstCommitSearchResult {
-	
-	private String repositoryURL, repositoryName, cpeName, cpeID, repositoryHTMLurl;
-	private String tagURL, tagName, tagNodeID, tagSHA;
-	private boolean exactMatch = false;
-	
-	public FirstCommitSearchResult(String repositoryURL, String repositoryName, String cpeName, String cpeID,
-			String repositoryHTMLurl) {
+
+	private String tagName;
+
+	public FirstCommitSearchResult() {
 		super();
-		this.repositoryURL = repositoryURL;
-		this.repositoryName = repositoryName;
-		this.cpeName = cpeName;
-		this.cpeID = cpeID;
-		this.repositoryHTMLurl = repositoryHTMLurl;
 	}
 
-	public FirstCommitSearchResult(String repositoryURL, String repositoryName, String cpeName, String cpeID,
-			String repositoryHTMLurl, String tagURL, String tagName, String tagNodeID, String tagSHA,
-			boolean exactMatch) {
-		super();
-		this.repositoryURL = repositoryURL;
-		this.repositoryName = repositoryName;
-		this.cpeName = cpeName;
-		this.cpeID = cpeID;
-		this.repositoryHTMLurl = repositoryHTMLurl;
-		this.tagURL = tagURL;
-		this.tagName = tagName;
-		this.tagNodeID = tagNodeID;
-		this.tagSHA = tagSHA;
-		this.exactMatch = exactMatch;
-	}
-	
 	public void fillFromTag(RepoTag tag) {
-		this.tagURL = tag.getUrl();
 		this.tagName = tag.getName();
-		this.tagNodeID = tag.getNodeID();
-		this.tagSHA = tag.getSha();
-	}
-
-	public String getRepositoryURL() {
-		return repositoryURL;
-	}
-
-	public void setRepositoryURL(String repositoryURL) {
-		this.repositoryURL = repositoryURL;
-	}
-
-	public String getRepositoryName() {
-		return repositoryName;
-	}
-
-	public void setRepositoryName(String repositoryName) {
-		this.repositoryName = repositoryName;
-	}
-
-	public String getCpeName() {
-		return cpeName;
-	}
-
-	public void setCpeName(String cpeName) {
-		this.cpeName = cpeName;
-	}
-
-	public String getCpeID() {
-		return cpeID;
-	}
-
-	public void setCpeID(String cpeID) {
-		this.cpeID = cpeID;
-	}
-
-	public String getRepositoryHTMLurl() {
-		return repositoryHTMLurl;
-	}
-
-	public void setRepositoryHTMLurl(String repositoryHTMLurl) {
-		this.repositoryHTMLurl = repositoryHTMLurl;
-	}
-
-	public String getTagURL() {
-		return tagURL;
-	}
-
-	public void setTagURL(String tagURL) {
-		this.tagURL = tagURL;
 	}
 
 	public String getTagName() {
@@ -126,28 +53,7 @@ public class FirstCommitSearchResult {
 		this.tagName = tagName;
 	}
 
-	public String getTagNodeID() {
-		return tagNodeID;
-	}
-
-	public void setTagNodeID(String tagNodeID) {
-		this.tagNodeID = tagNodeID;
-	}
-
-	public String getTagSHA() {
-		return tagSHA;
-	}
-
-	public void setTagSHA(String tagSHA) {
-		this.tagSHA = tagSHA;
-	}
-
-	public boolean isExactMatch() {
-		return exactMatch;
-	}
-
-	public void setExactMatch(boolean exactMatch) {
-		this.exactMatch = exactMatch;
+	public void setExactMatch() {
 	}
 	
 	

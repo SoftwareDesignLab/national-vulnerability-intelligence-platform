@@ -29,7 +29,6 @@ import edu.rit.se.nvip.mitre.MitreCveController;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
  * 

@@ -43,9 +43,7 @@ public class Word2Vector {
 
 	// This value is later updated from the loaded model
 	private int vectorLength=0;
-	
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	
+
 	/**
 	 * Class constructor
 	 * @param String Model file path
@@ -60,6 +58,7 @@ public class Word2Vector {
 			vectorLength = model.getLayerSize();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
+			Logger logger = LogManager.getLogger(getClass().getSimpleName());
 			logger.error(e);
 		}		
 	}
@@ -76,7 +75,7 @@ public class Word2Vector {
 	/**
 	 * Convert word into the 1D-vector
 	 * 
-	 * @param String input word
+	 * @param word input word
 	 * @return array of double values
 	 */	
 	public double[] word2vector(String word) {
@@ -87,8 +86,7 @@ public class Word2Vector {
 		
 		try {
 			doubleArray = model.getWordVector(word);
-		} catch (Exception e) {
-			//logger.error(e);
+		} catch (Exception ignored) {
 		}
 		
 		return doubleArray;

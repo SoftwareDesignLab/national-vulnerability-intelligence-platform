@@ -51,7 +51,6 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
 public class DetectProducts {
 
 	public static final String NNP = "NNP";
-	public static final String NN = "NN";
 	public static final String IN = "IN";
 
 	NERmodel nerModel = null;
@@ -65,15 +64,14 @@ public class DetectProducts {
 	String modelPath = "nlp/en-pos-perceptron.bin";
 	String sentenceModelPath = "nlp/en-sent.bin";
 
-	static private Logger logger = LogManager.getLogger(UtilHelper.class);
+	static private final Logger logger = LogManager.getLogger(UtilHelper.class);
 
 	/** singleton instance of class */
 	private static DetectProducts detectProducts = null;
 
 	/**
 	 * Thread safe singleton implementation
-	 * 
-	 * @return
+	 *
 	 */
 	public static synchronized DetectProducts getInstance() {
 		if (detectProducts == null)
@@ -106,11 +104,13 @@ public class DetectProducts {
 			// Load Apache OpenNLP sentence model
 			logger.info("Loading NLP sentence model...");
 			InputStream modelStream = this.getClass().getClassLoader().getResourceAsStream(modelPath);
+			assert modelStream != null;
 			model = new POSModel(modelStream);
 			tagger = new POSTaggerME(model);
 			modelStream.close();
 
 			InputStream modelIn = this.getClass().getClassLoader().getResourceAsStream(sentenceModelPath);
+			assert modelIn != null;
 			sentenceModel = new SentenceModel(modelIn);
 			sentenceDetector = new SentenceDetectorME(sentenceModel);
 			modelIn.close();
@@ -123,8 +123,8 @@ public class DetectProducts {
 	/**
 	 * Extracts SN and SV
 	 * 
-	 * @param String[]                  array of words to be classified
-	 * @param ArrayList<ClassifiedWord> results from NER model
+	 * @param words                  array of words to be classified
+	 * @param nerResult<ClassifiedWord> results from NER model
 	 * @return ArrayList of classified words of labels (ArrayList<ClassifiedWord>)
 	 */
 	private ArrayList<ClassifiedWord> getProducts(String[] words, ArrayList<ClassifiedWord> nerResult) {
@@ -136,8 +136,8 @@ public class DetectProducts {
 	/**
 	 * Extracts SN only using Expert System
 	 * 
-	 * @param String[]                  array of words to be classified
-	 * @param ArrayList<ClassifiedWord> results from NER model
+	 * @param words                  array of words to be classified
+	 * @param nerResult<ClassifiedWord> results from NER model
 	 * @return ArrayList of classified words of labels (ArrayList<ClassifiedWord>)
 	 */
 	private ArrayList<ClassifiedWord> getProductsNamesOnly(String[] words, ArrayList<ClassifiedWord> nerResult) {
@@ -153,9 +153,9 @@ public class DetectProducts {
 
 		// After these words, next can be SN
 		String[] triggerNextWords = new String[] { "in" };
-		ArrayList<String> exclusionWordsList = new ArrayList<String>();
+		ArrayList<String> exclusionWordsList = new ArrayList<>();
 		exclusionWordsList.addAll(Arrays.asList(exclusionWords));
-		ArrayList<String> triggerNextWordsList = new ArrayList<String>();
+		ArrayList<String> triggerNextWordsList = new ArrayList<>();
 		triggerNextWordsList.addAll(Arrays.asList(triggerNextWords));
 
 		ArrayList<ClassifiedWord> result = nerResult;
@@ -206,7 +206,7 @@ public class DetectProducts {
 
 			if (result.get(i).getAssignedClass() == 0) {
 				snDistance = 0;
-			} else if (snDistance > 0 && snDistance < 2 && i < result.size() - 1 && words[i].length() > 1) {
+			} else if (snDistance == 1 && i < result.size() - 1 && words[i].length() > 1) {
 				if (result.get(i + 1).getAssignedClass() == 0) {
 					result.get(i).setAssignedClass(0, 1);
 					snDistance = 0;
@@ -220,9 +220,9 @@ public class DetectProducts {
 	/**
 	 * Verifies if the word in the CPE
 	 * 
-	 * @param ArrayList<ClassifiedWord> results from NER model
-	 * @param String[]                  array of words to be classified
-	 * @param int                       Index of the word to be checked
+	 * @param words<ClassifiedWord> results from NER model
+	 * @param index                  array of words to be classified
+	 * @param nerResult                       Index of the word to be checked
 	 * @return If it has match in the CPE (boolean)
 	 */
 	private boolean hasMatch(ArrayList<ClassifiedWord> nerResult, String[] words, int index) {
@@ -253,10 +253,10 @@ public class DetectProducts {
 	/**
 	 * Verifies if the word corresponds to the CPE entry
 	 * 
-	 * @param String                    CPE entry
-	 * @param ArrayList<ClassifiedWord> results from NER model
-	 * @param String[]                  array of words to be classified
-	 * @param int                       Index of the word to be checked
+	 * @param words                    CPE entry
+	 * @param index<ClassifiedWord> results from NER model
+	 * @param cpeEntry                  array of words to be classified
+	 * @param nerResult                       Index of the word to be checked
 	 * @return If it has match in the CPE (boolean)
 	 */
 	private boolean hasMatch(String cpeEntry, ArrayList<ClassifiedWord> nerResult, String[] words, int index) {
@@ -328,8 +328,8 @@ public class DetectProducts {
 	/**
 	 * Check if the word in the array
 	 * 
-	 * @param String   word to check
-	 * @param String[] array of words to check within
+	 * @param word   word to check
+	 * @param words array of words to check within
 	 * @return True if the word in the array (boolean)
 	 */
 	private boolean checkTriggerWords(String word, String[] words) {
@@ -349,8 +349,8 @@ public class DetectProducts {
 	/**
 	 * Extracts SV only using Expert System
 	 * 
-	 * @param String[]                  array of words to be classified
-	 * @param ArrayList<ClassifiedWord> results from NER model and after SN ES
+	 * @param words                  array of words to be classified
+	 * @param nerResult<ClassifiedWord> results from NER model and after SN ES
 	 *                                  (optional)
 	 * @return ArrayList of classified words of labels (ArrayList<ClassifiedWord>)
 	 */
@@ -368,7 +368,6 @@ public class DetectProducts {
 		// Not SV
 		String[] ignoreWords = new String[] { "CVE" };
 
-		ArrayList<ClassifiedWord> result = nerResult;
 		int snDistance = -1;
 		int svDistance = -1;
 
@@ -378,9 +377,9 @@ public class DetectProducts {
 		boolean prevWordIsSV = false;
 
 		// Classify all SV words with confidence level less than threshold to Other
-		for (int i = 0; i < result.size(); i++) {
-			if (result.get(i).getAssignedClass() == 1 && result.get(i).getAssignedClassConfidence() < confThreshold) {
-				result.get(i).setAssignedClass(2, result.get(i).getConfidences()[2]);
+		for (ClassifiedWord classifiedWord : nerResult) {
+			if (classifiedWord.getAssignedClass() == 1 && classifiedWord.getAssignedClassConfidence() < confThreshold) {
+				classifiedWord.setAssignedClass(2, classifiedWord.getConfidences()[2]);
 			}
 		}
 
@@ -392,20 +391,20 @@ public class DetectProducts {
 				svDistance++;
 			}
 			// assign SV class
-			if (result.get(i).getAssignedClass() == 2 && !checkTriggerWords(words[i], ignoreWords) && (words[i].matches(".*\\d.*") || checkTriggerWords(words[i], trigerWords))) {
-				if ((snDistance >= 0 && snDistance <= maxSNDistance) || prevWordIsSV) {// || i>svSentenceTreshold) {
-					result.get(i).setAssignedClass(1, 1);
+			if (nerResult.get(i).getAssignedClass() == 2 && !checkTriggerWords(words[i], ignoreWords) && (words[i].matches(".*\\d.*") || checkTriggerWords(words[i], trigerWords))) {
+				if ((snDistance >= 0 && snDistance <= maxSNDistance) || prevWordIsSV) {
+					nerResult.get(i).setAssignedClass(1, 1);
 					prevWordIsSV = true;
 					svDistance = 0;
 					snDistance = -1;
 				}
 			}
 			// reset SN distance
-			else if (result.get(i).getAssignedClass() == 0) {
+			else if (nerResult.get(i).getAssignedClass() == 0) {
 				snDistance = 0;
 			}
 			// set previous word is SV flag
-			else if (result.get(i).getAssignedClass() == 1) {
+			else if (nerResult.get(i).getAssignedClass() == 1) {
 				svDistance = 0;
 				prevWordIsSV = true;
 				snDistance = -1;
@@ -418,34 +417,32 @@ public class DetectProducts {
 
 		// Second pass to mark word as SV if it is between two SV words
 		svDistance = -1;
-		for (int i = 0; i < result.size(); i++) {
+		for (int i = 0; i < nerResult.size(); i++) {
 			if (svDistance >= 0) {
 				svDistance++;
 			}
 
-			if (result.get(i).getAssignedClass() == 1) {
+			if (nerResult.get(i).getAssignedClass() == 1) {
 				svDistance = 0;
-			} else if (svDistance > 0 && svDistance < 2 && i < result.size() - 1 && checkTriggerWords(words[i], possibleWords)) {
+			} else if (svDistance == 1 && i < nerResult.size() - 1 && checkTriggerWords(words[i], possibleWords)) {
 
-				if (result.get(i + 1).getAssignedClass() == 1) {
-					result.get(i).setAssignedClass(1, 1);
+				if (nerResult.get(i + 1).getAssignedClass() == 1) {
+					nerResult.get(i).setAssignedClass(1, 1);
 					svDistance = 0;
 				}
 			}
 		}
 
-		return result;
+		return nerResult;
 	}
 
 	/**
 	 * Extracts SN and SV from a CVE description using both NER and Expert System
 	 * 
-	 * @param String[] array of words to be classified
+	 * @param descriptionWords array of words to be classified
 	 * @return ArrayList of classified words of labels (ArrayList<ClassifiedWord>)
 	 */
 	public ArrayList<ClassifiedWord> classifyWordsInDescription(String[] descriptionWords) {
-
-		ArrayList<ClassifiedWord> result = new ArrayList<ClassifiedWord>();
 
 		// Use NER classification
 		ArrayList<ClassifiedWord> nerResult = nerModel.classifyComplex(descriptionWords);
@@ -453,15 +450,13 @@ public class DetectProducts {
 		// Use ES classification
 		nerResult = getProducts(descriptionWords, nerResult);
 
-		result.addAll(nerResult);
-
-		return result;
+		return new ArrayList<>(nerResult);
 	}
 
 	/**
 	 * Extracts SN and SV from a CVE description using both NER and Expert System
 	 * 
-	 * @param String Description to be classified
+	 * @param description Description to be classified
 	 * @return ArrayList of classified words of labels (ArrayList<ClassifiedWord>)
 	 */
 	public ArrayList<ClassifiedWord> classifyWordsInDescription(String description) {
@@ -472,41 +467,39 @@ public class DetectProducts {
 
 		String[] descriptionWords = WhitespaceTokenizer.INSTANCE.tokenize(description);
 
-		ArrayList<ClassifiedWord> result = classifyWordsInDescription(descriptionWords);
-
-		return result;
+		return classifyWordsInDescription(descriptionWords);
 	}
 
 	/**
 	 * Matches SN and SV into complete product using Expert System
 	 * 
-	 * @param ArrayList<ClassifiedWord> List of classified words of labels
+	 * @param words<ClassifiedWord> List of classified words of labels
 	 * @return List of products (ArrayList<ProductItem>)
 	 */
 	public ArrayList<ProductItem> getProductItems(ArrayList<ClassifiedWord> words) {
 
-		ArrayList<ProductItem> products = new ArrayList<ProductItem>();
+		ArrayList<ProductItem> products = new ArrayList<>();
 
 		boolean prevWordSN = false;
-		for (int i = 0; i < words.size(); i++) {
-			if (words.get(i).getAssignedClass() == 0) {
+		for (ClassifiedWord word : words) {
+			if (word.getAssignedClass() == 0) {
 				// Adds word to existing product name
 				if (prevWordSN) {
 					ProductItem product = products.get(products.size() - 1);
-					product.setName(product.getName() + " " + words.get(i).getWord());
+					product.setName(product.getName() + " " + word.getWord());
 					products.set(products.size() - 1, product);
 				}
 				// creates new product
 				else {
-					products.add(new ProductItem(words.get(i).getWord()));
+					products.add(new ProductItem(word.getWord()));
 				}
 				prevWordSN = true;
-			} else if (words.get(i).getAssignedClass() == 1) {
+			} else if (word.getAssignedClass() == 1) {
 				prevWordSN = false;
 				// adds version to the product item
 				if (products.size() > 0) {
 					ProductItem product = products.get(products.size() - 1);
-					product.addVersion(words.get(i).getWord());
+					product.addVersion(word.getWord());
 					products.set(products.size() - 1, product);
 				}
 			} else {
@@ -520,35 +513,14 @@ public class DetectProducts {
 	/**
 	 * Matches SN and SV into complete product using Expert System
 	 * 
-	 * @param String Description to be classified
-	 * @return List of products (ArrayList<ProductItem>)
-	 */
-	public ArrayList<ProductItem> getProductItems(String description) {
-
-		if (description == null || description.length() == 0) {
-			return null;
-		}
-
-		String[] descriptionWords = WhitespaceTokenizer.INSTANCE.tokenize(description);
-
-		ArrayList<ProductItem> products = getProductItems(descriptionWords);
-
-		return products;
-	}
-
-	/**
-	 * Matches SN and SV into complete product using Expert System
-	 * 
-	 * @param String[] Description words to be classified
+	 * @param descriptionWords Description words to be classified
 	 * @return List of products (ArrayList<ProductItem>)
 	 */
 	public ArrayList<ProductItem> getProductItems(String[] descriptionWords) {
 
 		ArrayList<ClassifiedWord> words = classifyWordsInDescription(descriptionWords);
 
-		ArrayList<ProductItem> products = getProductItems(words);
-
-		return products;
+		return getProductItems(words);
 	}
 
 }

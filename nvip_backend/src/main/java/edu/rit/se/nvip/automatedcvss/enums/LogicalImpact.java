@@ -35,7 +35,7 @@ public enum LogicalImpact {
 
 	private final String nounGroupValue;
 
-	private LogicalImpact(final String nounGroupValue) {
+	LogicalImpact(final String nounGroupValue) {
 		this.nounGroupValue = nounGroupValue;
 	}
 

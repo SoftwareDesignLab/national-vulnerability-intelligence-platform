@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class ProductItem{
 	
 	private String name;
-	private ArrayList<String> versions = new ArrayList<String>();
+	private ArrayList<String> versions = new ArrayList<>();
 	
 	/**
 	 * Class constructor
@@ -55,7 +55,7 @@ public class ProductItem{
 
 	/**
 	 * Sets List of versions
-	 * @param ArrayList<String> versions 
+	 * @param versions<String> versions
 	 */
 	public void setVersions(ArrayList<String> versions) {
 		this.versions = versions;
@@ -63,7 +63,7 @@ public class ProductItem{
 	
 	/**
 	 * Adds version to the list
-	 * @param String version
+	 * @param version version
 	 */
 	public void addVersion(String version) {
 		versions.add(version);
@@ -79,7 +79,7 @@ public class ProductItem{
 	
 	/**
 	 * Sets product name
-	 * @param String name
+	 * @param name name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -88,15 +88,15 @@ public class ProductItem{
 	@Override
 	public String toString() {
 	
-		String toPrint = "SN: " + this.name;
+		StringBuilder toPrint = new StringBuilder("SN: " + this.name);
 		if (versions.size()>0) {
-			toPrint = toPrint + ". SV: ";
+			toPrint.append(". SV: ");
 			for (String version : versions) {
-				toPrint = toPrint + " " + version;
+				toPrint.append(" ").append(version);
 			}
 		}
 			
-		return toPrint;
+		return toPrint.toString();
 	}
 	
 	

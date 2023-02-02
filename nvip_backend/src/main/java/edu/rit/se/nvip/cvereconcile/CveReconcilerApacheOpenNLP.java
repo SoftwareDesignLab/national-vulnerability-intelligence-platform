@@ -23,12 +23,8 @@
  */
 package edu.rit.se.nvip.cvereconcile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +33,6 @@ import org.apache.logging.log4j.Logger;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetector;
@@ -54,7 +49,7 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
 
 public class CveReconcilerApacheOpenNLP extends AbstractCveReconciler {
 
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	// Identifier of an unidentified language part
 	final String unknwnPrt = "``";
@@ -88,7 +83,6 @@ public class CveReconcilerApacheOpenNLP extends AbstractCveReconciler {
 			modelIn.close();
 
 		} catch (Exception e) {
-			// System.out.println(e.getMessage());
 			logger.error("A serious error has occurred while loading the models for CVE reconciliation! Exiting!" + e.toString());
 			System.exit(1);
 		}
@@ -167,17 +161,16 @@ public class CveReconcilerApacheOpenNLP extends AbstractCveReconciler {
 		}
 
 		/* Metrics which are used for the reconciliation decision */
-		boolean newLonger = false, newHasMoreSent = false, newMoreDiverse = false, lessUnknwn = false;
+		boolean newHasMoreSent, newMoreDiverse, lessUnknwn;
 
 		/* Counters of unidentified language parts in each description */
 		int existingUnknw = 0;
 		int newUnknw = 0;
 
 		/* Check if new description has more characters */
-		newLonger = newDescription.length() > existingDescription.length();
 
-		String[] existingSentences = null;
-		String[] newSentences = null;
+		String[] existingSentences;
+		String[] newSentences;
 
 		existingSentences = detectSentences(existingDescription);
 		newSentences = detectSentences(newDescription);
@@ -234,12 +227,6 @@ public class CveReconcilerApacheOpenNLP extends AbstractCveReconciler {
 			updateDescription = true;
 		} else if (lessUnknwn && newHasMoreSent) {
 			updateDescription = true;
-		} else if (lessUnknwn && newHasMoreSent && newMoreDiverse) {
-			updateDescription = true;
-		} else if (lessUnknwn && newLonger && newMoreDiverse) {
-			updateDescription = true;
-		} else if (lessUnknwn && newLonger && newHasMoreSent) {
-			updateDescription = true;
 		}
 
 		return updateDescription;
@@ -248,16 +235,16 @@ public class CveReconcilerApacheOpenNLP extends AbstractCveReconciler {
 	/**
 	 * Calculate diversity of the language parts in a description. Returns a Map
 	 * with language parts as a KEY and the number of this laguage part as a VALUE
-	 * (counts of how many time this language part occurs in the description).
+	 * (counts of how many times this language part occurs in the description).
 	 * 
-	 * @param document
+	 * @param sentences
 	 * @return diversity object in a form of a Map object
 	 */
 	public Map<String, Integer> docLangParts(String[] sentences) {
-		Map<String, Integer> counts = new HashMap<String, Integer>();
+		Map<String, Integer> counts = new HashMap<>();
 
 		for (String sent : sentences) {
-			String whitespaceTokenizerLine[] = WhitespaceTokenizer.INSTANCE.tokenize(sent);
+			String[] whitespaceTokenizerLine = WhitespaceTokenizer.INSTANCE.tokenize(sent);
 			String[] tags = tagger.tag(whitespaceTokenizerLine);
 			for (String part : tags) {
 				if (counts.containsKey(part)) {
@@ -271,8 +258,7 @@ public class CveReconcilerApacheOpenNLP extends AbstractCveReconciler {
 	}
 
 	public String[] detectSentences(String paragraph) {
-		String sentences[] = sentenceDetector.sentDetect(paragraph);
-		return sentences;
+		return sentenceDetector.sentDetect(paragraph);
 	}
 
 }

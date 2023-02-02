@@ -37,7 +37,7 @@ import java.util.List;
  *
  */
 public interface PreProcessor {
-	public PreProcessor setNextPreProcessor(PreProcessor next);
+	PreProcessor setNextPreProcessor(PreProcessor next);
 
-	public List<String> process(String text);
+	List<String> process(String text);
 }

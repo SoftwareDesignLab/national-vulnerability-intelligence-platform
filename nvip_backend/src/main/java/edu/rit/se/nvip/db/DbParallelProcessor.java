@@ -43,7 +43,7 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
  *
  */
 public class DbParallelProcessor {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public DbParallelProcessor() {
 
@@ -65,9 +65,20 @@ public class DbParallelProcessor {
 		int numberOfThreads = vulnList.size() / numOfRecordsPErThread + 1;
 		logger.info("Spawning {} threads to record {} CVEs", numOfRecordsPErThread, vulnList.size());
 		ExecutorService pool = Executors.newFixedThreadPool(numberOfThreads);
+
+		/**
+		 * TODO: As our CVE sources grow, there's starting to be a limit on how many threads we use.
+		 * TODO: Should try and limit this to work with larger data.
+		 */
+
+		int i = 0;
+
 		for (List<CompositeVulnerability> subList : vulnList2) {
-			Runnable runnable = new VulnRecordThread(subList, runId);
-			pool.execute(runnable);
+			if (i < 9) {
+				Runnable runnable = new VulnRecordThread(subList, runId);
+				pool.execute(runnable);
+			}
+			i++;
 		}
 
 		// shut down pool
@@ -96,11 +107,12 @@ public class DbParallelProcessor {
 	 *
 	 */
 	private class VulnRecordThread extends Thread implements Runnable {
-		DatabaseHelper databaseHelper = null;
-		private List<CompositeVulnerability> vulnList;
+		DatabaseHelper databaseHelper;
+		private final List<CompositeVulnerability> vulnList;
 		private int runId = 0;
 
 		public VulnRecordThread(List<CompositeVulnerability> vulnList, int runId) {
+			logger.info("NEW VULN RECORD THREAD");
 			this.vulnList = vulnList;
 			this.runId = runId;
 			databaseHelper = DatabaseHelper.getInstanceForMultiThreading();

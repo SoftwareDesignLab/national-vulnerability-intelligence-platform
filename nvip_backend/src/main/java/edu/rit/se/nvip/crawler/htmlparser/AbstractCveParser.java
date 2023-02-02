@@ -81,7 +81,7 @@ public abstract class AbstractCveParser implements CveParserInterface {
 	 * @return list of strings in format [product name] [version]
 	 */
 	protected List<String> getPlatformVersions(String description) {
-		String version = null;
+		String version;
 		Set<String> versions = new HashSet<>();
 
 		Pattern pattern = Pattern.compile(regexVersionInfo);

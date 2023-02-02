@@ -29,8 +29,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -38,7 +36,6 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class PreProcCodeTermExtractor implements PreProcessor {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	private static final String DELIM = " .,:;/?'\"[]{})(-_=+~!@#$%^&*<>\n\t\r1234567890";
 	private static final String SPLIT_REGEX = "[A-Z][a-z]+|[a-z]+|[A-Z]+";
 
@@ -46,7 +43,7 @@ public class PreProcCodeTermExtractor implements PreProcessor {
 	PreProcessor _next;
 
 	public List<String> process(String content) {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 
 		// 1- break down into tokens
 		StringTokenizer st = new StringTokenizer(content, DELIM);
@@ -70,10 +67,8 @@ public class PreProcCodeTermExtractor implements PreProcessor {
 		if (next == null) {
 			throw new IllegalArgumentException("The next preProcessor can't be null");
 		}
-
 		// Sets the next chain link
 		_next = next;
-
 		return this;
 	}
 

@@ -49,11 +49,10 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
  */
 public class CveCrawlController {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	MyProperties propertiesNvip = null;
+	MyProperties propertiesNvip;
 	public static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0";
-	public static final String RECONCILE_TYPE = CveReconcilerFactory.APACHE_OPEN_NLP;
 
-	AbstractCveReconciler cveUtils = null;
+	AbstractCveReconciler cveUtils;
 	CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
 
 	public CveCrawlController(MyProperties propertiesNvip) {
@@ -117,7 +116,7 @@ public class CveCrawlController {
 			cveHashMapAll = getVulnerabilitiesFromCrawlerThreads(delayedController, cveHashMapAll);
 
 		} catch (Exception e) {
-			logger.error("Error!" + e.toString());
+			logger.error("Error!" + e);
 		}
 		return cveHashMapAll;
 	}

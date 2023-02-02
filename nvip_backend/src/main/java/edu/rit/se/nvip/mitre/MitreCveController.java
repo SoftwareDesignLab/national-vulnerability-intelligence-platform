@@ -24,11 +24,6 @@
 package edu.rit.se.nvip.mitre;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,19 +32,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.nvd.NvdCveController;
 import edu.rit.se.nvip.utils.CsvUtils;
 import edu.rit.se.nvip.utils.GitController;
 import edu.rit.se.nvip.utils.UtilHelper;
@@ -62,20 +51,12 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class MitreCveController {
-	private Logger logger = LogManager.getLogger(MitreCveController.class);
-	private Map<Integer, Integer> recentCveYearsMap;
-
-	/**
-	 * The number of years to look back for CVEs in the Git repo. This is set to 3
-	 * to speed up the test process. In the production it could be set to > 10 to
-	 * make sure updated old CVEs coming from this source are included
-	 *
-	 */
-	private int lookYearsBack = 5;
+	private final Logger logger = LogManager.getLogger(MitreCveController.class);
 
 	public MitreCveController() {
-		recentCveYearsMap = new HashMap<>();
+		Map<Integer, Integer> recentCveYearsMap = new HashMap<>();
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		int lookYearsBack = 5;
 		for (int year = currentYear; year > currentYear - lookYearsBack; year--)
 			recentCveYearsMap.put(year, year);
 	}
@@ -103,21 +84,19 @@ public class MitreCveController {
 				logger.info("Pulled git repo at: {} to: {}, now parsing each CVE...", remotePath, localPath);
 			else {
 				logger.error("Could not pull git repo at: {} to: {}", remotePath, localPath);
-				// System.exit(1);
 			}
 		} else {
 			if (gitController.cloneRepo())
 				logger.info("Cloned git repo at: {} to: {}, now parsing each CVE...", remotePath, localPath);
 			else {
 				logger.error("Could not clone git repo at: {} to: {}", remotePath, localPath);
-				// System.exit(1);
 			}
 		}
 
 		logger.info("Now parsing MITRE CVEs at {} directory", localPath);
 
 		// create json object from .json files
-		ArrayList<JsonObject> list = new ArrayList<JsonObject>();
+		ArrayList<JsonObject> list = new ArrayList<>();
 		list = getJSONFilesFromGitFolder(new File(localPath), list);
 		logger.info("Collected {} JSON files at {}", list.size(), localPath);
 
@@ -131,7 +110,7 @@ public class MitreCveController {
 		logger.info("Wrote *** {} **** MITRE CVE items to {}", count, outputCSVpath);
 
 		// add all CVEs to a map
-		HashMap<String, CompositeVulnerability> gitHubCveMap = new HashMap<String, CompositeVulnerability>();
+		HashMap<String, CompositeVulnerability> gitHubCveMap = new HashMap<>();
 		for (String[] cve : cveData) {
 			String cveId = cve[0];
 			String sourceUrl = remotePath;
@@ -143,18 +122,6 @@ public class MitreCveController {
 
 		return gitHubCveMap;
 
-	}
-
-	/**
-	 * log CVES to CSV
-	 * 
-	 * @param list
-	 * @param filepath
-	 * @return
-	 */
-	public int logCVEs(ArrayList<JsonObject> list, String filepath) {
-		List<String[]> cveData = new MitreCveParser().parseCVEJSONFiles(list);
-		return new CsvUtils().writeListToCSV(cveData, filepath, false);
 	}
 
 	/**
@@ -174,19 +141,14 @@ public class MitreCveController {
 				try {
 
 					String filename = fileEntry.getName();
-					String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-					String[] parts = filename.split("-");
+					String extension = filename.substring(filename.lastIndexOf(".") + 1);
 					if (extension.equalsIgnoreCase("json")) {
-//						boolean addThisJson = recentCveYearsMap.containsKey(Integer.parseInt(parts[1]));
-//						if (addThisJson) {
 							String sJsonContent = FileUtils.readFileToString(fileEntry);
 							JsonObject json = JsonParser.parseString(sJsonContent).getAsJsonObject();
 							jsonList.add(json);
-							// logger.info(fileEntry.getName());
-//						}
 					}
 				} catch (Exception e) {
-					logger.error("Error while getting JSON files at " + folder.getAbsolutePath() + ": " + e.toString());
+					logger.error("Error while getting JSON files at " + folder.getAbsolutePath() + ": " + e);
 
 				}
 			}
