@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  * @author axoeec
  *
  */
-public class VMWareParser extends AbstractCveParser implements CveParserInterface {
+public class VMWareParser extends AbstractCveParser  {
 	
 	public VMWareParser(String domainName) {
 		sourceDomainName = domainName;

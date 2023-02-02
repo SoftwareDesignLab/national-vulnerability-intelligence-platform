@@ -46,7 +46,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  */
 
 
-public class SecurityRedHatParser extends AbstractCveParser implements CveParserInterface {
+public class SecurityRedHatParser extends AbstractCveParser  {
 
     private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	

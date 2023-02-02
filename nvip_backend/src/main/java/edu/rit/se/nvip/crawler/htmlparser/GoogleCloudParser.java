@@ -47,7 +47,7 @@ import java.util.*;
  */
 
 
-public class GoogleCloudParser extends AbstractCveParser implements CveParserInterface {
+public class GoogleCloudParser extends AbstractCveParser  {
 
     private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 

@@ -34,7 +34,7 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 
-public class RedHatParser extends AbstractCveParser implements CveParserInterface {
+public class RedHatParser extends AbstractCveParser  {
 
     public RedHatParser(String domainName) {
 		sourceDomainName = domainName;

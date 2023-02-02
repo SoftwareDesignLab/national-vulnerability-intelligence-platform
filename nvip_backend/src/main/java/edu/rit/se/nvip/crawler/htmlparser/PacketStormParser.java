@@ -52,7 +52,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author axoeec
  *
  */
-public class PacketStormParser extends AbstractCveParser implements CveParserInterface {
+public class PacketStormParser extends AbstractCveParser  {
 	
 	public PacketStormParser(String domainName) {
 		sourceDomainName = domainName;

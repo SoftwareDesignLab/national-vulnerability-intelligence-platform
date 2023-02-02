@@ -47,7 +47,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author axoeec
  *
  */
-public class SecurityTrackerParser extends AbstractCveParser implements CveParserInterface {
+public class SecurityTrackerParser extends AbstractCveParser  {
 	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public SecurityTrackerParser(String domainName) {

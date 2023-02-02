@@ -45,7 +45,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author axoeec
  *
  */
-public class BugzillaParser extends AbstractCveParser implements CveParserInterface {
+public class BugzillaParser extends AbstractCveParser {
 	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public BugzillaParser(String domainName) {

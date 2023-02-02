@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  * @author axoeec
  *
  */
-public class KbCertCveParser extends AbstractCveParser implements CveParserInterface {
+public class KbCertCveParser extends AbstractCveParser  {
 	
 	public KbCertCveParser(String domainName) {
 		sourceDomainName = domainName;

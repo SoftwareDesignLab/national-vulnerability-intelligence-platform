@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import edu.rit.se.nvip.crawler.htmlparser.AbstractCveParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -124,7 +125,7 @@ public class CveCrawler extends WebCrawler {
 	 */
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		// get parser and parse
-		CveParserInterface parser = parserFactory.createParser(sSourceURL);
+		AbstractCveParser parser = parserFactory.createParser(sSourceURL);
 		return parser.parseWebPage(sSourceURL, sCVEContentHTML);
 	}
 

@@ -48,7 +48,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author Ahmet Okutan
  *
  */
-public class TalosIntelligenceParser extends AbstractCveParser implements CveParserInterface {
+public class TalosIntelligenceParser extends AbstractCveParser  {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public TalosIntelligenceParser(String domainName) {

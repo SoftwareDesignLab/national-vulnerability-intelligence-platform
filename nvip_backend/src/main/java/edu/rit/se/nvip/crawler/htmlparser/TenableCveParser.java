@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
  * @author axoeec
  *
  */
-public class TenableCveParser extends AbstractCveParser implements CveParserInterface {
+public class TenableCveParser extends AbstractCveParser  {
 
 	public TenableCveParser(String domainName) {
 		sourceDomainName = domainName;

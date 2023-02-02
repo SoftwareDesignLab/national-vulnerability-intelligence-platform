@@ -28,13 +28,12 @@ package edu.rit.se.nvip.crawler.htmlparser;
  * @author axoeec
  *
  */
-public class CveParserFactory implements AbstractCveParserFactory<Object> {
+public class CveParserFactory {
 
 	/**
 	 * return the parser for this Url
 	 */
-	@Override
-	public CveParserInterface createParser(String sPageUrl) {
+	public AbstractCveParser createParser(String sPageUrl) {
 		if (sPageUrl == null) {
 			return new NullParser();
 		}

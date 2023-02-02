@@ -54,7 +54,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author axoeec
  *
  */
-public class SecurityfocusCveParser extends AbstractCveParser implements CveParserInterface {
+public class SecurityfocusCveParser extends AbstractCveParser  {
 
 	public SecurityfocusCveParser(String domainName) {
 		sourceDomainName = domainName;

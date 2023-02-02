@@ -39,7 +39,7 @@ import java.util.*;
  * @author axoeec
  *
  */
-public class BugsGentooParser extends AbstractCveParser implements CveParserInterface {
+public class BugsGentooParser extends AbstractCveParser  {
 	
 	public BugsGentooParser(String domainName) {
 		sourceDomainName = domainName;

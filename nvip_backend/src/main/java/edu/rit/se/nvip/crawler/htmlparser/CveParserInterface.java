@@ -34,15 +34,6 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
  *
  */
 public interface CveParserInterface {
-	String regexCVEID = "CVE-[0-9]+-[0-9]+";
-	String regexVersionInfo = "(?:(\\d+\\.(?:\\d+\\.)*\\d+))";
-	String regexAllCVERelatedContent = ".*(affect|attack|bypass|cve|execut|fix|flaw|permission|vulnerab|CVE|Mitigat|(?:(\\d+\\.(?:\\d+\\.)*\\d+))).*";
-	String regexDateFormat = "([a-zA-Z]+ [0-9]+, [0-9]+)";
-	String regexDateFormatNumeric = "[0-9]+[-/][0-9]+[-/][0-9]+";
 
-	String regexChinese = "\\p{IsHan}";
-
-	// abstract parser
-	List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML);
 
 }
