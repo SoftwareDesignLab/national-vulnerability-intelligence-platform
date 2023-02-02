@@ -34,7 +34,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import edu.rit.se.nvip.crawler.htmlparser.CveParserFactory;
-import edu.rit.se.nvip.crawler.htmlparser.CveParserInterface;
 import edu.rit.se.nvip.cvereconcile.AbstractCveReconciler;
 import edu.rit.se.nvip.cvereconcile.CveReconcilerFactory;
 import edu.rit.se.nvip.db.DatabaseHelper;

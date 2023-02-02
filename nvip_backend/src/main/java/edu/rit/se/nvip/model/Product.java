@@ -23,7 +23,6 @@
  */
 package edu.rit.se.nvip.model;
 
-import edu.rit.se.nvip.crawler.htmlparser.CveParserInterface;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

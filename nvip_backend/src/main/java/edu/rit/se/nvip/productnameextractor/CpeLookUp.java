@@ -46,7 +46,6 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.rit.se.nvip.crawler.htmlparser.CveParserInterface;
 import edu.rit.se.nvip.model.Product;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
@@ -75,6 +74,8 @@ public class CpeLookUp {
 
 	/** singleton instance of class */
 	private static CpeLookUp cpeLookUp = null;
+
+	private final String regexVersionInfo = "(?:(\\d+\\.(?:\\d+\\.)*\\d+))";
 
 	static Logger logger = LogManager.getLogger(UtilHelper.class);
 
@@ -516,7 +517,7 @@ public class CpeLookUp {
 	private List<String> filterProducts(String domain, List<String> products) {
 		List<String> curr = new ArrayList<>(products);
 
-		Pattern pattern = Pattern.compile(CveParserInterface.regexVersionInfo);
+		Pattern pattern = Pattern.compile(regexVersionInfo);
 		Matcher matcher = pattern.matcher(domain);
 		if (matcher.find()) { // filter based on version first
 			pattern = Pattern.compile(matcher.group());
