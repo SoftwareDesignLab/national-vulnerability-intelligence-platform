@@ -37,16 +37,18 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
 
 public class CpeGroup implements Serializable{
 	
-	private String vendor, product, groupID;
+	private final String vendor;
+	private final String product;
+	private final String groupID;
 	private String commonTitle;
-	private HashMap<String, CpeEntry> versions;
+	private final HashMap<String, CpeEntry> versions;
 
 	public CpeGroup(String vendor, String product) {
 		super();
 		this.vendor = vendor;
 		this.product = product;
 		this.groupID = vendor+":"+product;
-		this.versions = new HashMap<String, CpeEntry>();
+		this.versions = new HashMap<>();
 	}
 	
 	public String getCommonTitle() {
@@ -56,7 +58,7 @@ public class CpeGroup implements Serializable{
 	/**
 	 * Add CPE entry (version) to the CPE group
 	 * 
-	 * @param CpeEntry CPE entry (version) to add
+	 * @param version CPE entry (version) to add
 	 */	
 	public void addVersion(CpeEntry version) {
 		
@@ -71,10 +73,10 @@ public class CpeGroup implements Serializable{
 			String[] entryTitleWords = WhitespaceTokenizer.INSTANCE.tokenize(version.getTitle());
 			
 			//Common title for all entries
-			String newCommonTitle="";
+			StringBuilder newCommonTitle= new StringBuilder();
 			for (int i=0; i<existingTitleWords.length && i<entryTitleWords.length; i++) {
 				if(existingTitleWords[i].equalsIgnoreCase(entryTitleWords[i])) {
-					newCommonTitle=newCommonTitle+existingTitleWords[i]+" ";
+					newCommonTitle.append(existingTitleWords[i]).append(" ");
 				}
 			}
 			
@@ -119,11 +121,8 @@ public class CpeGroup implements Serializable{
 			return false;
 		CpeGroup other = (CpeGroup) obj;
 		if (groupID == null) {
-			if (other.groupID != null)
-				return false;
-		} else if (!groupID.equals(other.groupID))
-			return false;
-		return true;
+			return other.groupID == null;
+		} else return groupID.equals(other.groupID);
 	}
 	
 	

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,10 +40,8 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
-import edu.rit.se.nvip.model.CnnvdVulnerability;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.VdoCharacteristic;
-import edu.rit.se.nvip.model.Vulnerability;
 
 /**
  * 
@@ -68,12 +65,12 @@ public class CsvUtils {
 	public int writeListToCSV(List<String[]> allData, String filepath, boolean appendMode) {
 		try {
 
-			FileWriter fileWriter = new FileWriter(new File(filepath), appendMode);
+			FileWriter fileWriter = new FileWriter(filepath, appendMode);
 			CSVWriter writer = new CSVWriter(fileWriter, mySeparatorChar, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 			writer.writeAll(allData);
 			writer.close();
 		} catch (IOException e) {
-			logger.error("Exception while writing list to CSV file!" + e.toString());
+			logger.error("Exception while writing list to CSV file!" + e);
 			return 0;
 		}
 
@@ -91,7 +88,7 @@ public class CsvUtils {
 	public int writeObjectListToCSV(List<Object> allData, String filepath, boolean appendMode) {
 		try {
 
-			List<String[]> arr = new ArrayList<String[]>();
+			List<String[]> arr = new ArrayList<>();
 
 			for (Object obj : allData)
 				if (obj instanceof CompositeVulnerability) {
@@ -104,26 +101,26 @@ public class CsvUtils {
 						String description = vuln.getDescription().replace(mySeparatorChar + "", "").replace("\n", "");
 						String sourceUrl = Arrays.deepToString(vuln.getSourceURL().toArray());
 
-						String vdoCharacteristic = "";
-						String vdoConfidence = "";
+						StringBuilder vdoCharacteristic = new StringBuilder();
+						StringBuilder vdoConfidence = new StringBuilder();
 						if (vuln.getVdoCharacteristic().size() > 0) {
 							for (VdoCharacteristic vdo : vuln.getVdoCharacteristic()) {
-								vdoCharacteristic += (vdo.getVdoLabelId() + ",");
-								vdoConfidence += (vdo.getVdoConfidence() + ",");
+								vdoCharacteristic.append(vdo.getVdoLabelId()).append(",");
+								vdoConfidence.append(vdo.getVdoConfidence()).append(",");
 							}
 						}
 
-						arr.add(new String[] { vuln.getCveId(), vuln.getPlatform(), description, sourceUrl, vdoCharacteristic, vdoConfidence, vuln.getNvdSearchResult(), vuln.getMitreSearchResult(), vuln.getNvipNote() });
+						arr.add(new String[] { vuln.getCveId(), vuln.getPlatform(), description, sourceUrl, vdoCharacteristic.toString(), vdoConfidence.toString(), vuln.getNvdSearchResult(), vuln.getMitreSearchResult(), vuln.getNvipNote() });
 					} catch (Exception e) {
-						logger.error("Error while adding Vulnerability to list!" + " Vuln: " + vuln.toString() + ". " + e.toString());
+						logger.error("Error while adding Vulnerability to list!" + " Vuln: " + vuln + ". " + e);
 					}
 				}
-			FileWriter fileWriter = new FileWriter(new File(filepath), appendMode);
+			FileWriter fileWriter = new FileWriter(filepath, appendMode);
 			CSVWriter writer = new CSVWriter(fileWriter, mySeparatorChar, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 			writer.writeAll(arr);
 			writer.close();
 		} catch (Exception e) {
-			logger.error("Exception while writing List<Vulnerability> to CSV!" + e.toString());
+			logger.error("Exception while writing List<Vulnerability> to CSV!" + e);
 			return 0;
 		}
 
@@ -139,12 +136,12 @@ public class CsvUtils {
 	public boolean writeHeaderToCSV(String filepath, String[] header, boolean appendMode) {
 		try {
 
-			FileWriter fileWriter = new FileWriter(new File(filepath), appendMode);
+			FileWriter fileWriter = new FileWriter(filepath, appendMode);
 			CSVWriter writer = new CSVWriter(fileWriter, mySeparatorChar, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 			writer.writeNext(header);
 			writer.close();
 		} catch (IOException e) {
-			logger.error("Exception while writing header to CSV file!" + e.toString());
+			logger.error("Exception while writing header to CSV file!" + e);
 			return false;
 		}
 		return true;
@@ -154,10 +151,6 @@ public class CsvUtils {
 		return "[" + mySeparatorChar + "]";
 	}
 
-	public char getMySeparatorChar() {
-		return mySeparatorChar;
-	}
-	
 	public List<String[]> getDataFromCsv(String dataPath, char separatorChar){
 		this.mySeparatorChar = separatorChar;
 		return getDataFromCsv(dataPath);
@@ -170,16 +163,14 @@ public class CsvUtils {
 	 * @return
 	 */
 	public List<String[]> getDataFromCsv(String dataPath) {
-		List<String[]> data = new ArrayList<String[]>();
+		List<String[]> data = new ArrayList<>();
 		try {
 			CSVParser csvParser = new CSVParserBuilder().withSeparator(mySeparatorChar).build();
 			CSVReader reader = new CSVReaderBuilder(new FileReader(dataPath)).withCSVParser(csvParser).build();
 
 			String[] nextLine;
 			while ((nextLine = reader.readNext()) != null) {
-				if (nextLine != null) {
-					data.add(nextLine);
-				}
+				data.add(nextLine);
 			}
 		} catch (Exception e) {
 			logger.error("Error while reading csv file at: {}, {}", dataPath, e.toString());

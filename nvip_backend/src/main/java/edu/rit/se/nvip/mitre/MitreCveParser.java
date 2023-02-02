@@ -40,7 +40,7 @@ import com.google.gson.JsonObject;
  *
  */
 public class MitreCveParser {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public MitreCveParser() {
 		super();
@@ -53,7 +53,7 @@ public class MitreCveParser {
 	 * @return
 	 */
 	public List<String[]> parseCVEJSONFiles(ArrayList<JsonObject> list) {
-		List<String[]> cveIDList = new ArrayList<String[]>();
+		List<String[]> cveIDList = new ArrayList<>();
 		for (JsonObject json : list) {
 			String[] items = getCVEID(json);
 			if (items != null)

@@ -35,11 +35,11 @@ package edu.rit.se.nvip.productnameextractor;
 
 public class ClassifiedWord {
 	
-	private String word=null;
+	private final String word;
 	private int assignedClass = -1;
 	private float assignedClassConfidence = 0;
-	private int numberOfClasses=0;
-	private float[] confidences = null;
+	private final int numberOfClasses;
+	private final float[] confidences;
 	
 	/**
 	 * Class constructor
@@ -107,16 +107,8 @@ public class ClassifiedWord {
 	public float[] getConfidences() {
 		return confidences;
 	}
-	
-	
-	/**
-	 * Sets class of the classified word
-	 * @param Class number (int)
-	 */
-	public void setAssignedClass(int assignedClass) {
-		this.assignedClass = assignedClass;
-	}
-	
+
+
 	/**
 	 * Sets class and its confidence of the assigned class of the classified word
 	 * @param Class number (int)
@@ -134,7 +126,7 @@ public class ClassifiedWord {
 			return "";
 		}
 		
-		String classString = "";
+		String classString;
 		if (assignedClass==0) {
 			classString = "SN";
 		}

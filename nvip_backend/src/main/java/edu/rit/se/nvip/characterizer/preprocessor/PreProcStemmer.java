@@ -65,7 +65,7 @@ public class PreProcStemmer implements PreProcessor {
 
 	public List<String> process(String text) {
 		String initialText = text;
-		List<String> results = new ArrayList<String>();
+		List<String> results = new ArrayList<>();
 		String stemmedWord;
 		Stemmer porter = new Stemmer();
 

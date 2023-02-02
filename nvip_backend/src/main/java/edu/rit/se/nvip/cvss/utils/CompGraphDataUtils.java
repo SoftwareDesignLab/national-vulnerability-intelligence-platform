@@ -45,13 +45,8 @@ import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.graph.MergeVertex;
 import org.deeplearning4j.nn.conf.layers.ConvolutionLayer;
 import org.deeplearning4j.nn.conf.layers.GlobalPoolingLayer;
-import org.deeplearning4j.nn.conf.layers.GravesLSTM;
-import org.deeplearning4j.nn.conf.layers.LSTM;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.conf.layers.PoolingType;
-import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
-import org.deeplearning4j.nn.conf.preprocessor.CnnToRnnPreProcessor;
-import org.deeplearning4j.nn.conf.preprocessor.RnnToCnnPreProcessor;
 import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.nd4j.linalg.activations.Activation;
@@ -71,7 +66,7 @@ import weka.core.Instances;
  *
  */
 public class CompGraphDataUtils {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	/**
 	 * init model
@@ -106,13 +101,10 @@ public class CompGraphDataUtils {
 		int vectorSize = ModelParams.getVectorsize();
 		int cnnLayerFeatureMaps = ModelParams.getCnnlayerfeaturemaps();
 		Nd4j.getMemoryManager().setAutoGcWindow(5000);
-		ComputationGraphConfiguration config = new NeuralNetConfiguration.Builder().weightInit(WeightInit.RELU).activation(Activation.LEAKYRELU).updater(new Adam(0.01)).convolutionMode(ConvolutionMode.Same) // This is important so we can
-																																																				// 'stack' the results later
+		ComputationGraphConfiguration config = new NeuralNetConfiguration.Builder().weightInit(WeightInit.RELU).activation(Activation.LEAKYRELU).updater(new Adam(0.01)).convolutionMode(ConvolutionMode.Same) // This is important so we can 'stack' the results later
 				.l2(0.0001).graphBuilder().addInputs("input").addLayer("cnn3", new ConvolutionLayer.Builder().kernelSize(3, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input")
 				.addLayer("cnn4", new ConvolutionLayer.Builder().kernelSize(4, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input")
-				.addLayer("cnn5", new ConvolutionLayer.Builder().kernelSize(5, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input").addVertex("merge", new MergeVertex(), "cnn3", "cnn4", "cnn5") // Perform
-																																																									// depth
-																																																									// concatenation
+				.addLayer("cnn5", new ConvolutionLayer.Builder().kernelSize(5, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input").addVertex("merge", new MergeVertex(), "cnn3", "cnn4", "cnn5") // Perform depth concatenation
 				.addLayer("globalPool", new GlobalPoolingLayer.Builder().poolingType(globalPoolingType).dropOut(0.5).build(), "merge")
 				.addLayer("out", new OutputLayer.Builder().lossFunction(lossFunction).activation(activation).nIn(3 * cnnLayerFeatureMaps).nOut(dataLabels.size()).build(), "globalPool").setOutputs("out").build();
 
@@ -152,41 +144,17 @@ public class CompGraphDataUtils {
 		 * note the global pool with MAX pooling at the end of the 3 CNN layers.
 		 */
 
-		final int lstmLayerSize = 300;
-
 		int vectorSize = ModelParams.getVectorsize();
 		int cnnLayerFeatureMaps = ModelParams.getCnnlayerfeaturemaps();
 		Nd4j.getMemoryManager().setAutoGcWindow(5000);
-		ComputationGraphConfiguration config = new NeuralNetConfiguration.Builder().weightInit(WeightInit.RELU).activation(Activation.LEAKYRELU).updater(new Adam(0.001)).convolutionMode(ConvolutionMode.Same) // This is important so we can
-																																																				// 'stack' the results later
+		ComputationGraphConfiguration config = new NeuralNetConfiguration.Builder().weightInit(WeightInit.RELU).activation(Activation.LEAKYRELU).updater(new Adam(0.001)).convolutionMode(ConvolutionMode.Same) // This is important so we can 'stack' the results later
 				.l2(0.001).graphBuilder().addInputs("input")
-
-				// .addLayer("cnn1", new ConvolutionLayer.Builder().kernelSize(1,
-				// vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(),
-				// "input")
 				.addLayer("cnn2", new ConvolutionLayer.Builder().kernelSize(2, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input")
 				.addLayer("cnn3", new ConvolutionLayer.Builder().kernelSize(3, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input")
 				.addLayer("cnn4", new ConvolutionLayer.Builder().kernelSize(4, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input")
-//				.addLayer("cnn5", new ConvolutionLayer.Builder().kernelSize(5, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input")
-//				.addLayer("cnn6", new ConvolutionLayer.Builder().kernelSize(6, vectorSize).stride(1, vectorSize).nIn(1).nOut(cnnLayerFeatureMaps).build(), "input")
-
 				.addVertex("merge", new MergeVertex(), "cnn2", "cnn3", "cnn4") // Perform depth concatenation
-
 				.addLayer("globalPool", new GlobalPoolingLayer.Builder().poolingType(globalPoolingType).dropOut(0.5).build(), "merge")
 				.addLayer("out", new OutputLayer.Builder().lossFunction(lossFunction).activation(activation).nIn(3 * cnnLayerFeatureMaps).nOut(dataLabels.size()).build(), "globalPool")
-
-//				 .addLayer("lstm", new LSTM.Builder()
-//			                .nIn(4*cnnLayerFeatureMaps)
-//			                .nOut(lstmLayerSize)
-//			                .forgetGateBiasInit(1)
-//			                .activation(Activation.TANH)
-//			                .build(),
-//			                "globalPool")
-//				 
-//				 
-//				.addLayer("out", new RnnOutputLayer.Builder().lossFunction(lossFunction).activation(activation).nIn(lstmLayerSize).nOut(dataLabels.size()).build(), "lstm")
-//				.inputPreProcessor("lstm", new CnnToRnnPreProcessor(4, 1,10))
-
 				.setOutputs("out").build();
 
 		ComputationGraph net = new ComputationGraph(config);
@@ -260,12 +228,12 @@ public class CompGraphDataUtils {
 	 */
 	public DataSetIterator getDataSetIterator(List<String> labels, String dataPath, WordVectors wordVectors, int minibatchSize, int maxSentenceLength, Random rng) {
 
-		List<String> dirs = new ArrayList<String>();
+		List<String> dirs = new ArrayList<>();
 
 		for (String label : labels)
 			dirs.add(dataPath + "/" + label);
 
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 		for (String dir : dirs)
 			files.add(new File(dir));
 
@@ -275,8 +243,6 @@ public class CompGraphDataUtils {
 		}
 
 		LabeledSentenceProvider sentenceProvider = new FileLabeledSentenceProvider(filesMap, rng);
-//		return new CnnSentenceDataSetIterator.Builder().sentenceProvider(sentenceProvider).wordVectors(wordVectors).minibatchSize(minibatchSize)
-//				.maxSentenceLength(maxSentenceLength).useNormalizedWordVectors(false).build();
 
 		return new CnnSentenceDataSetIterator.Builder().sentenceProvider(sentenceProvider).wordVectors(wordVectors).minibatchSize(minibatchSize).maxSentenceLength(maxSentenceLength).useNormalizedWordVectors(true).build();
 	}

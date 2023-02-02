@@ -26,8 +26,6 @@ package edu.rit.se.nvip.characterizer.preprocessor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -42,13 +40,11 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public final class PreProcCleanUp implements PreProcessor {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	// Next in the chain of command
 
 	PreProcessor _next;
 
-	// Constructor - Package Private
 	public PreProcCleanUp() {
 	}
 
@@ -57,16 +53,14 @@ public final class PreProcCleanUp implements PreProcessor {
 		if (next == null) {
 			throw new IllegalArgumentException("The next preProcessor can't be null");
 		}
-
 		// Sets the next chain link
 		_next = next;
-
 		return this;
 	}
 
 	public List<String> process(String text) {
 		String initialText = text;
-		List<String> results = new ArrayList<String>();
+		List<String> results = new ArrayList<>();
 		String singleResult = "";
 
 		// Reduces the text to only characters - using Regular Expressions

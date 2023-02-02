@@ -34,8 +34,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -47,6 +45,8 @@ import edu.rit.se.nvip.patchfinder.commits.JGitParser;
 /**
  * Main class for collecting CVE Patches within repos that were
  * previously collected from the PatchFinder class
+ *
+ * TODO: Refactor to see if we need this, there should only be 1 parse method
  */
 public final class JGitCVEPatchDownloader {
 
@@ -54,22 +54,11 @@ public final class JGitCVEPatchDownloader {
 	private static JGitParser previousRepo = null;
 	private static final DatabaseHelper db = DatabaseHelper.getInstance();
 
-
-	public static void main(String[] args) throws IOException {
-		logger.info("Started Patches Application");
-
-		JGitCVEPatchDownloader main = new JGitCVEPatchDownloader();
-		main.parse(args);
-
-		logger.info("Patches Application Finished!");
-	}
-
 	/**
 	 * Main parse method that pulls parameters from nvip props
 	 * to determine clone location and limit
 	 */
 	public void parse(String[] args) throws IOException {
-		//Map<String, String> props = getPropValues();
 
 		File checkFile = new File(args[0]);
 
@@ -82,29 +71,6 @@ public final class JGitCVEPatchDownloader {
 			parse(args[1], Integer.parseInt(args[2]));
 		}
 
-	}
-
-	/**
-	 * Method used to extract email login properties from emailConfig.properties
-	 *
-	 * @return
-	 * @throws IOException
-	 */
-	private HashMap<String, String> getPropValues() {
-		HashMap<String, String> props = new HashMap<>();
-		try {
-			// load nvip config file
-			MyProperties propertiesNvip = new MyProperties();
-			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-			props.put("repofile", propertiesNvip.getProperty("RepoFile"));
-			props.put("multithread", propertiesNvip.getProperty("MultiThreadPatchDownload"));
-			props.put("cloneloc", propertiesNvip.getProperty("CloneLoc"));
-			props.put("repolimit", propertiesNvip.getProperty("RepoLimit"));
-		} catch (Exception e) {
-			logger.error(e.toString());
-		}
-
-		return props;
 	}
 
 
@@ -137,8 +103,6 @@ public final class JGitCVEPatchDownloader {
 	 * @throws GitAPIException
 	 */
 	public void parse(String clonePath, int limit) throws IOException {
-//		File dir = new File(clonePath);
-//		FileUtils.delete(dir, 1);
 
 		try {
 			for (Entry<String, Integer> source : db.getVulnIdPatchSource(limit).entrySet()) {
@@ -287,7 +251,7 @@ public final class JGitCVEPatchDownloader {
 	 * @throws IOException
 	 */
 	private List<String> processInputFile(File file) throws FileNotFoundException, IOException {
-		ArrayList<String> repos = new ArrayList<String>();
+		ArrayList<String> repos = new ArrayList<>();
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line;

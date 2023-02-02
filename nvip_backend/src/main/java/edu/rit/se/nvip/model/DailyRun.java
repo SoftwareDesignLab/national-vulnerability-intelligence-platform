@@ -37,7 +37,6 @@ public class DailyRun {
 	int notInMitreCount;
 	int notInBothCount;
 	int newCveCount;
-	int droppedFromListCount;
 	double avgTimeGapNvd = 0;
 	double avgTimeGapMitre = 0;
 	double databaseTimeMin;
@@ -122,24 +121,12 @@ public class DailyRun {
 		this.notInBothCount = notInBothCount;
 	}
 
-	public void setNewCveCount(int newCveCount) {
-		this.newCveCount = newCveCount;
-	}
-
 	public void setAvgTimeGapNvd(double avgTimeGapNvd) {
 		this.avgTimeGapNvd = avgTimeGapNvd;
 	}
 
 	public void setAvgTimeGapMitre(double avgTimeGapMitre) {
 		this.avgTimeGapMitre = avgTimeGapMitre;
-	}
-
-	public int getDroppedFromListCount() {
-		return droppedFromListCount;
-	}
-
-	public void setDroppedFromListCount(int droppedFromListCount) {
-		this.droppedFromListCount = droppedFromListCount;
 	}
 
 	public double getDatabaseTimeMin() {

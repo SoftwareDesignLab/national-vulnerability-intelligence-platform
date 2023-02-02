@@ -23,7 +23,6 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,15 +56,13 @@ import edu.rit.se.nvip.utils.UtilHelper;
  */
 public class SecurityfocusCveParser extends AbstractCveParser implements CveParserInterface {
 
-	private static String discussionTab = "discuss";
-	
 	public SecurityfocusCveParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 		String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 		if (sSourceURL.contains("archive"))
 			return vulnerabilities;
@@ -115,11 +112,12 @@ public class SecurityfocusCveParser extends AbstractCveParser implements CvePars
 			pe.printStackTrace();
 		}
 		try {
-			lastModified = UtilHelper.longDateFormat.format(currentFormat.parse(lastModified));
+			UtilHelper.longDateFormat.format(currentFormat.parse(lastModified));
 		} catch (ParseException pe) {
 			pe.printStackTrace();
 		}
 
+		String discussionTab = "discuss";
 		String descUrl = sSourceURL + "/" + discussionTab;
 		try {
 			document = Jsoup.connect(descUrl).get();

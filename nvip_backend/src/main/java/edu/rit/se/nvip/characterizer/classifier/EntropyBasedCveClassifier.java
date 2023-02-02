@@ -50,8 +50,7 @@ import weka.core.Instances;
  */
 public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 	protected Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	Map<String, VdoLabelDistribution> histograms = new HashMap<String, VdoLabelDistribution>();
-	// protected String cveClassifierName = "EntropyBasedCveClassifier";
+	Map<String, VdoLabelDistribution> histograms = new HashMap<>();
 
 	enum Method {
 		CROSS_ENTROPY, KL_DIVERGENCE, JS_DIVERGENCE;
@@ -67,7 +66,7 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 		try {
 			sCommaSeparatedAttribRows = FileUtils.readFileToString(new File(preProcessedTrainingDataFile));
 		} catch (IOException e) {
-			logger.error("Error loading training data file: " + preProcessedTrainingDataFile + ": " + e.toString());
+			logger.error("Error loading training data file: " + preProcessedTrainingDataFile + ": " + e);
 		}
 
 		sCommaSeparatedCsvData = sCommaSeparatedAttribRows;
@@ -77,8 +76,6 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 
 	public EntropyBasedCveClassifier(Instances instances) {
 		myInstances = instances;
-		myMethod = Method.KL_DIVERGENCE;
-
 	}
 
 	/**
@@ -86,7 +83,7 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 	 * generating feature histograms for all labels
 	 */
 	@Override
-	public void trainMLModel(Instances instances) throws Exception {
+	public void trainMLModel(Instances instances) {
 		// create label histograms from myInstances
 
 		int numClassValues = instances.classAttribute().numValues();
@@ -94,9 +91,6 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 			String classValue = instances.classAttribute().value(valIndex);
 			histograms.put(classValue, new VdoLabelDistribution(classValue, instances));
 		}
-		// logger.info("Created " + numClassValues + " feature histograms for VDO labels
-		// using " +
-		// instances.size() + " instances");
 	}
 
 	/**
@@ -104,10 +98,10 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 	 */
 	@Override
 	public ArrayList<String[]> predict(Instance currentInstance, boolean bPredictMultiple) {
-		ArrayList<String[]> prediction = new ArrayList<String[]>();
+		ArrayList<String[]> prediction = new ArrayList<>();
 		if (currentInstance.numAttributes() != myInstances.numAttributes()) {
 			logger.error("Error! The instances in the data set has " + myInstances.numAttributes() + " attribs, but the instance you are trying to predict has " + currentInstance.numAttributes()
-					+ " atribs?\nNo prediction could be done for this instance: " + currentInstance.toString());
+					+ " atribs?\nNo prediction could be done for this instance: " + currentInstance);
 
 			return prediction;
 		}
@@ -119,9 +113,6 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 		}
 
 		prediction = classify(currentInstance, bPredictMultiple);
-		// logger.info("Predicted: '" + prediction.get(0)[0] + "' with cross-entropy: "
-		// +
-		// prediction.get(0)[1]);
 		return prediction;
 
 	}
@@ -134,16 +125,16 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 	 * @return
 	 */
 	protected ArrayList<String[]> classify(Instance currentInstance, boolean bPredictMultiple) {
-		ArrayList<String[]> prediction = new ArrayList<String[]>();
+		ArrayList<String[]> prediction = new ArrayList<>();
 
-		double maxCrossEntropy = Double.NEGATIVE_INFINITY;
-		double minCrossEntropy = Double.POSITIVE_INFINITY;
+		double maxCrossEntropy;
+		double minCrossEntropy;
 
 		// cve histogram
 		VdoLabelDistribution cveHistogram = new VdoLabelDistribution(currentInstance);
 
-		// find closest models with divergence <> Double.POSITIVE_INFINITY
-		TreeMap<Double, String> chosenModels = new TreeMap<Double, String>();
+		// find the closest models with divergence <> Double.POSITIVE_INFINITY
+		TreeMap<Double, String> chosenModels = new TreeMap<>();
 		for (VdoLabelDistribution histogram : histograms.values()) {
 			double divergenceMetric = Double.POSITIVE_INFINITY;
 			if (myMethod == Method.CROSS_ENTROPY)
@@ -165,16 +156,11 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 		for (Entry<Double, String> entry : chosenModels.entrySet()) {
 			double divergence = entry.getKey();
 			String label = entry.getValue();
-			// double proximity = (maxCrossEntropy - divergence) / maxCrossEntropy;
-			// double proximity = (maxCrossEntropy + minCrossEntropy/100 - divergence) /
-			// maxCrossEntropy; // to consider largest divergence as well!
-			double proximity = (maxCrossEntropy + minCrossEntropy / 100 - divergence); // to consider largest divergence as well!
+
+			double proximity = (maxCrossEntropy + minCrossEntropy / 100 - divergence); // to consider the largest divergence as well!
 			prediction.add(new String[] { label, proximity + "" });
 		}
 
-		// logger.info("EntropyBasedCveClassifier predicted: " +
-		// Arrays.deepToString(prediction.toArray()) +
-		// " for " + currentInstance);
 
 		prediction = normalizeList(prediction, true);
 		return prediction;
@@ -204,15 +190,6 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 		return prediction;
 	}
 
-	private ArrayList<String[]> oneMinus(ArrayList<String[]> prediction) {
-		for (int i = -0; i < prediction.size(); i++) {
-			String[] element = prediction.get(i);
-			element[1] = (1 - Double.parseDouble(element[1])) + "";
-			prediction.set(i, element);
-		}
-		return prediction;
-	}
-
 	@Override
 	public void resetClassifier(Object classifier) {
 		try {
@@ -222,33 +199,10 @@ public class EntropyBasedCveClassifier extends AbstractCveClassifier {
 		}
 	}
 
-	public HashMap<String, Double> sortHashMap(HashMap<String, Double> hm) {
-		// Create a list from elements of HashMap
-		List<Map.Entry<String, Double>> list = new ArrayList<Map.Entry<String, Double>>(hm.entrySet());
-
-		// Sort the list
-		Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
-			public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
-				return (o1.getValue()).compareTo(o2.getValue());
-			}
-		});
-
-		// put data from sorted list to hashmap
-		HashMap<String, Double> temp = new LinkedHashMap<String, Double>();
-		for (Map.Entry<String, Double> aa : list) {
-			temp.put(aa.getKey(), aa.getValue());
-		}
-		return temp;
-	}
-
 	@Override
 	protected Map<String, Integer> getModelData(String label) {
 		return histograms.get(label).getHistogram();
 	}
 
-//	@Override
-//	public String getCveClassifierName() {
-//		return cveClassifierName;
-//	}
 
 }

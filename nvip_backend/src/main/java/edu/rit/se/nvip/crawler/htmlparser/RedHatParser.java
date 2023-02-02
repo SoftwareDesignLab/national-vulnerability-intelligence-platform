@@ -24,21 +24,11 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.UtilHelper;
@@ -46,9 +36,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
 
 public class RedHatParser extends AbstractCveParser implements CveParserInterface {
 
-    private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	
-	public RedHatParser(String domainName) {
+    public RedHatParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 
@@ -60,7 +48,6 @@ public class RedHatParser extends AbstractCveParser implements CveParserInterfac
         try {
             Document doc = Jsoup.parse(sCVEContentHTML);
             String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
-            Pattern pattern = Pattern.compile(regexCVEID);
 
             String cve = doc.select("h1.headline").text();
             String description = doc.select("#cve-details-description > div > div > p").text();            
@@ -68,7 +55,7 @@ public class RedHatParser extends AbstractCveParser implements CveParserInterfac
 
             vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return vulnerabilities;
 	}

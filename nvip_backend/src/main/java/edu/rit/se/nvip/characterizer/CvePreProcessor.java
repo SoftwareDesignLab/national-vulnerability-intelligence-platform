@@ -48,8 +48,8 @@ import edu.rit.se.nvip.characterizer.preprocessor.PreProcessor;
 public class CvePreProcessor {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	public static String STOPWORDS_FILE = "stopwords_w_java_cpp_keywords.txt";
-	PreProcessor[] preProcessors = new PreProcessor[4];
-	private boolean removeCommonStopWords = true;
+	PreProcessor[] preProcessors;
+	private boolean removeCommonStopWords;
 
 	public CvePreProcessor(boolean removeCommonStopWords) {
 		super();
@@ -89,13 +89,12 @@ public class CvePreProcessor {
 	 * <preProcessors> stores the underlying "linked" processors
 	 * 
 	 * @param currentLine
-	 * @param preProcessors
 	 * @return
 	 */
 	public String preProcessLine(String currentLine) {
-		List<String> forStop = null;
-		List<String> forStem = null;
-		List<String> last = null;
+		List<String> forStop;
+		List<String> forStem;
+		List<String> last;
 
 		StringBuffer processedLine = new StringBuffer();
 		List<String> columns = Arrays.asList(currentLine.split(","));
@@ -154,17 +153,17 @@ public class CvePreProcessor {
 					sBuffer.append(sLine + "\n");
 					lineCount++;
 				} catch (Exception e) {
-					logger.error("Skipping this line! An error occurred while pre-processing line [" + sLine + "] of file: " + filePath + " Err: " + e.toString());
+					logger.error("Skipping this line! An error occurred while pre-processing line [" + sLine + "] of file: " + filePath + " Err: " + e);
 				}
 			}
 			logger.info("Preprocessed " + lineCount + " items at " + filePath);
 			return sBuffer.toString();
 		} catch (FileNotFoundException e) {
-			logger.error("Error during pre-processing " + filePath + "! Details: " + e.toString());
+			logger.error("Error during pre-processing " + filePath + "! Details: " + e);
 		} catch (IOException e) {
-			logger.error("Error during pre-processing " + filePath + "! Details: " + e.toString());
+			logger.error("Error during pre-processing " + filePath + "! Details: " + e);
 		} catch (Exception e) {
-			logger.error("Error during pre-processing " + filePath + "! Details: " + e.toString());
+			logger.error("Error during pre-processing " + filePath + "! Details: " + e);
 		} finally {
 			if (bReader != null) {
 				try {

@@ -35,7 +35,7 @@ public enum ImpactMethod {
 
 	private final String nounGroupValue;
 
-	private ImpactMethod(final String nounGroupValue) {
+	ImpactMethod(final String nounGroupValue) {
 		this.nounGroupValue = nounGroupValue;
 	}
 

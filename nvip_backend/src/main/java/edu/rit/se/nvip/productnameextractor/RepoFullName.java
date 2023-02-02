@@ -27,43 +27,35 @@ package edu.rit.se.nvip.productnameextractor;
 import java.io.Serializable;
 
 /**
- * RepoFullName contains information about a repository but without tags (lightversion of the RepoFullNameWithTags)
+ * contains information about a repository but without tags (lightversion of the )
  * 
  * @author Igor Khokhlov
  *
  */
 class RepoFullName implements Serializable{
-	
-	private String cpeName, fullName, url, cpeID, htmlUrl;
-	private boolean exactMatch = false;
 
-	public RepoFullName() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	private final String cpeName;
+	private final String fullName;
+	private String url;
+	private final String cpeID;
+	private final String htmlUrl;
 
-	public RepoFullName(String cpeName, String fullName) {
+	public RepoFullName(String cpeName, String fullName, String cpeID, String htmlUrl) {
 		super();
 		this.cpeName = cpeName;
 		this.fullName = fullName;
+		this.cpeID = cpeID;
+		this.htmlUrl = htmlUrl;
 	}
 
 	public String getCpeName() {
 		return cpeName;
 	}
 
-	public void setCpeName(String cpeName) {
-		this.cpeName = cpeName;
-	}
-
 	public String getFullName() {
 		return fullName;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-	
 	public String getUrl() {
 		return url;
 	}
@@ -76,24 +68,12 @@ class RepoFullName implements Serializable{
 		return cpeID;
 	}
 
-	public void setCpeID(String cpeID) {
-		this.cpeID = cpeID;
-	}
-	
 	public String getHtmlUrl() {
 		return htmlUrl;
 	}
 
-	public void setHtmlUrl(String htmlUrl) {
-		this.htmlUrl = htmlUrl;
-	}
-
 	public boolean isExactMatch() {
-		return exactMatch;
-	}
-
-	public void setExactMatch(boolean exactMatch) {
-		this.exactMatch = exactMatch;
+		return false;
 	}
 
 	@Override
@@ -114,10 +94,7 @@ class RepoFullName implements Serializable{
 			return false;
 		RepoFullName other = (RepoFullName) obj;
 		if (cpeID == null) {
-			if (other.cpeID != null)
-				return false;
-		} else if (!cpeID.equals(other.cpeID))
-			return false;
-		return true;
+			return other.cpeID == null;
+		} else return cpeID.equals(other.cpeID);
 	}
 }

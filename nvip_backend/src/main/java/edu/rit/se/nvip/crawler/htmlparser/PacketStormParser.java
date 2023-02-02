@@ -59,8 +59,6 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 	}
 	
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	// DateFormat currentFormat = new SimpleDateFormat("MMM dd, yyyy",
-	// Locale.ENGLISH);
 	DatabaseHelper db = DatabaseHelper.getInstance();
 	String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 
@@ -107,9 +105,8 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
-			String description = null;
-			String publishDate = null;
-			String updateDate = null;
+			String description;
+			String publishDate;
 			for (Element element : document.select("dl")) {
 
 				// if no CVEs then continue!
@@ -137,10 +134,6 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 				for (String cve : uniqueCves)
 					itemVulns.add(new CompositeVulnerability(0, sSourceURL, cve, listTitle, publishDate, lastModifiedDate, description, sourceDomainName));
 
-				// TODO
-				// itemVulns = this.setAffectedReleasesForListItem(listTitle, itemVulns,
-				// publishDate);
-
 				allVulns.addAll(itemVulns);
 
 			}
@@ -150,41 +143,6 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 
 		return allVulns;
 
-	}
-
-	/**
-	 * set affected releases of vulnerabilities from a given <listTitle>
-	 * 
-	 * @param listTitle
-	 * @param itemVulns
-	 * @param publishDate
-	 * @return
-	 */
-	private List<CompositeVulnerability> setAffectedReleasesForListItem(String listTitle, List<CompositeVulnerability> itemVulns, String publishDate) {
-
-		// get platform
-		String[] arr = listTitle.split("\\s+");
-		String domain = arr[0];
-		if (arr.length > 1)
-			domain += " " + arr[1]; // potentially domain?
-		CpeLookUp loader = CpeLookUp.getInstance();
-		Map<Integer, Product> products = new HashMap<>();
-		Product product = loader.productFromDomain(domain);
-		List<AffectedRelease> affectedReleases = new ArrayList<AffectedRelease>();
-		if (product != null) {
-			products.put(0, product);
-			affectedReleases = getAffectedReleasesFromProducts(products, publishDate);
-		}
-
-		if (affectedReleases.size() > 0)
-			for (CompositeVulnerability vuln : itemVulns) {
-				for (AffectedRelease a : affectedReleases) {
-					AffectedRelease copy = new AffectedRelease(a);
-					copy.setCveId(vuln.getCveId());
-					vuln.addAffectedRelease(copy);
-				}
-			}
-		return itemVulns;
 	}
 
 	/**
@@ -250,9 +208,8 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
-			String description = null;
-			String publishDate = null;
-			String updateDate = null;
+			String description;
+			String publishDate;
 
 			// gte description
 			Elements descriptions = document.getElementsByClass("detail");

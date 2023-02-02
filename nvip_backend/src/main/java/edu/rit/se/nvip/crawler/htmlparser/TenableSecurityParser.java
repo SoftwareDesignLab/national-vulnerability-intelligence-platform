@@ -23,13 +23,11 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.AffectedRelease;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.Product;
 import edu.rit.se.nvip.productnameextractor.CpeLookUp;
 import edu.rit.se.nvip.utils.UtilHelper;
-import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -75,9 +73,6 @@ public class TenableSecurityParser extends AbstractCveParser implements CveParse
 			}
 		}
 
-		Pattern datePattern = Pattern.compile(regexDateFormatNumeric);
-		Matcher dateMatcher = datePattern.matcher("");
-
 		String desc = "";
 		Date releaseDate = null;
 		Date updateDate = null;
@@ -102,13 +97,9 @@ public class TenableSecurityParser extends AbstractCveParser implements CveParse
 		}
 
 		String releaseDateString = null;
-		String updateDateString = null;
 
 		if (releaseDate != null) {
 			releaseDateString = UtilHelper.longDateFormat.format(releaseDate);
-		}
-		if (updateDate != null) {
-			updateDateString = UtilHelper.longDateFormat.format(updateDate);
 		}
 
 		if (!foundProducts) {

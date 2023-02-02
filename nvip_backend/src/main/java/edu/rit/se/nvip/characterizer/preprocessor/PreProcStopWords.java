@@ -58,10 +58,9 @@ public class PreProcStopWords implements PreProcessor {
 
 		try {
 			// The args should specify the location of the stop words file
-//			String stopWordsFile = args[0];
 
 			// Array with the stop words
-			stopWords = new ArrayList<String>();
+			stopWords = new ArrayList<>();
 			String stopWord;
 			ClassLoader classLoader = getClass().getClassLoader();
 			InputStream inputStream = classLoader.getResourceAsStream(stopWordsFile);
@@ -78,7 +77,7 @@ public class PreProcStopWords implements PreProcessor {
 
 		} catch (Exception e) {
 			logger.error("The following error ocurred:\n" + e.getMessage());
-			logger.error("Details:\n" + e.toString());
+			logger.error("Details:\n" + e);
 		}
 	}
 
@@ -94,11 +93,10 @@ public class PreProcStopWords implements PreProcessor {
 	}
 
 	public List<String> process(String text) {
-		String initialText = text;
-		List<String> results = new ArrayList<String>();
+		List<String> results = new ArrayList<>();
 
 		// Splits the text into tokens and iterates over them
-		String[] tokens = initialText.split(" ");
+		String[] tokens = text.split(" ");
 		for (String word : tokens) {
 			// If the word is not in the stop list, it gets included
 			if (!stopWords.contains(word)) {

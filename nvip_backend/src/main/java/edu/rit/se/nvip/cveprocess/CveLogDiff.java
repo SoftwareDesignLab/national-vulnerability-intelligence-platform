@@ -39,9 +39,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.DailyRun;
 import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.utils.CsvUtils;
 import edu.rit.se.nvip.utils.MyProperties;
@@ -56,8 +54,8 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class CveLogDiff {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	MyProperties propertiesNvip = null;
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	MyProperties propertiesNvip;
 
 	public CveLogDiff(MyProperties propertiesNvip) {
 		this.propertiesNvip = propertiesNvip;
@@ -65,20 +63,19 @@ public class CveLogDiff {
 
 	/**
 	 * log crawled vulnerabilities:
-	 * 
+	 * <p>
 	 * (1)All crawled vulnerabilities as of today, (2) Crawled vulnerabilities that
 	 * are not in NVD, (3) Crawled vulnerabilities that are not in MITRE, (4)
 	 * Crawled vulnerabilities that are not in NVD and MITRE, (5) Based on the items
 	 * in (4) vulnerabilities that are new today (compared to the previous run), (6)
 	 * Based on the items in (4) vulnerabilities that disappeared today (compared to
 	 * the previous run)
-	 * 
+	 *
 	 * @param crawlStartTime
 	 * @param crawlEndTime
 	 * @param newCVEListMap
-	 * @return
 	 */
-	public HashMap<String, List<Object>> logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap, DatabaseHelper databaseHelper, int runId) {
+	public void logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap) {
 
 		try {
 			
@@ -103,12 +100,12 @@ public class CveLogDiff {
 				if (totCount > 0)
 					logger.info("\tWrote " + totCount + " CVEs to CSV: " + filepath);
 			} catch (Exception e) {
-				logger.error("Error while logging all CVEs to CSV!" + e.toString());
+				logger.error("Error while logging all CVEs to CSV!" + e);
 			}
 
 			// CVEs not in NVD
 			try {
-				int count = 0;
+				int count;
 
 				filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_not_in_nvd.csv";
 				count = csvLogger.writeObjectListToCSV(newCVEListMap.get("nvd"), filepath, false);
@@ -130,7 +127,7 @@ public class CveLogDiff {
 					logger.info("\tWrote " + count + " New CVEs *** Not exist in NVD && MITRE ***  to CSV: " + filepath);
 				}
 			} catch (Exception e) {
-				logger.error("Error while logging CVE differences from NVD/MITRE to CSV!" + e.toString());
+				logger.error("Error while logging CVE differences from NVD/MITRE to CSV!" + e);
 			}
 
 			/**
@@ -150,7 +147,7 @@ public class CveLogDiff {
 				File fileMitre = new File(propertiesNvip.getOutputDir() + "/" + subDirName + "/" + "TimeGap-MITRE.txt");
 				StringBuffer sbNvd = new StringBuffer("TimeGap\tCVE-ID\tLastModifiedTime\tSourceUrl\n");
 				StringBuffer sbMitre = new StringBuffer("TimeGap\tCVE-ID\tLastModifiedTime\tSourceUrl\n");
-				String line = null;
+				String line;
 				for (Object obj : newCVEListMap.get("all")) {
 					if (obj instanceof CompositeVulnerability) {
 						CompositeVulnerability vuln = (CompositeVulnerability) obj;
@@ -176,11 +173,11 @@ public class CveLogDiff {
 				if (countMitre > 0)
 					FileUtils.writeStringToFile(fileMitre, sbMitre.toString(), true);
 			} catch (Exception e) {
-				logger.error("Error while logging time gap details! " + e.toString());
+				logger.error("Error while logging time gap details! " + e);
 			}
 
 			// CVEs New Today & CVEs disappeared: In the not in [NVD & MITRE] list
-			sSummary += logCveDifferencesComparedToPrevRun(newCVEListMap.get("nvd-mitre"), csvLogger, subDirName, databaseHelper, runId);
+			sSummary += logCveDifferencesComparedToPrevRun(newCVEListMap.get("nvd-mitre"), csvLogger, subDirName);
 			sSummary += "\nToday " + countNvd + " and " + countMitre + " CVE entries appeared at NVD and MITRE feeds, respectively!";
 
 			// write summary info to file
@@ -189,10 +186,9 @@ public class CveLogDiff {
 			logger.info(sSummary);
 
 		} catch (Exception e) {
-			logger.error("Error in logAndDiffCVEs(): " + e.toString());
+			logger.error("Error in logAndDiffCVEs(): " + e);
 		}
 
-		return newCVEListMap;
 	}
 
 	/**
@@ -204,7 +200,7 @@ public class CveLogDiff {
 	 * @param subDirName
 	 * @param dailyRunStats               TODO
 	 */
-	private String logCveDifferencesComparedToPrevRun(List<Object> newCVENotExistAnyWhereToday, CsvUtils csvLogger, String subDirName, DatabaseHelper databaseHelper, int runId) {
+	private String logCveDifferencesComparedToPrevRun(List<Object> newCVENotExistAnyWhereToday, CsvUtils csvLogger, String subDirName) {
 		StringBuffer sBuffer = new StringBuffer();
 		try {
 			Calendar cal = Calendar.getInstance();
@@ -229,8 +225,8 @@ public class CveLogDiff {
 
 			List<String> arrPrevNvipResults = FileUtils.readLines(pathPreviousNvipResults);
 
-			HashSet<String> setCveIdPrevious = new HashSet<String>();
-			HashSet<String> setCveIdToday = new HashSet<String>();
+			HashSet<String> setCveIdPrevious = new HashSet<>();
+			HashSet<String> setCveIdToday = new HashSet<>();
 
 			for (String cve : arrPrevNvipResults) {
 				String id = cve.split(csvLogger.getSeparatorCharAsRegex())[0]; // get the first item, i.e. the CVE ID
@@ -242,11 +238,10 @@ public class CveLogDiff {
 				setCveIdToday.add(id);
 			}
 
-			setCveIdToday.removeAll(setCveIdPrevious); // setCveIdToday now contains only the lines which are not in
-														// setCveIdPrevious
+			setCveIdToday.removeAll(setCveIdPrevious); // setCveIdToday now contains only the lines which are not in setCveIdPrevious
 
 			// filter the ones from yesterdays list that are new!
-			List<Object> cveNewToday = new ArrayList<Object>();
+			List<Object> cveNewToday = new ArrayList<>();
 			for (int index = 0; index < newCVENotExistAnyWhereToday.size(); index++) {
 
 				String cveId = ((Vulnerability) newCVENotExistAnyWhereToday.get(index)).getCveId();
@@ -273,11 +268,11 @@ public class CveLogDiff {
 				String id = ((Vulnerability) item).getCveId(); // get the first item, i.e. the CVE ID
 				setCveIdToday.add(id);
 			}
-			setCveIdPrevious.removeAll(setCveIdToday); // setCveIdPrevious now contains only the lines which are not in
-														// setCveIdToday
+			setCveIdPrevious.removeAll(setCveIdToday);
+			// setCveIdPrevious now contains only the lines which are not in setCveIdToday
 			// filter CVEs from yesterday that disappeared today!
 			List<String> arrPrev = FileUtils.readLines(pathPreviousNvipResults);
-			List<String> cveDisappearedToday = new ArrayList<String>();
+			List<String> cveDisappearedToday = new ArrayList<>();
 			for (int index = 0; index < arrPrev.size(); index++) {
 				String row = arrPrev.get(index);
 				String cveId = row.split(csvLogger.getSeparatorCharAsRegex())[0]; // get the first item, i.e. the CVE ID
@@ -287,7 +282,7 @@ public class CveLogDiff {
 
 			// Now arrPrev gives CVEs that disappeared today
 			filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/cve_disappeared_today.csv";
-			// new File(filepath).createNewFile();
+
 			FileUtils.writeLines(new File(filepath), cveDisappearedToday, false);
 			if (cveDisappearedToday.size() > 0)
 				str = "\n" + cveDisappearedToday.size() + " CVEs disappeared from the (not in[nvd and mitre]) list today.";
@@ -296,7 +291,7 @@ public class CveLogDiff {
 			sBuffer.append(str);
 			logger.info(str);
 		} catch (Exception e) {
-			logger.error("Error in logCveDifferencesComparedToPrevRun(): " + e.toString());
+			logger.error("Error in logCveDifferencesComparedToPrevRun(): " + e);
 			return (e.toString());
 		}
 
@@ -312,7 +307,7 @@ public class CveLogDiff {
 	 */
 	public void logCrawledURLs(List<String> newList, String crawlUrlSourcesPath) {
 
-		HashMap<String, Integer> hashMapAllURLs = new HashMap<String, Integer>();
+		HashMap<String, Integer> hashMapAllURLs = new HashMap<>();
 		int countPrev = 0, countNew = newList.size(), countCombined = 0;
 
 		try {
@@ -346,7 +341,7 @@ public class CveLogDiff {
 			logger.info("Logged " + countCombined + " source URLs to " + sourceUrlPathNvipResources);
 
 		} catch (IOException e) {
-			logger.error("Error while refreshing crawled URLs: " + e.toString());
+			logger.error("Error while refreshing crawled URLs: " + e);
 		}
 	}
 

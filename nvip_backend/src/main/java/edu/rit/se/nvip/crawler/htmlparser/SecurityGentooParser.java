@@ -96,7 +96,6 @@ public class SecurityGentooParser extends AbstractCveParser implements CveParser
 			vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
 		}
 
-		// TODO ADD PRODUCTS
 
 		return vulns;
 	}
