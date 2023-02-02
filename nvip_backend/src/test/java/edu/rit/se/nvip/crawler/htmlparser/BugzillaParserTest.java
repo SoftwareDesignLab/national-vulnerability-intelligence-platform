@@ -2,35 +2,33 @@ package edu.rit.se.nvip.crawler.htmlparser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 
 public class BugzillaParserTest {
 
 	@Test
-	public void testBugzilla() throws IOException {
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-		
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-bugzilla-cvedetail.html"), "UTF-8");
-		List<CompositeVulnerability> list = new CveCrawler(propertiesNvip).parseWebPage("bugzilla", html);
-		boolean fine = list.size() == 1;
-
-		assertTrue(fine);
+	public void testBugzilla() {
+		String html = null;
+		try {
+			html = FileUtils.readFileToString(new File("src/test/resources/test-bugzilla-cvedetail.html"), "UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail();
+		}
+		List<CompositeVulnerability> list = new BugzillaParser("bugzilla").parseWebPage("bugzilla", html);
+		assertEquals(1, list.size());
+		CompositeVulnerability vuln = list.get(0);
+		assertEquals("CVE-2013-1747", vuln.getCveId());
+		assertEquals("2020/10/31 00:00:00", vuln.getPublishDate());
+		assertTrue(vuln.getDescription().contains("DoS (assertion failure, crash) via a KICK command"));
 	}
-
 }
