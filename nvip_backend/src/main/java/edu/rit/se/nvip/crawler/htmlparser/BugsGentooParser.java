@@ -33,6 +33,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -48,6 +50,7 @@ public class BugsGentooParser extends AbstractCveParser  {
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
+		List<String> commentedCVEs = new ArrayList<>();
 		List<CompositeVulnerability> vulns = new ArrayList<>();
 
 		Set<String> uniqueCves = getCVEs(sCVEContentHTML);
@@ -63,17 +66,56 @@ public class BugsGentooParser extends AbstractCveParser  {
 
 		Elements descs = doc.getElementsByClass("bz_first_comment");
 		if (descs.size() == 1) {
+
+			Pattern pattern;
 			Document descDoc = Jsoup.parse(descs.get(0).html());
 			Elements descText = descDoc.getElementsByClass("bz_comment_text");
-			description = descText.text();
+			String[] textItems = descText.text().split("\n");
 
 			Elements dateText = descDoc.getElementsByClass("bz_comment_time");
 			DateFormat currentFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			publishDate = dateText.text();
+
 			try {
 				publishDate = UtilHelper.longDateFormat.format(currentFormat.parse(publishDate));
-			} catch (ParseException e) {
+			} catch (ParseException ignored) {
 			}
+
+			for (int i=0; i<textItems.length; i++) {
+				pattern = Pattern.compile(regexCVEID);
+				Matcher matcher = pattern.matcher(textItems[i]);
+				int k = 0;
+
+				if (matcher.matches()) {
+					String cveId = matcher.group();
+					String commentDescription = null;
+					String patch = null;
+
+					if (textItems[++i].length() >= 20) {
+						commentDescription = textItems[i];
+					} else {
+						k++;
+					}
+
+					/*
+					TODO: use this for extracting patches from this source
+					TODO: Update model to add Patches to composite Vulnerabilities
+
+					pattern = Pattern.compile("(Patch:|patch:) ");
+					matcher = pattern.matcher(textItems[++i]);
+
+					if (matcher.matches()) {
+						patch = textItems[i].replace("Patch:", "").replace("patch:", "");
+					} else {
+						k++;
+					}*/
+
+					vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, lastModified, commentDescription, sourceDomainName));
+					commentedCVEs.add(cveId);
+				}
+				i -= k;
+			}
+
 		}
 
 		for (String cve : uniqueCves) {

@@ -43,7 +43,8 @@ public class CveParserFactory {
 				return new TenableSecurityParser("tenable");
 			else
 				return new TenableCveParser("tenable");
-		} else if (sPageUrl.contains("oval.cisecurity"))
+		}
+		else if (sPageUrl.contains("oval.cisecurity"))
 			return new OvalCiSecurityParser("oval.cisecurity");
 		else if (sPageUrl.contains("exploit-db"))
 			return new ExploitDBParser("exploit-db");
@@ -70,7 +71,8 @@ public class CveParserFactory {
 				return new NullParser();
 			else
 				return new GenericCveParser("nat_available");
-		} else if (sPageUrl.contains("vmware") && sPageUrl.contains("advisories"))
+		}
+		else if (sPageUrl.contains("vmware") && sPageUrl.contains("advisories"))
 			return new VMWareAdvisoriesParser("vmware");
 		else if (sPageUrl.contains("vmware"))
 			return new VMWareParser("vmware");
