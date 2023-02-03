@@ -54,11 +54,6 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulns = new ArrayList<>();
 
-		Date updateDate = new Date();
-		String updateDateString = UtilHelper.longDateFormat.format(updateDate);
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 		Set<String> uniqueCves = getCVEs(sCVEContentHTML);
 		if (uniqueCves.isEmpty())
 			return vulns;
@@ -68,9 +63,16 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 		ArrayList<Element> headers = doc.getElementsByClass("sa-row-group");
 
 		String publishDate = headers.get(2).text();
-		String updatedDate = headers.get(3).text().split(" ")[0];
+		String updatedDate = headers.get(3).text().substring(0, 9);
 		String[] cveIds = headers.get(4).text().trim().split(",");
 		String currentCVE = "";
+
+		/*
+		Iterate through each header element and check the following
+			1.) If the header contains a CVEID, assign it as current CVE
+		   	2.) If the header has "Description" in it, pull the text from the sibling element
+		   	and store the current cve with that description
+		 */
 
 		for (Element heading: doc.getElementsByClass("secadvheading")) {
 			for (String cveId: cveIds) {
@@ -80,7 +82,7 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 			}
 
 			if (heading.text().equals("Description")) {
-				String description = heading.nextElementSibling().text();
+				String description = Objects.requireNonNull(heading.nextElementSibling()).text();
 				if (!currentCVE.isEmpty()) {
 					vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, description, sourceDomainName));
 				}
