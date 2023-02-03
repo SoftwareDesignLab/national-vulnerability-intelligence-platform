@@ -51,7 +51,8 @@ public class VMWareParser extends AbstractCveParser  {
 	public VMWareParser(String domainName) {
 		sourceDomainName = domainName;
 	}
-	
+
+
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulns = new ArrayList<>();

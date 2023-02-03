@@ -48,6 +48,13 @@ public class BugsGentooParser extends AbstractCveParser  {
 	}
 
 
+	/**
+	 * Parse Method for Gentoo Bug Pages
+	 * (ex. https://bugs.gentoo.org/600624)
+	 * @param sSourceURL
+	 * @param sCVEContentHTML
+	 * @return
+	 */
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<String> commentedCVEs = new ArrayList<>();
@@ -127,13 +134,13 @@ public class BugsGentooParser extends AbstractCveParser  {
 
 		}
 
+		// TODO ADD GENTOO SECURITY IN PRODUCTS
+
 		for (String cve : uniqueCves) {
 			if (!commentedCVEs.contains(cve)) {
 				vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
 			}
 		}
-
-		// TODO ADD PRODUCTS
 
 		return vulns;
 	}
