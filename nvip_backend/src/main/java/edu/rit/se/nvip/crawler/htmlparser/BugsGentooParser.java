@@ -59,12 +59,21 @@ public class BugsGentooParser extends AbstractCveParser  {
 			return vulns;
 
 		String description = null;
-		String publishDate = null;
-		String lastModified = UtilHelper.longDateFormat.format(new Date());
+		String publishDate;
+		String lastModified;
 
 		Document doc = Jsoup.parse(sCVEContentHTML);
 
+		publishDate = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
+				getElementsByClass("table").get(0).getElementsByClass("tr").get(0).
+				getElementsByClass("td").get(0).text();
+
+		lastModified = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
+				getElementsByClass("table").get(0).getElementsByClass("tr").get(1).
+				getElementsByClass("td").get(0).text();
+
 		Elements descs = doc.getElementsByClass("bz_first_comment");
+
 		if (descs.size() == 1) {
 
 			Pattern pattern;
@@ -119,7 +128,9 @@ public class BugsGentooParser extends AbstractCveParser  {
 		}
 
 		for (String cve : uniqueCves) {
-			vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
+			if (!commentedCVEs.contains(cve)) {
+				vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
+			}
 		}
 
 		// TODO ADD PRODUCTS
