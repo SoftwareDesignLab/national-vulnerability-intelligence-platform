@@ -1,9 +1,14 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BoschSecurityParser extends AbstractCveParser{
 
@@ -15,6 +20,8 @@ public class BoschSecurityParser extends AbstractCveParser{
     /**
      * Parse Bosch Security Advisory
      * (ex. https://psirt.bosch.com/security-advisories/bosch-sa-247053-bt.html)
+     *
+     * TODO: Grab CWEs for each CVE
      * @param sSourceURL
      * @param sCVEContentHTML
      * @return
@@ -23,7 +30,22 @@ public class BoschSecurityParser extends AbstractCveParser{
     public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
         List<CompositeVulnerability> vulns = new ArrayList<>();
 
+        Document doc = Jsoup.parse(sCVEContentHTML);
 
+        Elements dates = Objects.requireNonNull(doc.getElementById("advisory-information")).nextElementSibling().children();
+
+        String publishDate = dates.get(2).children().get(1).text().substring(10);
+        String updateDate = dates.get(3).children().get(1).text().substring(13);
+
+        Elements headers = doc.getElementsByTag("h3");
+        for (Element header: headers) {
+            if (header.id().contains("cve-")) {
+                String cveId = header.id();
+                String description = header.nextElementSibling().text().substring(16);
+
+                vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, updateDate, description, sourceDomainName));
+            }
+        }
 
         return vulns;
     }
