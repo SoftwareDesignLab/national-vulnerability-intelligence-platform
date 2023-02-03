@@ -88,6 +88,8 @@ public class CveParserFactory {
 			else 
 				return new RedHatParser("redhat");
 		}
+		else if (sPageUrl.contains("bosch") && sPageUrl.contains("security-advisories"))
+			return new BoschSecurityParser("bosch");
 
 		// sources that you want to ignore
 		// we ignore mitre/nvd because we pull their up to date CVEs from Github
