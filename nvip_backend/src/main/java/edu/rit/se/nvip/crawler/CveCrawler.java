@@ -35,11 +35,9 @@ import org.apache.logging.log4j.Logger;
 import edu.rit.se.nvip.crawler.htmlparser.CveParserFactory;
 import edu.rit.se.nvip.crawler.htmlparser.CveParserInterface;
 import edu.rit.se.nvip.cvereconcile.AbstractCveReconciler;
-import edu.rit.se.nvip.cvereconcile.CveReconciler;
 import edu.rit.se.nvip.cvereconcile.CveReconcilerFactory;
 import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -55,18 +53,16 @@ import edu.uci.ics.crawler4j.url.WebURL;
  */
 public class CveCrawler extends WebCrawler {
 	private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg" + "|png|mp3|mp4|zip|gz))$");
-	private Pattern EXTENDED_FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))$");
-	private HashMap<String, CompositeVulnerability> hashMapNvipCve = new HashMap<String, CompositeVulnerability>();
+	private HashMap<String, CompositeVulnerability> hashMapNvipCve = new HashMap<>();
 	CveParserFactory parserFactory = new CveParserFactory();
-	AbstractCveReconciler cveUtils = null;
+	AbstractCveReconciler cveUtils;
 	CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
-	DatabaseHelper databaseHelper = null;
+	DatabaseHelper databaseHelper;
 	NumberFormat formatter = new DecimalFormat("#0.000");
-	private Logger nvip_logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger nvip_logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public CveCrawler(MyProperties propertiesNvip) {
 		super();
-		//nvip_logger.info("Nvip is using CVE Reconciliation method: {}", propertiesNvip.getCveReconciliationMethod());
 		cveUtils = reconcileFactory.createReconciler(propertiesNvip.getCveReconciliationMethod());
 
 		// initialize db

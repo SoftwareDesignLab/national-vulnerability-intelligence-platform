@@ -28,13 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
+
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -48,13 +45,10 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
  */
 
 public class CveReconcilerStanfordCoreNLP extends AbstractCveReconciler {
-//public class CveReconcilerNLP extends AbstractCveReconciler{
-
-//	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	// Identifier of an unidentified language part in Stanford NLP library
 	final String unknwnPrt = "GW";
-	StanfordCoreNLP pipeline = null;
+	StanfordCoreNLP pipeline;
 
 	public CveReconcilerStanfordCoreNLP() {
 		super();
@@ -111,11 +105,12 @@ public class CveReconcilerStanfordCoreNLP extends AbstractCveReconciler {
 	 * @param existingDescription
 	 * @param newDescription
 	 * @return updateDescription
+	 *
+	 * TODO: Obvious duplicate code here, needs to be extracted
+	 *
 	 */
 	@Override
 	public boolean reconcileDescriptions(String existingDescription, String newDescription, String existingSourceDomain, String newSourceDomain, boolean considerSources) {
-
-//		logger.info("reconcileDescriptions is called");
 
 		boolean updateDescription = false;
 
@@ -135,13 +130,11 @@ public class CveReconcilerStanfordCoreNLP extends AbstractCveReconciler {
 			if (newDescription == null) {
 				return updateDescription;
 			} else {
-//				logger.info("updateDescription - " + Boolean.toString(updateDescription));
 				updateDescription = true;
 				return updateDescription;
 			}
 		} else {
 			if (newDescription == null) {
-//				logger.info("updateDescription - " + Boolean.toString(updateDescription));
 				return updateDescription;
 			}
 		}
@@ -152,7 +145,7 @@ public class CveReconcilerStanfordCoreNLP extends AbstractCveReconciler {
 		}
 
 		/* Metrics which are used for the reconciliation decision */
-		boolean newLonger = false, newHasMoreSent = false, newMoreDiverse = false, lessUnknwn = false;
+		boolean newHasMoreSent, newMoreDiverse, lessUnknwn;
 
 		/* Counters of unidentified language parts in each description */
 		int existingUnknw = 0;
@@ -166,14 +159,13 @@ public class CveReconcilerStanfordCoreNLP extends AbstractCveReconciler {
 		pipeline.annotate(newDoc);
 
 		/* Check if new description has more characters */
-		newLonger = newDescription.length() > existingDescription.length();
 
 		/* Check if new description has more sentences */
 		newHasMoreSent = newDoc.sentences().size() >= existingDoc.sentences().size();
 
 		/* Calculate diversity of language parts in each description */
-		Map<String, Integer> existingDiversity = docLangParts(pipeline, existingDoc);
-		Map<String, Integer> newDiversity = docLangParts(pipeline, newDoc);
+		Map<String, Integer> existingDiversity = docLangParts(existingDoc);
+		Map<String, Integer> newDiversity = docLangParts(newDoc);
 
 		/* Check if new description has more diverse language parts */
 		newMoreDiverse = newDiversity.size() > existingDiversity.size();
@@ -213,15 +205,7 @@ public class CveReconcilerStanfordCoreNLP extends AbstractCveReconciler {
 			updateDescription = true;
 		} else if (lessUnknwn && newHasMoreSent) {
 			updateDescription = true;
-		} else if (lessUnknwn && newHasMoreSent && newMoreDiverse) {
-			updateDescription = true;
-		} else if (lessUnknwn && newLonger && newMoreDiverse) {
-			updateDescription = true;
-		} else if (lessUnknwn && newLonger && newHasMoreSent) {
-			updateDescription = true;
 		}
-
-//    	logger.info("updateDescription - " + Boolean.toString(updateDescription));
 
 		return updateDescription;
 	}
@@ -231,11 +215,11 @@ public class CveReconcilerStanfordCoreNLP extends AbstractCveReconciler {
 	 * with language parts as a KEY and the number of this laguage part as a VALUE
 	 * (counts of how many time this language part occurs in the description).
 	 * 
-	 * @param document
+	 * @param doc
 	 * @return diversity object in a form of a Map object
 	 */
-	public Map<String, Integer> docLangParts(StanfordCoreNLP pipeline, CoreDocument doc) {
-		Map<String, Integer> counts = new HashMap<String, Integer>();
+	public Map<String, Integer> docLangParts(CoreDocument doc) {
+		Map<String, Integer> counts = new HashMap<>();
 
 		for (CoreSentence sent : doc.sentences()) {
 			List<String> parts = sent.posTags();

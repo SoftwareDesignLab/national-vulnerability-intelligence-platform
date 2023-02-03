@@ -6,7 +6,7 @@ package edu.rit.se.nvip.cvereconcile;
  * States Department of Homeland Security.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the “Software”), to deal
+ * of this software and associated documentation files (the ï¿½Softwareï¿½), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -15,7 +15,7 @@ package edu.rit.se.nvip.cvereconcile;
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  * 
- * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED ï¿½AS ISï¿½, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -60,7 +60,6 @@ public class CveReconcilerTest {
 		String goodDescription = "The Epson \"EasyMP\" software is designed to remotely stream a users computer to supporting projectors.These devices are authenticated using a unique 4-digit code displayed on-screen - ensuring only those who can view it are streaming.In addition to the password each projector has a hardocded \"backdoor\" code (2270) which authenticates to all devices.";
 				
 		CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
-		//AbstractCveReconciler reconciler = reconcileFactory.createReconciler(CveCrawlController.RECONCILE_TYPE);
 		AbstractCveReconciler reconciler = reconcileFactory.createReconciler(getProps().getCveReconciliationMethod());
 		
 		boolean test1 = reconciler.reconcileDescriptions(badDescription,goodDescription, null, null, true);

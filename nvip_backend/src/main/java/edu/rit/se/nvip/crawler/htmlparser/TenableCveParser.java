@@ -23,8 +23,6 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import com.google.gson.Gson;
-import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.AffectedRelease;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.Product;
@@ -140,7 +138,7 @@ public class TenableCveParser extends AbstractCveParser implements CveParserInte
 	private List<CompositeVulnerability> getCVEsFromSummaryPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> list = new ArrayList<>();
 		String description = "";
-		String cve = null;
+		String cve;
 
 		Document doc = Jsoup.parse(sCVEContentHTML);
 		List<Element> tdList = doc.getElementsByClass("cve-id");

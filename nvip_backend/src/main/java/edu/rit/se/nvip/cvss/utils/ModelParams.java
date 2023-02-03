@@ -23,15 +23,13 @@
  */
 package edu.rit.se.nvip.cvss.utils;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
  * 
  * @author axoeec
  *
+ * TODO: Lets put these variables somewhere else and delete this class
  */
 public class ModelParams {
 	/**
@@ -42,33 +40,9 @@ public class ModelParams {
 	static final int printScorePerItems = 10; // print score (loss) per X itms
 	static final Random randomNumberGenerator = new Random(12345); // For shuffling repeatability
 	static final String wordVectorFile = "GoogleNews-vectors-negative300-SLIM.bin.gz";
-	// static final String wordVectorFile = "CveWord2vec.gz";
-
-	static final DecimalFormat decimalFormat = new DecimalFormat("0.##");
 
 	static final int vectorSize = 300; // Size of the word vectors. 300 in the Google News model
 	static final int cnnLayerFeatureMaps = 100; // Number of feature maps / channels / depth for each CNN layer
-
-	public static List<String> getExploitabilityLabels() {
-		List<String> exploitabilityLabels = new ArrayList<String>();
-		exploitabilityLabels.add("0");
-		exploitabilityLabels.add("1");
-		return exploitabilityLabels;
-	}
-
-	public static List<String> getSeverityLabels() {
-		List<String> severityLabels = new ArrayList<String>();
-		severityLabels.add("1");
-		severityLabels.add("4");
-		severityLabels.add("7");
-		severityLabels.add("10");
-		return severityLabels;
-
-	}
-
-	public static enum MapType {
-		CVE, SEVERITY, EXPLOITABILITY, DESCRIPTION
-	}
 
 	public static int getBatchsize() {
 		return batchSize;
@@ -88,10 +62,6 @@ public class ModelParams {
 
 	public static String getWordvectorfile() {
 		return wordVectorFile;
-	}
-
-	public static DecimalFormat getDecimalformat() {
-		return decimalFormat;
 	}
 
 	public static int getVectorsize() {

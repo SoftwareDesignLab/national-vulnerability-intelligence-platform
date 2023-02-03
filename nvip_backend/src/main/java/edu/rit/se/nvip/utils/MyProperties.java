@@ -58,10 +58,6 @@ public class MyProperties extends Properties {
 		return getProperty("database");
 	}
 
-	public String getNvipUrlSources() {
-		return getProperty("nvipUrlSources");
-	}
-
 	/**
 	 * get VDO training data info
 	 * 
@@ -80,10 +76,6 @@ public class MyProperties extends Properties {
 	public String getCveCharacterizationTrainingDataDirectory() {
 		String rootDir = getDataDir() + "/" + getProperty("cveCharacterizationTrainingDataDir") + "/";
 		return rootDir;
-	}
-
-	public String getNvipUrlSourcesFullPath() {
-		return getDataDir() + "/" + getProperty("nvipUrlSources");
 	}
 
 	public String getCveCharacterizationApproach() {

@@ -39,7 +39,6 @@ import org.nd4j.linalg.factory.Nd4j;
 
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 import opennlp.tools.sentdetect.SentenceDetector;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
@@ -58,7 +57,7 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
 
 public class NERmodel {
 
-	private boolean timingOn = false;
+	private final boolean timingOn = false;
 
 	private MultiLayerNetwork model = null; // NER model
 	private Char2vec c2vModel = null; // Char2Vector model
@@ -73,14 +72,11 @@ public class NERmodel {
 
 	public static final String SN = "SN", SV = "SV", OTHER = "O"; // class names
 
-	private String sentenceModelPath = "nlp/en-sent.bin"; // path to Apache Open NLP sentence model
-
-	private SentenceModel sentenceModel = null;
 	private SentenceDetector sentenceDetector = null;
 
 	private DataNormalization restoredNormalizer = null; // Feature normalizer
 
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	/**
 	 * Class constructor
@@ -110,7 +106,7 @@ public class NERmodel {
 			long endTime = System.currentTimeMillis();
 
 			if (timingOn) {
-				logger.info("Timing for NER model loading: " + Long.toString(endTime - startTime) + "ms.");
+				logger.info("Timing for NER model loading: " + (endTime - startTime) + "ms.");
 			}
 
 			// Load Char2vec model
@@ -120,7 +116,7 @@ public class NERmodel {
 			charVecLength = c2vModel.getOutVectorLength();
 
 			if (timingOn) {
-				logger.info("Timing for Char2Vector model initializing: " + Long.toString(endTime - startTime) + "ms.");
+				logger.info("Timing for Char2Vector model initializing: " + (endTime - startTime) + "ms.");
 			}
 
 			// Load Word2Vector model
@@ -130,22 +126,24 @@ public class NERmodel {
 			wordVecLength = w2vModel.getOutVectorLength();
 
 			if (timingOn) {
-				logger.info("Timing for Word2Vector model initializing: " + Long.toString(endTime - startTime) + "ms.");
+				logger.info("Timing for Word2Vector model initializing: " + (endTime - startTime) + "ms.");
 			}
 
 			rand = new Random();
 			featureLength = wordVecLength + charVecLength;
 
 			// Load Apache Open NLP sentence detector model
+			// path to Apache Open NLP sentence model
+			String sentenceModelPath = "nlp/en-sent.bin";
 			try {
 				startTime = System.currentTimeMillis();
 				InputStream modelIn = this.getClass().getClassLoader().getResourceAsStream(sentenceModelPath);
-				sentenceModel = new SentenceModel(modelIn);
+				SentenceModel sentenceModel = new SentenceModel(modelIn);
 				sentenceDetector = new SentenceDetectorME(sentenceModel);
 				modelIn.close();
 				endTime = System.currentTimeMillis();
 				if (timingOn) {
-					logger.info("Timing for Sentence detector model loading: " + Long.toString(endTime - startTime) + "ms.");
+					logger.info("Timing for Sentence detector model loading: " + (endTime - startTime) + "ms.");
 				}
 			} catch (Exception e) {
 				logger.error("Error loading sentence model for product name extraction from {}: {}", sentenceModelPath, e.toString());
@@ -172,7 +170,7 @@ public class NERmodel {
 	/**
 	 * Classifies each word in the array of words (strings) as one of three classes (SN, SV, O)
 	 * 
-	 * @param String[] array of words to be classified
+	 * @param words array of words to be classified
 	 * @return Array of labels (strings) of classes
 	 */
 	public String[] classify(String[] words) {
@@ -188,7 +186,7 @@ public class NERmodel {
 
 		long endTime = System.currentTimeMillis();
 		if (timingOn) {
-			logger.info("Timing for converting " + Integer.toString(words.length) + " words into 300 long feature vectors: " + Long.toString(endTime - startTime) + "ms.");
+			logger.info("Timing for converting " + words.length + " words into 300 long feature vectors: " + (endTime - startTime) + "ms.");
 		}
 
 		INDArray featuresDL4J = Nd4j.zeros(1, featureLength, words.length);
@@ -211,18 +209,17 @@ public class NERmodel {
 		INDArray out = model.output(featuresDL4J);
 		endTime = System.currentTimeMillis();
 		if (timingOn) {
-			logger.info("Timing for description classification (model.output(featuresDL4J)): " + Long.toString(endTime - startTime) + "ms.");
+			logger.info("Timing for description classification (model.output(featuresDL4J)): " + (endTime - startTime) + "ms.");
 		}
 
 		// Determine class based on the confidence levels of the model output
-		float maxValue = 0;
-		float curValue = 0;
-		int classNum = 0;
+		float maxValue;
+		float curValue;
+		int classNum;
 
 		for (int i = 0; i < words.length; i++) {
 			indecies[2] = i;
 			maxValue = 0;
-			curValue = 0;
 			classNum = 0;
 			for (int j = 0; j < numLabelClasses; j++) {
 				indecies[1] = j;
@@ -242,12 +239,12 @@ public class NERmodel {
 	/**
 	 * Classifies each word in the array of words (strings) as one of three classes (SN, SV, O)
 	 * 
-	 * @param String[] array of words to be classified
+	 * @param words array of words to be classified
 	 * @return ArrayList of Classified Words (ClassifiedWord objects)
 	 */
 	public ArrayList<ClassifiedWord> classifyComplex(String[] words) {
 
-		ArrayList<ClassifiedWord> result = new ArrayList<ClassifiedWord>();
+		ArrayList<ClassifiedWord> result = new ArrayList<>();
 		float[][] features = new float[words.length][featureLength];
 
 		// Convert each word into a feature vector
@@ -288,33 +285,13 @@ public class NERmodel {
 	}
 
 	/**
-	 * Classifies the whole description
-	 * 
-	 * @param String description
-	 * @return ArrayList of Classified Words (ClassifiedWord objects) or NULL if description is null or
-	 *         empty
-	 */
-	public ArrayList<ClassifiedWord> classifyComplex(String description) {
-
-		if (description == null || description.length() == 0) {
-			return null;
-		}
-
-		String[] descriptionWords = WhitespaceTokenizer.INSTANCE.tokenize(description);
-
-		ArrayList<ClassifiedWord> result = classifyComplex(descriptionWords);
-
-		return result;
-	}
-
-	/**
 	 * Convert classes numbers into labels (SN, SV, O)
 	 * 
-	 * @param int class number
+	 * @param classNum class number
 	 * @return String class label
 	 */
 	private String assignClassLabel(int classNum) {
-		String classLabel = null;
+		String classLabel;
 
 		if (classNum == 0) {
 			classLabel = SN;
@@ -330,11 +307,11 @@ public class NERmodel {
 	/**
 	 * Convert word into the 1D features vector
 	 * 
-	 * @param String      word to be converted
-	 * @param Word2Vector model instance
-	 * @param int         length of the word2vector vector
-	 * @param Char2vec    model instance
-	 * @param int         length of the Char2vec vector
+	 * @param wordModel      word to be converted
+	 * @param charModel model instance
+	 * @param log         length of the word2vector vector
+	 * @param charVecSize    model instance
+	 * @param wordVecSize         length of the Char2vec vector
 	 * 
 	 * @return features vector (length = length of the word2vector + length of the Char2vec vector)
 	 */
@@ -369,9 +346,8 @@ public class NERmodel {
 		}
 
 		// Concatenate vectors
-		for (int i = wordVecSize; i < wordVecSize + charVecSize; i++) {
-			wordVector[i] = wordVector2[i - wordVecSize];
-		}
+		if (wordVecSize + charVecSize - wordVecSize >= 0)
+			System.arraycopy(wordVector2, 0, wordVector, wordVecSize, wordVecSize + charVecSize - wordVecSize);
 
 		return wordVector;
 	}
@@ -379,26 +355,26 @@ public class NERmodel {
 	/**
 	 * classify words in the description into one of three classes (SN, SV, O)
 	 * 
-	 * @param String description text
+	 * @param description description text
 	 * 
 	 * @return ArrayList of strings arrays. Each array contains word (index=0) and the assigned class
 	 *         (index=1)
 	 */
 	public ArrayList<String[]> classify(String description) {
-		ArrayList<String[]> result = new ArrayList<String[]>();
+		ArrayList<String[]> result = new ArrayList<>();
 
 		// Split description into sentences
-		String sentences[] = sentenceDetector.sentDetect(description);
+		String[] sentences = sentenceDetector.sentDetect(description);
 
 		// Split description into words
-		ArrayList<String> wordsList = new ArrayList<String>();
+		ArrayList<String> wordsList = new ArrayList<>();
 		for (String sent : sentences) {
-			String whitespaceTokenizerLine[] = WhitespaceTokenizer.INSTANCE.tokenize(sent);
+			String[] whitespaceTokenizerLine = WhitespaceTokenizer.INSTANCE.tokenize(sent);
 			wordsList.addAll(Arrays.asList(whitespaceTokenizerLine));
 		}
 
 		// convert ArrayList into array of strings
-		String[] words = wordsList.toArray(new String[wordsList.size()]);
+		String[] words = wordsList.toArray(new String[0]);
 
 		// Perform classification
 		String[] resultClasses = classify(words);
@@ -409,33 +385,6 @@ public class NERmodel {
 		}
 
 		return result;
-	}
-
-	/**
-	 * Returns expected length of the vector after word2vec and char2vec vectors concatenation
-	 * 
-	 * @return expected length of the vector after concatenation
-	 */
-	public int getFeatureLength() {
-		return featureLength;
-	}
-
-	/**
-	 * Returns expected length of the vector after word embedding on the word level
-	 * 
-	 * @return expected length of the vector after word embedding on the word level
-	 */
-	public int getWordVecLength() {
-		return wordVecLength;
-	}
-
-	/**
-	 * Returns expected length of the vector after word embedding on the character level
-	 * 
-	 * @return expected length of the vector after word embedding on the character level
-	 */
-	public int getCharVecLength() {
-		return charVecLength;
 	}
 
 }

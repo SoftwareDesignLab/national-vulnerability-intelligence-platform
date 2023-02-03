@@ -54,10 +54,8 @@ import edu.rit.se.nvip.model.CompositeVulnerability.CveReconcileStatus;
 import edu.rit.se.nvip.model.DailyRun;
 import edu.rit.se.nvip.model.NvipSource;
 import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.model.VulnerabilityAttribsForUpdate;
 import edu.rit.se.nvip.nvd.PullNvdCveMain;
 import edu.rit.se.nvip.productnameextractor.AffectedProductIdentifier;
-import edu.rit.se.nvip.utils.PrepareDataForWebUi;
 import edu.rit.se.nvip.utils.CveUtils;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.NlpUtil;
@@ -80,7 +78,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class NVIPMain {
-	private static Logger logger = LogManager.getLogger(NVIPMain.class);
+	private static final Logger logger = LogManager.getLogger(NVIPMain.class);
 
 	// pull most recent CVEs from NVD
 	boolean refreshNvdCveList = true;
@@ -122,7 +120,7 @@ public class NVIPMain {
 
 			// get sources from the file or the database
 			DatabaseHelper db = DatabaseHelper.getInstance();
-			List<String> urls = new ArrayList<String>();
+			List<String> urls = new ArrayList<>();
 
 			if (!db.testDbConnection()) {
 				String configFile = "src/main/resources/db-" + propertiesNvip.getDatabaseType() + ".properties";
@@ -157,7 +155,7 @@ public class NVIPMain {
 
 		for (Object key : prop.keySet()) {
 
-			sb.append(String.format("%-40s", key) + "\t->\t" + prop.getProperty(key.toString()) + "\n");
+			sb.append(String.format("%-40s", key)).append("\t->\t").append(prop.getProperty(key.toString())).append("\n");
 		}
 
 		logger.info("\n*** Parameters from Config File *** \n{}", sb.toString());
@@ -205,7 +203,6 @@ public class NVIPMain {
 				CompositeVulnerability vulnCna = cveHashMapAll.get(cveId);
 				String newDescr = "";
 
-				// if (vulnGit.getDescription().contains(reservedStr)) {
 				if (CveUtils.isCveReservedEtc(vulnGit.getDescription())) {
 					/**
 					 * CVE is reserved/rejected etc in Mitre but nvip found a description for it.
@@ -250,7 +247,7 @@ public class NVIPMain {
 
 		if (refreshNvdCveList) {
 			logger.info("Refreshing NVD feeds before running NVIP...");
-			PullNvdCveMain.main(null); // update nvd CVEs
+			PullNvdCveMain.pullFeeds(); // update nvd CVEs
 		}
 
 		/**
@@ -317,7 +314,7 @@ public class NVIPMain {
 
 		// log .csv files
 		logger.info("Creating output CSV files...");
-		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap, databaseHelper, runId);
+		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap);
 
 		// record additional available stats
 		recordAdditionalStats(databaseHelper, runId, dailyRunStats, crawlStartTime, crawlEndTime, dbTime);

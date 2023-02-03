@@ -46,7 +46,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class BugzillaParser extends AbstractCveParser implements CveParserInterface {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public BugzillaParser(String domainName) {
 		sourceDomainName = domainName;
@@ -54,7 +54,7 @@ public class BugzillaParser extends AbstractCveParser implements CveParserInterf
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 
 		if (sSourceURL.contains("www.bugzilla.org"))
 			return vulnerabilities;
@@ -79,7 +79,7 @@ public class BugzillaParser extends AbstractCveParser implements CveParserInterf
 	 * @return
 	 */
 	private List<CompositeVulnerability> parseVulnPage(Set<String> uniqueCves, String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 

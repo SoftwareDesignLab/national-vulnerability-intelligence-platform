@@ -29,10 +29,10 @@ package edu.rit.se.nvip.model;
  *
  */
 public class VdoCharacteristic {
-	private String cveId = null;
-	private int vdoLabelId = 0;
-	private double vdoConfidence = 0;
-	private int vdoNounGroupId = 0;
+	private String cveId;
+	private final int vdoLabelId;
+	private final double vdoConfidence;
+	private final int vdoNounGroupId;
 
 	public VdoCharacteristic(String cveId, int vdoLabelId, double vdoConfidence, int vdoNounGroupId) {
 		super();
@@ -54,24 +54,12 @@ public class VdoCharacteristic {
 		return vdoConfidence;
 	}
 
-	public void setVdoConfidence(double vdoConfidence) {
-		this.vdoConfidence = vdoConfidence;
-	}
-
 	public int getVdoLabelId() {
 		return vdoLabelId;
 	}
 
-	public void setVdoLabelId(int vdoLabelId) {
-		this.vdoLabelId = vdoLabelId;
-	}
-
 	public int getVdoNounGroupId() {
 		return vdoNounGroupId;
-	}
-
-	public void setVdoNounGroupId(int vdoNounGroupId) {
-		this.vdoNounGroupId = vdoNounGroupId;
 	}
 
 	@Override
