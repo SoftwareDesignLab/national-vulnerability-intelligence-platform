@@ -25,7 +25,6 @@ package edu.rit.se.nvip.patchfinder.commits;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.jgit.revwalk.DepthWalk.Commit;
 
 /**
@@ -38,23 +37,12 @@ public class GithubCommit {
 	private final List<String> foundBugs;
 	private final List<String> foundCves;
 	private final Commit commit;
-	private final List<CommitFile> affectedFiles;
 
-	public GithubCommit(String sha, List<String> foundCves, List<String> foundBugs, Commit commit,
-			List<CommitFile> affectedFiles) {
+	public GithubCommit(String sha, List<String> foundCves, List<String> foundBugs, Commit commit) {
 		this.sha = sha;
 		this.foundCves = foundCves;
 		this.foundBugs = foundBugs;
 		this.commit = commit;
-		this.affectedFiles = affectedFiles;
-	}
-
-	public List<String> getFoundBugs() {
-		return foundBugs;
-	}
-
-	public List<String> getFoundCves() {
-		return foundCves;
 	}
 
 	public Commit getCommit() {
@@ -67,10 +55,6 @@ public class GithubCommit {
 
 	public boolean isFixingBug() {
 		return this.foundBugs.size() > 0;
-	}
-
-	public List<CommitFile> getAffectedFiles() {
-		return this.affectedFiles;
 	}
 
 	public String getSha() {

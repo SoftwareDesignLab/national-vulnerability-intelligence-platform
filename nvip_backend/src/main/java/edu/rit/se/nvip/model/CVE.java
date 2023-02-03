@@ -45,16 +45,4 @@ public class CVE {
 		return cveId;
 	}
 
-	public String getFullPageUrl() {
-		return fullPageUrl;
-	}
-
-	public String getProcessedDate() {
-		return processedDate;
-	}
-
-	public String getCveContent() {
-		return cveContent;
-	}
-
 }

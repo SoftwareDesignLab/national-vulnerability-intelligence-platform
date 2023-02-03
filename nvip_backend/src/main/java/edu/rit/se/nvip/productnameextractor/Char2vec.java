@@ -46,7 +46,7 @@ import org.nd4j.linalg.factory.Nd4j;
 public class Char2vec {
 		
 	//Supported symbols
-	private char[] dict = {'!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.',
+	private final char[] dict = {'!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.',
             '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<',
             '=', '>', '?', '@', '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
             'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
@@ -58,27 +58,23 @@ public class Char2vec {
 	
 	// This value is later updated from the loaded model
 	private int vectorLength = 50;
-	
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	
+
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
+
 	/**
 	 * Class constructor
 	 * @param String Model config file path (json file)
-	 * @param String Model weights path (h5 file) 
+	 * @param String Model weights' path (h5 file)
 	 */	
 	public Char2vec(String modelConfigPath, String modelWeightsPath) {
 		super();
-		
+
 		try {
 			//Try to load the Keras model. NOTE: in the config JSON file after model export, "class_name": "Functional" has to be changed to "class_name": "Model"
 			model = KerasModelImport.importKerasModelAndWeights(modelConfigPath, modelWeightsPath);
 			//get expected vector length
 			vectorLength = (int) model.layerSize(0);
-		} catch (IOException e) {
-			logger.error(e);
-		} catch (UnsupportedKerasConfigurationException e) {
-			logger.error(e);
-		} catch (InvalidKerasConfigurationException e) {
+		} catch (IOException | UnsupportedKerasConfigurationException | InvalidKerasConfigurationException e) {
 			logger.error(e);
 		}
 	}
@@ -106,7 +102,7 @@ public class Char2vec {
 		ArrayList<int[]> wordMatrix = new ArrayList<int[]>();
 		
 		if (dictList == null) {
-			dictList = new ArrayList<Character>();
+			dictList = new ArrayList<>();
 			for (int i=0; i<dict.length; i++) {
 				dictList.add(dict[i]);
 			}
@@ -148,8 +144,7 @@ public class Char2vec {
 	{
 		
 		INDArray[] output = model.output(features); //Get output from he model
-		
-		//Convert output to the float[]
+
 		INDArray outputRow = output[0].getRow(0);
 		float[] resultVector = new float[outputRow.columns()];
 		for (int i=0; i<resultVector.length; i++) {
@@ -174,8 +169,7 @@ public class Char2vec {
 			}
 		}
 		INDArray features = preprocessWord(word);
-		float[] vector = processWords(features);
-		return vector;
+		return processWords(features);
 	}
 
 }

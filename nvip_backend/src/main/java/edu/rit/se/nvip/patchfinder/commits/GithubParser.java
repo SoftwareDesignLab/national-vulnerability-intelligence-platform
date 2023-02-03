@@ -42,7 +42,7 @@ public class GithubParser {
 
 	private static final String REGEX_CVE = "(CVE-[0-9]+-[0-9]+)";
 	// FIXME this regex won't work very well for things like: fixed bugs 123 and
-	// 456. In such case, the patch is for both bugs!
+	// FIXME 456. In such case, the patch is for both bugs!
 	private static final String REGEX_BUG = "bug|BUG|Bug[ #]*([0-9]+)";
 	private static final Pattern PATTERN_CVES = Pattern.compile(REGEX_CVE);
 	private static final Pattern PATTERN_BUGS = Pattern.compile(REGEX_BUG);
@@ -72,14 +72,12 @@ public class GithubParser {
 		RepositoryId repository = new RepositoryId(user, repo);
 		List<RepositoryCommit> commitsList = service.getCommits(repository);
 
-		System.out.println("Found " + commitsList.size() + " commits");
-		commitsList.stream().forEachOrdered((repoCommit) -> {
+		commitsList.forEach((repoCommit) -> {
 			org.eclipse.egit.github.core.Commit commit = repoCommit.getCommit();
 			String message = commit.getMessage();
 			Matcher matcherCve = PATTERN_CVES.matcher(message);
 			List<String> foundCves = new ArrayList<>();
 			while (matcherCve.find()) {
-				System.out.println("Found CVE Commit" + matcherCve.group(0));
 				foundCves.add(matcherCve.group(0));
 			}
 			List<String> foundBugs = new ArrayList<>();
@@ -88,37 +86,13 @@ public class GithubParser {
 				System.out.println("Found BUG commit" + matcherBug.group(0));
 				foundBugs.add(matcherBug.group(0));
 			}
-			if (foundBugs.size() > 0 || foundCves.size() > 0) {
-				// GithubCommit githubCommit = new GithubCommit(repoCommit.getSha(), foundCves,
-				// foundBugs, commit,
-				// repoCommit.getFiles());
-				// this.fixCommits.add(githubCommit);
-			}
 		});
 	}
 
 	public List<GithubCommit> getCveCommits() {
 		List<GithubCommit> cveCommits = new ArrayList<>();
-		fixCommits.stream().filter((c) -> (c.isFixingCve())).forEachOrdered((c) -> {
-			cveCommits.add(c);
-		});
+		fixCommits.stream().filter(GithubCommit::isFixingCve).forEachOrdered(cveCommits::add);
 		return cveCommits;
-	}
-
-	public List<GithubCommit> getBugCommits() {
-		List<GithubCommit> bugCommits = new ArrayList<>();
-		fixCommits.stream().filter((c) -> (c.isFixingBug())).forEachOrdered((c) -> {
-			bugCommits.add(c);
-		});
-		return bugCommits;
-	}
-
-	public List<GithubCommit> getFixCommits() {
-		List<GithubCommit> bugCommits = new ArrayList<>();
-		fixCommits.stream().filter((c) -> (c.isFixingBug())).forEachOrdered((c) -> {
-			bugCommits.add(c);
-		});
-		return bugCommits;
 	}
 
 }

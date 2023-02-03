@@ -45,7 +45,6 @@ import weka.core.Instances;
 public class OrdinaryThenEntropyClassifier extends OrdinaryCveClassifier {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	int CONFIDENCE_DIFFERENCE_THRESHOLD = 20;
-	// protected String cveClassifierName = "OrdinaryThenEntropyClassifier";
 
 	boolean testMultiClassPrediction = false;
 
@@ -58,7 +57,7 @@ public class OrdinaryThenEntropyClassifier extends OrdinaryCveClassifier {
 		try {
 			sCommaSeparatedAttribRows = FileUtils.readFileToString(new File(preProcessedTrainingDataFile));
 		} catch (IOException e) {
-			logger.error("Error loading training data file: " + preProcessedTrainingDataFile + ": " + e.toString());
+			logger.error("Error loading training data file: " + preProcessedTrainingDataFile + ": " + e);
 		}
 
 		this.sCommaSeparatedCsvData = sCommaSeparatedAttribRows;
@@ -71,15 +70,14 @@ public class OrdinaryThenEntropyClassifier extends OrdinaryCveClassifier {
 		myInstances = instances;
 		classifier.buildClassifier(instances);
 
-		String info = "A CVE classifier [" + this.classifier.getClass().getSimpleName() + "] is trained with " + instances.numInstances() + " instances and " + instances.numAttributes() + " attributes!";
 	}
 
 	@Override
 	public ArrayList<String[]> predict(Instance currentInstance, boolean bPredictMultiple) {
-		ArrayList<String[]> prediction = new ArrayList<String[]>();
+		ArrayList<String[]> prediction = new ArrayList<>();
 		if (currentInstance.numAttributes() != myInstances.numAttributes()) {
 			logger.error("Error! The instances in the data set has " + myInstances.numAttributes() + " attribs, but the instance you are trying to predict has " + currentInstance.numAttributes()
-					+ " atribs?\nNo prediction could be done for this instance: " + currentInstance.toString());
+					+ " atribs?\nNo prediction could be done for this instance: " + currentInstance);
 
 			return prediction;
 		}
@@ -109,7 +107,7 @@ public class OrdinaryThenEntropyClassifier extends OrdinaryCveClassifier {
 
 			prediction = super.classify(classifier, currentInstance, true);
 			int differenceOfConfidences = Integer.MAX_VALUE;
-			if (prediction.size() > 1) { // the classifier might be 100% sure and you may have only one prediction!
+			if (prediction.size() > 1) { // the classifier might be 100% sure, and you may have only one prediction!
 				double conf1 = Double.parseDouble(prediction.get(0)[1]);
 				double conf2 = Double.parseDouble(prediction.get(1)[1]);
 				differenceOfConfidences = (int) (100 * (Math.abs(conf1 - conf2) / conf2));
@@ -118,7 +116,7 @@ public class OrdinaryThenEntropyClassifier extends OrdinaryCveClassifier {
 			if (prediction.size() >= 2 && differenceOfConfidences < CONFIDENCE_DIFFERENCE_THRESHOLD) {
 
 				// get class labels for best two predictions
-				HashMap<String, Integer> indexes = new HashMap<String, Integer>();
+				HashMap<String, Integer> indexes = new HashMap<>();
 				for (int i = 0; i < 2; i++)
 					indexes.put(prediction.get(i)[0], i);
 
@@ -152,11 +150,6 @@ public class OrdinaryThenEntropyClassifier extends OrdinaryCveClassifier {
 		// not applicable
 		return null;
 	}
-
-//	@Override
-//	public String getCveClassifierName() {
-//		return cveClassifierName;
-//	}
 
 	@Override
 	public boolean getTestMultiClassPrediction() {

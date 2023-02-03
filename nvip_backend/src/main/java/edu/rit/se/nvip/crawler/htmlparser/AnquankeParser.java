@@ -23,23 +23,15 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
@@ -53,7 +45,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class AnquankeParser extends AbstractCveParser implements CveParserInterface {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public AnquankeParser(String domainName) {
 		sourceDomainName = domainName;
@@ -61,23 +53,16 @@ public class AnquankeParser extends AbstractCveParser implements CveParserInterf
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
-
-		/**
-		 * Ignore for now! The content is in Chinese
-		 */
-//		Set<String> uniqueCves = getCVEs(sCVEContentHTML);
-//		if (uniqueCves.size() == 0)
-//			return vulnerabilities;
-//
-//		vulnerabilities = parseVulnPage(uniqueCves, sSourceURL, sCVEContentHTML);
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 
 		return vulnerabilities;
 	}
 
 	/**
 	 * Parse pages like: https://www.anquanke.com/post/id/210200
-	 * 
+	 *
+	 * TODO: 1/18/23 --> Change this to a parseWebPage method (if we still want to use it)
+	 *
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
 	 * @return
@@ -93,7 +78,6 @@ public class AnquankeParser extends AbstractCveParser implements CveParserInterf
 			String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 
 			Elements elements = document.select("title");
-			// TODO
 			/**
 			 * Ignore for now! The content is in Chinese
 			 */

@@ -1,11 +1,9 @@
 package edu.rit.se.nvip.crawler;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -20,8 +18,6 @@ import java.util.Random;
 
 import javax.net.ssl.SSLException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -29,9 +25,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import edu.rit.se.nvip.cnnvd.CnnvdCveController;
 import edu.rit.se.nvip.cnnvd.CnnvdCveParser;
-import edu.rit.se.nvip.cnnvd.CnnvdCveController.CnnvdPageProcessor;
 import edu.rit.se.nvip.model.CnnvdVulnerability;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
@@ -133,7 +127,7 @@ public class QuickCveCrawler {
 
 	public String getContentFromUrl(String url) {
 		StringBuilder response = new StringBuilder();
-		BufferedReader bufferedReader = null;
+		BufferedReader bufferedReader;
 		try {
 			URL urlObject = new URL(url);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) urlObject.openConnection();

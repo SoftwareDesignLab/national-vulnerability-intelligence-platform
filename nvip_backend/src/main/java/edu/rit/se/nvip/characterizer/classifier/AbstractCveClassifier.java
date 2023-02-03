@@ -250,15 +250,6 @@ public abstract class AbstractCveClassifier {
 
 	}
 
-	private HashMap<String, int[]> resetMap(HashMap<String, int[]> map) {
-		for (String key : map.keySet()) {
-			int[] counts = map.get(key);
-			counts[0] = 0;
-			counts[1] = 0;
-			map.put(key, counts);
-		}
-		return map;
-	}
 
 	/**
 	 * get label index map
@@ -267,7 +258,7 @@ public abstract class AbstractCveClassifier {
 	 * @return
 	 */
 	private Map<String, Integer> createLabelIndexMap(HashMap<String, int[]> labelCountMap) {
-		Map<String, Integer> labelIndexMap = new HashMap<String, Integer>();
+		Map<String, Integer> labelIndexMap = new HashMap<>();
 		int index = 0;
 		for (String key : labelCountMap.keySet()) {
 			labelIndexMap.put(key, index);
@@ -287,11 +278,9 @@ public abstract class AbstractCveClassifier {
 	 * @return
 	 */
 	public double nFoldsPrediction(int folds, boolean bPredictMultiple, int nMaxNumOfClassesToPredict) {
-		double overallAccuracy = 0.0;
-		double totAccuracy = 0;
 		HashMap<String, int[]> labelCountMap = null;
 		HashMap<String, Integer> labelClassCountMap = null;
-		Map<String, Double> labelMapJaccard = new HashMap<String, Double>();
+		Map<String, Double> labelMapJaccard = new HashMap<>();
 		try {
 			// reload data
 			myInstances = getInstacesFromCsvString(sCommaSeparatedCsvData, useNGrams);
@@ -320,7 +309,7 @@ public abstract class AbstractCveClassifier {
 					Instance instance = test.get(i);
 					ArrayList<String[]> prediction = predict(instance, bPredictMultiple);
 
-					String predictedLabel = null;
+					String predictedLabel;
 					String trueLabel = instance.stringValue(instance.classAttribute());
 					if (bPredictMultiple) {
 						boolean isTrue = false;
@@ -357,13 +346,8 @@ public abstract class AbstractCveClassifier {
 					confMatrix[labelIndexMap.get(trueLabel)][labelIndexMap.get(predictedLabel)]++;
 
 				}
-				double accuracy = trueCount * 100.0 / (trueCount + falseCount);
 
-				totAccuracy += accuracy;
-
-			} // for (int n = 0; n < folds; n++) {
-
-			overallAccuracy = Double.parseDouble(formatter.format(totAccuracy / folds));
+			}
 
 			labelMapJaccard = calculateJaccardMetric(labelIndexMap, confMatrix);
 		} catch (Exception e) {
@@ -384,7 +368,7 @@ public abstract class AbstractCveClassifier {
 	 * @param confMatrix
 	 */
 	private Map<String, Double> calculateJaccardMetric(Map<String, Integer> labelIndexMap, int[][] confMatrix) {
-		Map<String, Double> labelMapJaccard = new HashMap<String, Double>();
+		Map<String, Double> labelMapJaccard = new HashMap<>();
 
 		if (labelIndexMap.size() < 3) // for multi label only
 			return labelMapJaccard;
@@ -407,7 +391,6 @@ public abstract class AbstractCveClassifier {
 			labelMapJaccard.put(label, jaccard);
 		}
 
-		// logger.info(sJaccard);
 		return labelMapJaccard;
 
 	}
@@ -456,25 +439,6 @@ public abstract class AbstractCveClassifier {
 			if (labels.containsKey(instance.stringValue(instance.classAttribute())) && (instanceComparator.compare(instance, excludedTestInstance) != 0))
 				instances.add(instance);
 		return instances;
-	}
-
-	/**
-	 * get words from instance, ignore class, start from index 1!
-	 * 
-	 * @param instance
-	 * @return
-	 */
-	protected String getWordsFromInstance(Instance instance) {
-		StringBuffer features = new StringBuffer();
-		for (int i = 1; i < instance.numAttributes(); i++) {
-			int count = (int) instance.value(i);
-			for (int j = 0; j < count; j++) {
-				features.append(instance.attribute(i).name()); // add count words
-				features.append(" ");
-			}
-		}
-
-		return "\t" + features.toString();
 	}
 
 	/**
@@ -576,7 +540,6 @@ public abstract class AbstractCveClassifier {
 	/**
 	 * Create an Instance from a comma separated string
 	 * 
-	 * @param myInstances            The instances to add the new instance
 	 * @param sCommaSeparatedAttribs Comma separated string that stores attribs
 	 * @param classIsmissing         sCommaSeparatedAttribs does not include the
 	 *                               class attrib
@@ -584,7 +547,7 @@ public abstract class AbstractCveClassifier {
 	 */
 	protected Instance createInstanceFromCommaSeparatedAttribs(String sCommaSeparatedAttribs, boolean classIsmissing) {
 
-		DenseInstance currentInstance = null;
+		DenseInstance currentInstance;
 		try {
 
 			String[] attribs = sCommaSeparatedAttribs.split(",");
@@ -592,13 +555,13 @@ public abstract class AbstractCveClassifier {
 			double[] instanceValues = new double[numberOfAttribs];
 
 			// set numeric attribs: store nominal attrib indexes
-			ArrayList<Integer> nominalIndexList = new ArrayList<Integer>();
+			ArrayList<Integer> nominalIndexList = new ArrayList<>();
 
 			for (int i = 1; i < numberOfAttribs - 1; i++) {
 
 				try {
 					String sToken = myInstances.attribute(i).name();
-					if (sCommaSeparatedAttribs.indexOf(sToken) >= 0) {
+					if (sCommaSeparatedAttribs.contains(sToken)) {
 						// binary
 						instanceValues[i] = 1;
 
@@ -670,10 +633,6 @@ public abstract class AbstractCveClassifier {
 		return instances;
 	}
 
-	protected Instances getMyInstances() {
-		return myInstances;
-	}
-
 	public boolean getTestMultiClassPrediction() {
 		return testMultiClassPrediction;
 	}
@@ -695,29 +654,5 @@ public abstract class AbstractCveClassifier {
 		} catch (IOException e) {
 			logger.error(e.toString());
 		}
-	}
-
-	public String convertCSVtoARFF(String csvFile) {
-		String myARFFFile = null;
-
-		try {
-			// load CSV
-			CSVLoader loader = new CSVLoader();
-			loader.setSource(new File(csvFile));
-			Instances data = loader.getDataSet();
-
-			// construct a name for arff
-			myARFFFile = csvFile.replaceAll(".csv", "") + ".arff";
-
-			// save ARFF
-			BufferedWriter writer = new BufferedWriter(new FileWriter(myARFFFile));
-			writer.write(data.toString());
-			writer.flush();
-			writer.close();
-		} catch (IOException e) {
-			logger.error("Error converting csv {} to arff! {}", csvFile, e.toString());
-			return null;
-		}
-		return myARFFFile;
 	}
 }

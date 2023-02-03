@@ -23,43 +23,18 @@
  */
 package edu.rit.se.nvip.crawler.urlcrawler;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Whitelist;
-import org.jsoup.select.Elements;
 
-import com.opencsv.CSVWriter;
-
-import org.jsoup.nodes.Document.OutputSettings;
-
-import edu.rit.se.nvip.cvereconcile.CveReconciler;
 import edu.rit.se.nvip.model.UrlCrawlerData;
-import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.utils.CsvUtils;
-import edu.rit.se.nvip.utils.UtilHelper;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -73,31 +48,31 @@ import edu.uci.ics.crawler4j.url.WebURL;
  *
  */
 public class UrlCrawler extends WebCrawler {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg" + "|png|mp3|mp4|zip|gz))$");
-	private String regexCVEID = "CVE-[0-9]+-[0-9]+";
 
 	/**
 	 * Crawled URLs that include a CVEID (can be at depth>=0)
 	 */
-	private HashMap<String, Integer> hashMapSourceURLsFound = new HashMap<String, Integer>();
+	private HashMap<String, Integer> hashMapSourceURLsFound = new HashMap<>();
 
 	/**
 	 * URLs that are forbidden (depth >=0). NVIP sources that have the same base URL
 	 * with those should be marked, to have an adaptive crawler process
 	 */
-	private HashMap<String, Integer> hashMapForbiddenURLs = new HashMap<String, Integer>();
+	private HashMap<String, Integer> hashMapForbiddenURLs = new HashMap<>();
 
 	/**
 	 * NVIP URLs (depth=0) with status code != HTTP_OK. Those URLs should be removed
 	 * from the NVIP URL sources!
 	 */
-	private HashMap<String, Integer> hashMapSourceURLsNotOk = new HashMap<String, Integer>();
-	Pattern pattern = null;
+	private final HashMap<String, Integer> hashMapSourceURLsNotOk = new HashMap<>();
+	Pattern pattern;
 	static Map<String, Integer> ignoredDomains = null;
 
 	public UrlCrawler() {
 		super();
+		String regexCVEID = "CVE-[0-9]+-[0-9]+";
 		pattern = Pattern.compile(regexCVEID);
 
 		synchronized (UrlCrawler.class) {
@@ -170,8 +145,7 @@ public class UrlCrawler extends WebCrawler {
 	 * @param sContent
 	 */
 	private boolean pickURL(String pageURL, String sContent) {
-		// if (haveCveId(sContent)) {
-		if (haveCveId(pageURL, sContent, ignoredDomains)) {
+		if (haveCveId(sContent, ignoredDomains)) {
 			if (!hashMapSourceURLsFound.containsKey(pageURL)) {
 				hashMapSourceURLsFound.put(pageURL, 0);
 				if (hashMapSourceURLsFound.size() % 10 == 0)
@@ -185,28 +159,16 @@ public class UrlCrawler extends WebCrawler {
 	@Override
 	protected void handlePageStatusCode(WebURL webUrl, int statusCode, String statusDescription) {
 		if (statusCode == HttpStatus.SC_FORBIDDEN) {
-			logger.warn("***CRAWLER WARN! Could not get content from " + webUrl.getURL().toString() + ", StatusCode: " + statusCode + ", StatusDescription:" + statusDescription);
-			hashMapForbiddenURLs.put(webUrl.getURL().toString(), 0);
+			logger.warn("***CRAWLER WARN! Could not get content from " + webUrl.getURL() + ", StatusCode: " + statusCode + ", StatusDescription:" + statusDescription);
+			hashMapForbiddenURLs.put(webUrl.getURL(), 0);
 		}
 
 		// check base url status?
 		if (webUrl.getDepth() == 0) {
 			if (statusCode != HttpStatus.SC_OK) {
-				hashMapSourceURLsNotOk.put(webUrl.getURL().toString(), statusCode);
+				hashMapSourceURLsNotOk.put(webUrl.getURL(), statusCode);
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @param strContent
-	 * @return
-	 */
-	private boolean haveCveId(String strContent) {
-		Matcher matcher = pattern.matcher(strContent);
-		if (matcher.find())
-			return true;
-		return false;
 	}
 
 	@Override
@@ -218,12 +180,11 @@ public class UrlCrawler extends WebCrawler {
 	 * Include the URL only if it is not among the ignored domains and has a recent
 	 * CVE.
 	 * 
-	 * @param url
 	 * @param strContent
 	 * @param ignoredDomains
 	 * @return
 	 */
-	private boolean haveCveId(String url, String strContent, Map<String, Integer> ignoredDomains) {
+	private boolean haveCveId(String strContent, Map<String, Integer> ignoredDomains) {
 		// does the page include any recent CVEs
 		Matcher cveMatcher = pattern.matcher(strContent);
 		while (cveMatcher.find()) {

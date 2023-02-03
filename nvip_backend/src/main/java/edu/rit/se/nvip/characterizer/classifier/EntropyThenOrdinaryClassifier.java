@@ -40,7 +40,6 @@ import weka.core.Instances;
  */
 public class EntropyThenOrdinaryClassifier extends EntropyBasedCveClassifier {
 	private int numOfTopClassesToConsiderForPrediction = 2;
-	// protected String cveClassifierName = "EntropyThenOrdinaryClassifier";
 	boolean testMultiClassPrediction = false;
 
 	public EntropyThenOrdinaryClassifier(String sCommaSeparatedAttribRows) {
@@ -62,14 +61,14 @@ public class EntropyThenOrdinaryClassifier extends EntropyBasedCveClassifier {
 			if (prediction.size() >= numOfTopClassesToConsiderForPrediction && sign < 20) {
 
 				// retrain a small model including data from the labels that have closest match.
-				HashMap<String, Integer> labels = new HashMap<String, Integer>();
+				HashMap<String, Integer> labels = new HashMap<>();
 				for (int k = 0; k < numOfTopClassesToConsiderForPrediction; k++) {
 					labels.put(prediction.get(k)[0], 0);
 				}
 
 				OrdinaryCveClassifier ordinaryCveClassifier = new OrdinaryCveClassifier();
 				J48 j48 = new J48();
-				// j48.setOptions(new String[] { "-C", "0.4", "-M", "0"});
+
 				ordinaryCveClassifier.resetClassifier(j48);
 				Instances newInstances = getSubsetOfInstances(labels, myInstances, currentInstance);
 				ordinaryCveClassifier.trainMLModel(newInstances);
@@ -85,25 +84,13 @@ public class EntropyThenOrdinaryClassifier extends EntropyBasedCveClassifier {
 				}
 			}
 
-			// for test #########
-//			String realLabel = currentInstance.stringValue(currentInstance.classAttribute());
-//			if (realLabel.contains("physical security") && !prediction.get(0)[0].contains("physical security"))
-//				logger.info("Wrong: " + prediction.get(0)[0] + "\tInstance:" + getWordsFromInstance(currentInstance).toString());
-//			else if (prediction.get(0)[0].equalsIgnoreCase("write") && realLabel.equalsIgnoreCase("write"))
-//				logger.info("Correct: " + prediction.get(0)[0]);
-			// for test #########
 		} catch (Exception e) {
-			logger.error("Error while predicting label for " + currentInstance + ": " + e.toString());
+			logger.error("Error while predicting label for " + currentInstance + ": " + e);
 		}
 
 		return prediction;
 	}
-
-//	@Override
-//	public String getCveClassifierName() {
-//		return cveClassifierName;
-//	}
-
+	
 	@Override
 	public boolean getTestMultiClassPrediction() {
 		return testMultiClassPrediction;

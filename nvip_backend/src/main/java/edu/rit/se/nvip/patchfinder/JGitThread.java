@@ -34,12 +34,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class JGitThread implements Runnable {
-	private HashMap<Integer, String> sources;
-	private String clonePath;
+	private final HashMap<Integer, String> sources;
+	private final String clonePath;
 	private static final Logger logger = LogManager.getLogger(JGitCVEPatchDownloader.class.getName());
 	private JGitParser previous;
 	private static final DatabaseHelper db = DatabaseHelper.getInstance();
-	private JGitCVEPatchDownloader patchDownloader;
+	private final JGitCVEPatchDownloader patchDownloader;
 
 	public JGitThread(HashMap<Integer, String> sources, String cP, JGitCVEPatchDownloader patchDownloader) {
 		this.sources = sources;

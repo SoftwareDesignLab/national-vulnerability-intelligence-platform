@@ -30,9 +30,9 @@ package edu.rit.se.nvip.model;
  */
 public class AffectedRelease {
 
-	private int id;
+	private final int id;
 	private String cveId;
-	private String cpe;
+	private final String cpe;
 	private String releaseDate;
 	private String version;
 

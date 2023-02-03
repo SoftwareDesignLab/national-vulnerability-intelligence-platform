@@ -37,21 +37,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.diff.DiffEntry;
-import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.diff.RawTextComparator;
-import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.internal.storage.file.WindowCache;
-import org.eclipse.jgit.lib.Constants;
-import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.WindowCacheConfig;
 import org.eclipse.jgit.util.FileUtils;
-import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 /**
  * Author: Fawaz Alhenaki Edited by: Andrew Pickard (As of 10/19/2021)
@@ -62,15 +54,14 @@ public class JGitParser {
 
 	private static final String REGEX_VULN = "vulnerability|Vulnerability|vuln|Vuln|VULN[ #]*([0-9]+)";
 	private static final String REGEX_CVE = "(CVE[-]*[0-9]*[-]*[0-9]*)";
-	private static final String REGEX_BUG = "bug|BUG|Bug[ #]*([0-9]+)";
 	private static final Pattern PATTERN_VULN = Pattern.compile(REGEX_VULN);
 	private static final Pattern PATTERN_CVES = Pattern.compile(REGEX_CVE);
 	private Repository localRepo;
 	private Git git;
-	private List<JGithubCommit> fixCommits;
+	private final List<JGithubCommit> fixCommits;
 
-	private String localDownloadLoc;
-	private String remoteLoc;
+	private final String localDownloadLoc;
+	private final String remoteLoc;
 	private String projectName;
 
 	public JGitParser(String remoteLoc, String localDownloadLoc) {
@@ -131,8 +122,6 @@ public class JGitParser {
 							return false;
 						}
 					}).call();
-
-			//git.close();
 
 			logger.info("Repo " + projectName + " successfully cloned!");
 		} catch (Exception e) {
@@ -201,9 +190,6 @@ public class JGitParser {
 				Matcher matcherCve = PATTERN_CVES.matcher(message);
 				List<String> foundCves = new ArrayList<>();
 
-				List<String> foundBugs = new ArrayList<>();
-				// Matcher matcherBug = PATTERN_BUGS.matcher(message);
-
 				List<String> foundVulns = new ArrayList<>();
 				Matcher matcherVuln = PATTERN_VULN.matcher(message);
 
@@ -234,49 +220,14 @@ public class JGitParser {
 				}
 
 				if (!foundCves.isEmpty() || !foundVulns.isEmpty()) {
-					try {
-						JGithubCommit githubCommit = new JGithubCommit(repoCommit.getName(), foundCves, foundBugs,
-								foundVulns, repoCommit, getFilesPathsByCommit(repoCommit));
-						this.fixCommits.add(githubCommit);
-					} catch (IOException ex) {
-						logger.error(ex.getMessage());
-					}
+					JGithubCommit githubCommit = new JGithubCommit(repoCommit.getName(), repoCommit);
+					this.fixCommits.add(githubCommit);
 				}
 			}
 		}
 
 		return extractJGithubComits(fixCommits);
 
-	}
-
-	/**
-	 * Obtains a files paths for a specific commit
-	 * 
-	 * @param commit
-	 * @return
-	 * @throws IOException
-	 * @throws MissingObjectException
-	 * @throws GitAPIException
-	 */
-	private List<String> getFilesPathsByCommit(RevCommit commit) throws IOException, MissingObjectException {
-
-		List<String> paths = new ArrayList();
-
-		RevWalk rw = new RevWalk(localRepo);
-		ObjectId head = localRepo.resolve(Constants.HEAD);
-		RevCommit parent = rw.parseCommit(commit.getParent(0).getId());
-		DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
-
-		df.setRepository(localRepo);
-		df.setDiffComparator(RawTextComparator.DEFAULT);
-		df.setDetectRenames(true);
-
-		List<DiffEntry> diffs = df.scan(parent.getTree(), commit.getTree());
-
-		for (DiffEntry diff : diffs) {
-			paths.add(diff.getNewPath());
-		}
-		return paths;
 	}
 
 	/**

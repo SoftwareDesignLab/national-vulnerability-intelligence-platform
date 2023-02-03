@@ -39,10 +39,6 @@ public class NvipSource {
 		this.httpStatus = httpStatus;
 	}
 
-	public int getSourceId() {
-		return sourceId;
-	}
-
 	public void setSourceId(int sourceId) {
 		this.sourceId = sourceId;
 	}
@@ -62,10 +58,6 @@ public class NvipSource {
 
 	public int getHttpStatus() {
 		return httpStatus;
-	}
-
-	public void setHttpStatus(int httpStatus) {
-		this.httpStatus = httpStatus;
 	}
 
 	public void setDescription(String description) {

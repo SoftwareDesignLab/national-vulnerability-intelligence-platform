@@ -43,7 +43,6 @@ import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.db.DatabaseHelper;
 
-import javax.sound.midi.Patch;
 
 /**
  * Start patch finder for a given repository list (as .csv)
@@ -67,7 +66,9 @@ public class PatchFinder {
 
 	/**
 	 * Main method just for calling to find all patch URLs
-	 * 
+	 *
+	 * TODO: Rename this ethod and have it called by NVIPMain
+	 *
 	 * @param args
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -109,7 +110,6 @@ public class PatchFinder {
 
 		advanceSearchCount = 0;
 		int i = 0;
-		// Create github URLs based on CPEs for given CVEs
 		for (Entry<String, ArrayList<String>> cpe : cpes.entrySet()) {
 			currentCPE = cpe;
 			parseURL();
@@ -268,7 +268,7 @@ public class PatchFinder {
 	private ArrayList<String> testConnection(String address) throws IOException, InterruptedException {
 
 		logger.info("Testing Connection for address: " + address);
-		ArrayList<String> urlList = new ArrayList<String>();
+		ArrayList<String> urlList = new ArrayList<>();
 
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -313,9 +313,8 @@ public class PatchFinder {
 	 * Uses jSoup framework
 	 *
 	 * @param newURL
-	 * @throws InterruptedException
 	 */
-	private ArrayList<String> searchForRepos(String newURL) throws InterruptedException {
+	private ArrayList<String> searchForRepos(String newURL) {
 		logger.info("Grabbing repos from github user page...");
 
 		ArrayList<String> urls = new ArrayList<String>();
@@ -365,7 +364,7 @@ public class PatchFinder {
 	 * @return
 	 */
 	private ArrayList<String> testLinks(Elements repoLinks) {
-		ArrayList<String> urls = new ArrayList<String>();
+		ArrayList<String> urls = new ArrayList<>();
 		String repoURL;
 
 		for (Element repoLink : repoLinks) {
@@ -392,7 +391,7 @@ public class PatchFinder {
 	private ArrayList<String> advanceParseSearch() throws InterruptedException {
 
 		String searchParams = ADDRESS_BASES[0] + "search?q=";
-		ArrayList<String> urls = new ArrayList<String>();
+		ArrayList<String> urls = new ArrayList<>();
 
 		if (advanceSearchCheck) {
 
@@ -456,8 +455,8 @@ public class PatchFinder {
 
 		// Verify if the repo is correlated to the product by checking if the keywords
 		// lie in the inner text of the html link via regex
-		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText).find()
-				|| Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher((CharSequence) innerText)
+		if (Pattern.compile(Pattern.quote(keyword1), Pattern.CASE_INSENSITIVE).matcher(innerText).find()
+				|| Pattern.compile(Pattern.quote(keyword2), Pattern.CASE_INSENSITIVE).matcher(innerText)
 						.find()) {
 
 			if (!repoURL.equals(previousURL)) {

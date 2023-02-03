@@ -24,11 +24,8 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +48,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
 
 public class SecurityRedHatParser extends AbstractCveParser implements CveParserInterface {
 
-    private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+    private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public SecurityRedHatParser(String domainName) {
 		sourceDomainName = domainName;
@@ -62,14 +59,12 @@ public class SecurityRedHatParser extends AbstractCveParser implements CveParser
 		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
         Document doc = Jsoup.parse(sCVEContentHTML);
         String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
-        Pattern pattern = Pattern.compile(regexCVEID);
 
         Elements rows = doc.select("#DataTables_Table_0").select("tbody > tr");
 
         for (Element row: rows) {
             String cve = row.select("th.td-cve > span").text();
             String description = row.select("td.td-synopsis > span").text();
-            String impact = row.select("td-impact > span").text();
             String date = row.select("td-date > span").text();
 
             vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
