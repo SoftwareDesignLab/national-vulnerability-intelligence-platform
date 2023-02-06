@@ -1,0 +1,139 @@
+<div
+  id="nvipContent"
+  class="nvip-content-container nvip-login-container col-12"
+  ng-controller="MainController as mainCtrl"
+  ng-init="init()"
+>
+  <div class="about-box">
+    <h3 [ngStyle]="{ color: 'black', 'font-size': '17px' }">
+      The National Vulnerability Intelligence Platform (NVIP) is a new
+      generation vulnerability database, a public platform where the software
+      development and security communities can obtain rich, actionable
+      intelligence about known vulnerabilities. NVIP automates the collection of
+      CVEs, providing near real-time publishing of vulnerabilities, as well as
+      intelligent analysis and categorization of these vulnerabilities. This
+      page provides a summary of the most recent vulnerabilities found by NVIP.
+    </h3>
+    <br />
+    <div class="bullet-container container" style="width: 100%">
+      <div class="row">
+        <div class="col-md-4 nvip-bullet">
+          <h2 class="bullet-header">
+            <fa-icon
+              [icon]="faDatabase"
+              [ngStyle]="{
+                color: 'black',
+                'font-size': '23px',
+                'margin-right': '0.6em'
+              }"
+              aria-hidden="true"
+            ></fa-icon>
+            Near Real Time CVE Crawling
+          </h2>
+          <ul>
+            <li>
+              NVIP crawls an up-to-date list of vulnerability sources (links) to
+              create a dynamic database of Common Vulnerabilities and Exposures
+              (CVE).
+            </li>
+
+            <li>
+              Provides near real time detection of disclosed vulnerabilities
+              using automated mining techniques.
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-xl-4 col-md-4 nvip-bullet">
+          <h2 class="bullet-header">
+            <fa-icon
+              [icon]="faCubes"
+              [ngStyle]="{
+                color: 'black',
+                'font-size': '23px',
+                'margin-right': '0.25em'
+              }"
+              aria-hidden="true"
+            ></fa-icon>
+            AI/ML-based Characterization
+          </h2>
+          <ul>
+            <li>
+              NVIP provides AI/ML-based CVE Characterization via NIST's
+              Vulnerability Description Ontology (VDO) framework.
+            </li>
+
+            <li>Automatically reconciles CVEs using Apache Open NLP.</li>
+          </ul>
+        </div>
+
+        <div class="graph-breakpoint1"></div>
+
+        <div class="col-xl-4 col-md-4 nvip-bullet">
+          <h2 class="bullet-header">
+            <fa-icon
+              [icon]="faStarHalf"
+              [ngStyle]="{
+                color: 'black',
+                'font-size': '23px',
+                'margin-right': '0.3em'
+              }"
+              aria-hidden="true"
+            ></fa-icon>
+            CVSS Scoring & CPE Identification
+          </h2>
+          <ul>
+            <li>
+              Automated CVSS scoring based on the Common Vulnerability Scoring
+              System Version3.1 specification.
+            </li>
+
+            <li>
+              Using LSTM/Word2Vec to extract affected Common Platform
+              Enumeration (CPE) product names from free-form CVE descriptions.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="graph-header">Vulnerability Statistics</h2>
+
+  <div class="nvip-daily-graph-box col-12">
+    <div class="nvip-loading-screen col-12" [hidden]="isChartsLoaded()">
+      <fa-icon
+        [icon]="faSpinner"
+        animation="spin"
+        size="3x"
+        [fixedWidth]="true"
+        [ngStyle]="{ color: 'black' }"
+      ></fa-icon>
+      <span>Loading NVIP statistics...</span>
+    </div>
+
+    <div class="container" style="width: 100%" [hidden]="!isChartsLoaded()">
+      <div class="row">
+        <div id="graph" class="col-xl-4 col-lg-4 nvip_column_chart">
+          <h5 style="color: black">Number of CVEs added or updated daily</h5>
+          <div id="chart_values1"></div>
+          <nvip-chart [chartType]="0" (loaded)="isLoaded($event, 0)"></nvip-chart>
+        </div>
+        <div class="graph-breakpoint2"></div>
+        <div class="col-xl-4 col-lg-4 nvip_column_chart">
+          <h5 style="color: black">Number of CVEs not in NVD</h5>
+          <div id="chart_values2"></div>
+          <nvip-chart [chartType]="1" (loaded)="isLoaded($event, 1)"></nvip-chart>
+        </div>
+        <div class="graph-breakpoint1"></div>
+        <div class="col-xl-4 col-lg-4 nvip_column_chart">
+          <h5 style="color: black">
+            Average time gap compared to NVD (in hours)
+          </h5>
+          <div id="chart_values3"></div>
+          <nvip-chart [chartType]="2" (loaded)="isLoaded($event, 2)"></nvip-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
