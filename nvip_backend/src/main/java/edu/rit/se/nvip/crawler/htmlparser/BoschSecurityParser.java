@@ -28,7 +28,6 @@ public class BoschSecurityParser extends AbstractCveParser{
      */
     @Override
     public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-        System.out.println("STARTING BOSCH PARSER");
 
         List<CompositeVulnerability> vulns = new ArrayList<>();
 
@@ -36,14 +35,14 @@ public class BoschSecurityParser extends AbstractCveParser{
 
         Elements dates = Objects.requireNonNull(Objects.requireNonNull(doc.getElementById("advisory-information")).nextElementSibling()).children();
 
-        String publishDate = dates.get(2).children().get(1).text().substring(10);
-        String updateDate = dates.get(3).children().get(1).text().substring(13);
+        String publishDate = dates.get(2).children().get(1).text().substring(10).trim();
+        String updateDate = dates.get(3).children().get(1).text().substring(13).trim();
 
         Elements headers = doc.getElementsByTag("h3");
         for (Element header: headers) {
             if (header.id().contains("cve-")) {
                 String cveId = header.id();
-                String description = Objects.requireNonNull(header.nextElementSibling()).text().substring(16);
+                String description = Objects.requireNonNull(header.nextElementSibling()).text().substring(17);
 
                 vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, updateDate, description, sourceDomainName));
             }
