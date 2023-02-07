@@ -1,9 +1,6 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -17,24 +14,23 @@ import static junit.framework.TestCase.assertEquals;
 public class BoschSecurityParserTest {
 
     @Test
-    public void testBoschSecurity() throws IOException{
-
-        MyProperties propertiesNvip = new MyProperties();
-        propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
+    public void testBoschSecurityParser() throws IOException {
 
         String html = FileUtils.readFileToString(new File("src/test/resources/test-bosch-security.html"), StandardCharsets.US_ASCII);
-        List<CompositeVulnerability> list = new CveCrawler(propertiesNvip).parseWebPage("bosch", html);
+        List<CompositeVulnerability> list = new BoschSecurityParser("bosch").parseWebPage("bosch", html);
 
         CompositeVulnerability vuln1 = list.get(0);
         CompositeVulnerability vuln2 = list.get(1);
 
-        assertEquals("Expected CVE-2014-3507, but got: ", "CVE-2014-3507", vuln1.getCveId());
-        assertEquals("Expected CVE-2018-21028, but got: ", "CVE-2018-21028", vuln2.getCveId());
+        assertEquals("cve-2006-5701", vuln1.getCveId());
+        assertEquals("cve-2006-5757", vuln2.getCveId());
 
-        assertEquals("Memory leak in d1_both.c in the DTLS implementation in OpenSSL 0.9.8 before 0.9.8zb, 1.0.0 before 1.0.0n, and 1.0.1 before 1.0.1i allows remote attackers to cause a denial of service (memory consumption) via zero-length DTLS fragments that trigger improper handling of the return value of a certain insert function. ",
+        assertEquals("Double free vulnerability in squashfs module in the Linux kernel 2.6.x, as used in Fedora Core 5 and possibly other distributions, allows local users to cause a denial of service by mounting a crafted squashfs filesystem.",
                 vuln1.getDescription());
-        assertEquals("Boa through 0.94.14rc21 allows remote attackers to trigger a memory leak because of missing calls to the free function. ",
+        assertEquals("Race condition in the __find_get_block_slow function in the ISO9660 filesystem in Linux 2.6.18 and possibly other versions allows local users to cause a denial of service (infinite loop) by mounting a crafted ISO9660 filesystem containing malformed data structures.",
                 vuln2.getDescription());
-        //assertEquals("Expected 10, but got: " + list.size(),96, list.size());
+        assertEquals("23 Nov 2022", vuln1.getPublishDate());
+        assertEquals("23 Nov 2022", vuln1.getLastModifiedDate());
+        assertEquals(105, list.size());
     }
 }

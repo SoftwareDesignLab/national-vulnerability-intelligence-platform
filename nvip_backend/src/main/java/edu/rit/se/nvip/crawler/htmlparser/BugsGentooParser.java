@@ -37,7 +37,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
  * @author axoeec
  *
  */
@@ -47,10 +46,10 @@ public class BugsGentooParser extends AbstractCveParser  {
 		sourceDomainName = domainName;
 	}
 
-
 	/**
 	 * Parse Method for Gentoo Bug Pages
 	 * (ex. https://bugs.gentoo.org/600624)
+	 * (ex. https://bugs.gentoo.org/890865)
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
 	 * @return
@@ -72,30 +71,32 @@ public class BugsGentooParser extends AbstractCveParser  {
 		Document doc = Jsoup.parse(sCVEContentHTML);
 
 		publishDate = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
-				getElementsByClass("table").get(0).getElementsByClass("tr").get(0).
-				getElementsByClass("td").get(0).text();
+				getElementsByTag("table").get(0).getElementsByTag("tr").get(0).
+				getElementsByTag("td").get(0).text();
 
 		lastModified = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
-				getElementsByClass("table").get(0).getElementsByClass("tr").get(1).
-				getElementsByClass("td").get(0).text();
+				getElementsByTag("table").get(0).getElementsByTag("tr").get(1).
+				getElementsByTag("td").get(0).text();
 
 		Elements descs = doc.getElementsByClass("bz_first_comment");
 
 		if (descs.size() == 1) {
 
+			System.out.println("FOUND DESCRIPTION");
+
 			Pattern pattern;
-			Document descDoc = Jsoup.parse(descs.get(0).html());
-			Elements descText = descDoc.getElementsByClass("bz_comment_text");
-			String[] textItems = descText.text().split("\n");
+			String descText = Jsoup.parse(descs.get(0).html()).text();
+			//Elements descText = descDoc.getElementsByClass("bz_comment_text");
+			String[] textItems = descText.split("\n");
 
-			Elements dateText = descDoc.getElementsByClass("bz_comment_time");
-			DateFormat currentFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			publishDate = dateText.text();
+			//Elements dateText = descDoc.getElementsByClass("bz_comment_time");
+			//DateFormat currentFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+			//publishDate = dateText.text();
 
-			try {
+			/*try {
 				publishDate = UtilHelper.longDateFormat.format(currentFormat.parse(publishDate));
 			} catch (ParseException ignored) {
-			}
+			}*/
 
 			for (int i=0; i<textItems.length; i++) {
 				pattern = Pattern.compile(regexCVEID);
