@@ -1,32 +1,24 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class VMWareAdvisoriesTest {
+public class VMWareAdvisoriesTest extends AbstractParserTest {
 
 	@Test
-	public void testVMWareAdvisories() throws IOException {
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-
-		CveCrawler crawler = new CveCrawler(propertiesNvip);
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware.html"), StandardCharsets.UTF_8);
-		List<CompositeVulnerability> list = crawler.parseWebPage("https://www.vmware.com/security/advisories/VMSA-2009-0010.html", html);
-
-		assertTrue(list.size() > 0);
+	public void testVMWareAdvisories() {
+		String html =safeReadHtml("src/test/resources/test-vmware-advisories.html");
+		List<CompositeVulnerability> list = new VMWareAdvisoriesParser("vmware").parseWebPage("vmware", html);
+		assertEquals(8, list.size());
+		CompositeVulnerability vuln = getVulnerability(list, "CVE-2006-5752");
+		assertNotNull(vuln);
+		assertEquals("2009/08/20 00:00:00", vuln.getPublishDate());
+		assertTrue(vuln.getDescription().contains("Several flaws were discovered"));
+		assertFalse(vuln.getDescription().contains("Build, run, manage, connect"));
 
 	}
-
 }

@@ -1,31 +1,25 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
-public class SecurityGentooParserTest {
+public class SecurityGentooParserTest extends AbstractParserTest {
+
 
 	@Test
-	public void testSecurityGentoo() throws IOException {
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-gentoo-cvedetail.html"), StandardCharsets.UTF_8);
-		CveCrawler crawler = new CveCrawler(propertiesNvip);
-		List<CompositeVulnerability> list = crawler.parseWebPage("gentoo", html);
-		boolean fine = list.size() == 1;
-
-		assertTrue(fine);
+	public void testSecurityGentoo() {
+		String html = safeReadHtml("src/test/resources/test-gentoo-cvedetail.html");
+		List<CompositeVulnerability> list = new SecurityGentooParser("gentoo").parseWebPage("gentoo", html);
+		assertEquals(1, list.size());
+		CompositeVulnerability vuln = list.get(0);
+		assertEquals("CVE-2005-0453", vuln.getCveId());
+		assertEquals("2005/02/15 00:00:00", vuln.getPublishDate());
+		assertTrue(vuln.getDescription().contains("By appending %00 to the filename, you can evade"));
+		assertFalse(vuln.getDescription().contains("flexible web-server"));
 	}
 }

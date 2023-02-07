@@ -1,27 +1,17 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class BugsGentooParserTest {
+public class BugsGentooParserTest extends AbstractParserTest {
 
     @Test
-    void testBugsGentoo() {
-        String html = null;
-        try {
-            html = FileUtils.readFileToString(new File("src/test/resources/test-bugsgentoo.html"), "UTF-8");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail();
-        }
+    public void testBugsGentoo() {
+        String html = safeReadHtml("src/test/resources/test-bugsgentoo.html");
         List<CompositeVulnerability> list = new BugsGentooParser("gentoo").parseWebPage("bugs.gentoo", html);
         assertEquals(1, list.size());
         CompositeVulnerability vuln = list.get(0);

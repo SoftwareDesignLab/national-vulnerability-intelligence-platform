@@ -1,16 +1,16 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class NullParserTest {
+public class NullParserTest extends AbstractParserTest {
 
     @Test
-    void testNull() {
+    public void testNull() {
         List<CompositeVulnerability> list = new NullParser().parseWebPage("null", "foobar");
         assertEquals(0, list.size());
     }
