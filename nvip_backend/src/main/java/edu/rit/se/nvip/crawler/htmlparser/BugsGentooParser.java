@@ -72,76 +72,78 @@ public class BugsGentooParser extends AbstractCveParser  {
 
 		publishDate = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
 				getElementsByTag("table").get(0).getElementsByTag("tr").get(0).
-				getElementsByTag("td").get(0).text();
+				getElementsByTag("td").get(0).text().substring(0, 20);
 
 		lastModified = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
 				getElementsByTag("table").get(0).getElementsByTag("tr").get(1).
-				getElementsByTag("td").get(0).text();
+				getElementsByTag("td").get(0).text().substring(0, 20);
 
+		String[] cves = Objects.requireNonNull(doc.getElementById("alias_nonedit_display")).text().split(",");
 		Elements descs = doc.getElementsByClass("bz_first_comment");
 
 		if (descs.size() == 1) {
 
-			System.out.println("FOUND DESCRIPTION");
-
 			Pattern pattern;
-			String descText = Jsoup.parse(descs.get(0).html()).text();
-			//Elements descText = descDoc.getElementsByClass("bz_comment_text");
-			String[] textItems = descText.split("\n");
+			Matcher matcher;
+			String[] textItems = Jsoup.parse(descs.get(0).getElementsByClass("bz_comment_text").get(0).html()).text().split("\n");
 
-			//Elements dateText = descDoc.getElementsByClass("bz_comment_time");
-			//DateFormat currentFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			//publishDate = dateText.text();
-
-			/*try {
-				publishDate = UtilHelper.longDateFormat.format(currentFormat.parse(publishDate));
-			} catch (ParseException ignored) {
-			}*/
-
-			for (int i=0; i<textItems.length; i++) {
+			if (cves.length == 1) {
+				System.out.println(textItems[0]);
 				pattern = Pattern.compile(regexCVEID);
-				Matcher matcher = pattern.matcher(textItems[i]);
-				int k = 0;
+				matcher = pattern.matcher(cves[0]);
 
-				if (matcher.matches()) {
-					String cveId = matcher.group();
-					String commentDescription = null;
-					String patch = null;
-
-					if (textItems[++i].length() >= 20) {
-						commentDescription = textItems[i];
-					} else {
-						k++;
-					}
-
-					/*
-					TODO: use this for extracting patches from this source
-					TODO: Update model to add Patches to composite Vulnerabilities
-
-					pattern = Pattern.compile("(Patch:|patch:) ");
-					matcher = pattern.matcher(textItems[++i]);
-
-					if (matcher.matches()) {
-						patch = textItems[i].replace("Patch:", "").replace("patch:", "");
-					} else {
-						k++;
-					}*/
-
-					vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, lastModified, commentDescription, sourceDomainName));
-					commentedCVEs.add(cveId);
+				if (matcher.find()) {
+					vulns.add(new CompositeVulnerability(0, sSourceURL, cves[0], null, publishDate, lastModified, textItems[0], sourceDomainName));
 				}
-				i -= k;
+
+			} else {
+				for (int i=0; i<textItems.length; i++) {
+					pattern = Pattern.compile(regexCVEID);
+					matcher = pattern.matcher(textItems[i]);
+					int k = 0;
+
+					if (matcher.find()) {
+						String cveId = matcher.group();
+						String commentDescription = null;
+						String patch = null;
+
+						i += 2;
+
+						if (textItems[i].length() >= 20) {
+							commentDescription = textItems[i].trim();
+						} else {
+							k += 2;
+						}
+
+						/*
+						TODO: use this for extracting patches from this source
+						TODO: Update model to add Patches to composite Vulnerabilities
+
+						pattern = Pattern.compile("(Patch:|patch:) ");
+						matcher = pattern.matcher(textItems[++i]);
+
+						if (matcher.matches()) {
+							patch = textItems[i].replace("Patch:", "").replace("patch:", "");
+						} else {
+							k++;
+						}*/
+
+						vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, lastModified, commentDescription, sourceDomainName));
+						commentedCVEs.add(cveId);
+					}
+					i -= k;
+				}
 			}
 
 		}
 
 		// TODO ADD GENTOO SECURITY IN PRODUCTS
 
-		for (String cve : uniqueCves) {
+		/*for (String cve : uniqueCves) {
 			if (!commentedCVEs.contains(cve)) {
 				vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
 			}
-		}
+		}*/
 
 		return vulns;
 	}

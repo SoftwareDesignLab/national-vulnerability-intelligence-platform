@@ -14,9 +14,26 @@ import static junit.framework.TestCase.assertEquals;
 public class BugsGentooParserTest {
 
     @Test
-    public void testBugsGentooParser() throws IOException {
+    public void testBugsGentooParserSingleCVE() throws IOException {
 
-        String html = FileUtils.readFileToString(new File("src/test/resources/test-bugs-gentoo.html"), StandardCharsets.US_ASCII);
+        String html = FileUtils.readFileToString(new File("src/test/resources/test-bugs-gentoo-single-cve.html"), StandardCharsets.US_ASCII);
+        List<CompositeVulnerability> list = new BugsGentooParser("gentoo").parseWebPage("gentoo", html);
+
+        CompositeVulnerability vuln1 = list.get(0);
+
+        assertEquals("CVE-2013-4392", vuln1.getCveId());
+
+        assertEquals("A TOCTOU (time-of-check time-of-use) race condition was found in the way systemd, a system and service manager, used to update file permissions and SELinux security contexts. A local attacker could use this flaw to conduct symbolic link attacks possibly leading to their ability to modify permissions / security context of a path different than originally intended / requested. Issue found by Florian Weimer, Red Hat Product Security Team",
+                vuln1.getDescription());
+        assertEquals("2016-11-23 20:58 UTC", vuln1.getPublishDate());
+        assertEquals("2019-04-02 05:19 UTC", vuln1.getLastModifiedDate());
+        assertEquals(1, list.size());
+    }
+
+    @Test
+    public void testBugsGentooParserMultiCVE() throws IOException {
+
+        String html = FileUtils.readFileToString(new File("src/test/resources/test-bugs-gentoo-multi-cve.html"), StandardCharsets.US_ASCII);
         List<CompositeVulnerability> list = new BugsGentooParser("gentoo").parseWebPage("gentoo", html);
 
         CompositeVulnerability vuln1 = list.get(0);
@@ -33,5 +50,7 @@ public class BugsGentooParserTest {
         assertEquals("2023-01-15 04:09 UTC", vuln1.getLastModifiedDate());
         assertEquals(2, list.size());
     }
+
+
 
 }
