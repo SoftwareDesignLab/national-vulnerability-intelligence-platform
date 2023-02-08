@@ -1,0 +1,258 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular-ui documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">angular-ui documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Interfaces</li>
+  <li
+  >
+  VulnMaps</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/pages/recent/recent.component.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Array of date-list vuln pages to navigate through</p>
+
+            </p>
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                    <code>Array</code>
+            </p>
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { faSpinner } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
+import { VulnService } from &#x27;src/app/services/vuln/vuln.service&#x27;;
+/** Recent Vulnerabilities page */
+
+/** Key-value store object of recent date and dropdowns to display on that date */
+export interface VulnMap {
+  date: string;
+  cve_list: Array&lt;any&gt;;
+}
+
+/** Array of date-list vuln pages to navigate through */
+export interface VulnMaps extends Array&lt;VulnMap&gt; {}
+
+@Component({
+  selector: &#x27;nvip-recent&#x27;,
+  templateUrl: &#x27;./recent.component.html&#x27;,
+  styleUrls: [&#x27;./recent.component.css&#x27;],
+})
+export class RecentComponent implements OnInit {
+  /** FontAwesome Icon */
+  faSpinner &#x3D; faSpinner;
+
+  /** Variables to hold state of which date we are on and
+   * how much we have increased/decreased a certain pages limit,
+   * and what vulns are on each page
+   */
+  dailyVulnLimit: Array&lt;number&gt; &#x3D; [];
+  vulnLimitIncr: number &#x3D; 5;
+  dailyVulnIndex: number &#x3D; 0;
+  dailyVulns: VulnMaps &#x3D; [];
+  currentSelected: number &#x3D; -1;
+
+  /**
+   * constructor
+   * @param vulnService to access vulnerabilityServlet endpoints 
+   */
+  constructor(private vulnService: VulnService) {}
+
+  /** call recent vulnerabilites on page init */
+  ngOnInit() {
+    this.vulnService.onRecentInit().subscribe((res: any) &#x3D;&gt;
+      Object.keys(res).forEach((key) &#x3D;&gt; {
+        this.dailyVulns.push({
+          date: this.formatDate(res[key].date),
+          cve_list: res[key].list,
+        });
+        this.dailyVulnLimit.push(this.vulnLimitIncr);
+      })
+    );
+  }
+
+  /** format title date */
+  formatDate(dateString: string) {
+    const timeZone &#x3D; &#x27;T00:00:00.000-08:00&#x27;;
+    const date &#x3D; new Date(dateString + timeZone);
+    return date.toDateString();
+  }
+
+  /** helper to determine whether a show more or show less button is disabled */
+  isDisabled(isMore: boolean, panelIndex: number, vulnMap: VulnMap) {
+    if (isMore)
+      return this.dailyVulnLimit[panelIndex] &gt;&#x3D; vulnMap.cve_list.length;
+    else return this.dailyVulnLimit[panelIndex] &lt;&#x3D; this.vulnLimitIncr;
+  }
+
+  /** helper for arrows back and forth between recent dates */
+  incrementDailyVulnDay(incr: number) {
+    if ( (this.dailyVulnIndex + incr &lt; 0) || (this.dailyVulnIndex + incr &gt;&#x3D; this.dailyVulns.length) ) {
+      return;
+    }
+    this.dailyVulnIndex &#x3D; this.dailyVulnIndex +&#x3D; incr;
+  }
+
+  /** trigger more recent vulns under that day to show */
+  showMore(panelIndex: number) {
+    this.dailyVulnLimit[panelIndex] &#x3D;
+      this.dailyVulnLimit[panelIndex] + this.vulnLimitIncr;
+  }
+
+  /** trigger removal of last 5 vulns showing under that day */
+  showLess(panelIndex: number) {
+    const newLimit: number &#x3D; this.dailyVulnLimit[panelIndex] - this.vulnLimitIncr;
+    if (newLimit &lt; this.vulnLimitIncr) {
+      this.dailyVulnLimit[panelIndex] &#x3D; this.vulnLimitIncr;
+    } else {
+      this.dailyVulnLimit[panelIndex] &#x3D; newLimit;
+    }
+  }
+
+  /** helper function for emitting collapsing of other dropdowns when a new one is selected */
+  setCurrentSelected(event: any) {
+    this.currentSelected &#x3D; event[&#x27;index&#x27;];
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'VulnMaps.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
