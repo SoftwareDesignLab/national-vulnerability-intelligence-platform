@@ -54,6 +54,15 @@ public final class JGitCVEPatchDownloader {
 	private static JGitParser previousRepo = null;
 	private static final DatabaseHelper db = DatabaseHelper.getInstance();
 
+	public static void main(String[] args) throws IOException {
+		logger.info("Started Patches Application");
+
+		JGitCVEPatchDownloader main = new JGitCVEPatchDownloader();
+		main.parse(args);
+
+		logger.info("Patches Application Finished!");
+	}
+
 	/**
 	 * Main parse method that pulls parameters from nvip props
 	 * to determine clone location and limit
