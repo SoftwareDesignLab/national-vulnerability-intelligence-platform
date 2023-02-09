@@ -30,12 +30,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Parse CVEs at VMWare advisory
- * 
+ * TODO: Extract CVSS Scores from descriptions
  * @author axoeec, aep7128
  *
  */
@@ -83,10 +82,8 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 			String description = "";
 
 			for (String cveId: cveIds) {
-				//System.out.println(cveId.trim() + " -------------------- " + heading.text() + " ---------------- "  + heading.text().contains(cveId));
 				if (heading.text().contains(cveId.trim())) {
 
-					//System.out.println("PASS");
 					currentCVE = cveId.trim();
 					Element sibling = heading.nextElementSibling();
 
