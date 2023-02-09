@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * Parse CVEs at VMWare advisory
  * 
- * @author axoeec
+ * @author axoeec, aep7128
  *
  */
 public class VMWareAdvisoriesParser extends AbstractCveParser  {
@@ -62,9 +62,9 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 
 		ArrayList<Element> headers = doc.getElementsByClass("sa-row-group");
 
-		String publishDate = headers.get(2).text();
-		String updatedDate = headers.get(3).text().substring(0, 9);
-		String[] cveIds = headers.get(4).text().trim().split(",");
+		String publishDate = headers.get(2).getElementsByTag("span").text();
+		String updatedDate = headers.get(3).getElementsByTag("span").text().substring(0, 10);
+		String[] cveIds = headers.get(4).getElementsByTag("span").text().trim().split(",");
 		String currentCVE = "";
 
 		/*
@@ -85,6 +85,7 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 				String description = Objects.requireNonNull(heading.nextElementSibling()).text();
 				if (!currentCVE.isEmpty()) {
 					vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, description, sourceDomainName));
+					currentCVE = "";
 				}
 			}
 		}

@@ -4,7 +4,6 @@ import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
@@ -14,6 +13,10 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test Parser for VMWare Security Mailing Lists
+ * TODO: This source doesn't post CVEs anymore, all VMWare CVEs are now at VMWare Advisories, this should be deprecated
+ */
 public class VMWareParserTest {
 
     @Test
