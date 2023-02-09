@@ -87,7 +87,7 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 				if (heading.text().contains(cveId.trim())) {
 
 					//System.out.println("PASS");
-					currentCVE = cveId;
+					currentCVE = cveId.trim();
 					Element sibling = heading.nextElementSibling();
 
 					if (Objects.requireNonNull(sibling).text().equals("Description")) {
