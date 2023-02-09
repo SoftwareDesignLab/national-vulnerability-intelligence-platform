@@ -45,8 +45,8 @@ public class DBConnect {
 			Connection conn = ds.getConnection();
 			return conn;
 		} catch (SQLException e) {
-			logger.error("Username or Password for NVIP database is incorrect, please check context.xml to correct --> ");
-			logger.error(e.toString());
+			logger.error("Username or Password for NVIP database is incorrect, please check context.xml to correct --> "
+					+ e.toString());
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
