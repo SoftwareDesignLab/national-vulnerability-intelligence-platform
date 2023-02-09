@@ -42,7 +42,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
+ * Parser for VMWare Security Lists
+ * (ex. http://lists.vmware.com/pipermail/security-announce/2023/000628.html)
+ *
+ * TODO: This should be deprecated, CVEs aren't listed in these sources anymore
  * @author axoeec
  *
  */

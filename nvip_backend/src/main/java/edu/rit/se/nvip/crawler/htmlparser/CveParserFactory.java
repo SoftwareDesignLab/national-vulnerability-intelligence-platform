@@ -74,8 +74,6 @@ public class CveParserFactory {
 		}
 		else if (sPageUrl.contains("vmware") && sPageUrl.contains("advisories"))
 			return new VMWareAdvisoriesParser("vmware");
-		else if (sPageUrl.contains("vmware"))
-			return new VMWareParser("vmware");
 		else if (sPageUrl.contains("bugzilla"))
 			return new BugzillaParser("bugzilla");
 		else if (sPageUrl.contains("anquanke"))

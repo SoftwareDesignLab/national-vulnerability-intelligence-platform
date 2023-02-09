@@ -24,21 +24,21 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.UtilHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author axoeec
+ * Parser for Gentoo Linux Bug Advisory
+ * @author axoeec, Andrew Pickard
  *
+ * TODO: ADD GENTOO SECURITY IN PRODUCTS
+ * TODO: use this for extracting patches from this source
+ * TODO: Update model to add Patches to composite Vulnerabilities
  */
 public class BugsGentooParser extends AbstractCveParser  {
 	
@@ -56,7 +56,6 @@ public class BugsGentooParser extends AbstractCveParser  {
 	 */
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<String> commentedCVEs = new ArrayList<>();
 		List<CompositeVulnerability> vulns = new ArrayList<>();
 
 		Set<String> uniqueCves = getCVEs(sCVEContentHTML);
@@ -64,7 +63,6 @@ public class BugsGentooParser extends AbstractCveParser  {
 		if (uniqueCves.size() == 0)
 			return vulns;
 
-		String description = null;
 		String publishDate;
 		String lastModified;
 
@@ -85,21 +83,23 @@ public class BugsGentooParser extends AbstractCveParser  {
 
 			Pattern pattern;
 			Matcher matcher;
-			String[] textItems = Jsoup.parse(descs.get(0).getElementsByClass("bz_comment_text").get(0).html()).text().split("\n");
+			ArrayList<String> textItems = new ArrayList<>();
 
 			if (cves.length == 1) {
-				System.out.println(textItems[0]);
+				textItems.add(Jsoup.parse(descs.get(0).getElementsByClass("bz_comment_text").get(0).html()).text());
 				pattern = Pattern.compile(regexCVEID);
 				matcher = pattern.matcher(cves[0]);
 
 				if (matcher.find()) {
-					vulns.add(new CompositeVulnerability(0, sSourceURL, cves[0], null, publishDate, lastModified, textItems[0], sourceDomainName));
+					vulns.add(new CompositeVulnerability(0, sSourceURL, cves[0], null, publishDate, lastModified, textItems.get(0), sourceDomainName));
 				}
 
 			} else {
-				for (int i=0; i<textItems.length; i++) {
+				textItems.addAll(Arrays.asList(Jsoup.parse(descs.get(0).html()).text().split("\n")));
+				for (int i=0; i<textItems.size(); i++) {
+
 					pattern = Pattern.compile(regexCVEID);
-					matcher = pattern.matcher(textItems[i]);
+					matcher = pattern.matcher(textItems.get(i));
 					int k = 0;
 
 					if (matcher.find()) {
@@ -109,15 +109,14 @@ public class BugsGentooParser extends AbstractCveParser  {
 
 						i += 2;
 
-						if (textItems[i].length() >= 20) {
-							commentDescription = textItems[i].trim();
+						if (textItems.get(i).length() >= 20) {
+							commentDescription = textItems.get(i).trim();
 						} else {
 							k += 2;
 						}
 
 						/*
-						TODO: use this for extracting patches from this source
-						TODO: Update model to add Patches to composite Vulnerabilities
+						For Patches
 
 						pattern = Pattern.compile("(Patch:|patch:) ");
 						matcher = pattern.matcher(textItems[++i]);
@@ -129,7 +128,6 @@ public class BugsGentooParser extends AbstractCveParser  {
 						}*/
 
 						vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, lastModified, commentDescription, sourceDomainName));
-						commentedCVEs.add(cveId);
 					}
 					i -= k;
 				}
@@ -137,13 +135,7 @@ public class BugsGentooParser extends AbstractCveParser  {
 
 		}
 
-		// TODO ADD GENTOO SECURITY IN PRODUCTS
 
-		/*for (String cve : uniqueCves) {
-			if (!commentedCVEs.contains(cve)) {
-				vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
-			}
-		}*/
 
 		return vulns;
 	}
