@@ -1,6 +1,9 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
+import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
+import edu.rit.se.nvip.utils.MyProperties;
+import edu.rit.se.nvip.utils.PropertyLoader;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -11,14 +14,26 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 
+/**
+ * Test Bug Gentoo Parser
+ * @author aep7128
+ */
 public class BugsGentooParserTest {
 
+    /**
+     * Test parsing a page with 1 CVE listed
+     * @throws IOException
+     */
     @Test
     public void testBugsGentooParserSingleCVE() throws IOException {
+        MyProperties propertiesNvip = new MyProperties();
+        propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
+        CveCrawler crawler = new CveCrawler(propertiesNvip);
         String html = FileUtils.readFileToString(new File("src/test/resources/test-bugs-gentoo-single-cve.html"), StandardCharsets.US_ASCII);
-        List<CompositeVulnerability> list = new BugsGentooParser("gentoo").parseWebPage("gentoo", html);
+        List<CompositeVulnerability> list = crawler.parseWebPage("https://bugs.gentoo.org/600624", html);
 
+        assertEquals(1, list.size());
         CompositeVulnerability vuln1 = list.get(0);
 
         assertEquals("CVE-2013-4392", vuln1.getCveId());
@@ -27,14 +42,24 @@ public class BugsGentooParserTest {
                 vuln1.getDescription());
         assertEquals("2016-11-23 20:58 UTC", vuln1.getPublishDate());
         assertEquals("2019-04-02 05:19 UTC", vuln1.getLastModifiedDate());
-        assertEquals(1, list.size());
+
     }
 
+    /**
+     * Test parsing a page with more than 1 CVE listed
+     * @throws IOException
+     */
     @Test
     public void testBugsGentooParserMultiCVE() throws IOException {
 
+        MyProperties propertiesNvip = new MyProperties();
+        propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
+
+        CveCrawler crawler = new CveCrawler(propertiesNvip);
         String html = FileUtils.readFileToString(new File("src/test/resources/test-bugs-gentoo-multi-cve.html"), StandardCharsets.US_ASCII);
-        List<CompositeVulnerability> list = new BugsGentooParser("gentoo").parseWebPage("gentoo", html);
+        List<CompositeVulnerability> list = crawler.parseWebPage("https://bugs.gentoo.org/890865", html);
+
+        assertEquals(2, list.size());
 
         CompositeVulnerability vuln1 = list.get(0);
         CompositeVulnerability vuln2 = list.get(1);
@@ -48,7 +73,6 @@ public class BugsGentooParserTest {
                 vuln2.getDescription());
         assertEquals("2023-01-15 04:09 UTC", vuln1.getPublishDate());
         assertEquals("2023-01-15 04:09 UTC", vuln1.getLastModifiedDate());
-        assertEquals(2, list.size());
     }
 
 
