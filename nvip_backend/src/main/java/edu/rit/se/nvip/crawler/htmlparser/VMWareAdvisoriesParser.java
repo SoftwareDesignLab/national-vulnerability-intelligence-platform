@@ -28,13 +28,15 @@ import edu.rit.se.nvip.utils.UtilHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Parse CVEs at VMWare advisory
  * 
- * @author axoeec
+ * @author axoeec, aep7128
  *
  */
 public class VMWareAdvisoriesParser extends AbstractCveParser  {
@@ -46,6 +48,7 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 	/**
 	 * Parse VMWare Security Advisory Pages
 	 * (ex. https://www.vmware.com/security/advisories/VMSA-2023-0003.html)
+	 * (ex. https://www.vmware.com/security/advisories/VMSA-2023-0001.html)
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
 	 * @return
@@ -62,9 +65,9 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 
 		ArrayList<Element> headers = doc.getElementsByClass("sa-row-group");
 
-		String publishDate = headers.get(2).text();
-		String updatedDate = headers.get(3).text().substring(0, 9);
-		String[] cveIds = headers.get(4).text().trim().split(",");
+		String publishDate = headers.get(2).getElementsByTag("span").text();
+		String updatedDate = headers.get(3).getElementsByTag("span").text().substring(0, 10);
+		String[] cveIds = headers.get(4).getElementsByTag("span").text().trim().split(",");
 		String currentCVE = "";
 
 		/*
@@ -73,20 +76,30 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 		   	2.) If the header has "Description" in it, pull the text from the sibling element
 		   	and store the current cve with that description
 		 */
+		Elements items = doc.getElementsByClass("secadvheading");
 
-		for (Element heading: doc.getElementsByClass("secadvheading")) {
+		for (Element heading: items) {
+
+			String description = "";
+
 			for (String cveId: cveIds) {
-				if (heading.text().contains(cveId)) {
+				//System.out.println(cveId.trim() + " -------------------- " + heading.text() + " ---------------- "  + heading.text().contains(cveId));
+				if (heading.text().contains(cveId.trim())) {
+
+					//System.out.println("PASS");
 					currentCVE = cveId;
+					Element sibling = heading.nextElementSibling();
+
+					if (Objects.requireNonNull(sibling).text().equals("Description")) {
+						description = Objects.requireNonNull(sibling.nextElementSibling()).text();
+						vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, description, sourceDomainName));
+					} else if (Objects.requireNonNull(sibling).text().length() > 30) {
+						vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, sibling.text(), sourceDomainName));
+					}
 				}
 			}
 
-			if (heading.text().equals("Description")) {
-				String description = Objects.requireNonNull(heading.nextElementSibling()).text();
-				if (!currentCVE.isEmpty()) {
-					vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, description, sourceDomainName));
-				}
-			}
+
 		}
 
 		return vulns;
