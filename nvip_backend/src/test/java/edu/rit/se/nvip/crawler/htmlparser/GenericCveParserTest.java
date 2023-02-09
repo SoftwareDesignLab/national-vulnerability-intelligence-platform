@@ -1,66 +1,54 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
+import edu.rit.se.nvip.model.CompositeVulnerability;
+import edu.rit.se.nvip.model.Vulnerability;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
-import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-public class GenericCveParserTest {
-	CveCrawler crawler = new CveCrawler(getProps());
+import static org.junit.Assert.*;
 
-	private MyProperties getProps() {
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-		return propertiesNvip;
-	}
+public class GenericCveParserTest extends AbstractParserTest {
 
-	private CompositeVulnerability getVulnerability(List<CompositeVulnerability> list, String cveID) {
-		for (CompositeVulnerability vuln : list)
-			if (vuln.getCveId().equalsIgnoreCase(cveID))
-				return vuln;
-		return null;
-	}
-	
+	GenericCveParser parser = new GenericCveParser("nat_available");
 	
 	@Test
-	public void testJenkins() throws IOException {
-
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-jenkins.html"));
-		List<CompositeVulnerability> list = crawler.parseWebPage("jenkins", html);
+	public void testJenkins() {
+		String html = safeReadHtml("src/test/resources/test-jenkins.html");
+		List<CompositeVulnerability> list = parser.parseWebPage("jenkins", html);
 		CompositeVulnerability vuln = getVulnerability(list, "CVE-2017-1000355");
+		assertNotNull(vuln);
 		boolean fine = vuln.getPlatform().contains("2.56");
-		assertEquals(true, fine);
+		assertTrue(fine);
 	}
 
 	@Test
-	public void testAndroidCom() throws MalformedURLException, IOException {
+	public void testAndroidCom() {
+
 		String url = "https://source.android.com/security/bulletin/2017-09-01";
-		String html = IOUtils.toString(new URL(url));
-		List<CompositeVulnerability> list = crawler.parseWebPage(url, html);
-		assertEquals(true, list.size() > 1);
+		String html = null;
+		try {
+			html = IOUtils.toString(new URL(url), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail();
+		}
+		List<CompositeVulnerability> list = parser.parseWebPage(url, html);
+		assertTrue(list.size() > 1);
 	}
 	
 	@Test
-	public void testOpenwall() throws IOException {
-
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-openwall.html"));
-		List<CompositeVulnerability> list = crawler.parseWebPage("openwall", html);
+	public void testOpenwall() {
+		String html = safeReadHtml("src/test/resources/test-openwall.html");
+		List<CompositeVulnerability> list = parser.parseWebPage("openwall", html);
 		Vulnerability vuln = getVulnerability(list, "CVE-2015-4852");
+		assertNotNull(vuln);
 		boolean fine = vuln.getDescription().contains("Oracle");
-		assertEquals(true, fine);
+		assertTrue(fine);
 	}	
 
 }

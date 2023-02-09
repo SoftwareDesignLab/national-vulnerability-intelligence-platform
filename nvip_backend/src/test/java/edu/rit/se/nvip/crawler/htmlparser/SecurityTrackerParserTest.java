@@ -1,36 +1,23 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.junit.Test;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
-import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
+import java.util.List;
 
-public class SecurityTrackerParserTest {
+import static org.junit.Assert.*;
+
+public class SecurityTrackerParserTest extends AbstractParserTest {
 
 	@Test
-	public void testSecurityTracker() throws IOException {
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-		CveCrawler crawler = new CveCrawler(propertiesNvip);
-	
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-securitytracker-cvedetail.html"));
-		List<CompositeVulnerability> list = crawler.parseWebPage("securitytracker", html);
-		boolean fine = list.size() == 1;
-
-		assertEquals(true, fine);
+	public void testSecurityTracker() {
+		String html = safeReadHtml("src/test/resources/test-securitytracker-cvedetail.html");
+		List<CompositeVulnerability> list =  new SecurityTrackerParser("securitytracker").parseWebPage("securitytracker", html);
+		assertEquals(1, list.size());
+		CompositeVulnerability vuln = list.get(0);
+		assertEquals("CVE-2016-2183", vuln.getCveId());
+		assertEquals("2017/08/11 00:00:00", vuln.getPublishDate());
+		assertTrue(vuln.getDescription().contains("A vulnerability was reported in OpenSSL"));
+		assertFalse(vuln.getDescription().contains("Disclosure of system information"));
 	}
-
 }

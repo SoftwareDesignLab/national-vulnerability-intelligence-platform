@@ -1,33 +1,22 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-public class VMWareParserTest {
+public class VMWareParserTest extends AbstractParserTest {
 
     @Test
-    public void testVMWareAdvisories() throws IOException {
-        String url = "http://lists.vmware.com/pipermail/security-announce/2008/000005.html";
-        String html = IOUtils.toString(new URL(url));
-
-        MyProperties propertiesNvip = new MyProperties();
-        propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-
-        List<CompositeVulnerability> list = new CveCrawler(propertiesNvip).parseWebPage(url, html);
-
+    public void testVMWareAdvisories() {
+        String html = safeReadHtml("src/test/resources/test-vmware.html");
+        List<CompositeVulnerability> list = new VMWareParser("vmware").parseWebPage("vmware", html);
         assertEquals(5,list.size());
-
+        CompositeVulnerability vuln = getVulnerability(list, "CVE-2007-4965");
+        assertNotNull(vuln);
+        assertEquals("2008/02/04 00:00:00", vuln.getPublishDate());
     }
 
 }

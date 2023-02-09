@@ -53,12 +53,6 @@ public class FirstCommitTest {
 		assertEquals("Result2 is correct", true, result2.getTagName()==null);
 		assertEquals("Result3 is correct", true, result3==null);
 
-
-		
-		return;
-
-
-		
 	}
 
 }
