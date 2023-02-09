@@ -28,6 +28,8 @@ import edu.rit.se.nvip.utils.UtilHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -46,6 +48,7 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 	/**
 	 * Parse VMWare Security Advisory Pages
 	 * (ex. https://www.vmware.com/security/advisories/VMSA-2023-0003.html)
+	 * (ex. https://www.vmware.com/security/advisories/VMSA-2023-0001.html)
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
 	 * @return
@@ -73,21 +76,30 @@ public class VMWareAdvisoriesParser extends AbstractCveParser  {
 		   	2.) If the header has "Description" in it, pull the text from the sibling element
 		   	and store the current cve with that description
 		 */
+		Elements items = doc.getElementsByClass("secadvheading");
 
-		for (Element heading: doc.getElementsByClass("secadvheading")) {
+		for (Element heading: items) {
+
+			String description = "";
+
 			for (String cveId: cveIds) {
-				if (heading.text().contains(cveId)) {
+				//System.out.println(cveId.trim() + " -------------------- " + heading.text() + " ---------------- "  + heading.text().contains(cveId));
+				if (heading.text().contains(cveId.trim())) {
+
+					//System.out.println("PASS");
 					currentCVE = cveId;
+					Element sibling = heading.nextElementSibling();
+
+					if (Objects.requireNonNull(sibling).text().equals("Description")) {
+						description = Objects.requireNonNull(sibling.nextElementSibling()).text();
+						vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, description, sourceDomainName));
+					} else if (Objects.requireNonNull(sibling).text().length() > 30) {
+						vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, sibling.text(), sourceDomainName));
+					}
 				}
 			}
 
-			if (heading.text().equals("Description")) {
-				String description = Objects.requireNonNull(heading.nextElementSibling()).text();
-				if (!currentCVE.isEmpty()) {
-					vulns.add(new CompositeVulnerability(0, sSourceURL, currentCVE, null, publishDate, updatedDate, description, sourceDomainName));
-					currentCVE = "";
-				}
-			}
+
 		}
 
 		return vulns;
