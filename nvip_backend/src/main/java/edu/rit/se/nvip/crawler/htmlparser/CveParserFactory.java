@@ -46,7 +46,7 @@ public class CveParserFactory {
 		}
 		else if (sPageUrl.contains("oval.cisecurity"))
 			return new OvalCiSecurityParser("oval.cisecurity");
-		else if (sPageUrl.contains("exploit-db"))
+		else if (sPageUrl.contains("exploit-db") && sPageUrl.contains("exploits"))
 			return new ExploitDBParser("exploit-db");
 		else if (sPageUrl.contains("kb.cert"))
 			return new KbCertCveParser("kb.cert");
