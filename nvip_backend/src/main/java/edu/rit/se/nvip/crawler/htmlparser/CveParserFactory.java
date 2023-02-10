@@ -52,8 +52,6 @@ public class CveParserFactory {
 			return new KbCertCveParser("kb.cert");
 		else if (sPageUrl.contains("packetstorm"))
 			return new PacketStormParser("packetstorm");
-		else if (sPageUrl.contains("securitytracker"))
-			return new SecurityTrackerParser("securitytracker");
 		else if (sPageUrl.contains("talosintelligence"))
 			return new TalosIntelligenceParser("talosintelligence");
 
