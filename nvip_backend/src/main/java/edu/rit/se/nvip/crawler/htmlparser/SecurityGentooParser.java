@@ -85,11 +85,18 @@ public class SecurityGentooParser extends AbstractCveParser  {
 		if (leads.size() == 1) {
 			Element parent = leads.get(0).parent();
 			Document leadDoc = Jsoup.parse(parent.html());
-			Elements ps = leadDoc.getElementsByTag("p");
-			description = "";
-			for (Element p : ps) {
-				description += p.text() + "  ";
+			Elements h3s = leadDoc.getElementsByTag("h3");
+			String dstring = null;
+			String istring = null;
+			for (Element h : h3s) {
+				if (h.text().equals("Description")) {
+					dstring = Objects.requireNonNull(h.nextElementSibling()).text();
+				}
+				if (h.text().equals("Impact")) {
+					istring = Objects.requireNonNull(h.nextElementSibling()).text();
+				}
 			}
+			description = dstring + " " + istring;
 		}
 
 		for (String cve : uniqueCves) {
