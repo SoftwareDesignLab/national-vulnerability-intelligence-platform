@@ -48,8 +48,6 @@ public class CveParserFactory {
 			return new OvalCiSecurityParser("oval.cisecurity");
 		else if (sPageUrl.contains("exploit-db"))
 			return new ExploitDBParser("exploit-db");
-		else if (sPageUrl.contains("securityfocus") && !sPageUrl.contains("archive")) // archive pages have no consistent format
-			return new SecurityfocusCveParser("securityfocus");
 		else if (sPageUrl.contains("kb.cert"))
 			return new KbCertCveParser("kb.cert");
 		else if (sPageUrl.contains("packetstorm"))
