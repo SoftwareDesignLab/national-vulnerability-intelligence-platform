@@ -30,6 +30,6 @@ public class BugzillaParserTest extends AbstractParserTest {
 		CompositeVulnerability vuln = list.get(0);
 		assertEquals("CVE-2018-3736", vuln.getCveId());
 		assertEquals("2018/05/10 00:00:00", vuln.getPublishDate());
-		assertTrue(vuln.getDescription().contains("DoS (assertion failure, crash) via a KICK command"));
+		assertTrue(vuln.getDescription().contains("nodejs-https-proxy-agent: Unsanitized options passed to Buffer()"));
 	}
 }

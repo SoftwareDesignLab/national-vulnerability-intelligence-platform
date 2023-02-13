@@ -42,7 +42,8 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * 
  * Parse Bugzilla CVEs
  * (ex. https://bugzilla.redhat.com/show_bug.cgi?id=968382)
- * @author axoeec
+ * (ex. https://bugzilla.redhat.com/show_bug.cgi?id=1576652)
+ * @author axoeec, aep7128
  *
  */
 public class BugzillaParser extends AbstractCveParser {
@@ -72,7 +73,9 @@ public class BugzillaParser extends AbstractCveParser {
 	}
 
 	/**
-	 * Parse pages like: https://bugzilla.redhat.com/show_bug.cgi?id=968382
+	 * Parse pages like:
+	 * https://bugzilla.redhat.com/show_bug.cgi?id=968382
+	 * https://bugzilla.redhat.com/show_bug.cgi?id=1576652
 	 * 
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
@@ -112,8 +115,6 @@ public class BugzillaParser extends AbstractCveParser {
 					}
 				}
 			}
-
-			System.out.println(description);
 
 			for (String cveId : uniqueCves)
 				vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cveId, platform, publishDate, lastModifiedDate, description, sourceDomainName));
