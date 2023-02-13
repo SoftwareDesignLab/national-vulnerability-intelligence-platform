@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
+
 /**
  * Test for Google Cloud Bulletin Parser
  * @author aep7128
@@ -26,8 +28,10 @@ public class GoogleCloudBulletinTest extends AbstractParserTest {
         propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
         CveCrawler crawler = new CveCrawler(propertiesNvip);
-        String html = FileUtils.readFileToString(new File("src/test/resources/test-bosch-security.html"), StandardCharsets.US_ASCII);
-        List<CompositeVulnerability> list = crawler.parseWebPage("https://psirt.bosch.com/security-advisories/bosch-sa-247053-bt.html", html);
+        String html = FileUtils.readFileToString(new File("src/test/resources/test-google-cloud-bulletin.html"), StandardCharsets.US_ASCII);
+        List<CompositeVulnerability> list = crawler.parseWebPage("https://cloud.google.com/support/bulletins", html);
+
+        assertEquals(list.size(), 1);
 
     }
 

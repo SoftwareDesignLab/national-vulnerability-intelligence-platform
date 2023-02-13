@@ -81,7 +81,7 @@ public class GoogleCloudParser extends AbstractCveParser  {
                         }
                     }
                 } else if (item.className().contains("devsite-table-wrapper")) {
-                    Elements bodyContents = item.select("tbody > td");
+                    Elements bodyContents = item.select("tr > td");
                     description = bodyContents.get(0).text();
 
                     for (Element note: bodyContents.get(2).select("li")) {

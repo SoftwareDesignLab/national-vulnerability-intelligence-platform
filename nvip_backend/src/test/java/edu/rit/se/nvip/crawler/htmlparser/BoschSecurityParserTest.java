@@ -30,6 +30,8 @@ public class BoschSecurityParserTest {
         String html = FileUtils.readFileToString(new File("src/test/resources/test-bosch-security.html"), StandardCharsets.US_ASCII);
         List<CompositeVulnerability> list = crawler.parseWebPage("https://psirt.bosch.com/security-advisories/bosch-sa-247053-bt.html", html);
 
+        assertEquals(105, list.size());
+
         CompositeVulnerability vuln1 = list.get(0);
         CompositeVulnerability vuln2 = list.get(1);
 
@@ -42,6 +44,6 @@ public class BoschSecurityParserTest {
                 vuln2.getDescription());
         assertEquals("23 Nov 2022", vuln1.getPublishDate());
         assertEquals("23 Nov 2022", vuln1.getLastModifiedDate());
-        assertEquals(105, list.size());
+
     }
 }
