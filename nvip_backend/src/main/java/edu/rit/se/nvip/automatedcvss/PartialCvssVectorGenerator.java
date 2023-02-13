@@ -44,12 +44,6 @@ import edu.rit.se.nvip.automatedcvss.enums.VdoNounGroup;
  *
  */
 public class PartialCvssVectorGenerator {
-	private static Logger logger = LogManager.getLogger(PartialCvssVectorGenerator.class);
-	static NumberFormat formatter = new DecimalFormat("#0.00");
-
-	public static void main(String[] args) {
-		PartialCvssVectorGenerator partialCvssVectorGenerator = new PartialCvssVectorGenerator();
-	}
 
 	/**
 	 * A partial CVSS vector is a list like ["P", "X", "X", "X", "X", "H", "H",
@@ -73,7 +67,7 @@ public class PartialCvssVectorGenerator {
 		// initially set to unknown
 		String[] vectorCvss = new String[] { "X", "L", "X", "X", "U", "N", "N", "N" };
 
-		Map<String, Integer> predictedLabelMap = new HashMap<>();
+		Map<String, Integer> predictedLabelMap;
 
 		for (String vdoNounGroup : predictionsForVuln.keySet()) {
 			ArrayList<String[]> predictionsForNounGroup = predictionsForVuln.get(vdoNounGroup);

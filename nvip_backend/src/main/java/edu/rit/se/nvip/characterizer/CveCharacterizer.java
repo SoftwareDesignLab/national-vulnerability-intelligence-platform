@@ -70,9 +70,7 @@ import weka.core.converters.CSVSaver;
  */
 public class CveCharacterizer {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	private List<AbstractCveClassifier> myClassifierList = new ArrayList<AbstractCveClassifier>();
-	private SeverityPredictor severityPredictor = null;
-	private ImpactPredictor impactPredictor = null;
+	private List<AbstractCveClassifier> myClassifierList = new ArrayList<>();
 
 	/**
 	 * these two vars are used to derive the CVSS vector from VDO labels and then
@@ -123,9 +121,6 @@ public class CveCharacterizer {
 				// assign a name to each classifier.
 				aClassifier.setCveClassifierName(vdoNounGroupName);
 
-				// store arff file
-				// cveClassifier.convertCSVtoARFF(trainingDataOutputFilePath);
-
 				// train the model
 				aClassifier.trainMLModel();
 				myClassifierList.add(aClassifier);
@@ -133,43 +128,20 @@ public class CveCharacterizer {
 
 		} catch (Exception e) {
 			logger.error("An error occurred while tarining a classifier for CVE Characterizer! NVIP will not crash but CVE Characterizer will NOT work properly. Check your training data at "
-					+ trainingDataPath + "\tException: " + e.toString());
+					+ trainingDataPath + "\tException: " + e);
 		}
 
 		try {
 			if (loadSerializedModels) {
 				MyProperties propertiesNvip = new MyProperties();
 				propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-				severityPredictor = new SeverityPredictor(propertiesNvip.getDataDir());
-
-				impactPredictor = new ImpactPredictor(propertiesNvip.getDataDir());
+				new SeverityPredictor(propertiesNvip.getDataDir());
+				new ImpactPredictor(propertiesNvip.getDataDir());
 			}
 		} catch (Exception e) {
 			logger.error(e.toString());
 
 		}
-	}
-
-	/**
-	 * Characterize a given CVE description.
-	 * 
-	 * @param cveDesc
-	 * @param bPredictMultiple TODO
-	 * @return
-	 * 
-	 *         The VDO label and its associated probability
-	 */
-	public ArrayList<String[]> characterizeCve(String cveDesc, boolean bPredictMultiple) {
-		CvePreProcessor cvePreProcessor = new CvePreProcessor(true);
-		String cveDescProcessed = cvePreProcessor.preProcessLine(cveDesc);
-
-		ArrayList<String[]> prediction = new ArrayList<String[]>();
-		for (AbstractCveClassifier aClassifier : myClassifierList) {
-			ArrayList<String[]> predictionFromClassifier = aClassifier.predict(cveDescProcessed, bPredictMultiple);
-			prediction.addAll(predictionFromClassifier);
-		}
-
-		return prediction;
 	}
 
 	/**
@@ -286,16 +258,6 @@ public class CveCharacterizer {
 	}
 
 	/**
-	 * Underlying abstract CVE Classifier. <cveClassifier> is using either an
-	 * ordinary classification method or an information theory approach
-	 * 
-	 * @return
-	 */
-	public AbstractCveClassifier getCveClassifier() {
-		return myClassifierList.get(0);
-	}
-
-	/**
 	 * get VDO labels and return a double array that includes the
 	 * mean/minimum/maximum and standard deviation of the CVSS scores in NVD
 	 * matching with these labels
@@ -312,7 +274,7 @@ public class CveCharacterizer {
 	}
 
 	private String getSeverityLabelFromCvssScore(double cvssScore) {
-		String severityLabel = null;
+		String severityLabel;
 		if (cvssScore < 4)
 			severityLabel = "LOW";
 		else if (cvssScore <= 6.5)

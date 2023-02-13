@@ -1,18 +1,13 @@
 package edu.rit.se.nvip.characterizer;
 
-import static org.junit.Assert.assertEquals;
+import edu.rit.se.nvip.utils.MyProperties;
+import edu.rit.se.nvip.utils.PropertyLoader;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.junit.Test;
-
-import edu.rit.se.nvip.characterizer.CveCharacterizer;
-import edu.rit.se.nvip.characterizer.classifier.OrdinaryCveClassifier;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
-import weka.classifiers.bayes.NaiveBayes;
+import static org.junit.Assert.assertTrue;
 
 public class CveCharacterizerTest {
 	@Test
@@ -28,6 +23,6 @@ public class CveCharacterizerTest {
 		// cveCharacterizer.getCveClassifier().resetClassifier(new NaiveBayes());
 		Map<String,ArrayList<String[]>> prediction = cveCharacterizer.characterizeCveForVDO(cveDesc, true);
 
-		assertEquals(true, prediction.size() > 0);
+		assertTrue(prediction.size() > 0);
 	}
 }
