@@ -38,18 +38,12 @@ import java.util.*;
 
 
 /**
-
     Parse Google Cloud Support Bulletin
-
-    (Currently unfinished but might want to use it for patchfinder)
-
-    @author Andrew Pickard
+    (ex. https://cloud.google.com/support/bulletins)
+    @author aep7128
  */
 
-
 public class GoogleCloudParser extends AbstractCveParser  {
-
-    private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public GoogleCloudParser(String domainName) {
 		sourceDomainName = domainName;
@@ -60,29 +54,51 @@ public class GoogleCloudParser extends AbstractCveParser  {
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulns = new ArrayList<>();
 
+        Set<String> uniqueCves = getCVEs(sCVEContentHTML);
+        if (uniqueCves.size() == 0)
+            return vulns;
+
 		Document doc = Jsoup.parse(sCVEContentHTML);
-        String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
-
         Pattern pattern = Pattern.compile(regexCVEID);
+        Elements bulletin = doc.getElementsByClass("bulletins");
 
-        Elements tables = doc.select("div.devsite-table-wrapper");
+        if (bulletin.size() == 1) {
+            Elements bulletinItems = bulletin.get(0).children();
 
-        for (Element table: tables) {
-            
-            Elements body = table.select("tbody").first().select("td");
-            String description = body.get(0).text();
-            Matcher matcher = pattern.matcher(description);
+            ArrayList<String> cves = new ArrayList<>();
+            String description = "";
+            String publishedDate = "";
+            String lastModifiedDate = "";
 
-            /*if (matcher.find()) {
+            for (Element item: bulletinItems) {
+                if (item.tagName().equals("p")) {
+                    String[] lines = item.text().split("\n");
+                    for (String line: lines) {
+                        if (line.contains("Published")) {
+                            publishedDate = line.split(" ")[1];
+                        } else if (line.contains("Updated:")) {
+                            lastModifiedDate = line.split(" ")[1];
+                        }
+                    }
+                } else if (item.className().contains("devsite-table-wrapper")) {
+                    Elements bodyContents = item.select("tbody > td");
+                    description = bodyContents.get(0).text();
 
+                    for (Element note: bodyContents.get(2).select("li")) {
+                        Matcher matcher = pattern.matcher(note.text());
+                        if (matcher.find()) {
+                            cves.add(note.text());
+                        }
+                    }
+                }
             }
 
-            for (Element bodyCol: body) {
-                
-            }*/
+            for (String cve: cves) {
+                vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
+            }
         }
 
-        return null;
+        return vulns;
 
     }
 

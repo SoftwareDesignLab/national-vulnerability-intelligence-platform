@@ -40,7 +40,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
  * 
- * Parse Bugzilla CVEs
+ * Parse Bugzilla CVEs (Bugzilla pages for certain products, such as RedHat and Gentoo)
  * (ex. https://bugzilla.redhat.com/show_bug.cgi?id=968382)
  * (ex. https://bugzilla.redhat.com/show_bug.cgi?id=1576652)
  * @author axoeec, aep7128

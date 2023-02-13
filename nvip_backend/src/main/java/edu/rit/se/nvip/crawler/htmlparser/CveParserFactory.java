@@ -84,6 +84,8 @@ public class CveParserFactory {
 		}
 		else if (sPageUrl.contains("bosch") && sPageUrl.contains("security-advisories"))
 			return new BoschSecurityParser("bosch");
+		else if (sPageUrl.contains("cloud.google") && sPageUrl.contains("bulletins"))
+			return new GoogleCloudParser("google");
 
 		// sources that you want to ignore
 		// we ignore mitre/nvd because we pull their up to date CVEs from Github
