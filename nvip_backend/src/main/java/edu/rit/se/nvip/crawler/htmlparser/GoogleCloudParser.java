@@ -24,9 +24,6 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.UtilHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -82,20 +79,26 @@ public class GoogleCloudParser extends AbstractCveParser  {
                     }
                 } else if (item.className().contains("devsite-table-wrapper")) {
                     Elements bodyContents = item.select("tr > td");
-                    description = bodyContents.get(0).text();
+                    if (bodyContents.size() == 3) {
+                        description = bodyContents.get(0).text();
 
-                    for (Element note: bodyContents.get(2).select("li")) {
-                        Matcher matcher = pattern.matcher(note.text());
-                        if (matcher.find()) {
-                            cves.add(note.text());
+                        for (Element note: bodyContents.get(2).select("li")) {
+                            Matcher matcher = pattern.matcher(note.text());
+                            if (matcher.find()) {
+                                cves.add(note.text());
+                            }
+                        }
+
+                        for (String cve: cves) {
+                            System.out.println(cve);
+                            vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
                         }
                     }
+
                 }
             }
 
-            for (String cve: cves) {
-                vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
-            }
+
         }
 
         return vulns;
