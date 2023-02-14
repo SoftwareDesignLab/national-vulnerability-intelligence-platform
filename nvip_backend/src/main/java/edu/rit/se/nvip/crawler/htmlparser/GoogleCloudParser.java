@@ -46,7 +46,6 @@ public class GoogleCloudParser extends AbstractCveParser  {
 		sourceDomainName = domainName;
 	}
 
-
     @Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulns = new ArrayList<>();
@@ -77,6 +76,11 @@ public class GoogleCloudParser extends AbstractCveParser  {
                             lastModifiedDate = line.split(" ")[1];
                         }
                     }
+
+                    if (lastModifiedDate.isEmpty()) {
+                        lastModifiedDate = publishedDate;
+                    }
+
                 } else if (item.className().contains("devsite-table-wrapper")) {
                     Elements bodyContents = item.select("tr > td");
                     if (bodyContents.size() == 3) {
@@ -88,12 +92,15 @@ public class GoogleCloudParser extends AbstractCveParser  {
                                 cves.add(note.text());
                             }
                         }
-
-                        for (String cve: cves) {
-                            System.out.println(cve);
-                            vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
-                        }
                     }
+
+                    for (String cve: cves) {
+                        vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
+                    }
+                    cves = new ArrayList<>();
+                    description = "";
+                    publishedDate = "";
+                    lastModifiedDate = "";
 
                 }
             }

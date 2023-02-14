@@ -41,7 +41,6 @@ public class GoogleCloudBulletinTest extends AbstractParserTest {
         assertEquals("2023-01-11", vuln1.getPublishDate());
         assertEquals("2023-01-11", vuln1.getLastModifiedDate());
         assertTrue(vuln1.getDescription().contains("OpenSSL v3.0.6 that can potentially cause a crash."));
-
         assertEquals("CVE-2022-2588", vuln6.getCveId());
         assertEquals("2022-11-09", vuln6.getPublishDate());
         assertEquals("2023-01-19", vuln6.getLastModifiedDate());
