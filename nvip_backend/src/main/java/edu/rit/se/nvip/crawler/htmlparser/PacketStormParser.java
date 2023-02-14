@@ -48,7 +48,8 @@ import edu.rit.se.nvip.productnameextractor.CpeLookUp;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
- * 
+ * Parse Web Pages for Packet Storm
+ * (ex. https://packetstormsecurity.com/files/170988/Cisco-RV-Series-Authentication-Bypass-Command-Injection.html)
  * @author axoeec
  *
  */
@@ -59,7 +60,6 @@ public class PacketStormParser extends AbstractCveParser  {
 	}
 	
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	DatabaseHelper db = DatabaseHelper.getInstance();
 	String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 
 	@Override
@@ -124,7 +124,7 @@ public class PacketStormParser extends AbstractCveParser  {
 				// get detail of the item
 				Elements elements = element.getElementsByClass("detail");
 				description = listTitle + "\n" + getDescription(sSourceURL, elements);
-				if (description.equals(""))
+				if (description.equals("\n"))
 					continue;
 
 				// get date

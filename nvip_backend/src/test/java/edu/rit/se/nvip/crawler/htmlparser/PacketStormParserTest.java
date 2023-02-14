@@ -11,7 +11,7 @@ public class PacketStormParserTest extends AbstractParserTest {
 	PacketStormParser parser = new PacketStormParser("packetstorm");
 
 	@Test
-	public void testPacketStorm0() {
+	public void testPacketStormFiles() {
 		String html = safeReadHtml("src/test/resources/test-packetstorm-files.html");
 		List<CompositeVulnerability> list = parser.parseWebPage("packetstorm", html);
 		assertEquals(44, list.size());
@@ -22,7 +22,19 @@ public class PacketStormParserTest extends AbstractParserTest {
 	}
 
 	@Test
-	public void testPacketStorm1() {
+	public void testPacketStormFiles2() {
+		String html = safeReadHtml("src/test/resources/test-packetstorm-files-2.html");
+		List<CompositeVulnerability> list = parser.parseWebPage("packetstorm", html);
+		assertEquals(2, list.size());
+		CompositeVulnerability vuln = getVulnerability(list, "CVE-2022-20705");
+		assertNotNull(vuln);
+		assertTrue(vuln.getDescription().contains("Cisco RV160, RV260, RV340, and RV345 Small Business Routers, allowing attackers to execute arbitrary commands"));
+		assertEquals("2023/02/14 00:00:00", vuln.getPublishDate());
+	}
+
+
+	@Test
+	public void testPacketStormPOC() {
 		String html = safeReadHtml("src/test/resources/test-packetstorm-poc-files.html");
 		List<CompositeVulnerability> list = parser.parseWebPage("packetstorm", html);
 		assertEquals(8, list.size());
@@ -34,7 +46,7 @@ public class PacketStormParserTest extends AbstractParserTest {
 	}
 
 	@Test
-	public void testPacketStorm2() {
+	public void testPacketStormAdvisory() {
 		String html = safeReadHtml("src/test/resources/test-packetstorm-advisory.html");
 		List<CompositeVulnerability> list = parser.parseWebPage("packetstorm", html);
 		assertEquals(78, list.size());
@@ -45,7 +57,7 @@ public class PacketStormParserTest extends AbstractParserTest {
 	}
 
 	@Test
-	public void testPacketStorm3() {
+	public void testPacketStormCVEDetail() {
 		String html = safeReadHtml("src/test/resources/test-packetstorm-cvedetail.html");
 		List<CompositeVulnerability> list = parser.parseWebPage("packetstorm.html", html);
 		assertEquals(2, list.size());
@@ -56,7 +68,7 @@ public class PacketStormParserTest extends AbstractParserTest {
 	}
 
 	@Test
-	public void testPacketStorm4() {
+	public void testPacketStormDaily() {
 		String html = safeReadHtml("src/test/resources/test-packetstorm-daily.html");
 		List<CompositeVulnerability> list = new PacketStormParser("packetstorm").parseWebPage("packetstorm", html);
 		assertEquals(31, list.size());
