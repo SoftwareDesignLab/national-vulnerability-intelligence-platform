@@ -76,10 +76,10 @@ public class CveParserFactory {
 			return new AnquankeParser("anquanke");
 		else if (sPageUrl.contains("seclists"))
 			return new SeclistsParser("seclists");
-		else if (sPageUrl.contains("redhat")) {
-			if (sPageUrl.contains("security"))
+		else if (sPageUrl.contains("redhat") && sPageUrl.contains("security")) {
+			if (sPageUrl.contains("security-updates"))
 				return new SecurityRedHatParser("redhat");
-			else 
+			else if (sPageUrl.contains("cve"))
 				return new RedHatParser("redhat");
 		}
 		else if (sPageUrl.contains("bosch") && sPageUrl.contains("security-advisories"))
