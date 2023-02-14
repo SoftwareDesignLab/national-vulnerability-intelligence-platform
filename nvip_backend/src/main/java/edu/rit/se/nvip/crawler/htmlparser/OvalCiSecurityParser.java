@@ -43,7 +43,8 @@ import edu.rit.se.nvip.productnameextractor.CpeLookUp;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
- *
+ * Parse Web Pages for Oval CI
+ * (ex. )
  * @author axoeec
  *
  */

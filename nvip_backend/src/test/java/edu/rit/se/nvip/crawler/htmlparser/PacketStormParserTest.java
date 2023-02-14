@@ -6,6 +6,10 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests for Packet Storm Parser
+ * @author aep7128
+ */
 public class PacketStormParserTest extends AbstractParserTest {
 
 	PacketStormParser parser = new PacketStormParser("packetstorm");
