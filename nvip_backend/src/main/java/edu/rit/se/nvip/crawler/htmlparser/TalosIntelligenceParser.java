@@ -92,12 +92,12 @@ public class TalosIntelligenceParser extends AbstractCveParser  {
 			String platform = "";
 			String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 
-			Elements allElements = document.select("h3");
+			Elements allElements = document.getElementsByTag("h5");
 
 			for (Element element : allElements) {
-				String text = element.text();
+				String text = element.text().toLowerCase();
 
-				if (text.contains("Summary")) {
+				if (text.contains("summary")) {
 					String str = "";
 					while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
 						str += element.nextElementSibling().text();
@@ -106,9 +106,9 @@ public class TalosIntelligenceParser extends AbstractCveParser  {
 					description += str;
 				}
 
-				if (text.contains("Tested Versions")) {
+				if (text.toLowerCase().contains("tested versions")) {
 					String str = "";
-					if (element != null && element.nextElementSibling().tagName().equals("p")) {
+					if (element.nextElementSibling().tagName().equals("p")) {
 						while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
 							str += element.nextElementSibling().text();
 							element = element.nextElementSibling();
@@ -119,7 +119,7 @@ public class TalosIntelligenceParser extends AbstractCveParser  {
 					platform += str;
 				}
 
-				if (text.contains("Details")) {
+				if (text.contains("details")) {
 					String str = "";
 					while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
 						try {
@@ -131,18 +131,16 @@ public class TalosIntelligenceParser extends AbstractCveParser  {
 					description += str;
 				}
 
-				if (text.contains("Timeline")) {
+				if (text.contains("timeline")) {
 					String str = "";
 					try {
 						if (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
 							str = element.nextElementSibling().text();
 							List<String> dates = getDates(str);
 
-							// the last date under timeline!
-							publishDate = dates.get(dates.size() - 1);
+							publishDate = dates.get(0);
 							publishDate = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(publishDate));
 						}
-						// description += str;
 					} catch (Exception e) {
 						logger.error("Error parsing Timeline section at: " + sSourceURL);
 					}
