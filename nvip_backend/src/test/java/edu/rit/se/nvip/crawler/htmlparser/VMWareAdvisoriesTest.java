@@ -11,15 +11,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test Parser for VMWare Security Advisories Page
  * @author aep7128
  *
- * TODO: There is an older version of this page for older CVEs,
- * 	but CVE Descriptions aren't accuratly shown (ex. 4 CVEs have the same description,
- * 	then redirects to MITRE), we may want to ignore those cases for now. Just test on the recent web page layout
+ * There is an older version of this page for earlier CVEs,
+ * but CVE Descriptions aren't accuratly shown (ex. 4 CVEs have the same description,
+ * then redirects to MITRE), we may want to ignore those cases for now. Just test on the recent web page layout
  *
  */
 public class VMWareAdvisoriesTest {
