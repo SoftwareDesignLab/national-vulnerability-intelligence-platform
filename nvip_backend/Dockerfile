@@ -1,5 +1,8 @@
 FROM maven:3.8-jdk-11-slim AS builder
-ADD . .
+
+WORKDIR /home/app
+
+ADD sleepycat-5.0.84.jar .
 RUN mvn install:install-file \
    -Dfile=sleepycat-5.0.84.jar \
    -DgroupId=com.sleepycat \
@@ -7,7 +10,12 @@ RUN mvn install:install-file \
    -Dversion=5.0.84 \
    -Dpackaging=jar \
    -DgeneratePom=true
-RUN mvn clean package -Dskiptests
+
+ADD pom.xml .
+ADD nvip_data nvip_data
+ADD src src
+
+RUN mvn clean package -Dmaven.test.skip=true
 
 ### Run Stage
 FROM openjdk:11-jre-slim
