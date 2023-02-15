@@ -61,11 +61,9 @@ public class RedHatParser extends AbstractCveParser  {
             String cve = doc.select("h1.headline").text();
             String description = doc.select("#cve-details-description > div > div > pfe-markdown > p").text();
 
-            String publishedDate = formatter.parse(doc.select("p.cve-public-date > pfe-datetime > span").text()).toString();
+            String publishedDate = doc.select("p.cve-public-date > pfe-datetime > span").text().trim();
 
             String lastModifiedDate = doc.select("p.cve-last-modified > pfe-datetime > span").text().split("at")[0].trim();
-
-            lastModifiedDate = formatter.parse(lastModifiedDate).toString();
 
             vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
         } catch (Exception e) {

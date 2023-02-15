@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +34,7 @@ public class VMWareAdvisoriesTest {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
 		CveCrawler crawler = new CveCrawler(propertiesNvip);
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware-advisories-single-cve.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware-advisories-single-cve.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = crawler.parseWebPage("https://www.vmware.com/security/advisories/VMSA-2023-0003.html", html);
 
 		assertEquals(list.size(), 1);
@@ -57,7 +58,7 @@ public class VMWareAdvisoriesTest {
 		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
 		CveCrawler crawler = new CveCrawler(propertiesNvip);
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware-advisories-multi-cve.html"));
+		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware-advisories-multi-cve.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = crawler.parseWebPage("https://www.vmware.com/security/advisories/VMSA-2023-0001.html", html);
 
 		assertEquals(list.size(), 4);

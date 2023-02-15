@@ -1,13 +1,13 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static junit.framework.TestCase.*;
 
-class TenableSecurityParserTest extends AbstractParserTest {
+public class TenableSecurityParserTest extends AbstractParserTest {
 
     @Test
     public void testTenableSecurityParser0() {
