@@ -12,13 +12,17 @@ RUN mvn install:install-file \
    -DgeneratePom=true
 
 ADD pom.xml .
-ADD nvip_data nvip_data
-ADD src src
+RUN mvn dependency:go-offline
+ADD src/main src/main
 
-RUN mvn clean package -Dmaven.test.skip=true
+RUN mvn package -Dmaven.test.skip=true
 
 ### Run Stage
 FROM openjdk:11-jre-slim
+
+ADD nvip_data /usr/local/lib/nvip_data
+COPY --from=builder /home/app/target/nvip_lib /usr/local/lib/nvip_lib
 COPY --from=builder /home/app/target/nvip-1.0.jar /usr/local/lib/nvip-1.0.jar
 
-ENTRYPOINT ["java","-jar","/usr/local/lib/nvip-1.0.jar"]
+WORKDIR /usr/local/lib/
+ENTRYPOINT ["java", "-jar", "nvip-1.0.jar"]
