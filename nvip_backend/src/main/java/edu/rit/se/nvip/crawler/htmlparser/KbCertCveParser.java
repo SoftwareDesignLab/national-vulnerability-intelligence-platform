@@ -227,12 +227,19 @@ public class KbCertCveParser extends AbstractCveParser  {
 		Elements h3s = document.getElementsByTag("h3");
 		for (Element e : h3s) {
 			if (e.text().trim().equalsIgnoreCase("description")) {
+				// Start off at the header + 1 to get the first part of description
 				int currIndex = e.elementSiblingIndex() + 1;
 				Element parent = e.parent();
-				while (parent.child(currIndex).text().trim().equals("")) {
+				// current index text
+				StringBuilder currChildText = new StringBuilder(parent.child(currIndex).text().trim());
+				// Multiple CVEs loop
+				while (!parent.child(currIndex).tagName().equals("h3")) {
 					currIndex++;
+					Element thisChild = parent.child(currIndex);
+					String thisChildText = thisChild.text().trim();
+					currChildText.append(thisChildText);
 				}
-				return e.parent().child(currIndex).text();
+				return currChildText.toString();
 			}
 		}
 		return null;

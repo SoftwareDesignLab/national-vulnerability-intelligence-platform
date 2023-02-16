@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class KbCertCveParserTest extends AbstractParserTest {
 
     @Test
-    public void testKbCert() {
+    public void testKbCertMultipleCVE() {
         String html = safeReadHtml("src/test/resources/test-kb-cert.html");
         List<CompositeVulnerability> list = new KbCertCveParser("kb.cert").parseWebPage("kb.cert", html);
         assertEquals(2, list.size());
