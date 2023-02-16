@@ -327,10 +327,6 @@
   white-space: nowrap;
 }
 
-.daily-vuln-dropdown-container:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.661);
-}
-
 /** Media Queries **/
 @media screen and (min-width: 1000px) {
   :root {
