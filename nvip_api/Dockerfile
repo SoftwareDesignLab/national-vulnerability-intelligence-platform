@@ -8,12 +8,7 @@ ADD WebContent WebContent/
 
 ADD docker.context.xml WebContent/META-INF/context.xml
 
-RUN cat WebContent/META-INF/context.xml
-
 RUN mvn clean package -Dskiptests
-
-RUN ls target
-RUN pwd 
 
 FROM tomcat:9.0-alpine as deploy
 
