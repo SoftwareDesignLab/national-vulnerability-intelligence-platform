@@ -87,9 +87,9 @@ public class TalosIntelligenceParser extends AbstractCveParser  {
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
-			String description = "";
+			StringBuilder description = new StringBuilder();
 			String publishDate = null;
-			String platform = "";
+			StringBuilder platform = new StringBuilder();
 			String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 
 			Elements allElements = document.getElementsByTag("h5");
@@ -98,37 +98,37 @@ public class TalosIntelligenceParser extends AbstractCveParser  {
 				String text = element.text().toLowerCase();
 
 				if (text.contains("summary")) {
-					String str = "";
+					StringBuilder str = new StringBuilder();
 					while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
-						str += element.nextElementSibling().text();
+						str.append(element.nextElementSibling().text());
 						element = element.nextElementSibling();
 					}
-					description += str;
+					description.append(str);
 				}
 
 				if (text.toLowerCase().contains("tested versions")) {
-					String str = "";
+					StringBuilder str = new StringBuilder();
 					if (element.nextElementSibling().tagName().equals("p")) {
 						while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
-							str += element.nextElementSibling().text();
+							str.append(element.nextElementSibling().text());
 							element = element.nextElementSibling();
 						}
 					} else {
-						str = element.nextElementSibling().text();
+						str = new StringBuilder(element.nextElementSibling().text());
 					}
-					platform += str;
+					platform.append(str);
 				}
 
 				if (text.contains("details")) {
-					String str = "";
+					StringBuilder str = new StringBuilder();
 					while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
 						try {
-							str += element.nextElementSibling().text();
+							str.append(element.nextElementSibling().text());
 							element = element.nextElementSibling();
-						} catch (Exception e) {
+						} catch (Exception ignored) {
 						}
 					}
-					description += str;
+					description.append(str);
 				}
 
 				if (text.contains("timeline")) {
@@ -149,7 +149,7 @@ public class TalosIntelligenceParser extends AbstractCveParser  {
 			}
 
 			for (String cveId : uniqueCves)
-				vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cveId, platform, publishDate, lastModifiedDate, description, sourceDomainName));
+				vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cveId, platform.toString(), publishDate, lastModifiedDate, description.toString(), sourceDomainName));
 		} catch (Exception e) {
 			logger.error("An error occurred while parsing TalosIntelligence URL: " + sSourceURL);
 		}
