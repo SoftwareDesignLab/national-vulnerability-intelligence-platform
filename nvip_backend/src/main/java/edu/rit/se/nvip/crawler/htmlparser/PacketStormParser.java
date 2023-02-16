@@ -67,12 +67,12 @@ public class PacketStormParser extends AbstractCveParser  {
 			return parseSingleHTMLPage(sSourceURL, sCVEContentHTML);
 		} else {
 			/**
-			 * 
+			 *
 			 * All pages have
 			 * <dl class="file">
 			 * and
 			 * <dd class="cve">in them!
-			 * 
+			 *
 			 */
 			return parseCVEListPage(sSourceURL, sCVEContentHTML);
 		}
@@ -81,12 +81,12 @@ public class PacketStormParser extends AbstractCveParser  {
 
 	/**
 	 * parse a packetstorm pages like
-	 * 
+	 *
 	 * https://packetstormsecurity.com/files/cve/CVE-2017-1000476
 	 * https://packetstormsecurity.com/files/date/2004-01/
 	 * https://packetstormsecurity.com/0307-advisories/
 	 * https://packetstormsecurity.com/0309-exploits/
-	 * 
+	 *
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
 	 * @return
@@ -229,12 +229,12 @@ public class PacketStormParser extends AbstractCveParser  {
 			document.select("br").append("\n");
 
 			Elements codeTags = document.getElementsByTag("code");
-			String codeText = "";
+			StringBuilder codeText = new StringBuilder();
 
 			for (Element tag : codeTags)
-				codeText += tag.text();
+				codeText.append(tag.text());
 
-			List<AffectedRelease> affectedReleases = getAffectedReleasesFromTagTxt(codeText, publishDate);
+			List<AffectedRelease> affectedReleases = getAffectedReleasesFromTagTxt(codeText.toString(), publishDate);
 
 			for (CompositeVulnerability v : vulns) {
 				for (AffectedRelease a : affectedReleases) {
@@ -270,8 +270,7 @@ public class PacketStormParser extends AbstractCveParser  {
 				products.put(p.getProdId(), p);
 		}
 
-		List<AffectedRelease> affectedReleases = getAffectedReleasesFromProducts(products, publishDate);
-		return affectedReleases;
+		return getAffectedReleasesFromProducts(products, publishDate);
 
 	}
 
