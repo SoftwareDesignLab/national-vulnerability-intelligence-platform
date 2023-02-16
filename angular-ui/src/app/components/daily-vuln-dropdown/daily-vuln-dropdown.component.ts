@@ -29,7 +29,7 @@ export class DailyVulnDropdownComponent implements OnChanges {
   @Input('vuln') vuln: Vulnerability;
   @Input('index') index: number;
   @Input('currentToggle') currentToggle: number;
-  @Output() selected = new EventEmitter<{index: number}>
+  @Output() selected = new EventEmitter<{ index: number }>
 
   constructor() {
     this.vuln = {} as Vulnerability;
@@ -85,11 +85,6 @@ export class DailyVulnDropdownComponent implements OnChanges {
     return false;
   }
 
-  /** helper for getHeaderClass - should be deprecated after Bradens changes */
-  isGreyDropDown(index: number) {
-    return index % 2 == 1;
-  }
-
   /** get VDO list based on a given noun group constant */
   getVdoList(nounGroup: string) {
     var newVdoList: Array<VDO> = [];
@@ -116,8 +111,8 @@ export class DailyVulnDropdownComponent implements OnChanges {
         a[orderBy as keyof VDO] > b[orderBy as keyof VDO]
           ? 1
           : a[orderBy as keyof VDO] == b[orderBy as keyof VDO]
-          ? 0
-          : -1
+            ? 0
+            : -1
       )
       .slice(0, limitTo);
   }
@@ -138,7 +133,6 @@ export class DailyVulnDropdownComponent implements OnChanges {
   /** styling for whether a dropdown is active or not */
   getHeaderClass() {
     var c: string = this.active ? 'daily-vuln-active' : 'daily-vuln-dropdown-button';
-    if (this.isGreyDropDown(this.index)) c = c + ' grey-dropdown';
     return c;
   }
 

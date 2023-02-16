@@ -20,9 +20,9 @@
 }
 
 .daily-vuln-active {
-  background-color: #d9895d;
-  border-color: #d9895d;
-  color: #ffffff;
+  background-color: rgb(211, 211, 211);
+  border-color: rgb(211, 211, 211);
+  color: #000;
 }
 
 .vdo-high-confidence {
