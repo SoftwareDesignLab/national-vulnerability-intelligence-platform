@@ -327,6 +327,10 @@
   white-space: nowrap;
 }
 
+.nvip-loading-screen {
+  text-align: center;
+}
+
 /** Media Queries **/
 @media screen and (min-width: 1000px) {
   :root {
