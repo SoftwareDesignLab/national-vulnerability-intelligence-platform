@@ -43,6 +43,7 @@ import java.util.*;
  * 
  * @author axoeec
  *
+ * Ex:https://seclists.org/bugtraq/2016/Feb/147
  */
 public class SeclistsParser extends AbstractCveParser  {
 	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());

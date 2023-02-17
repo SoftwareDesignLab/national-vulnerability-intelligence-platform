@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
  * 
  * @author axoeec
  *
+ * Ex: https://www.kb.cert.org/vuls/id/434994
  */
 public class KbCertCveParser extends AbstractCveParser  {
 	

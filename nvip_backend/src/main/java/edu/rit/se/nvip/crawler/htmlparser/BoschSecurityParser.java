@@ -24,7 +24,7 @@ public class BoschSecurityParser extends AbstractCveParser{
     /**
      * Parse Bosch Security Advisory
      * (ex. https://psirt.bosch.com/security-advisories/bosch-sa-247053-bt.html)
-     *
+     * (ex. https://psirt.bosch.com/security-advisories/bosch-sa-464066-bt.html)
      * TODO: Grab CWEs for each CVE
      * @param sSourceURL
      * @param sCVEContentHTML
@@ -45,7 +45,7 @@ public class BoschSecurityParser extends AbstractCveParser{
         Elements headers = doc.getElementsByTag("h3");
         for (Element header: headers) {
             if (header.id().contains("cve-")) {
-                String cveId = header.id();
+                String cveId = header.id().toUpperCase();
                 String description = Objects.requireNonNull(header.nextElementSibling()).text().substring(17);
 
                 vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, updateDate, description, sourceDomainName));

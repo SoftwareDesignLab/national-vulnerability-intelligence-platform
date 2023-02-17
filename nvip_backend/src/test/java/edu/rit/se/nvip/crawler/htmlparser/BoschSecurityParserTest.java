@@ -35,8 +35,8 @@ public class BoschSecurityParserTest {
         CompositeVulnerability vuln1 = list.get(0);
         CompositeVulnerability vuln2 = list.get(1);
 
-        assertEquals("cve-2006-5701", vuln1.getCveId());
-        assertEquals("cve-2006-5757", vuln2.getCveId());
+        assertEquals("CVE-2006-5701", vuln1.getCveId());
+        assertEquals("CVE-2006-5757", vuln2.getCveId());
 
         assertEquals("Double free vulnerability in squashfs module in the Linux kernel 2.6.x, as used in Fedora Core 5 and possibly other distributions, allows local users to cause a denial of service by mounting a crafted squashfs filesystem.",
                 vuln1.getDescription());

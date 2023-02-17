@@ -8,8 +8,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class TenableCveParserTest extends AbstractParserTest {
-
-	String TEST_DESCRIPTION = "A Missing Authorization vulnerability in of SUSE Rancher allows authenticated user to create an unauthorized shell pod and kubectl access in the local cluster This issue affects: SUSE Rancher Rancher versions prior to 2.5.17; Rancher versions prior to 2.6.10; Rancher versions prior to 2.7.1.";
+	public static final String TEST_DESCRIPTION = "A Missing Authorization vulnerability in of SUSE Rancher allows authenticated user to create an unauthorized shell pod and kubectl access in the local cluster This issue affects: SUSE Rancher Rancher versions prior to 2.5.17; Rancher versions prior to 2.6.10; Rancher versions prior to 2.7.1.";
 	@Test
 	public void testTenableCveParser0() {
 		String html = safeReadHtml("src/test/resources/test-tenable-newest.html");

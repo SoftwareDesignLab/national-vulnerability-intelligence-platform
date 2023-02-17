@@ -46,6 +46,7 @@ import java.util.regex.Pattern;
  * 
  * @author axoeec
  *
+ * Ex: https://www.tenable.com/cve/CVE-2022-21953
  */
 public class TenableCveParser extends AbstractCveParser  {
 

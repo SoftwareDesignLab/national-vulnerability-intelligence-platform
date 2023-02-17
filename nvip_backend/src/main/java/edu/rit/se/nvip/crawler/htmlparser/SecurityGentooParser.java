@@ -42,6 +42,7 @@ import java.util.*;
  * 
  * @author axoeec
  *
+ * Ex: https://security.gentoo.org/glsa/200502-21
  */
 public class SecurityGentooParser extends AbstractCveParser  {
 	

@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
  * 
  * @author axoeec
  *
+ * Ex: https://www.tenable.com/security/research/tra-2023-5
  */
 public class TenableSecurityParser extends AbstractCveParser  {
 	
