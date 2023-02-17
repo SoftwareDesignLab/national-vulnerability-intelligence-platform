@@ -68,10 +68,14 @@ public class TwitterApi {
 	public void postTweet(String cveId, String cveDescription, boolean debug) {
 		Twitter twitter = null;
 		if (!debug) {
-			twitter = getTwitter();
-			if (twitter == null) {
-				logger.error("Could not connect Twitter! Check Twitter credentials in Context.xml under Tomcat!");
-				return;
+			twitter = getTwitterFromEnv();
+			if(twitter != null){
+				logger.error("Unable to connect to Twitter with Environment Variables. Attempting to search for Context.xml credentials");
+				twitter = getTwitter();
+				if (twitter == null) {
+					logger.error("Could not connect Twitter! Check Twitter credentials in Context.xml under Tomcat!");
+					return;
+				}
 			}
 		}
 
@@ -168,6 +172,22 @@ public class TwitterApi {
 		}
 
 		return null;
+	}
+
+	/***
+	 * Create a Twitter Object using environment variables
+	 * @return Twitter
+	 */
+	private Twitter getTwitterFromEnv() {
+		String consumerKey = System.getenv("consumerKey");
+		String consumerSecret = System.getenv("consumerSecret");
+		String accessToken = System.getenv("accessToken");
+		String accessTokenSecret = System.getenv("accessTokenSecret");
+
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey).setOAuthConsumerSecret(consumerSecret).setOAuthAccessToken(accessToken).setOAuthAccessTokenSecret(accessTokenSecret);
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		return tf.getInstance();
 	}
 
 	private void sentenceSplitterRegex(String str) {
