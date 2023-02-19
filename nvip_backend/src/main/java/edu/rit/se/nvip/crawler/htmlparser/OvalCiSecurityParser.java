@@ -43,11 +43,12 @@ import edu.rit.se.nvip.productnameextractor.CpeLookUp;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
- *
+ * Parse Web Pages for Oval CI
+ * (ex. )
  * @author axoeec
  *
  */
-public class OvalCiSecurityParser extends AbstractCveParser implements CveParserInterface {
+public class OvalCiSecurityParser extends AbstractCveParser  {
 	
 	public OvalCiSecurityParser(String domainName) {
 		sourceDomainName = domainName;

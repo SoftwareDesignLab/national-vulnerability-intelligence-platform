@@ -27,14 +27,11 @@ package edu.rit.se.nvip.cvereconcile;
  *
  */
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
-import edu.rit.se.nvip.crawler.CveCrawlController;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class CveReconcilerTest {
 	

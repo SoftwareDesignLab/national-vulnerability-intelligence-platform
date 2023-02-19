@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -38,19 +36,16 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
-
     Parser for RedHat Security Page
-
-    @author Andrew Pickard    
+    (ex. https://access.redhat.com/security/cve/cve-2023-25725)
+    @author aep7128
 
  */
 
 
-public class SecurityRedHatParser extends AbstractCveParser implements CveParserInterface {
+public class SecurityRedHatParser extends AbstractCveParser  {
 
-    private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	
-	public SecurityRedHatParser(String domainName) {
+    public SecurityRedHatParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 

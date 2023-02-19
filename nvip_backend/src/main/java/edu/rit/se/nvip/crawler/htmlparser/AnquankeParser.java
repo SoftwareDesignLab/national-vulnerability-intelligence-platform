@@ -44,7 +44,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author axoeec
  *
  */
-public class AnquankeParser extends AbstractCveParser implements CveParserInterface {
+public class AnquankeParser extends AbstractCveParser  {
 	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public AnquankeParser(String domainName) {

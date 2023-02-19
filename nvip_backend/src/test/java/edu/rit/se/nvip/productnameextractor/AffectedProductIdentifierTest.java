@@ -23,14 +23,13 @@
  */
 package edu.rit.se.nvip.productnameextractor;
 
-import static org.junit.Assert.assertEquals;
+import edu.rit.se.nvip.model.CompositeVulnerability;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import edu.rit.se.nvip.model.CompositeVulnerability;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author axoeec
@@ -56,7 +55,7 @@ public class AffectedProductIdentifierTest {
 		AffectedProductIdentifier affectedProductIdentifier = new AffectedProductIdentifier(vulnList);
 		int count = affectedProductIdentifier.identifyAffectedReleases(vulnList);
 
-		assertEquals(true, (count > 0));
+		assertTrue((count > 0));
 
 	}
 

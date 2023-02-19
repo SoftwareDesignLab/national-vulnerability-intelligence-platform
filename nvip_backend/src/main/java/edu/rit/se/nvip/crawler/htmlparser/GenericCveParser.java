@@ -50,7 +50,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author
  *
  */
-public class GenericCveParser extends AbstractCveParser implements CveParserInterface {
+public class GenericCveParser extends AbstractCveParser  {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public GenericCveParser(String domainName) {
