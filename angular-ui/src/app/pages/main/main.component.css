@@ -1,0 +1,15 @@
+.nvip-loading-screen {
+	min-height: inherit;
+	text-align: center;
+}
+
+.nvip-loading-screen > span {
+  color: #000;
+}
+
+.nvip_column_chart {
+	background-color: #F5F5F5;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-right: 1em;
+}

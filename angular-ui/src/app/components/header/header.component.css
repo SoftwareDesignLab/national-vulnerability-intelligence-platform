@@ -1,0 +1,89 @@
+/** Header Styles **/
+.nvip-header {
+  background-color: #f5f5f5;
+  height: 5em;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  padding: 0em;
+}
+
+.nvip-header a {
+  color: #000000;
+  text-align: center;
+  text-decoration: none;
+}
+
+.nvip-logo-container {
+  float: left;
+  width: var(--nvip-logo-width);
+  margin: 0.5em 0em 0.5em var(--nvip-logo-margin-width);
+}
+
+.nvip-logo-container .nvip-logo {
+  float: left;
+  font-weight: bold;
+}
+
+.nvip-logo > img {
+  font-size: var(--font-size);
+  height: 40px;
+  object-fit: contain;
+}
+
+.nvip-header-container {
+  float: right;
+  width: calc(100% - var(--nvip-logo-width) - var(--nvip-logo-margin-width));
+}
+
+.nvip-header-links {
+  display: flex;
+  flex-flow: wrap;
+  float: left;
+  height: 100%;
+  margin: auto 0;
+  padding-top: auto;
+}
+
+.nvip-header-link {
+  display: block;
+  text-align: center;
+  width: 20%;
+  display: inline-block;
+  font-size: 1.2em;
+  padding: 1em;
+}
+
+.nvip-header-link:hover {
+  background-color: #4b7699;
+  color: #ffffff !important;
+  cursor: pointer;
+}
+
+.nvip-header-user-icon-container {
+  float: right;
+  width: 20%;
+  display: flex;
+  flex-direction: row;
+}
+
+.nvip-header-user-icon {
+  color: black;
+  font-size: 3.5em;
+  margin-left: auto;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.nvip-header-user-icon:hover {
+  cursor: pointer;
+  background-color: #4b7699;
+  color: #fff !important;
+  height: 100%;
+}
+
+.nvip-user-label {
+  color: blue;
+  font-size: 1.2em;
+  margin-top: 1em;
+}

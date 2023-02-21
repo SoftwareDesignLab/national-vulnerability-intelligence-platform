@@ -1,0 +1,115 @@
+.login-side-panel  {
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  height: 400px;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  background-color: #404040
+}
+
+.login-side-panel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #ffffff;
+  display: block;
+  transition: 0.3s;
+}
+
+.login-side-panel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+.login-panel {
+	/*visibility: hidden;
+	opacity: 1;*/
+	display: none;
+	z-index: 2;
+	border: 2px solid #d3d3d3;
+	border-radius: 25px;
+	background-color: #ffffff;
+	margin-top: 6.5em;
+	max-width: calc(35em + 10em);
+	min-height: 10em;
+	padding-bottom: 1em;
+	width: 100%;
+	height: 325px;
+	position:absolute;
+	/*transition: .2s ease-in;*/
+}
+
+.login-form-header {
+	color: #000000;
+	font-size: 2em;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	position: absolute;
+}
+
+.login-header {
+	margin-left: .5em;
+	margin-bottom: 0;
+}
+
+.login-message {
+	font-size: 15px;
+	margin-left: 1.3em;
+	margin-bottom: 0;
+	color: red;
+	display: none;
+}
+
+/** Login Styles  */
+
+.nvip-login-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.nvip-login-form {
+	margin-top: 4em;
+}
+
+.registration-form {
+	margin-top: 4em;
+	margin-left: 1em;
+}
+
+
+.create-account-panel {
+	border: 2px solid #d3d3d3;
+	border-radius: 25px;
+	background-color: #ffffff;
+	margin: 6.5em auto;
+	max-width: calc(35em + 10em);
+	min-height: 10em;
+	padding-bottom: 3em;
+	width: 100%;
+}
+
+.registration-message {
+	font-size: 15px;
+	margin-left: 1em;
+	margin-bottom: 0;
+	color: red;
+	display: none;
+}
+
+.form-group {
+	margin-left: 1em;
+	width: 100%;
+	color: #000000;
+}
+
+.login-submit-button {
+	position: absolute;
+}

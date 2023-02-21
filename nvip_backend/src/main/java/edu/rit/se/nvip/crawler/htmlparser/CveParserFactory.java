@@ -28,13 +28,12 @@ package edu.rit.se.nvip.crawler.htmlparser;
  * @author axoeec
  *
  */
-public class CveParserFactory implements AbstractCveParserFactory<Object> {
+public class CveParserFactory {
 
 	/**
 	 * return the parser for this Url
 	 */
-	@Override
-	public CveParserInterface createParser(String sPageUrl) {
+	public AbstractCveParser createParser(String sPageUrl) {
 		if (sPageUrl == null) {
 			return new NullParser();
 		}
@@ -44,18 +43,13 @@ public class CveParserFactory implements AbstractCveParserFactory<Object> {
 				return new TenableSecurityParser("tenable");
 			else
 				return new TenableCveParser("tenable");
-		} else if (sPageUrl.contains("oval.cisecurity"))
-			return new OvalCiSecurityParser("oval.cisecurity");
-		else if (sPageUrl.contains("exploit-db"))
+		}
+		else if (sPageUrl.contains("exploit-db") && sPageUrl.contains("exploits"))
 			return new ExploitDBParser("exploit-db");
-		else if (sPageUrl.contains("securityfocus") && !sPageUrl.contains("archive")) // archive pages have no consistent format
-			return new SecurityfocusCveParser("securityfocus");
 		else if (sPageUrl.contains("kb.cert"))
 			return new KbCertCveParser("kb.cert");
 		else if (sPageUrl.contains("packetstorm"))
 			return new PacketStormParser("packetstorm");
-		else if (sPageUrl.contains("securitytracker"))
-			return new SecurityTrackerParser("securitytracker");
 		else if (sPageUrl.contains("talosintelligence"))
 			return new TalosIntelligenceParser("talosintelligence");
 
@@ -71,22 +65,25 @@ public class CveParserFactory implements AbstractCveParserFactory<Object> {
 				return new NullParser();
 			else
 				return new GenericCveParser("nat_available");
-		} else if (sPageUrl.contains("vmware") && sPageUrl.contains("advisories"))
+		}
+		else if (sPageUrl.contains("vmware") && sPageUrl.contains("advisories"))
 			return new VMWareAdvisoriesParser("vmware");
-		else if (sPageUrl.contains("vmware"))
-			return new VMWareParser("vmware");
 		else if (sPageUrl.contains("bugzilla"))
 			return new BugzillaParser("bugzilla");
 		else if (sPageUrl.contains("anquanke"))
 			return new AnquankeParser("anquanke");
 		else if (sPageUrl.contains("seclists"))
 			return new SeclistsParser("seclists");
-		else if (sPageUrl.contains("redhat")) {
-			if (sPageUrl.contains("security"))
+		else if (sPageUrl.contains("redhat") && sPageUrl.contains("security")) {
+			if (sPageUrl.contains("security-updates"))
 				return new SecurityRedHatParser("redhat");
-			else 
+			else if (sPageUrl.contains("cve"))
 				return new RedHatParser("redhat");
 		}
+		else if (sPageUrl.contains("bosch") && sPageUrl.contains("security-advisories"))
+			return new BoschSecurityParser("bosch");
+		else if (sPageUrl.contains("cloud.google") && sPageUrl.contains("bulletins"))
+			return new GoogleCloudParser("google");
 
 		// sources that you want to ignore
 		// we ignore mitre/nvd because we pull their up to date CVEs from Github
