@@ -23,10 +23,11 @@
  */
 package edu.rit.se.nvip.productnameextractor;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
 import java.util.List;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the CPElookUp class
@@ -57,8 +58,8 @@ public class CPElookUpTest {
 			correctResult = expectedResult.equals(idList.get(0));
 		}
 
-		assertEquals("Result is not empty", true, notEmpty);
-		assertEquals("Result is correct", true, correctResult);
+		assertTrue("Result is not empty", notEmpty);
+		assertTrue("Result is correct", correctResult);
 	}
 
 	@Test
@@ -81,8 +82,8 @@ public class CPElookUpTest {
 			correctResult = expectedResult.equals(idList.get(0));
 		}
 
-		assertEquals("Result is not empty", true, notEmpty);
-		assertEquals("Result is correct", true, correctResult);
+		assertTrue("Result is not empty", notEmpty);
+		assertTrue("Result is correct", correctResult);
 	}
 
 	@Test
@@ -107,8 +108,8 @@ public class CPElookUpTest {
 			correctResult = expectedResult.equals(idList.get(0));
 		}
 
-		assertEquals("Result is not empty", true, notEmpty);
-		assertEquals("Result is correct", true, correctResult);
+		assertTrue("Result is not empty", notEmpty);
+		assertTrue("Result is correct", correctResult);
 	}
 
 	@Test
@@ -131,8 +132,8 @@ public class CPElookUpTest {
 			correctResult = expectedResult.equals(idList.get(0));
 		}
 
-		assertEquals("Result is not empty", true, notEmpty);
-		assertEquals("Result is correct", true, correctResult);
+		assertTrue("Result is not empty", notEmpty);
+		assertTrue("Result is correct", correctResult);
 	}
 
 	@Test
@@ -163,10 +164,10 @@ public class CPElookUpTest {
 			correctResult3 = expectedResult3.equals(idList.get(2));
 		}
 
-		assertEquals("Result is not empty", true, notEmpty);
-		assertEquals("Result is correct for 4.8.0.1", true, correctResult1);
-		assertEquals("Result is correct for 4.8.4", true, correctResult2);
-		assertEquals("Result is correct for 4.7.9", true, correctResult3);
+		assertTrue("Result is not empty", notEmpty);
+		assertTrue("Result is correct for 4.8.0.1", correctResult1);
+		assertTrue("Result is correct for 4.8.4", correctResult2);
+		assertTrue("Result is correct for 4.7.9", correctResult3);
 	}
 
 	@Test
@@ -188,8 +189,8 @@ public class CPElookUpTest {
 			correctResult = expectedResult.equals(idList.get(0));
 		}
 
-		assertEquals("Result is not empty", true, notEmpty);
-		assertEquals("Result is correct", true, correctResult);
+		assertTrue("Result is not empty", notEmpty);
+		assertTrue("Result is correct", correctResult);
 	}
 
 	@Test
@@ -206,8 +207,8 @@ public class CPElookUpTest {
 		boolean sn1NotEmpty = (sn1List != null && sn1List.size() > 0);
 		boolean sn2NotEmpty = (sn2List != null && sn2List.size() > 0);
 
-		assertEquals("Result for \"Explorer.\" is not empty", true, sn1NotEmpty);
-		assertEquals("Result for \"Linux\" is not empty", true, sn2NotEmpty);
+		assertTrue("Result for \"Explorer.\" is not empty", sn1NotEmpty);
+		assertTrue("Result for \"Linux\" is not empty", sn2NotEmpty);
 	}
 
 }

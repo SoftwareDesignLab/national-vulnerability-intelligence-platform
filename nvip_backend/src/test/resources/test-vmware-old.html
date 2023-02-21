@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Security-announce] VMSA-2008-0003 Moderate: Updated aacraid driver and samba and python service console updates
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:security-announce%40lists.vmware.com?Subject=Re:%20Re%3A%20%5BSecurity-announce%5D%20VMSA-2008-0003%20Moderate%3A%20Updated%20aacraid%20driver%0A%20and%20samba%20and%20python%20service%20console%20updates&In-Reply-To=%3C47BDCA60.7070209%40vmware.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000004.html">
+   <LINK REL="Next"  HREF="000006.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Security-announce] VMSA-2008-0003 Moderate: Updated aacraid driver and samba and python service console updates</H1>
+    <B>security-announce at lists.vmware.com</B> 
+    <A HREF="mailto:security-announce%40lists.vmware.com?Subject=Re:%20Re%3A%20%5BSecurity-announce%5D%20VMSA-2008-0003%20Moderate%3A%20Updated%20aacraid%20driver%0A%20and%20samba%20and%20python%20service%20console%20updates&In-Reply-To=%3C47BDCA60.7070209%40vmware.com%3E"
+       TITLE="[Security-announce] VMSA-2008-0003 Moderate: Updated aacraid driver and samba and python service console updates">security-announce at lists.vmware.com
+       </A><BR>
+    <I>Thu Feb 21 11:00:48 PST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000004.html">[Security-announce] UPDATED VMSA-2008-0001.1 Moderate OpenPegasus PAM Authentication Buffer Overflow and updated service console packages
+</A></li>
+        <LI>Next message: <A HREF="000006.html">[Security-announce] Critical Windows based VMware Workstation, VMware Player, and VMware ACE Alert
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+
+- -------------------------------------------------------------------
+~                   VMware Security Advisory
+
+Advisory ID:       VMSA-2008-0003
+Synopsis:          Moderate: Updated aacraid driver and samba
+~                   and python service console updates
+Issue date:        2008-02-04
+Updated on:        2008-02-04 (initial release of advisory)
+CVE numbers:       CVE-2007-6015 CVE-2006-7228 CVE-2007-2052
+~                   CVE-2007-4965 CVE-2007-4308
+- -------------------------------------------------------------------
+
+1. Summary:
+
+~   Security updates to aacraid driver, samba and python
+
+2. Relevant releases:
+
+ESX Server 3.0.2 without patches ESX-1003362, ESX-1003359, ESX-1003360
+ESX Server 3.0.1 without patches ESX-1003350, ESX-1003347, ESX-1003348
+ESX Server 2.5.5 Upgrade Patch 4
+ESX Server 2.5.4 Upgrade Patch 15
+
+NOTE: ESX 2.5.4 is in Extended Support and its end of support (Security
+~      and Bug fixes) is 10/08/2008.  Users should plan to upgrade to at
+~      least 2.5.5 and preferably the newest release available before the
+~      end of extended support.
+
+NOTE: ESX 3.0.1 is in Extended Support and its end of support (Security
+~      and Bug fixes) is 07/31/2008.  Users should plan to upgrade to at
+~      least 3.0.2 update 1 and preferably the newest release available
+~      before the end of extended support.
+
+ESX Server versions 3.0.0 and prior to 2.5.4 are no longer in Extended
+Support.  Users should upgrade to a supported version of the product.
+
+The VMware Infrastructure Support Life Cycle Policy can be found here:
+<A HREF="http://www.vmware.com/support/policies/eos_vi.html">http://www.vmware.com/support/policies/eos_vi.html</A>
+
+3. Problem description:
+
+~ I   Updated aacraid driver
+
+~        This patch fixes a flaw in how the aacraid SCSI driver checked
+~        IOCTL command permissions.  This flaw might allow a local user
+~        on the service console to cause a denial of service or gain
+~        privileges. Thanks to Adaptec for reporting this issue.
+
+~        The Common Vulnerabilities and Exposures project (cve.mitre.org)
+~        has assigned the name CVE-2007-4308 to this issue.
+
+~        ESX Server 3.0.2 ESX-1003362
+~        <A HREF="http://download3.vmware.com/software/vi/ESX-1003362.tgz">http://download3.vmware.com/software/vi/ESX-1003362.tgz</A>
+~        md5sum: f828e7c1c00c2b32ebd4f14f92febe16
+~        <A HREF="http://kb.vmware.com/kb/1003362">http://kb.vmware.com/kb/1003362</A>
+
+~        ESX Server 3.0.1 ESX-1003350
+~        <A HREF="http://download3.vmware.com/software/vi/ESX-1003350.tgz">http://download3.vmware.com/software/vi/ESX-1003350.tgz</A>
+~        md5sum: 490e042c9a726480fe3d3cbc6b4fae5a
+~        <A HREF="http://kb.vmware.com/kb/1003350">http://kb.vmware.com/kb/1003350</A>
+
+~        ESX Server 2.5.4 Upgrade Patch 15
+~        ESX Server 2.5.5 Upgrade Patch 4
+
+~        RPM Updated:
+~        VMware-esx-drivers-scsi-aacraid_esx30.rpm
+~        kernel-vmnix.rpm
+
+~        VM Shutdown: Yes
+~        Host Reboot: Yes
+
+~ II  Service Console package security updates
+
+~     a. Samba
+
+~        Alin Rad Pop of Secunia Research found a stack buffer overflow
+~        flaw in the way Samba authenticates remote users.  A remote
+~        unauthenticated user could trigger this flaw to cause the Samba
+~        server to crash or to execute arbitrary code with the
+~        permissions of the Samba server.
+
+~        Note: This vulnerability can be exploited only if the attacker
+~              has access to the service console network.  The Samba
+~              client is installed by default in the service console, but
+~              the Samba server is not.
+
+~        The Common Vulnerabilities and Exposures project (cve.mitre.org)
+~        has assigned the name CVE-2007-6015 to this issue.
+
+~        RPM Updated:
+~        samba-3.0.9-1.3E.14.3.i386.rpm,
+~        samba-client-3.0.9-1.3E.14.3.i386.rpm,
+~        samba-common-3.0.9-1.3E.14.3.i386.rpm
+
+~        VM Shutdown: No
+~        Host Reboot: No
+
+~        ESX Server 3.0.2 ESX-1003359
+~        <A HREF="http://download3.vmware.com/software/vi/ESX-1003359.tgz">http://download3.vmware.com/software/vi/ESX-1003359.tgz</A>
+~        md5sum: c1fc3232c76aea150308b2227d9d522e
+~        <A HREF="http://kb.vmware.com/kb/1003359">http://kb.vmware.com/kb/1003359</A>
+
+~        ESX Server 3.0.1 ESX-1003347
+~        <A HREF="http://download3.vmware.com/software/vi/ESX-1003347.tgz">http://download3.vmware.com/software/vi/ESX-1003347.tgz</A>
+~        md5sum: 60bb8e5136b7ce08171719b42fda60cf
+~        <A HREF="http://kb.vmware.com/kb/1003347">http://kb.vmware.com/kb/1003347</A>
+
+~        ESX Server 2.5.4 Upgrade Patch 15
+~        ESX Server 2.5.5 Upgrade Patch 4
+
+~        Deployment Considerations
+
+~        IMPORTANT: The samba-3.0.9-1.3E.14.3vmw RPM is not installed
+~        with a default installation of ESX Server software, but some
+~        customers choose to install the Samba application on their
+~        hosts. VMware recommends against installing such applications in
+~        the console operating system, but in order to provide a
+~        complete fix to this security issue, this patch supplies the
+~        samba-3.0.9-1.3E.14.3vmw RPM. Applying this patch will install
+~        the RPM while updating the samba-client-3.0.9-1.3E.14.3vmw and
+~        samba-common-3.0.9-1.3E.14.3vmw RPMs, which are part of a
+~        default ESX Server software installation. To exclude the
+~        samba-3.0.9-1.3E.14.3vmw RPM when installing this bundle, use
+~        the exclude option for the esxupdate utility as follows:
+
+~            esxupdate -d &lt;DepotURL&gt; -x samba-3.0.9-1.3E.14.3vmw update
+
+~        Here, &lt;DepotURL&gt; is the URL of the depot from which you are
+~        installing your bundles. See the ESX Server 3 Patch Management
+~        Guide for more information on advanced options for the esxupdate
+~        utility.
+
+~     b. Python
+
+~        Chris Evans of the Google security research team discovered an
+~        integer overflow issue with the way Python's Perl-Compatible
+~        Regular Expression (PCRE) module handled certain regular
+~        expressions.  If a Python application used the PCRE module to
+~        compile and execute untrusted regular expressions, it might be
+~        possible to cause the application to crash, or to execute
+~        arbitrary code with the privileges of the Python interpreter.
+
+~        The Common Vulnerabilities and Exposures project (cve.mitre.org)
+~        has assigned the name CVE-2006-7228 to this issue.
+
+~        Piotr Engelking discovered a flaw in Python's locale module
+~        where strings generated by the strxfrm() function were not
+~        properly NUL-terminated.  This might result in disclosure of
+~        data stored in the memory of a Python application using the
+~        strxfrm() function.
+
+~        The Common Vulnerabilities and Exposures project (cve.mitre.org)
+~        has assigned the name CVE-2007-2052 to this issue.
+
+~        Slythers Bro reported multiple integer overflow flaws in
+~        Python's imageop module.  These could allow an attacker to cause
+~        a Python application to crash, enter an infinite loop, or
+~        possibly execute arbitrary code with the privileges of the
+~        Python interpreter.
+
+~        The Common Vulnerabilities and Exposures project (cve.mitre.org)
+~        has assigned the name CVE-2007-4965 to this issue.
+
+~        RPM Updated:
+~        python-2.2.3-6.8.i386.rpm
+
+~        VM Shutdown: Yes
+~        Host Reboot: Yes
+
+~        ESX Server 3.0.2 ESX-1003360
+~        <A HREF="http://download3.vmware.com/software/vi/ESX-1003360.tgz">http://download3.vmware.com/software/vi/ESX-1003360.tgz</A>
+~        md5sum: 91d08543a3303827f3e07e12ffd45241
+~        <A HREF="http://kb.vmware.com/kb/1003360">http://kb.vmware.com/kb/1003360</A>
+
+~        ESX Server 3.0.1 ESX-1003348
+~        <A HREF="http://download3.vmware.com/software/vi/ESX-1003348.tgz">http://download3.vmware.com/software/vi/ESX-1003348.tgz</A>
+~        md5sum: b1fa900baa6ab18266f2840579cfe712
+~        <A HREF="http://kb.vmware.com/kb/1003348">http://kb.vmware.com/kb/1003348</A>
+
+~        ESX Server 2.5.4 Upgrade Patch 15
+~        ESX Server 2.5.5 Upgrade Patch 4
+
+4. Solution:
+
+Please review the Patch notes for your product and version and verify
+the md5sum of your downloaded file.
+
+~   ESX Server 3.x Patches:
+~   <A HREF="http://www.vmware.com/download/vi/vi3_patches.html">http://www.vmware.com/download/vi/vi3_patches.html</A>
+
+~   ESX Server 2.x Patches:
+~   <A HREF="http://www.vmware.com/download/esx/esx2_patches.html">http://www.vmware.com/download/esx/esx2_patches.html</A>
+
+~   ESX Server 2.5.5 Upgrade Patch 4
+~   <A HREF="http://download3.vmware.com/software/esx/esx-2.5.5-69113-upgrade.tar.gz">http://download3.vmware.com/software/esx/esx-2.5.5-69113-upgrade.tar.gz</A>
+~   md5sum: 354fce25ac29411cf5aafecf17f9d446
+~   <A HREF="http://www.vmware.com/support/esx25/doc/esx-255-200801-patch.html">http://www.vmware.com/support/esx25/doc/esx-255-200801-patch.html</A>
+
+~   ESX Server 2.5.4 Upgrade Patch 15
+~   <A HREF="http://download3.vmware.com/software/esx/esx-2.5.4-69112-upgrade.tar.gz">http://download3.vmware.com/software/esx/esx-2.5.4-69112-upgrade.tar.gz</A>
+~   md5sum: a31065571a2da5bb5e69a5ccab6aa467
+~   <A HREF="http://www.vmware.com/support/esx25/doc/esx-254-200801-patch.html">http://www.vmware.com/support/esx25/doc/esx-254-200801-patch.html</A>
+
+5. References:
+
+~  CVE numbers
+~  <A HREF="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6015">http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6015</A>
+~  <A HREF="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-7228">http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-7228</A>
+~  <A HREF="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-2052">http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-2052</A>
+~  <A HREF="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-4965">http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-4965</A>
+~  <A HREF="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-4308">http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-4308</A>
+
+- -------------------------------------------------------------------
+6. Contact:
+
+E-mail list for product security notifications and announcements:
+<A HREF="http://lists.vmware.com/cgi-bin/mailman/listinfo/security-announce">http://lists.vmware.com/cgi-bin/mailman/listinfo/security-announce</A>
+
+This Security Advisory is posted to the following lists:
+
+~  * <A HREF="https://lists.vmware.com/mailman/listinfo/security-announce">security-announce at lists.vmware.com</A>
+~  * <A HREF="https://lists.vmware.com/mailman/listinfo/security-announce">bugtraq at securityfocus.com</A>
+~  * <A HREF="https://lists.vmware.com/mailman/listinfo/security-announce">full-disclosure at lists.grok.org.uk</A>
+
+E-mail:  <A HREF="https://lists.vmware.com/mailman/listinfo/security-announce">security at vmware.com</A>
+
+Security web site
+<A HREF="http://www.vmware.com/security">http://www.vmware.com/security</A>
+
+VMware security response policy
+<A HREF="http://www.vmware.com/support/policies/security_response.html">http://www.vmware.com/support/policies/security_response.html</A>
+
+General support life cycle policy
+<A HREF="http://www.vmware.com/support/policies/eos.html">http://www.vmware.com/support/policies/eos.html</A>
+
+VMware Infrastructure support life cycle policy
+<A HREF="http://www.vmware.com/support/policies/eos_vi.html">http://www.vmware.com/support/policies/eos_vi.html</A>
+
+Copyright 2008 VMware Inc.  All rights reserved.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (GNU/Linux)
+
+iD8DBQFHvcpdS2KysvBH1xkRCPZrAJ9kRPu5Bm4iNFAF8/ijRIK99D8HfQCfZIlw
+ZgNbjyN37TfMeq0cO9gHfLI=
+=aGnS
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000004.html">[Security-announce] UPDATED VMSA-2008-0001.1 Moderate OpenPegasus PAM Authentication Buffer Overflow and updated service console packages
+</A></li>
+	<LI>Next message: <A HREF="000006.html">[Security-announce] Critical Windows based VMware Workstation, VMware Player, and VMware ACE Alert
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.vmware.com/mailman/listinfo/security-announce">More information about the Security-announce
+mailing list</a><br>
+</body></html>
