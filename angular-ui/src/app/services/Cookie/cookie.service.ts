@@ -32,7 +32,7 @@ export class CookieService {
       } catch (e: unknown) {
         console.log(e);
       }
-     
+
     })
   }
 
@@ -41,7 +41,7 @@ export class CookieService {
     return cookieKey in this.cookies ? this.cookies[cookieKey] : {} as Session;
   }
 
-  /** store a broswer cookie */
+  /** store a browser cookie */
   put(cookieKey: string, session: Session) {
     this.cookies[cookieKey] = session;
     document.cookie = `${cookieKey}=${JSON.stringify(session)};`;

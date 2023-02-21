@@ -115,7 +115,6 @@ public class DatabaseHelper {
 			+ "not_in_both_count, new_cve_count, added_cve_count, updated_cve_count) VALUES (?,?,?,?,?,?,?,?,?);";
 	private final String updateDailyRunSql = "UPDATE dailyrunhistory SET crawl_time_min = ?, db_time_min = ?, total_cve_count = ?, not_in_nvd_count = ?, "
 			+ "not_in_mitre_count = ?, not_in_both_count = ?, new_cve_count = ?, avg_time_gap_nvd = ?, avg_time_gap_mitre = ? WHERE (run_id = ?);";
-	private final String deleteDailyRunSql = "DELETE FROM dailyrunhistory WHERE run_date_time=?;";
 
 	private final String insertVdoCharacteristicSql = "INSERT INTO vdocharacteristic (cve_id, vdo_label_id,vdo_confidence,vdo_noun_group_id) VALUES (?,?,?,?);";
 	private final String deleteVdoCharacteristicSql = "DELETE FROM vdocharacteristic WHERE cve_id=?;";
@@ -1323,7 +1322,7 @@ public class DatabaseHelper {
 	 * @param vdoCharacteristicList
 	 * @param conn
 	 */
-	private void updateVdoLabels(String cveId, List<VdoCharacteristic> vdoCharacteristicList, Connection conn) throws SQLException {
+	private void updateVdoLabels(String cveId, List<VdoCharacteristic> vdoCharacteristicList, Connection conn) {
 
 		try (PreparedStatement pstmt = conn.prepareStatement(deleteVdoCharacteristicSql);) {
 			pstmt.setString(1, cveId);
@@ -1380,22 +1379,6 @@ public class DatabaseHelper {
 			return pstmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		}
-		return 0;
-	}
-
-	/**
-	 * Delete daily run
-	 * 
-	 * @param datetime
-	 * @return
-	 */
-	public int deleteDailyRun(String datetime) {
-		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(deleteDailyRunSql);) {
-			pstmt.setString(1, datetime);
-			return pstmt.executeUpdate();
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
 		}
 		return 0;
 	}
