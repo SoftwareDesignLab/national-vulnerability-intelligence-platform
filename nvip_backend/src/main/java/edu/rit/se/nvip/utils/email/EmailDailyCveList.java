@@ -68,7 +68,6 @@ public class EmailDailyCveList {
 			HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
 			if (newCves.size() > 0) {
 				for (String info : data) {
-
 					String[] userData = info.split(";!;~;#&%:;!");
 					if (Integer.parseInt(userData[2]) == 1) {
 						sendEmailV2(userData[0], newCves);
@@ -114,7 +113,7 @@ public class EmailDailyCveList {
 			MimeMultipart content = new MimeMultipart("related");
 
 			// Collect HTML Template
-			String sFileContent = null;
+			String sFileContent;
 			String fileName = "email/emailTemplate.html";
 			ClassLoader classLoader = getClass().getClassLoader();
 			try (InputStream is = classLoader.getResourceAsStream(fileName)) {

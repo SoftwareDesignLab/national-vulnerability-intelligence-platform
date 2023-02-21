@@ -36,7 +36,8 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
  */
 
 public class CpeGroup implements Serializable{
-	
+
+	private static final long serialVersionUID = -7959189738206183192L;
 	private final String vendor;
 	private final String product;
 	private final String groupID;
