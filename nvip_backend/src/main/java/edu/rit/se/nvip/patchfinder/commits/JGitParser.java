@@ -81,7 +81,7 @@ public class JGitParser {
 			this.projectName = fileName.substring(0, fileName.lastIndexOf('.'));
 			this.localRepo = new FileRepository(localDownloadLoc + File.separator + projectName + "/.git");
 		} catch (IOException e) {
-			e.getMessage();
+			logger.error(e.getMessage());
 		}
 
 		assert this.localRepo != null;
