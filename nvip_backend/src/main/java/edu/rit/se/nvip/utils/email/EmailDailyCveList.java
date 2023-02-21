@@ -27,7 +27,6 @@ import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -69,7 +68,6 @@ public class EmailDailyCveList {
 			HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
 			if (newCves.size() > 0) {
 				for (String info : data) {
-
 					String[] userData = info.split(";!;~;#&%:;!");
 					if (Integer.parseInt(userData[2]) == 1) {
 						sendEmailV2(userData[0], newCves);
@@ -115,7 +113,7 @@ public class EmailDailyCveList {
 			MimeMultipart content = new MimeMultipart("related");
 
 			// Collect HTML Template
-			String sFileContent = null;
+			String sFileContent;
 			String fileName = "email/emailTemplate.html";
 			ClassLoader classLoader = getClass().getClassLoader();
 			try (InputStream is = classLoader.getResourceAsStream(fileName)) {

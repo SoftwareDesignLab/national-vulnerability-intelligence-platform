@@ -50,7 +50,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author
  *
  */
-public class GenericCveParser extends AbstractCveParser implements CveParserInterface {
+public class GenericCveParser extends AbstractCveParser  {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public GenericCveParser(String domainName) {
@@ -86,7 +86,7 @@ public class GenericCveParser extends AbstractCveParser implements CveParserInte
 			return vulnerabilities;
 		}
 
-		logger.debug("Page URL: " + sSourceURL + "\t Found " + cveIDsInPage.size() + " CVE(s): " + cveIDsInPage.toString());
+		logger.debug("Page URL: " + sSourceURL + "\t Found " + cveIDsInPage.size() + " CVE(s): " + cveIDsInPage);
 		// pickURL(sSourceURL); // add this url to our list, to update our crawl source
 		// URLs at the end.
 
@@ -191,7 +191,7 @@ public class GenericCveParser extends AbstractCveParser implements CveParserInte
 			}
 
 			// if there is a prior sentence start from there
-			int startIndex = findAGoodStartIndexToStartLookingForVulnerabilityAttributes(myHTMLElements, allSentences, indexSentence);
+			int startIndex = findAGoodStartIndexToStartLookingForVulnerabilityAttributes(myHTMLElements, indexSentence);
 
 			/**
 			 * extract version info. Start from the suggested startIndex and search
@@ -233,27 +233,21 @@ public class GenericCveParser extends AbstractCveParser implements CveParserInte
 				for (int i = 0; i < cveIDsInSentence.length; i++) {
 					if (sentenceContainsValuableInfoForCVE(sbDescription.toString(), cveIDsInSentence.length)) {
 						CompositeVulnerability vuln = new CompositeVulnerability(0, sSourceURL, (String) cveIDsInSentence[i], version, null, dateTimeNow, sbDescription.toString(), null);
-						// vulnerabilities.add(vuln);
 						vulnMap.put(vuln.getCveId(), vuln);
-					} else {
-						// logger.warn("Ignoring this CVE! ID: " + cveIDsInSentence[i] + ", Description:
-						// " + sbDescription.toString());
 					}
 				}
 			else {
 				if (sentenceContainsValuableInfoForCVE(sbDescription.toString(), 1)) {
 					CompositeVulnerability vuln = new CompositeVulnerability(0, sSourceURL, cveIDOfCurrentSentence, version, null, dateTimeNow, sbDescription.toString(), null);
-					// vulnerabilities.add(vuln);
 					vulnMap.put(vuln.getCveId(), vuln);
 				} else {
-					logger.debug("Ignoring this CVE! ID: " + cveIDOfCurrentSentence + ", Description: " + sbDescription.toString());
+					logger.debug("Ignoring this CVE! ID: " + cveIDOfCurrentSentence + ", Description: " + sbDescription);
 				}
 			}
-		} // for (int indexSentence = 0; indexSentence < allSentences.size();
-			// indexSentence++)
+		}
 
 		logger.debug(vulnMap.size() + " of " + cveIDsInPage.size() + " CVEs were scraped from URL:" + sSourceURL + " - " + (cveIDsInPage.size() - vulnMap.size()) + " were ignored!");
-		return new ArrayList<CompositeVulnerability>(vulnMap.values());
+		return new ArrayList<>(vulnMap.values());
 	}
 
 	/**
@@ -301,11 +295,10 @@ public class GenericCveParser extends AbstractCveParser implements CveParserInte
 	 * to extract vulnerability attributes?
 	 * 
 	 * @param myHTMLElements
-	 * @param allSentences
 	 * @param currentIndex
 	 * @return
 	 */
-	private int findAGoodStartIndexToStartLookingForVulnerabilityAttributes(Elements myHTMLElements, List<String> allSentences, int currentIndex) {
+	private int findAGoodStartIndexToStartLookingForVulnerabilityAttributes(Elements myHTMLElements, int currentIndex) {
 		int suggestedIndex = currentIndex;
 
 		Element element = myHTMLElements.get(currentIndex);
@@ -335,12 +328,12 @@ public class GenericCveParser extends AbstractCveParser implements CveParserInte
 	 * @return The list of split sentences
 	 */
 	private List<String> tokenizeTagTextAccordingToCVEIDRegex(String tagText) {
-		List<String> childSentences = new ArrayList<String>();
+		List<String> childSentences = new ArrayList<>();
 		Matcher m = Pattern.compile(regexCVEID).matcher(tagText);
 		int prevIndex = 0;
 		String prevDelimiter = null;
-		String prevText = null;
-		String currDelimiter = null;
+		String prevText;
+		String currDelimiter;
 		boolean bCVEBelongsToNextText = true;
 		String sentenceToAdd = "";
 		int matchCount = 0;
@@ -413,9 +406,6 @@ public class GenericCveParser extends AbstractCveParser implements CveParserInte
 	 */
 	private String getPlatformVersion(String sentence) {
 		String version = null;
-		// String regex = "[ ].*([a-zA-Z]+?)(s\\b|\\b)(.(\\d+\\.(?:\\d+\\.)*\\d+))";
-		// String regex = "[ ].*([a-zA-Z]+?)(s\\b|\\b)(.*\\d+)";
-		// String regex = "[ ].*(version.*\\d+)";
 
 		Pattern pattern = Pattern.compile(regexVersionInfo);
 		Matcher matcher = pattern.matcher(sentence);
@@ -483,7 +473,7 @@ public class GenericCveParser extends AbstractCveParser implements CveParserInte
 		 * If yes the sentence context is assumed to be related to all CVE IDs in the
 		 * sentence
 		 */
-		Map<String, Integer> cveIDs = new HashMap<String, Integer>();
+		Map<String, Integer> cveIDs = new HashMap<>();
 
 		int distance = 0;
 		int prevIndex = 0;

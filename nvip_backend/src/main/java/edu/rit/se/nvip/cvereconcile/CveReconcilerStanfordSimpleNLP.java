@@ -27,13 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
 
@@ -85,7 +81,9 @@ public class CveReconcilerStanfordSimpleNLP extends AbstractCveReconciler {
 	/**
 	 * Reconcile description. If <existingDescription> should be updated, returns
 	 * true.
-	 * 
+	 *
+	 * TODO: Duplicate code here as well, maybe extract it to the Abstract Class?
+	 *
 	 * @param existingDescription
 	 * @param newDescription
 	 * @return updateDescription
@@ -126,7 +124,7 @@ public class CveReconcilerStanfordSimpleNLP extends AbstractCveReconciler {
 		}
 
 		/* Metrics which are used for the reconciliation decision */
-		boolean newLonger = false, newHasMoreSent = false, newMoreDiverse = false, lessUnknwn = false;
+		boolean newHasMoreSent, newMoreDiverse, lessUnknwn;
 
 		/* Counters of unidentified language parts in each description */
 		int existingUnknw = 0;
@@ -137,7 +135,6 @@ public class CveReconcilerStanfordSimpleNLP extends AbstractCveReconciler {
 		Document newDoc = new Document(newDescription);
 
 		/* Check if new description has more characters */
-		newLonger = newDescription.length() > existingDescription.length();
 
 		/* Check if new description has more sentences */
 		newHasMoreSent = newDoc.sentences().size() >= existingDoc.sentences().size();
@@ -184,12 +181,6 @@ public class CveReconcilerStanfordSimpleNLP extends AbstractCveReconciler {
 			updateDescription = true;
 		} else if (lessUnknwn && newHasMoreSent) {
 			updateDescription = true;
-		} else if (lessUnknwn && newHasMoreSent && newMoreDiverse) {
-			updateDescription = true;
-		} else if (lessUnknwn && newLonger && newMoreDiverse) {
-			updateDescription = true;
-		} else if (lessUnknwn && newLonger && newHasMoreSent) {
-			updateDescription = true;
 		}
 
 		return updateDescription;
@@ -198,13 +189,15 @@ public class CveReconcilerStanfordSimpleNLP extends AbstractCveReconciler {
 	/**
 	 * Calculate diversity of the language parts in a description. Returns a Map
 	 * with language parts as a KEY and the number of this laguage part as a VALUE
-	 * (counts of how many time this language part occurs in the description).
-	 * 
-	 * @param document
+	 * (counts of how many times this language part occurs in the description).
+	 *
+	 * TODO: Reused method as well
+	 *
+	 * @param doc
 	 * @return diversity object in a form of a Map object
 	 */
 	public Map<String, Integer> docLangParts(Document doc) {
-		Map<String, Integer> counts = new HashMap<String, Integer>();
+		Map<String, Integer> counts = new HashMap<>();
 
 		for (Sentence sent : doc.sentences()) {
 			List<String> parts = sent.posTags();

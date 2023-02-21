@@ -5,11 +5,15 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test RedHat Parser
+ * @author aep7128
+ */
 public class RedHatParserTest extends AbstractParserTest {
 
-	String TEST_DESCRIPTION_CVE = "Usage of temporary files with insecure permissions by the Apache James server allows an attacker with local access to access private user data in transit. Vulnerable components includes the SMTP stack and IMAP APPEND command. This issue affects Apache James server version 3.7.2 and prior versions.";
 	@Test
 	public void testRedHat() {
 		RedHatParser parser = new RedHatParser("redhat");
@@ -17,8 +21,11 @@ public class RedHatParserTest extends AbstractParserTest {
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);
 
 		assertEquals(1, list.size());
+
 		CompositeVulnerability sample = list.get(0);
-		assertEquals("CVE-2022-45935", sample.getCveId());
-		assertEquals(TEST_DESCRIPTION_CVE, sample.getDescription());
+		assertEquals("CVE-2023-25725", sample.getCveId());
+		assertTrue(sample.getDescription().contains("A flaw was found in HAProxy's headers processing that causes HAProxy to drop important headers fields such as Connection, Content-length, Transfer-Encoding,"));
+		assertEquals("February 14, 2023", sample.getPublishDate());
+		assertEquals("February 14, 2023", sample.getLastModifiedDate());
 	}
 }

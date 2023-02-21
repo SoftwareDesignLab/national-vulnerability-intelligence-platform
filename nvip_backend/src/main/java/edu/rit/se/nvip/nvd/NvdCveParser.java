@@ -29,9 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -45,7 +42,6 @@ import com.google.gson.JsonObject;
  *
  */
 public class NvdCveParser {
-	private Logger logger = LogManager.getLogger(NvdCveParser.class);
 
 	public NvdCveParser() {
 	}
@@ -53,11 +49,11 @@ public class NvdCveParser {
 	/**
 	 * Parse all CVEs for a given year
 	 * 
-	 * @param year <year> as a 4 digit int
+	 * @param jsonList <year> as a 4 digit int
 	 * @return list of CVE IDs and Descriptions
 	 */
 	public List<String[]> parseCVEs(ArrayList<JsonObject> jsonList) {
-		List<String[]> allData = new ArrayList<String[]>();
+		List<String[]> allData = new ArrayList<>();
 		// parse all CVEs in all JSONs (if multiple)
 		for (JsonObject json : jsonList) {
 			// parse json
@@ -76,12 +72,11 @@ public class NvdCveParser {
 	 */
 	private List<String[]> parseCveJson(JsonObject json) {
 
-		List<String[]> allData = new ArrayList<String[]>();
-		JsonArray items = (JsonArray) json.getAsJsonArray("CVE_Items");
-		Iterator<JsonElement> iterator = items.iterator();
+		List<String[]> allData = new ArrayList<>();
+		JsonArray items = json.getAsJsonArray("CVE_Items");
 
-		while (iterator.hasNext()) {
-			JsonObject jsonCVE = (JsonObject) iterator.next();
+		for (JsonElement jsonElement : items) {
+			JsonObject jsonCVE = (JsonObject) jsonElement;
 			String sID = jsonCVE.getAsJsonObject("cve").getAsJsonObject("CVE_data_meta").get("ID").getAsString();
 			sID = sID.replace("\"", "");
 
@@ -111,12 +106,12 @@ public class NvdCveParser {
 
 				try {
 					baseScore = cvssJson.get("baseScore").getAsString();
-				} catch (Exception e) {
+				} catch (Exception ignored) {
 				}
 
 				impactScore = scoreJson.get("impactScore").getAsString();
 				exploitabilityScore = scoreJson.get("exploitabilityScore").getAsString();
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 			}
 
 			// get CWE
@@ -131,7 +126,7 @@ public class NvdCveParser {
 						if (description_arr != null) {
 							for (JsonElement element : description_arr) {
 								String item = ((JsonObject) element).get("value").getAsString();
-								sbCwe.append(item + ";");
+								sbCwe.append(item).append(";");
 							}
 
 						}
@@ -161,28 +156,28 @@ public class NvdCveParser {
 						continue;
 
 					// get tags
-					String tags = "";
+					StringBuilder tags = new StringBuilder();
 					for (JsonElement tag : jsonArr)
-						tags += tag + ";";
+						tags.append(tag).append(";");
 
 					// url
 					String url = obj.get("url").getAsString();
 
-					if (tags.contains("Advisory"))
-						sbAdvisories.append(url + ";");
+					if (tags.toString().contains("Advisory"))
+						sbAdvisories.append(url).append(";");
 
-					if (tags.contains("Patch"))
-						sbPatches.append(url + ";");
-					
-					if (tags.contains("Exploit"))
-						sbExploits.append(url + ";");
+					if (tags.toString().contains("Patch"))
+						sbPatches.append(url).append(";");
+
+					if (tags.toString().contains("Exploit"))
+						sbExploits.append(url).append(";");
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			allData.add(new String[] { sID, sDescription, baseScore, baseSeverity, impactScore, exploitabilityScore, associatedCwes, sbAdvisories.toString(), sbPatches.toString(), sbExploits.toString() });
+			allData.add(new String[]{sID, sDescription, baseScore, baseSeverity, impactScore, exploitabilityScore, associatedCwes, sbAdvisories.toString(), sbPatches.toString(), sbExploits.toString()});
 		}
 
 		return allData;
@@ -196,10 +191,10 @@ public class NvdCveParser {
 	 * @return
 	 */
 	public Map<String, Integer> getCveReferences(ArrayList<JsonObject> jsonList) {
-		Map<String, Integer> refUrlHash = new HashMap<String, Integer>();
+		Map<String, Integer> refUrlHash = new HashMap<>();
 
 		for (JsonObject json : jsonList) {
-			JsonArray items = (JsonArray) json.getAsJsonArray("CVE_Items");
+			JsonArray items = json.getAsJsonArray("CVE_Items");
 			Iterator<JsonElement> iterator = items.iterator();
 			while (iterator.hasNext()) {
 				try {
@@ -211,8 +206,7 @@ public class NvdCveParser {
 						String sUrl = element.getAsJsonObject().get("url").getAsString();
 						refUrlHash.put(sUrl, 0);
 					}
-				} catch (Exception e) {
-					// logger.error(e.toString());
+				} catch (Exception ignored) {
 				}
 			}
 		}
@@ -227,19 +221,18 @@ public class NvdCveParser {
 	 * @return
 	 */
 	public Map<String, List<String>> getCPEs(ArrayList<JsonObject> jsonList) {
-		Map<String, List<String>> cpeMap = new HashMap<String, List<String>>();
+		Map<String, List<String>> cpeMap = new HashMap<>();
 
 		for (JsonObject json : jsonList) {
-			JsonArray items = (JsonArray) json.getAsJsonArray("CVE_Items");
-			Iterator<JsonElement> iterator = items.iterator();
-			while (iterator.hasNext()) {
-				JsonObject jsonCVE = (JsonObject) iterator.next();
+			JsonArray items = json.getAsJsonArray("CVE_Items");
+			for (JsonElement item : items) {
+				JsonObject jsonCVE = (JsonObject) item;
 
 				String sCveId = jsonCVE.getAsJsonObject("cve").getAsJsonObject("CVE_data_meta").get("ID").getAsString();
 
 				JsonArray nodes = jsonCVE.getAsJsonObject("configurations").getAsJsonArray("nodes");
 				if (nodes.size() > 0) {
-					List<String> cpeList = new ArrayList<String>();
+					List<String> cpeList = new ArrayList<>();
 					JsonArray cpe_matches = nodes.get(0).getAsJsonObject().getAsJsonArray("cpe_match");
 					if (cpe_matches != null) {
 						// pick CPEs
@@ -252,12 +245,11 @@ public class NvdCveParser {
 								if (vulnerable.equals("true")) {
 									cpeList.add(cpe23Uri);
 								}
-							} catch (Exception e) {
-								// logger.error(e.toString());
+							} catch (Exception ignored) {
 							}
 						}
 
-					} // if (cpe_matches != null) {
+					}
 					cpeMap.put(sCveId, cpeList);
 				}
 			}

@@ -12,7 +12,7 @@
  * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,7 +32,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,21 +43,13 @@ import java.util.*;
  * 
  * @author axoeec
  *
+ * Ex:https://seclists.org/bugtraq/2016/Feb/147
  */
-public class SeclistsParser extends AbstractCveParser implements CveParserInterface {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+public class SeclistsParser extends AbstractCveParser  {
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public SeclistsParser(String domainName) {
 		sourceDomainName = domainName;
-	}
-
-	/*
-	 * this attribute is for reading the text on the site into different lists,
-	 * based on how the line starts it will either be classified as description,
-	 * versions, or empty, the line is added to different attributes accordingly
-	 */
-	private enum Modes {
-		DESCRIPTION, VERSIONS, EMPTY
 	}
 
 	@Override
@@ -73,14 +64,11 @@ public class SeclistsParser extends AbstractCveParser implements CveParserInterf
 		if (uniqueCves.isEmpty())
 			return vulns;
 
-		String desc = "";
-		String versionString = "";
 		Date updateDate = new Date();
 		String updateString = UtilHelper.longDateFormat.format(updateDate);
 		String publishDate = null;
 
-		String text = doc.text();
-		String[] lines = text.split("\n");
+		String text = doc.getElementsByTag("pre").text();
 
 		doc.select("br").append("\\n");
 		doc.select("p").prepend("\\n\\n");
@@ -101,49 +89,10 @@ public class SeclistsParser extends AbstractCveParser implements CveParserInterf
 			}
 		}
 
-		/*
-		 * determine what the line is, reset on newline most seclists sources have
-		 * sections that say description:/versions:
-		 */
-		Modes mode = Modes.EMPTY;
-		for (String line : lines) {
-			try {
-				line = line.trim();
-				if (line.isEmpty()) {
-					mode = Modes.EMPTY;
-					continue;
-				}
-
-				if (line.toLowerCase().contains("description") || line.toLowerCase().contains("mitigations")) {
-					mode = Modes.DESCRIPTION;
-					continue;
-				} else if (line.toLowerCase().contains("version")) {
-					mode = Modes.VERSIONS;
-					continue;
-				}
-				/*
-				 * add the line to description or version string according to the type of the
-				 * line by default it is added to description to account for non-standard
-				 * formats
-				 */
-				switch (mode) {
-				case EMPTY:
-				case DESCRIPTION:
-					desc += line + "  ";
-					break;
-				case VERSIONS:
-					versionString += line + "\n";
-					break;
-				}
-			} catch (Exception e) {
-				logger.error("Error while parsing descriptions/versions at url: {}", sSourceURL);
-			}
-		}
-
 		List<AffectedRelease> affectedReleases = new ArrayList<>();
 		try {
 			CpeLookUp loader = CpeLookUp.getInstance();
-			List<String> platformStrings = getPlatformVersions(versionString);
+			List<String> platformStrings = getPlatformVersions(text);
 
 			for (String s : platformStrings) {
 				Product p = loader.productFromDomain(s);
@@ -156,18 +105,8 @@ public class SeclistsParser extends AbstractCveParser implements CveParserInterf
 			logger.error("Error while parsing affected releases at url {}", sSourceURL);
 		}
 
-		/*
-		 * get everything as description if there are no lines added earlier
-		 */
-		if (desc.isEmpty()) {
-			Elements pres = doc.getElementsByTag("pre");
-			if (pres.size() == 1) {
-				desc = pres.get(0).text();
-			}
-		}
-
 		for (String cve : uniqueCves) {
-			CompositeVulnerability v = new CompositeVulnerability(0, sSourceURL, cve, "", publishDate, updateString, desc, sourceDomainName);
+			CompositeVulnerability v = new CompositeVulnerability(0, sSourceURL, cve, "", publishDate, updateString, text, sourceDomainName);
 			vulns.add(v);
 			for (AffectedRelease a : affectedReleases)
 				v.addAffectedRelease(a);

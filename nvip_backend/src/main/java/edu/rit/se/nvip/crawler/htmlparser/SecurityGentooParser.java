@@ -42,8 +42,9 @@ import java.util.*;
  * 
  * @author axoeec
  *
+ * Ex: https://security.gentoo.org/glsa/200502-21
  */
-public class SecurityGentooParser extends AbstractCveParser implements CveParserInterface {
+public class SecurityGentooParser extends AbstractCveParser  {
 	
 	public SecurityGentooParser(String domainName) {
 		sourceDomainName = domainName;
@@ -85,18 +86,24 @@ public class SecurityGentooParser extends AbstractCveParser implements CveParser
 		if (leads.size() == 1) {
 			Element parent = leads.get(0).parent();
 			Document leadDoc = Jsoup.parse(parent.html());
-			Elements ps = leadDoc.getElementsByTag("p");
-			description = "";
-			for (Element p : ps) {
-				description += p.text() + "  ";
+			Elements h3s = leadDoc.getElementsByTag("h3");
+			String dstring = null;
+			String istring = null;
+			for (Element h : h3s) {
+				if (h.text().equals("Description")) {
+					dstring = Objects.requireNonNull(h.nextElementSibling()).text();
+				}
+				if (h.text().equals("Impact")) {
+					istring = Objects.requireNonNull(h.nextElementSibling()).text();
+				}
 			}
+			description = dstring + " " + istring;
 		}
 
 		for (String cve : uniqueCves) {
 			vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
 		}
 
-		// TODO ADD PRODUCTS
 
 		return vulns;
 	}

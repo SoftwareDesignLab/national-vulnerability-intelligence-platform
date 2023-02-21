@@ -23,32 +23,23 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.UtilHelper;
 
+/**
+ * Web Parser for RedHat CVE Page
+ * (ex. https://access.redhat.com/security/cve/cve-2023-25725)
+ * @author aep7128
+ */
+public class RedHatParser extends AbstractCveParser  {
 
-public class RedHatParser extends AbstractCveParser implements CveParserInterface {
-
-    private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	
-	public RedHatParser(String domainName) {
+    public RedHatParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 
@@ -56,19 +47,22 @@ public class RedHatParser extends AbstractCveParser implements CveParserInterfac
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 
         List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
+        String pattern = "yyyy/MM/dd";
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 
         try {
             Document doc = Jsoup.parse(sCVEContentHTML);
-            String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
-            Pattern pattern = Pattern.compile(regexCVEID);
 
             String cve = doc.select("h1.headline").text();
-            String description = doc.select("#cve-details-description > div > div > p").text();            
-            String date = doc.select("p.cve-public-date > span").text();
+            String description = doc.select("#cve-details-description > div > div > pfe-markdown > p").text();
 
-            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, date, lastModifiedDate, description, sourceDomainName));    
+            String publishedDate = doc.select("p.cve-public-date > pfe-datetime > span").text().trim();
+
+            String lastModifiedDate = doc.select("p.cve-last-modified > pfe-datetime > span").text().split("at")[0].trim();
+
+            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return vulnerabilities;
 	}

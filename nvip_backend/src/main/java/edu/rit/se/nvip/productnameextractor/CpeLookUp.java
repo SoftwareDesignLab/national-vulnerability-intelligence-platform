@@ -25,7 +25,6 @@ package edu.rit.se.nvip.productnameextractor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,7 +46,6 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.rit.se.nvip.crawler.htmlparser.CveParserInterface;
 import edu.rit.se.nvip.model.Product;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
@@ -72,10 +70,12 @@ public class CpeLookUp {
 	 * hash map of CPE to Product add list of products to database using
 	 * map.values();
 	 */
-	private Map<String, Product> productsToBeAddedToDatabase = null;
+	private final Map<String, Product> productsToBeAddedToDatabase;
 
 	/** singleton instance of class */
 	private static CpeLookUp cpeLookUp = null;
+
+	private final String regexVersionInfo = "(?:(\\d+\\.(?:\\d+\\.)*\\d+))";
 
 	static Logger logger = LogManager.getLogger(UtilHelper.class);
 
@@ -92,7 +92,7 @@ public class CpeLookUp {
 	}
 
 	private CpeLookUp() {
-		productsToBeAddedToDatabase = new HashMap<String, Product>();
+		productsToBeAddedToDatabase = new HashMap<>();
 		loadProductFile();
 	}
 
@@ -134,8 +134,8 @@ public class CpeLookUp {
 	/**
 	 * Processes and serializes CPE list of products from dictionary xml file
 	 * 
-	 * @param String xmlfilename - CPE xml filename
-	 * @param String mapfilename - taget filename
+	 * @param xmlfilename xmlfilename - CPE xml filename
+	 * @param mapfilename mapfilename - taget filename
 	 *
 	 * @return assigns list of product
 	 */
@@ -148,7 +148,7 @@ public class CpeLookUp {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 
 		// Prepare final hashmap
-		HashMap<String, CpeGroup> cpeMap = new HashMap<String, CpeGroup>();
+		HashMap<String, CpeGroup> cpeMap = new HashMap<>();
 
 		try {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -212,8 +212,6 @@ public class CpeLookUp {
 			oos.writeObject(cpeMap);
 			oos.close();
 			logger.info("Saving product list is done!");
-		} catch (FileNotFoundException e) {
-			logger.error(e);
 		} catch (IOException e) {
 			logger.error(e);
 		}
@@ -222,7 +220,7 @@ public class CpeLookUp {
 	/**
 	 * Find CPE groups based on the product name
 	 * 
-	 * @param ProductItem product
+	 * @param product product
 	 *
 	 * @return list of CPEgroupFromMap objects
 	 */
@@ -236,7 +234,7 @@ public class CpeLookUp {
 		CpeGroup chosenGroup = null;
 
 		// Result list
-		ArrayList<CPEgroupFromMap> groupsList = new ArrayList<CPEgroupFromMap>();
+		ArrayList<CPEgroupFromMap> groupsList = new ArrayList<>();
 
 		// iterate through all cpe groups
 		for (Map.Entry<String, CpeGroup> entry : cpeMapFile.entrySet()) {
@@ -251,9 +249,9 @@ public class CpeLookUp {
 			float score = 0;
 
 			// how many words matches
-			for (int i = 0; i < productNameWords.length; i++) {
-				for (int j = 0; j < groupTitlewords.length; j++) {
-					if (productNameWords[i].equalsIgnoreCase(groupTitlewords[j])) {
+			for (String productNameWord : productNameWords) {
+				for (String groupTitleword : groupTitlewords) {
+					if (productNameWord.equalsIgnoreCase(groupTitleword)) {
 						wordsMatched++;
 					}
 				}
@@ -285,7 +283,7 @@ public class CpeLookUp {
 			maxScore = groupsList.get(0).score;
 			for (int i = 0; i < groupsList.size(); i++) {
 				if (groupsList.get(i).getScore() < maxScore) {
-					groupsList = new ArrayList<CPEgroupFromMap>(groupsList.subList(0, i));
+					groupsList = new ArrayList<>(groupsList.subList(0, i));
 					break;
 				}
 			}
@@ -297,15 +295,15 @@ public class CpeLookUp {
 	/**
 	 * Finds IDs of the relevant CPE entries
 	 * 
-	 * @param ArrayList<CPEgroupFromMap> selectedGroups - result from the
+	 * @param product<CPEgroupFromMap> selectedGroups - result from the
 	 *                                   findCPEgroups method
-	 * @param ProductItem                product
+	 * @param selectedGroups                product
 	 *
 	 * @return list of CPEgroupFromMap objects
 	 */
 	private ArrayList<String> getCPEidsFromGroups(ArrayList<CPEgroupFromMap> selectedGroups, ProductItem product) {
 
-		ArrayList<String> cpeIDs = new ArrayList<String>();
+		ArrayList<String> cpeIDs = new ArrayList<>();
 
 		if (selectedGroups.size() == 0) {
 			return null;
@@ -319,9 +317,9 @@ public class CpeLookUp {
 			return cpeIDs;
 		}
 
-		for (int i = 0; i < selectedGroups.size(); i++) {
+		for (CPEgroupFromMap selectedGroup : selectedGroups) {
 
-			HashMap<String, CpeEntry> groupVersions = selectedGroups.get(i).getCpeGroup().getVersions();
+			HashMap<String, CpeEntry> groupVersions = selectedGroup.getCpeGroup().getVersions();
 
 			for (int j = 0; j < product.getVersions().size(); j++) {
 				String[] versionWords = WhitespaceTokenizer.INSTANCE.tokenize(product.getVersions().get(j).toLowerCase());
@@ -329,8 +327,8 @@ public class CpeLookUp {
 				int mathcesCounter = 0;
 
 				// try to find version using a hashmap key
-				for (int k = 0; k < versionWords.length; k++) {
-					CpeEntry cpeEntry = groupVersions.get(versionWords[k]);
+				for (String versionWord : versionWords) {
+					CpeEntry cpeEntry = groupVersions.get(versionWord);
 
 					if (cpeEntry != null) {
 						mathcesCounter++;
@@ -344,8 +342,8 @@ public class CpeLookUp {
 					for (Map.Entry<String, CpeEntry> entry : groupVersions.entrySet()) {
 						String entryTitle = entry.getValue().getTitle().toLowerCase();
 
-						for (int k = 0; k < versionWords.length; k++) {
-							if (entryTitle.contains(versionWords[k])) {
+						for (String versionWord : versionWords) {
+							if (entryTitle.contains(versionWord)) {
 								cpeIDs.add(entry.getValue().getCpeID());
 								addProductToDatabase(new Product(entry.getValue().getTitle(), entry.getValue().getCpeID()));
 								break;
@@ -371,14 +369,13 @@ public class CpeLookUp {
 	/**
 	 * Get CPE IDs based on the product
 	 * 
-	 * @param ProductItem product
+	 * @param product product
 	 *
 	 * @return list of string with CPE IDs
 	 */
 	public ArrayList<String> getCPEids(ProductItem product) {
 		ArrayList<CPEgroupFromMap> cpeGroups = findCPEgroups(product);
-		ArrayList<String> cpeIDs = getCPEidsFromGroups(cpeGroups, product);
-		return cpeIDs;
+		return getCPEidsFromGroups(cpeGroups, product);
 	}
 
 	/**
@@ -402,7 +399,7 @@ public class CpeLookUp {
 	/**
 	 * Get CPE titles based on the product name
 	 * 
-	 * @param String productName
+	 * @param productName productName
 	 *
 	 * @return list of CPE titles
 	 */
@@ -411,7 +408,7 @@ public class CpeLookUp {
 		productName = productName.toLowerCase();
 		productName = productName.replaceAll("[^a-zA-Z0-9 ]", "");
 
-		ArrayList<String> groupsList = new ArrayList<String>();
+		ArrayList<String> groupsList = new ArrayList<>();
 
 		for (Map.Entry<String, CpeGroup> entry : cpeMapFile.entrySet()) {
 
@@ -438,18 +435,10 @@ public class CpeLookUp {
 		return version;
 	}
 
-	public static Product getProductFromCpeEntry(CpeEntry cpeEntry, int prodId) {
-		return new Product(cpeEntry.getTitle(), cpeEntry.getCpeID(), prodId);
-	}
-
-	public static Product getProductFromCpeEntry(CpeEntry cpeEntry) {
-		return new Product(cpeEntry.getTitle(), cpeEntry.getCpeID());
-	}
-
 	// Class that has CPE groups with matching score and can be sorted
-	class CPEgroupFromMap implements Comparable<CPEgroupFromMap> {
-		private float score;
-		private CpeGroup cpeGroup;
+	static class CPEgroupFromMap implements Comparable<CPEgroupFromMap> {
+		private final float score;
+		private final CpeGroup cpeGroup;
 
 		public CPEgroupFromMap(float score, CpeGroup cpeGroup) {
 			super();
@@ -468,20 +457,9 @@ public class CpeLookUp {
 		@Override
 		public int compareTo(CPEgroupFromMap o) {
 			float compareScore = o.getScore();
-			if (this.score < compareScore) {
-				return 1;
-			} else if (this.score > compareScore) {
-				return -1;
-			} else {
-				return 0;
-			}
+			return Float.compare(compareScore, this.score);
 		}
 	}
-
-	/**
-	 * METHODS from old AffectedReleaseLoader --- Merging AffectedReleaseLoader and
-	 * CPElLookup classes!
-	 */
 
 	/**
 	 * gets a product object based on a CPE
@@ -524,14 +502,12 @@ public class CpeLookUp {
 	public List<String> productListFromDomain(String domain) {
 		List<String> products = new ArrayList<>();
 		for (CpeGroup cpeGroup : cpeMapFile.values()) {
-			// products.add(cpeGroup.getCommonTitle()); //Gives Product names without
-			// versions
+			//Gives Product names without versions
 			for (CpeEntry cpeEntry : cpeGroup.getVersions().values()) {
 				products.add(cpeEntry.getTitle()); // Gives full product names WITH versions
 			}
 		}
 
-		// List<String> products = new ArrayList<>(cpeMapFile.v.values());
 		List<String> prodStrings = filterProducts(domain, products);
 		if (prodStrings == null)
 			return new ArrayList<>();
@@ -541,7 +517,7 @@ public class CpeLookUp {
 	private List<String> filterProducts(String domain, List<String> products) {
 		List<String> curr = new ArrayList<>(products);
 
-		Pattern pattern = Pattern.compile(CveParserInterface.regexVersionInfo);
+		Pattern pattern = Pattern.compile(regexVersionInfo);
 		Matcher matcher = pattern.matcher(domain);
 		if (matcher.find()) { // filter based on version first
 			pattern = Pattern.compile(matcher.group());

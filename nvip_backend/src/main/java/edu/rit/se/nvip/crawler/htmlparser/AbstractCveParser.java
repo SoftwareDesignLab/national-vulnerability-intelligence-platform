@@ -23,6 +23,8 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
+import edu.rit.se.nvip.model.CompositeVulnerability;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,12 +41,21 @@ import java.util.regex.Pattern;
  * @author axoeec
  *
  */
-public abstract class AbstractCveParser implements CveParserInterface {
-	protected DateFormat dateFormat_MMMddCommaYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
-	protected DateFormat dateFormat_MMMddYYYY = new SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH);
-	protected DateFormat dateFormat_yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+public abstract class AbstractCveParser {
+
+	protected final String regexCVEID = "CVE-[0-9]+-[0-9]+";
+	protected final String regexVersionInfo = "(?:(\\d+\\.(?:\\d+\\.)*\\d+))";
+	protected final String regexAllCVERelatedContent = ".*(affect|attack|bypass|cve|execut|fix|flaw|permission|vulnerab|CVE|Mitigat|(?:(\\d+\\.(?:\\d+\\.)*\\d+))).*";
+	protected final String regexDateFormat = "([a-zA-Z]+ [0-9]+, [0-9]+)";
+	protected final String regexDateFormatNumeric = "[0-9]+[-/][0-9]+[-/][0-9]+";
+	protected final String regexChinese = "\\p{IsHan}";
+	protected final DateFormat dateFormat_MMMddCommaYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+	protected final DateFormat dateFormat_MMMddYYYY = new SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH);
+	protected final DateFormat dateFormat_yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 	
 	protected String sourceDomainName = null;
+
+	public abstract List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML);
 
 	/**
 	 * get unique CVEs
@@ -81,7 +92,7 @@ public abstract class AbstractCveParser implements CveParserInterface {
 	 * @return list of strings in format [product name] [version]
 	 */
 	protected List<String> getPlatformVersions(String description) {
-		String version = null;
+		String version;
 		Set<String> versions = new HashSet<>();
 
 		Pattern pattern = Pattern.compile(regexVersionInfo);
@@ -108,9 +119,8 @@ public abstract class AbstractCveParser implements CveParserInterface {
 					if (Character.isUpperCase(currChar))
 						lastUppercase = i;
 
-					// if this word didnt start with uppercase or if you are at the beginning of the
-					// sentence, return
-					// substring
+					// If this word didn't start with uppercase or if you are at the beginning of the
+					// sentence, return substring
 					if ((currChar == ' ' && (lastUppercase != i + 1 && i != beginIndex - 1)) || i == 0)
 						break;
 

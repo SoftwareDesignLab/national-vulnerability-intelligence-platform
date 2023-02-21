@@ -40,7 +40,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.AffectedRelease;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.Product;
@@ -48,20 +47,18 @@ import edu.rit.se.nvip.productnameextractor.CpeLookUp;
 import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
- * 
- * @author axoeec
+ * Parse Web Pages for Packet Storm
+ * (ex. https://packetstormsecurity.com/files/170988/Cisco-RV-Series-Authentication-Bypass-Command-Injection.html)
+ * @author axoeec, aep7128
  *
  */
-public class PacketStormParser extends AbstractCveParser implements CveParserInterface {
+public class PacketStormParser extends AbstractCveParser  {
 	
 	public PacketStormParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 	
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	// DateFormat currentFormat = new SimpleDateFormat("MMM dd, yyyy",
-	// Locale.ENGLISH);
-	DatabaseHelper db = DatabaseHelper.getInstance();
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 
 	@Override
@@ -70,12 +67,12 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 			return parseSingleHTMLPage(sSourceURL, sCVEContentHTML);
 		} else {
 			/**
-			 * 
+			 *
 			 * All pages have
 			 * <dl class="file">
 			 * and
 			 * <dd class="cve">in them!
-			 * 
+			 *
 			 */
 			return parseCVEListPage(sSourceURL, sCVEContentHTML);
 		}
@@ -84,12 +81,12 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 
 	/**
 	 * parse a packetstorm pages like
-	 * 
+	 *
 	 * https://packetstormsecurity.com/files/cve/CVE-2017-1000476
 	 * https://packetstormsecurity.com/files/date/2004-01/
 	 * https://packetstormsecurity.com/0307-advisories/
 	 * https://packetstormsecurity.com/0309-exploits/
-	 * 
+	 *
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
 	 * @return
@@ -107,9 +104,8 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
-			String description = null;
-			String publishDate = null;
-			String updateDate = null;
+			String description;
+			String publishDate;
 			for (Element element : document.select("dl")) {
 
 				// if no CVEs then continue!
@@ -127,7 +123,7 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 				// get detail of the item
 				Elements elements = element.getElementsByClass("detail");
 				description = listTitle + "\n" + getDescription(sSourceURL, elements);
-				if (description.equals(""))
+				if (description.equals("\n"))
 					continue;
 
 				// get date
@@ -136,10 +132,6 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 
 				for (String cve : uniqueCves)
 					itemVulns.add(new CompositeVulnerability(0, sSourceURL, cve, listTitle, publishDate, lastModifiedDate, description, sourceDomainName));
-
-				// TODO
-				// itemVulns = this.setAffectedReleasesForListItem(listTitle, itemVulns,
-				// publishDate);
 
 				allVulns.addAll(itemVulns);
 
@@ -150,41 +142,6 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 
 		return allVulns;
 
-	}
-
-	/**
-	 * set affected releases of vulnerabilities from a given <listTitle>
-	 * 
-	 * @param listTitle
-	 * @param itemVulns
-	 * @param publishDate
-	 * @return
-	 */
-	private List<CompositeVulnerability> setAffectedReleasesForListItem(String listTitle, List<CompositeVulnerability> itemVulns, String publishDate) {
-
-		// get platform
-		String[] arr = listTitle.split("\\s+");
-		String domain = arr[0];
-		if (arr.length > 1)
-			domain += " " + arr[1]; // potentially domain?
-		CpeLookUp loader = CpeLookUp.getInstance();
-		Map<Integer, Product> products = new HashMap<>();
-		Product product = loader.productFromDomain(domain);
-		List<AffectedRelease> affectedReleases = new ArrayList<AffectedRelease>();
-		if (product != null) {
-			products.put(0, product);
-			affectedReleases = getAffectedReleasesFromProducts(products, publishDate);
-		}
-
-		if (affectedReleases.size() > 0)
-			for (CompositeVulnerability vuln : itemVulns) {
-				for (AffectedRelease a : affectedReleases) {
-					AffectedRelease copy = new AffectedRelease(a);
-					copy.setCveId(vuln.getCveId());
-					vuln.addAffectedRelease(copy);
-				}
-			}
-		return itemVulns;
 	}
 
 	/**
@@ -250,9 +207,8 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
-			String description = null;
-			String publishDate = null;
-			String updateDate = null;
+			String description;
+			String publishDate;
 
 			// gte description
 			Elements descriptions = document.getElementsByClass("detail");
@@ -273,12 +229,12 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 			document.select("br").append("\n");
 
 			Elements codeTags = document.getElementsByTag("code");
-			String codeText = "";
+			StringBuilder codeText = new StringBuilder();
 
 			for (Element tag : codeTags)
-				codeText += tag.text();
+				codeText.append(tag.text());
 
-			List<AffectedRelease> affectedReleases = getAffectedReleasesFromTagTxt(codeText, publishDate);
+			List<AffectedRelease> affectedReleases = getAffectedReleasesFromTagTxt(codeText.toString(), publishDate);
 
 			for (CompositeVulnerability v : vulns) {
 				for (AffectedRelease a : affectedReleases) {
@@ -314,8 +270,7 @@ public class PacketStormParser extends AbstractCveParser implements CveParserInt
 				products.put(p.getProdId(), p);
 		}
 
-		List<AffectedRelease> affectedReleases = getAffectedReleasesFromProducts(products, publishDate);
-		return affectedReleases;
+		return getAffectedReleasesFromProducts(products, publishDate);
 
 	}
 

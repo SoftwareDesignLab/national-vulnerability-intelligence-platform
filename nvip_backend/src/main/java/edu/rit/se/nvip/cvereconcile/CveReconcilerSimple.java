@@ -23,17 +23,12 @@
  */
 package edu.rit.se.nvip.cvereconcile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
  * Class for simple Cve reconciliation and validation
@@ -43,7 +38,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  */
 
 public class CveReconcilerSimple extends AbstractCveReconciler {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public CveReconcilerSimple() {
 		MyProperties propertiesNvip = new MyProperties();

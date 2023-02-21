@@ -36,10 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 import edu.rit.se.nvip.cvereconcile.CveReconciler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
 import edu.rit.se.nvip.utils.CsvUtils;
-import edu.rit.se.nvip.utils.CveUtils;
-import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
  * 
@@ -49,9 +46,9 @@ import edu.rit.se.nvip.utils.UtilHelper;
  *
  */
 public class CveProcessor {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	private HashMap<String, Integer> hashMapNvdCve = new HashMap<String, Integer>();
-	private HashMap<String, Integer> hashMapMitreCve = new HashMap<String, Integer>();
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	private final HashMap<String, Integer> hashMapNvdCve = new HashMap<>();
+	private final HashMap<String, Integer> hashMapMitreCve = new HashMap<>();
 	CveReconciler cveUtils = new CveReconciler();
 
 	public CveProcessor(String nvdCvePath, String mitreCvePath) {
@@ -77,7 +74,7 @@ public class CveProcessor {
 			}
 
 		} catch (IOException e) {
-			logger.error("Error while loading NVD/MITRE CVEs!" + e.toString());
+			logger.error("Error while loading NVD/MITRE CVEs!" + e);
 			System.exit(1); // This is a serious error, exit!
 		}
 		logger.info("Loaded cve data for NVD(" + hashMapNvdCve.size() + ") and MITRE(" + hashMapMitreCve.size() + ")");
@@ -90,13 +87,13 @@ public class CveProcessor {
 	 * @return
 	 */
 	public HashMap<String, List<Object>> checkAgainstNvdMitre(HashMap<String, CompositeVulnerability> hashMapNvipCve) {
-		HashMap<String, List<Object>> newCVEMap = new HashMap<String, List<Object>>();
+		HashMap<String, List<Object>> newCVEMap = new HashMap<>();
 
 		// get list from hash map
-		List<Object> allCveData = new ArrayList<Object>();
-		List<Object> newCVEDataNotInMitre = new ArrayList<Object>();
-		List<Object> newCVEDataNotInNvd = new ArrayList<Object>();
-		List<Object> newCVEDataNotInNvdAndMitre = new ArrayList<Object>();
+		List<Object> allCveData = new ArrayList<>();
+		List<Object> newCVEDataNotInMitre = new ArrayList<>();
+		List<Object> newCVEDataNotInNvd = new ArrayList<>();
+		List<Object> newCVEDataNotInNvdAndMitre = new ArrayList<>();
 		for (CompositeVulnerability vuln : hashMapNvipCve.values()) {
 
 			try {
@@ -148,7 +145,7 @@ public class CveProcessor {
 			} catch (Exception e) {
 				logger.error("Error while checking against NVD/MITRE, CVE: " + vuln.toString());
 			}
-		} // for
+		}
 
 		newCVEMap.put("all", allCveData); // all CVEs
 		newCVEMap.put("mitre", newCVEDataNotInMitre); // CVEs not in Mitre

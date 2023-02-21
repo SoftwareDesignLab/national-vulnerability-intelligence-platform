@@ -1,0 +1,101 @@
+<!-- todo commented out dynamic vars -->
+<div id="nvipContent" class="nvip-content-container daily-cve-container" ng-controller="VulnerabilityController as VulnCtrl" ng-init="init()">
+    <div class="nvip-loading-screen col-12">
+        <fa-icon [icon]="faSpinner" animation="spin" size="3x" [fixedWidth]="true" [ngStyle]="{ color: 'black'}"></fa-icon>
+        <span>Loading daily vulnerability data...</span>
+    </div>
+    <div class="daily-cve-filter-container">
+        <div class="daily-cve-filter-content">
+            <div class="daily-cve-search-container col-11">
+                <fa-icon [icon]="faSearch" class="daily-vuln-search-icon" aria-hidden="true"></fa-icon>	
+                <input class="daily-cve-search-bar col-10" type="text" ng-model="vulnSearch" ng-blur="searchFocusOut()" placeholder="Filter vulnerabilities"
+                    ng-keyup="filterVulns($index, vulnSearch, dailyVulns)" />
+                <fa-icon [icon]="faTimesCircle" class="daily-vuln-search-cancel-icon" aria-hidden="true"></fa-icon>
+            </div>
+            <div class="daily-cve-filter-btns">
+                <div class="daily-vuln-filter-btn">
+                    <input type="checkbox" class="daily-vuln-filter-checkbox" id="vuln-product-filter" name="product-filter" value="product">
+                    <span>Product</span>
+                    <fa-icon [icon]="faAngleRight" size="2x" aria-hidden="true"></fa-icon>	
+                </div>
+                <div class="daily-vuln-filter-btn">
+                    <input type="checkbox" class="daily-vuln-filter-checkbox" id="vuln-vdo-filter" name="vdo-filter" value="vdo">
+                    <span>VDO</span>
+                    <fa-icon [icon]="faAngleRight" size="2x" aria-hidden="true"></fa-icon>	
+                </div>
+                <div class="daily-vuln-filter-btn">
+                    <input type="checkbox" class="daily-vuln-filter-checkbox" id="vuln-cvss-score-filter" name="cvss-score-filter" value="cvssScore">
+                    <span>CVSS Score</span>
+                    <fa-icon [icon]="faAngleRight" size="2x" aria-hidden="true"></fa-icon>	
+                </div>
+                <div class="daily-vuln-filter-btn">
+                    <input type="checkbox" class="daily-vuln-filter-checkbox" id="vuln-status-filter" name="status-filter" value="status">
+                    <span>Status</span>
+                    <fa-icon [icon]="faAngleRight" size="2x" aria-hidden="true"></fa-icon>	
+                </div>
+                <div class="daily-vuln-filter-btn">
+                    <input type="checkbox" class="daily-vuln-filter-checkbox" id="vuln-location-filter" name="location-filter" value="location">
+                    <span>In MITRE/NVD</span>
+                    <fa-icon [icon]="faAngleRight" size="2x" aria-hidden="true"></fa-icon>	
+                </div>
+            </div>
+        </div>
+        <button class="daily-cve-filter-btn" type="button" ng-click="toggleFilter()">
+            <fa-icon [icon]="faAngleRight" size="2x" aria-hidden="true"></fa-icon>	
+        </button>
+    </div>	
+    <div class="nvip-daily-cve-panel-container col-11">
+        <div class="daily-cve-panel" ng-repeat="(panelIndex, vulnMap) in dailyVulns" ng-show="vulnMap.cve_list.length > 0">
+            <!-- <p class="daily-cve-date">{{vulnMap.date}}</p> -->
+            <div class="daily-cve-counts col-6">
+                <!-- <p>{{vulnMap.cve_list.length}} CVEs identified</p> -->
+            </div>
+            <div class="daily-vuln-dropdown col-11" ng-repeat="(vulnIndex, vuln) in vulnMap.cve_list | limitTo: dailyVulnLimit[panelIndex]">
+                <button type="button" class="daily-vuln-dropdown-button col-12" ng-click="selectDailyCve(panelIndex, vulnIndex)">
+                    <div class="daily-vuln-dropdown-row">
+                        <div class="daily-vuln-dropdown-row-1">
+                            <span ng-bind="vuln.map.cveId"></span>
+                            <span class="daily-vuln-dropdown-icon-box">
+                                <img class="nvd_logo" ng-class="{true: 'is_present', false: ''}[vuln.map.existInNvd]" src="images/nvd_logo.svg" aria-hidden="true"/>
+                                <img class="mitre_logo" ng-class="{true: 'is_present', false: ''}[vuln.map.existInMitre]"  src="images/mitre_corporation_logo.svg" aria-hidden="true">
+                                <img class="mitigation_icon" ng-show="hasMitigation(vuln)" src="images/mitigation_shield.svg" aria-hidden="true">
+                                <img class="is_fixed_logo" ng-show="isFixed(vuln)" src="images/is_fixed_icon.svg" alt="Fixed">
+                            </span>
+                        </div>
+                        <div class="daily-vuln-dropdown-row-2">
+                            <!-- <span class="daily-vuln-product">{{displayCVEProduct(vuln.map.product.map.domain)}} : </span>{{fillVDOLabels(vuln.map, "LogicalImpact", panelIndex, vulnIndex)}} -->
+                        </div>
+                        <div class="daily-vuln-dropdown-row-3">
+                            <!-- <span>Method </span><daily-vuln-dropdown vuln="vuln" nounGroup="{{impactMethod}}"></daily-vuln-dropdown> -->
+                        </div>
+                        <!--  <span class="daily-vuln-icons"></span> -->
+                    </div>
+                    <fa-icon [icon]="faAngleLeft" size="2x" aria-hidden="true"></fa-icon>	
+                </button>
+                <div class="daily-vuln-content">
+                    <div class="daily-vuln-description">
+                        <p>Description</p>
+                        <p ng-bind="vuln.map.description"></p>
+                    </div>
+                    <div class="daily-vuln-info"> 
+                        <div>
+                            <p>Platform</p>
+                            <p ng-bind="vuln.map.platform"></p>
+                        </div>
+                        <div>
+                            <p>Version</p>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="daily-vuln-detail" ng-controller="SearchController as search">
+                        <!-- <a ng-href="#vulnerability/{{vuln.map.vulnId}}" ng-click="search.storeResults()">View Info</a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="nvip-daily-vuln-button-container col-11">
+                <button class="nvip-button nvip-show-more" type="button" ng-click="showMore(panelIndex)" ng-disabled="dailyVulnLimit[panelIndex] >= vulnMap.cve_list.length"><span>Show More</span></button>
+                <button class="nvip-button nvip-show-less" type="button" ng-click="showLess(panelIndex)" ng-disabled="dailyVulnLimit[panelIndex] <= vulnLimitIncr"><span>Show Less</span></button>
+            </div>
+        </div>
+    </div>
+</div>

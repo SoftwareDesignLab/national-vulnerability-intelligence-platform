@@ -72,11 +72,11 @@ Follow the steps below to generate NVIP output jars:
 * (For Command Line) Open command line and navigate to the nvip_backend directory. From the root of that directory, enter the following command 
 to compile and package the project in a jar_::
   
-  mvn clean install
+  mvn clean compile assembly:single
 
 * If unit tests fail after compiling, you can bypass tests with the following command_::
 
-  mvn clean package -DskipTests
+  mvn clean compile package -DskipTests
 
 * After the build process, the output jar will be located under the "target" directory of the project root.
 

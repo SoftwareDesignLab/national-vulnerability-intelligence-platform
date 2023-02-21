@@ -45,8 +45,9 @@ import java.util.regex.Pattern;
  * 
  * @author axoeec
  *
+ * Ex: https://www.kb.cert.org/vuls/id/434994
  */
-public class KbCertCveParser extends AbstractCveParser implements CveParserInterface {
+public class KbCertCveParser extends AbstractCveParser  {
 	
 	public KbCertCveParser(String domainName) {
 		sourceDomainName = domainName;
@@ -54,7 +55,7 @@ public class KbCertCveParser extends AbstractCveParser implements CveParserInter
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 
 		Document document = Jsoup.parse(sCVEContentHTML);
 
@@ -76,13 +77,13 @@ public class KbCertCveParser extends AbstractCveParser implements CveParserInter
 		String regexLastRevised = "(Last Revised|Updated): [0-9]+-[0-9]+-[0-9]+";
 		Pattern lastRevisedPattern = Pattern.compile(regexLastRevised);
 		Matcher matcher = lastRevisedPattern.matcher(allText);
-		String lastModified = null;
+		String lastModified;
 		if (matcher.find()) {
 			String[] splitLine = matcher.group().split(" ");
 			lastModified = splitLine[splitLine.length - 1]; // format: yyyy-MM-dd
 			try {
 				Date date = UtilHelper.kbCertDateFormat.parse(lastModified);
-				lastModified = UtilHelper.longDateFormat.format(date);
+				UtilHelper.longDateFormat.format(date);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -164,8 +165,7 @@ public class KbCertCveParser extends AbstractCveParser implements CveParserInter
 	 * @return string of systems name
 	 */
 	private List<AffectedRelease> getVendors(Document document) {
-		// DatabaseHelper db = new DatabaseHelper();
-		DatabaseHelper db = DatabaseHelper.getInstance();
+		DatabaseHelper.getInstance();
 		Element vendor = document.getElementById("vendorinfo");
 		Elements affected = vendor.getElementsByClass("vinfo affected info");
 		affected.addAll(vendor.getElementsByClass("vinfo affected")); // different classes for css
@@ -227,13 +227,20 @@ public class KbCertCveParser extends AbstractCveParser implements CveParserInter
 	private String getSingleDescription(Document document) {
 		Elements h3s = document.getElementsByTag("h3");
 		for (Element e : h3s) {
-			if (e.text().trim().toLowerCase().equals("description")) {
+			if (e.text().trim().equalsIgnoreCase("description")) {
+				// Start off at the header + 1 to get the first part of description
 				int currIndex = e.elementSiblingIndex() + 1;
 				Element parent = e.parent();
-				while (parent.child(currIndex).text().trim().equals("")) {
+				// current index text
+				StringBuilder currChildText = new StringBuilder(parent.child(currIndex).text().trim());
+				// Multiple CVEs loop
+				while (!parent.child(currIndex).tagName().equals("h3")) {
 					currIndex++;
+					Element thisChild = parent.child(currIndex);
+					String thisChildText = thisChild.text().trim();
+					currChildText.append(thisChildText);
 				}
-				return e.parent().child(currIndex).text();
+				return currChildText.toString();
 			}
 		}
 		return null;

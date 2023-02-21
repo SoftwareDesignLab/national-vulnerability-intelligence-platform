@@ -24,27 +24,14 @@
 package edu.rit.se.nvip.crawler.urlcrawler;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.http.client.config.RequestConfig;
-
-import edu.rit.se.nvip.cveprocess.CveLogDiff;
-import edu.rit.se.nvip.cveprocess.CveProcessor;
-import edu.rit.se.nvip.cvereconcile.CveReconciler;
 import edu.rit.se.nvip.model.UrlCrawlerData;
-import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.utils.CsvUtils;
 import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.UtilHelper;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
-import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
@@ -60,8 +47,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class UrlCrawlController {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	MyProperties propertiesNvip = null;
-	public static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0";
+	MyProperties propertiesNvip;
 	int searchDepth = 1;
 
 	public UrlCrawlController(MyProperties propertiesNvip, int searchDepth) {
@@ -74,20 +60,17 @@ public class UrlCrawlController {
 	 * Crawl provided <urls> to look for new CVE sources only
 	 * 
 	 * @param urls
-	 * @param crawlURLsOnly
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public UrlCrawlerData crawl(List<String> urls) {
 
-		HashMap<String, Integer> legitimateUrlsAll = new HashMap<String, Integer>();
-		HashMap<String, Integer> forbiddenUrlsAll = new HashMap<String, Integer>();
-		HashMap<String, Integer> notOkUrlsAll = new HashMap<String, Integer>();
+		HashMap<String, Integer> legitimateUrlsAll = new HashMap<>();
+		HashMap<String, Integer> forbiddenUrlsAll = new HashMap<>();
+		HashMap<String, Integer> notOkUrlsAll = new HashMap<>();
 
 		String crawlStorageFolder = propertiesNvip.getOutputDir();
 		int numberOfCrawlers = propertiesNvip.getNumberOfCrawlerThreads() * 2;
-		//int numberOfCrawlers = propertiesNvip.getNumberOfCrawlerThreads();
-		// numberOfCrawlers = urls.size() / 50 + 1;
 
 		try {
 			// set crawl params
@@ -98,12 +81,9 @@ public class UrlCrawlController {
 			config.setPolitenessDelay(propertiesNvip.getDefaultCrawlerPoliteness());
 			config.setCrawlStorageFolder(crawlStorageFolder);
 
-			// overwrite default agent: "crawler4j (https://github.com/yasserg/crawler4j/)"
-			// config.setUserAgentString(DEFAULT_USER_AGENT);
 
 			// Instantiate the controller for this crawl.
 			PageFetcher pageFetcher = new PageFetcher(config);
-			// MyPageFetcher pageFetcher = new MyPageFetcher(config);
 			RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 
 			robotstxtConfig.setEnabled(false); // added by AO to test
@@ -128,7 +108,7 @@ public class UrlCrawlController {
 			logger.info("Added " + addedSeeds + " of " + urls.size() + " total seed URLs! Ignored " + (urls.size() - addedSeeds) + " of them!");
 
 			// Create instances of crawlers.
-			CrawlController.WebCrawlerFactory<UrlCrawler> factory = () -> new UrlCrawler();
+			CrawlController.WebCrawlerFactory<UrlCrawler> factory = UrlCrawler::new;
 
 			// Start the crawl. This is a blocking operation
 			logger.info("Starting NVIP URL Crawler with " + urls.size() + " seed URLs and " + numberOfCrawlers + " threads!");
@@ -140,12 +120,12 @@ public class UrlCrawlController {
 			List<Object> crawlersLocalData = controller.getCrawlersLocalData();
 			logger.info("Merging URLs from " + crawlersLocalData.size() + " different crawlers!");
 
-			HashMap<String, Integer> legitimateUrlsFromCrawler = new HashMap<String, Integer>();
-			HashMap<String, Integer> forbiddenUrlsFromCrawler = new HashMap<String, Integer>();
-			HashMap<String, Integer> notOkUrlsFromCrawler = new HashMap<String, Integer>();
+			HashMap<String, Integer> legitimateUrlsFromCrawler;
+			HashMap<String, Integer> forbiddenUrlsFromCrawler;
+			HashMap<String, Integer> notOkUrlsFromCrawler;
 
 			int nCrawlerID = 1;
-			int totUrlCount = 0, crawlerUrlCount = 0;
+			int totUrlCount = 0, crawlerUrlCount;
 
 			for (Object crawlerData : crawlersLocalData) {
 
@@ -187,7 +167,7 @@ public class UrlCrawlController {
 			FileUtils.writeLines(new File(notOkUrlFile), notOkUrlsAll.keySet());
 
 		} catch (Exception e) {
-			logger.error("Errer!" + e.toString());
+			logger.error("Errer!" + e);
 		}
 
 		return new UrlCrawlerData(legitimateUrlsAll, forbiddenUrlsAll, notOkUrlsAll);

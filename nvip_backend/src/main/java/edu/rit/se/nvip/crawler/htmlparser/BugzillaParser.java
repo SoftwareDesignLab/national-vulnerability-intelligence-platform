@@ -40,13 +40,14 @@ import edu.rit.se.nvip.utils.UtilHelper;
 
 /**
  * 
- * Parse Bugzilla CVEs
- * 
- * @author axoeec
+ * Parse Bugzilla CVEs (Bugzilla pages for certain products, such as RedHat and Gentoo)
+ * (ex. https://bugzilla.redhat.com/show_bug.cgi?id=968382)
+ * (ex. https://bugzilla.redhat.com/show_bug.cgi?id=1576652)
+ * @author axoeec, aep7128
  *
  */
-public class BugzillaParser extends AbstractCveParser implements CveParserInterface {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+public class BugzillaParser extends AbstractCveParser {
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public BugzillaParser(String domainName) {
 		sourceDomainName = domainName;
@@ -54,7 +55,7 @@ public class BugzillaParser extends AbstractCveParser implements CveParserInterf
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 
 		if (sSourceURL.contains("www.bugzilla.org"))
 			return vulnerabilities;
@@ -72,14 +73,16 @@ public class BugzillaParser extends AbstractCveParser implements CveParserInterf
 	}
 
 	/**
-	 * Parse pages like: https://bugzilla.redhat.com/show_bug.cgi?id=968382
+	 * Parse pages like:
+	 * https://bugzilla.redhat.com/show_bug.cgi?id=968382
+	 * https://bugzilla.redhat.com/show_bug.cgi?id=1576652
 	 * 
 	 * @param sSourceURL
 	 * @param sCVEContentHTML
 	 * @return
 	 */
 	private List<CompositeVulnerability> parseVulnPage(Set<String> uniqueCves, String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
@@ -87,29 +90,26 @@ public class BugzillaParser extends AbstractCveParser implements CveParserInterf
 			String publishDate = null;
 			String platform = "";
 			String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
-
 			Elements elements = document.select("title");
 			description = elements.get(0).text() + "\n";
-
-			elements = document.select("pre.bz_comment_text");
-
-			for (Element element : elements) {
-				// parse logic
-				description += element.text() + "\n";
-			}
 
 			elements = document.select("th.field_label");
 
 			for (Element element : elements) {
 				// parse logic
 				String str = element.text();
-				if (str.contains("Modified:")) {
+				if (str.contains("Reported:") || str.contains("Modified:")) {
 					try {
 						Element e2 = element.nextElementSibling();
-						publishDate = e2.text();
-						publishDate = publishDate.split(" ")[0];
+						String date = e2.text().split(" ")[0];
+						date = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(date));
 
-						publishDate = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(publishDate));
+						if (str.contains("Reported:")) {
+							publishDate = date;
+						} else if (str.contains("Modified:")) {
+							lastModifiedDate = date;
+						}
+
 					} catch (Exception e) {
 						logger.error("Error parsing date: " + publishDate + " at " + sSourceURL);
 					}
@@ -118,6 +118,7 @@ public class BugzillaParser extends AbstractCveParser implements CveParserInterf
 
 			for (String cveId : uniqueCves)
 				vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cveId, platform, publishDate, lastModifiedDate, description, sourceDomainName));
+
 		} catch (Exception e) {
 			logger.error("An error occurred while parsing Bugzilla URL: " + sSourceURL);
 		}

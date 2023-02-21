@@ -57,7 +57,6 @@ public class CveReconcilerTest {
 		String goodDescription = "The Epson \"EasyMP\" software is designed to remotely stream a users computer to supporting projectors.These devices are authenticated using a unique 4-digit code displayed on-screen - ensuring only those who can view it are streaming.In addition to the password each projector has a hardocded \"backdoor\" code (2270) which authenticates to all devices.";
 				
 		CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
-		//AbstractCveReconciler reconciler = reconcileFactory.createReconciler(CveCrawlController.RECONCILE_TYPE);
 		AbstractCveReconciler reconciler = reconcileFactory.createReconciler(getProps().getCveReconciliationMethod());
 		
 		boolean test1 = reconciler.reconcileDescriptions(badDescription,goodDescription, null, null, true);

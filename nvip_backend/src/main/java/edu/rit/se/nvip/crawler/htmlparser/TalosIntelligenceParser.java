@@ -23,16 +23,10 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,7 +48,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
  * @author Ahmet Okutan
  *
  */
-public class TalosIntelligenceParser extends AbstractCveParser implements CveParserInterface {
+public class TalosIntelligenceParser extends AbstractCveParser  {
 	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
 	
 	public TalosIntelligenceParser(String domainName) {
@@ -63,7 +57,7 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 
 		if (sSourceURL.contains("blog.talosintelligence.com") || sSourceURL.contains("/newsletters/"))
 			return vulnerabilities;
@@ -89,67 +83,64 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 	 * @return
 	 */
 	private List<CompositeVulnerability> parseVulnPage(Set<String> uniqueCves, String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
+		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
-			String description = "";
+			StringBuilder description = new StringBuilder();
 			String publishDate = null;
-			String platform = "";
+			StringBuilder platform = new StringBuilder();
 			String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
 
-			Elements allElements = document.select("h3");
+			Elements allElements = document.getElementsByTag("h5");
 
 			for (Element element : allElements) {
-				String text = element.text();
+				String text = element.text().toLowerCase();
 
-				if (text.contains("Summary")) {
-					String str = "";
+				if (text.contains("summary")) {
+					StringBuilder str = new StringBuilder();
 					while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
-						str += element.nextElementSibling().text();
+						str.append(element.nextElementSibling().text());
 						element = element.nextElementSibling();
 					}
-					description += str;
+					description.append(str);
 				}
 
-				if (text.contains("Tested Versions")) {
-					String str = "";
-					if (element != null && element.nextElementSibling().tagName().equals("p")) {
+				if (text.toLowerCase().contains("tested versions")) {
+					StringBuilder str = new StringBuilder();
+					if (element.nextElementSibling().tagName().equals("p")) {
 						while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
-							str += element.nextElementSibling().text();
+							str.append(element.nextElementSibling().text());
 							element = element.nextElementSibling();
 						}
 					} else {
-						str = element.nextElementSibling().text();
+						str = new StringBuilder(element.nextElementSibling().text());
 					}
-					platform += str;
+					platform.append(str);
 				}
 
-				if (text.contains("Details")) {
-					String str = "";
+				if (text.contains("details")) {
+					StringBuilder str = new StringBuilder();
 					while (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
 						try {
-							str += element.nextElementSibling().text();
+							str.append(element.nextElementSibling().text());
 							element = element.nextElementSibling();
-						} catch (Exception e) {
-							continue;
+						} catch (Exception ignored) {
 						}
 					}
-					description += str;
+					description.append(str);
 				}
 
-				if (text.contains("Timeline")) {
+				if (text.contains("timeline")) {
 					String str = "";
 					try {
 						if (element.nextElementSibling() != null && element.nextElementSibling().tagName().equals("p")) {
 							str = element.nextElementSibling().text();
 							List<String> dates = getDates(str);
 
-							// the last date under timeline!
-							publishDate = dates.get(dates.size() - 1);
+							publishDate = dates.get(0);
 							publishDate = UtilHelper.longDateFormat.format(dateFormat_yyyy_MM_dd.parse(publishDate));
 						}
-						// description += str;
 					} catch (Exception e) {
 						logger.error("Error parsing Timeline section at: " + sSourceURL);
 					}
@@ -158,7 +149,7 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 			}
 
 			for (String cveId : uniqueCves)
-				vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cveId, platform, publishDate, lastModifiedDate, description, sourceDomainName));
+				vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cveId, platform.toString(), publishDate, lastModifiedDate, description.toString(), sourceDomainName));
 		} catch (Exception e) {
 			logger.error("An error occurred while parsing TalosIntelligence URL: " + sSourceURL);
 		}
@@ -167,7 +158,7 @@ public class TalosIntelligenceParser extends AbstractCveParser implements CvePar
 	}
 
 	protected List<String> getDates(String text) {
-		List<String> dates = new ArrayList<String>();
+		List<String> dates = new ArrayList<>();
 		Pattern cvePattern = Pattern.compile(regexDateFormatNumeric);
 		Matcher cveMatcher = cvePattern.matcher(text);
 		while (cveMatcher.find())

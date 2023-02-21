@@ -24,28 +24,36 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.utils.UtilHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * 
- * @author axoeec
+ * Parser for Gentoo Linux Bug Advisory
+ * @author axoeec, aep7128
  *
+ * TODO: ADD GENTOO SECURITY IN PRODUCTS
+ * TODO: use this for extracting patches from this source
+ * TODO: Update model to add Patches to composite Vulnerabilities
  */
-public class BugsGentooParser extends AbstractCveParser implements CveParserInterface {
+public class BugsGentooParser extends AbstractCveParser  {
 	
 	public BugsGentooParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 
-
+	/**
+	 * Parse Method for Gentoo Bug Pages
+	 * (ex. https://bugs.gentoo.org/600624)
+	 * (ex. https://bugs.gentoo.org/890865)
+	 * @param sSourceURL
+	 * @param sCVEContentHTML
+	 * @return
+	 */
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulns = new ArrayList<>();
@@ -55,32 +63,79 @@ public class BugsGentooParser extends AbstractCveParser implements CveParserInte
 		if (uniqueCves.size() == 0)
 			return vulns;
 
-		String description = null;
-		String publishDate = null;
-		String lastModified = UtilHelper.longDateFormat.format(new Date());
+		String publishDate;
+		String lastModified;
 
 		Document doc = Jsoup.parse(sCVEContentHTML);
 
+		publishDate = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
+				getElementsByTag("table").get(0).getElementsByTag("tr").get(0).
+				getElementsByTag("td").get(0).text().substring(0, 20);
+
+		lastModified = Objects.requireNonNull(doc.getElementById("bz_show_bug_column_2")).
+				getElementsByTag("table").get(0).getElementsByTag("tr").get(1).
+				getElementsByTag("td").get(0).text().substring(0, 20);
+
+		String[] cves = Objects.requireNonNull(doc.getElementById("alias_nonedit_display")).text().split(",");
 		Elements descs = doc.getElementsByClass("bz_first_comment");
+
 		if (descs.size() == 1) {
-			Document descDoc = Jsoup.parse(descs.get(0).html());
-			Elements descText = descDoc.getElementsByClass("bz_comment_text");
-			description = descText.text();
 
-			Elements dateText = descDoc.getElementsByClass("bz_comment_time");
-			DateFormat currentFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			publishDate = dateText.text();
-			try {
-				publishDate = UtilHelper.longDateFormat.format(currentFormat.parse(publishDate));
-			} catch (ParseException e) {
+			Pattern pattern;
+			Matcher matcher;
+			ArrayList<String> textItems = new ArrayList<>();
+
+			if (cves.length == 1) {
+				textItems.add(Jsoup.parse(descs.get(0).getElementsByClass("bz_comment_text").get(0).html()).text());
+				pattern = Pattern.compile(regexCVEID);
+				matcher = pattern.matcher(cves[0]);
+
+				if (matcher.find()) {
+					vulns.add(new CompositeVulnerability(0, sSourceURL, cves[0], null, publishDate, lastModified, textItems.get(0), sourceDomainName));
+				}
+
+			} else {
+				textItems.addAll(Arrays.asList(Jsoup.parse(descs.get(0).html()).text().split("\n")));
+				for (int i=0; i<textItems.size(); i++) {
+
+					pattern = Pattern.compile(regexCVEID);
+					matcher = pattern.matcher(textItems.get(i));
+					int k = 0;
+
+					if (matcher.find()) {
+						String cveId = matcher.group();
+						String commentDescription = null;
+						String patch = null;
+
+						i += 2;
+
+						if (textItems.get(i).length() >= 20) {
+							commentDescription = textItems.get(i).trim();
+						} else {
+							k += 2;
+						}
+
+						/*
+						For Patches
+
+						pattern = Pattern.compile("(Patch:|patch:) ");
+						matcher = pattern.matcher(textItems[++i]);
+
+						if (matcher.matches()) {
+							patch = textItems[i].replace("Patch:", "").replace("patch:", "");
+						} else {
+							k++;
+						}*/
+
+						vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, lastModified, commentDescription, sourceDomainName));
+					}
+					i -= k;
+				}
 			}
+
 		}
 
-		for (String cve : uniqueCves) {
-			vulns.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishDate, lastModified, description, sourceDomainName));
-		}
 
-		// TODO ADD PRODUCTS
 
 		return vulns;
 	}

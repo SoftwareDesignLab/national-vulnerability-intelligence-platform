@@ -33,7 +33,7 @@ import java.util.List;
  * @author axoeec
  *
  */
-public class NullParser extends AbstractCveParser implements CveParserInterface {
+public class NullParser extends AbstractCveParser  {
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		return new ArrayList<>();

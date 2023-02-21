@@ -23,18 +23,20 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import com.google.gson.Gson;
-import edu.rit.se.nvip.db.DatabaseHelper;
 import edu.rit.se.nvip.model.AffectedRelease;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.model.Product;
 import edu.rit.se.nvip.productnameextractor.CpeLookUp;
 import edu.rit.se.nvip.utils.UtilHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,8 +46,11 @@ import java.util.regex.Pattern;
  * 
  * @author axoeec
  *
+ * Ex: https://www.tenable.com/cve/CVE-2022-21953
  */
-public class TenableCveParser extends AbstractCveParser implements CveParserInterface {
+public class TenableCveParser extends AbstractCveParser  {
+
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public TenableCveParser(String domainName) {
 		sourceDomainName = domainName;
@@ -59,7 +64,6 @@ public class TenableCveParser extends AbstractCveParser implements CveParserInte
 
 		List<CompositeVulnerability> vulns = new ArrayList<>();
 		String description = "";
-		String cve = null;
 
 		Document doc = Jsoup.parse(sCVEContentHTML);
 		String allText = doc.text();
@@ -92,6 +96,14 @@ public class TenableCveParser extends AbstractCveParser implements CveParserInte
 			} else if (s.text().trim().equals("Updated:")) {
 				updateDate = s.parent().child(1).text();
 			}
+		}
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		try {
+			publishDate = UtilHelper.longDateFormat.format(dateFormat.parse(publishDate));
+		} catch (ParseException e) {
+			logger.error("Failed to parse date on {}, format not known!", sSourceURL);
+			publishDate = null;
 		}
 
 		Set<String> cpes = new HashSet<>();
@@ -140,7 +152,7 @@ public class TenableCveParser extends AbstractCveParser implements CveParserInte
 	private List<CompositeVulnerability> getCVEsFromSummaryPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> list = new ArrayList<>();
 		String description = "";
-		String cve = null;
+		String cve;
 
 		Document doc = Jsoup.parse(sCVEContentHTML);
 		List<Element> tdList = doc.getElementsByClass("cve-id");

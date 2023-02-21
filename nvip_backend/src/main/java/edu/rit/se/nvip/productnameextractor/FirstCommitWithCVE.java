@@ -24,19 +24,14 @@
 
 package edu.rit.se.nvip.productnameextractor;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 
 import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.PropertyLoader;
@@ -51,7 +46,7 @@ import edu.rit.se.nvip.utils.UtilHelper;
 
 public class FirstCommitWithCVE {
 	
-	static private Logger logger = LogManager.getLogger(UtilHelper.class);
+	static private final Logger logger = LogManager.getLogger(UtilHelper.class);
 	private HashMap<String, RepoFullNameWithTags> reposDataset;
 
 	/** singleton instance of class */
@@ -98,11 +93,11 @@ public class FirstCommitWithCVE {
 	 * Looks for the repository and version (tag)
 	 * 
 	 * @param cpeItem String, cpeID
-	 * @return FirstCommitSearchResult information an=bout the repository and tag associated with the version, or NULL if did not find anything
+	 * @return information an=bout the repository and tag associated with the version, or NULL if did not find anything
 	 */
 	
 	public FirstCommitSearchResult getFirstCommit(String cpeItem) {
-		FirstCommitSearchResult result = null;
+		FirstCommitSearchResult result;
 		
 		// parse CPE id to elements
 		String[] cpeIDelements = cpeItem.split(":");
@@ -118,8 +113,8 @@ public class FirstCommitWithCVE {
 			return null;
 		}
 		
-		result = new FirstCommitSearchResult(repository.getUrl(), repository.getFullName(), repository.getCpeName(), repository.getCpeID(), repository.getHtmlUrl());
-		result.setExactMatch(repository.isExactMatch());
+		result = new FirstCommitSearchResult();
+		result.setExactMatch();
 		
 		if(repository.getTags()!=null && repository.getTags().size()>0 && !version.equalsIgnoreCase("*")) {
 			for (RepoTag tag:repository.getTags()) {
@@ -135,8 +130,8 @@ public class FirstCommitWithCVE {
 	/**
 	 * Saves HashMap of the dataset to a file
 	 * 
-	 * @param String destination filename
-	 * @param HashMap<String, RepoFullNameWithTags> dataset
+	 * @param openSourceBase destination filename
+	 * @param mapfilename dataset
 	 */
 	static void saveMapWithTags(String mapfilename, HashMap<String, RepoFullNameWithTags> openSourceBase) {
 		FileOutputStream fos;
@@ -153,8 +148,8 @@ public class FirstCommitWithCVE {
 	/**
 	 * Loads HashMap dataset from a file
 	 * 
-	 * @param String destination filename
-	 * @return HashMap<String, RepoFullNameWithTags> dataset
+	 * @param mapfilename destination filename
+	 * @return HashMap<String, > dataset
 	 */
 	public static HashMap<String, RepoFullNameWithTags> loadRepoWithTagsSerialization(String mapfilename) {
 
@@ -172,40 +167,5 @@ public class FirstCommitWithCVE {
 
 		return repoMap;
 	}
-	
-	/**
-	 * Converts JSON file to HashMap dataset and saves it to a file
-	 * 
-	 * @param String source filename (JSON)
-	 * @param String destination filename
-	 */
-	public static void convertJSONtoDataset(String jsonPath, String datasetPath) {
-		File f = new File(jsonPath);
-		JSONObject json = null;
-        if (f.exists()){
-            InputStream is;
-			try {
-				is = new FileInputStream(jsonPath);
-				String jsonTxt = IOUtils.toString(is, "UTF-8");
-				json = new JSONObject(jsonTxt); 
-			} catch (Exception e) {
-				logger.error(e.toString());
-			}
-        }
-        
-        if (json==null) {
-        	logger.error("Repositories JSON is NULL! JSON file path is {}", jsonPath);
-        	return;
-        }
-        
-        HashMap<String, RepoFullNameWithTags> repoMap = new HashMap<String, RepoFullNameWithTags>();
-        
-        Iterator<String> keys = json.keys();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            repoMap.put(key, new RepoFullNameWithTags(json.getJSONObject(key)));
-        }
-        
-        saveMapWithTags(datasetPath, repoMap);
-	}
+
 }

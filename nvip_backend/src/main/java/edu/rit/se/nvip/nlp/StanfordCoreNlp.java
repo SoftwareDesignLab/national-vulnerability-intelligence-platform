@@ -43,7 +43,7 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
  */
 public class StanfordCoreNlp {
 	static Logger logger = LogManager.getLogger(StanfordCoreNlp.class);
-	StanfordCoreNLP pipeline = null;
+	StanfordCoreNLP pipeline;
 
 	/**
 	 * initialize StanfordCoreNLP pipeline
@@ -53,7 +53,6 @@ public class StanfordCoreNlp {
 		Properties props = new Properties();
 		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
 		props.setProperty("ner.useSUTime", "false");
-		// props.setProperty("ner.rulesOnly", "true");
 		props.setProperty("ner.applyNumericClassifiers", "false");
 
 		// set up pipeline once in the Constructor!

@@ -24,27 +24,8 @@
 package edu.rit.se.nvip.utils;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import edu.rit.se.nvip.model.NvipConstants;
-import edu.rit.se.nvip.model.Product;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * 
@@ -83,7 +64,7 @@ public class PropertyLoader {
 			propertiesNVIP.load(inputStream);
 			logger.info("Loaded {} parameters from .properties file!", propertiesNVIP.size());
 		} catch (IOException e) {
-			System.err.println("Error! Could not load parameters from the config file! " + e.toString());
+			System.err.println("Error! Could not load parameters from the config file! " + e);
 			System.exit(1);
 		} finally {
 			try {

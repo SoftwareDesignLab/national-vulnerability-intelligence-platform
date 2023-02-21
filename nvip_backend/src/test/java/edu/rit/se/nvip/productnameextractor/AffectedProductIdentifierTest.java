@@ -53,7 +53,7 @@ public class AffectedProductIdentifierTest {
 		vulnList.add(v);
 
 		AffectedProductIdentifier affectedProductIdentifier = new AffectedProductIdentifier(vulnList);
-		int count = affectedProductIdentifier.identifyAffectedReleases(vulnList, true);
+		int count = affectedProductIdentifier.identifyAffectedReleases(vulnList);
 
 		assertTrue((count > 0));
 

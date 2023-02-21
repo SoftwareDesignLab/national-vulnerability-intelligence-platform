@@ -638,8 +638,7 @@ public class DatabaseHelper {
 						pstmt.setString(4, vuln.getPatch());
 						pstmt.setString(5, vuln.getPublishDate());
 
-						pstmt.setString(6, vuln.getLastModifiedDate()); // during insert create date is last modified
-																		// date
+						pstmt.setString(6, vuln.getLastModifiedDate()); // during insert create date is last modified date
 						pstmt.setString(7, vuln.getLastModifiedDate());
 						pstmt.setString(8, vuln.getFixDate());
 						/**
@@ -722,11 +721,7 @@ public class DatabaseHelper {
 			pstmt.setString(2, vuln.getPlatform());
 			pstmt.setString(3, vuln.getPatch());
 			pstmt.setString(4, vuln.getPublishDate());
-			/**
-			 * Bug fix: do not reset create date during update! Update last modified date
-			 * ONLY!
-			 */
-			// pstmt.setString(5, vuln.getCreateDate());
+
 			pstmt.setString(5, vuln.getLastModifiedDate());
 			pstmt.setString(6, vuln.getFixDate());
 			pstmt.setString(7, vuln.getCveId()); // WHERE clause in SQL statement
