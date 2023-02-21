@@ -1,0 +1,17 @@
+<div class="nvip-chart-container">
+  <ngx-charts-bar-vertical
+    [scheme]="colorScheme"
+    [results]="data"
+    [gradient]="options.gradient"
+    [xAxis]="options.showXAxis"
+    [yAxis]="options.showYAxis"
+    [legend]="options.showLegend"
+    [showXAxisLabel]="options.showXAxisLabel"
+    [showYAxisLabel]="options.showYAxisLabel"
+    [roundEdges]="options.roundEdges"
+    (select)="onSelect($event)"
+    (activate)="onActivate($event)"
+    (deactivate)="onDeactivate($event)"
+  >
+  </ngx-charts-bar-vertical>
+</div>

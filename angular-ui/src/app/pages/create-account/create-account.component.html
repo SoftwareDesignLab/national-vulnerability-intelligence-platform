@@ -1,0 +1,138 @@
+<div
+  id="nvipContent"
+  class="nvip-content-container nvip-login-container col-12"
+  ng-controller="CreateAccountController as CrtAccntCtrl"
+>
+  <div class="create-account-panel">
+    <div class="login-form-header col-11" style="margin-left: 0.5em">
+      <p style="margin: auto">
+        Create NVIP Account
+        <a href="#\login" style="color: black">
+          <fa-icon
+            [icon]="faTimes"
+            aria-hidden="true"
+            [ngStyle]="{ float: 'right' }"
+          ></fa-icon>
+        </a>
+      </p>
+      <p id="registrationMessage" class="registration-message">
+        Passwords Don't Match
+      </p>
+    </div>
+    <form
+      id="regForm"
+      class="registration-form col-11"
+      #form="ngForm"
+      name="form"
+      (ngSubmit)="createAccount(form)"
+      role="form"
+      autocomplete="on"
+    >
+      <div class="form-group col-12">
+        <label for="username">Username</label>
+        <fa-icon [icon]="faKey"></fa-icon>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          class="form-control"
+          [(ngModel)]="credentials.username"
+          required
+        />
+        <span
+          *ngIf="form.value.username == ''"
+          class="help-block"
+          >Username is required</span
+        >
+      </div>
+      <div class="form-group col-12">
+        <label for="password">Password</label>
+        <fa-icon [icon]="faLock"></fa-icon>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="form-control"
+          [(ngModel)]="credentials.password"
+          required
+        />
+        <span
+        *ngIf="form.value.password == ''"
+          class="help-block"
+          >Password is required</span
+        >
+      </div>
+      <div class="form-group col-12">
+        <label for="password">Repeat Password</label>
+        <fa-icon [icon]="faLock"></fa-icon>
+        <input
+          type="password"
+          name="passwordReapeat"
+          id="passwordRepeat"
+          class="form-control"
+          [(ngModel)]="credentials.repeatPassword"
+          required
+        />
+        <span
+        *ngIf="form.value.password !== form.value.repeatPassword"
+          class="help-block"
+          >Passwords should match</span
+        >
+      </div>
+      <div class="form-group col-12">
+        <label for="fname">First name:</label>
+        <input
+          class="form-control"
+          type="text"
+          id="fname"
+          name="fname"
+          [(ngModel)]="credentials.fname"
+          required
+        />
+      </div>
+      <div class="form-group col-12">
+        <label for="lname">Last name:</label>
+        <input
+          class="form-control"
+          type="text"
+          id="lname"
+          name="lname"
+          [(ngModel)]="credentials.lname"
+          required
+        />
+      </div>
+      <div class="form-group col-12">
+        <label for="email">Email:</label>
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="credentials.email"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <br />
+      <div class="form-actions col-12">
+        <button
+          style="
+            position: absolute;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+          "
+          class="login-submit-button btn btn-danger"
+          type="submit"
+          [disabled]="form.invalid || dataLoading"
+        >
+          Create
+        </button>
+        <img
+          *ngIf="dataLoading"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />
+      </div>
+    </form>
+  </div>
+</div>

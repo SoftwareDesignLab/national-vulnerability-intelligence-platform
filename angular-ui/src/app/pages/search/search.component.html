@@ -1,0 +1,161 @@
+<div id="nvipContent" class="nvip-content-container col-12">
+    <div class="nvip-loading-bar col-12">
+        <div class="nvip-loading-bar-text-ctn">
+            <fa-icon [icon]="faSpinner" animation="spin" size="3x" [fixedWidth]="true" [ngStyle]="{ color: 'white'}"></fa-icon>
+            <span>Loading search results...</span>
+        </div>
+    </div>
+    <div class="nvip-search-result-header col-12">
+        <p>Search {{showForm ? "Form" : "Results"}}</p>
+    </div>
+    <div class="nvip-search-nav-btn-ctn col-12" [hidden]="!searchSuccess && searchResults.length == 0">
+        <button class="nvip-button nvip-search-nav-form-btn" (click)="toggleSearchForm()" [disabled]="showForm">
+            <fa-icon [icon]="faAngleDoubleLeft" aria-hidden="true"></fa-icon>
+            Back to Form
+        </button>
+        <button class="nvip-button nvip-search-nav-results-btn" (click)="toggleSearchForm()" [disabled]="!showForm">
+            Go to Results
+            <fa-icon [icon]="faAngleDoubleRight" aria-hidden="true"></fa-icon>
+        </button>
+    </div>
+    <div class="nvip-search-form-ctn" [hidden]="!showForm">
+        <form novalidate class="nvip-search-form col-12" #form="ngForm" (ngSubmit)="searchVulns($event, form)">
+            <div class="nvip-form-horizontal-block">
+                <div class="nvip-form-field col-6">
+                    <p id="searchKeyWordError" class="search-keyword-error">Please enter either a valid keyword or a CVE ID! <br>(Keyword must have more than 2 characters)</p>
+                    <label for="keyword">Enter a keyword</label>
+                    <input type="text" name="keyword" id="keyword" [(ngModel)]="search.keyword" ng-required ="true"/>
+                    <!-- <span ng-show="myForm.keyword.$invalid" class="req">This is a required field.</span> -->
+                </div>
+                <div class="nvip-form-field col-6">
+                    <label for="cve_id">...Or enter a CVE-ID</label>
+                    <input type="text" name="cve_id" id="cve_id" [(ngModel)]="search.cve_id" ng-required ="true"/>
+                    <!-- <span ng-show="myForm.keyword.$invalid" class="req">This is a required field.</span> -->
+                </div>
+            </div>
+            <div class="nvip-form-horizontal-block">
+                <div class="nvip-form-field col-10">
+                    <p id="searchLimitError" class="search-limit-error">Please enter a limit less than or equal to 100</p>
+                    <label for="limit">Maximum Number of Results (Keep Blank For No Limit)</label>
+                    <input type="number" name="limit" id="limit" [(ngModel)]="search.limitCount" ng-required ="false"/>
+                    <!-- <span ng-show="myForm.keyword.$invalid" class="req">This is a required field.</span> -->
+                </div>
+            </div>
+            <div class="nvip-form-horizontal-block">
+                <div class="nvip-form-field col-6">
+                    <label for="startDate">Start Date</label>
+                    <input [ngModel]="search.startDate | date:'yyyy-MM-dd'" (ngModelChange)="search.startDate = $event" type="date" name="startDate"/>
+                    <!-- <span class="error" ng-show="myForm.input.$error.required">Required!</span> -->
+                </div>	
+                <div class="nvip-form-field col-6">
+                    <label for="endDate">End Date</label>
+                    <input [ngModel]="search.endDate | date:'yyyy-MM-dd'" (ngModelChange)="search.endDate = $event" type="date" name="startDate"/>
+                    <!-- <span class="error" ng-show="myForm.input.$error.required"> Required!</span> -->
+                </div>
+            </div>
+            <div class="nvip-form-horizontal-block">
+                <div class="nvip-form-field col-6">
+                    <label for="startDate">CPE Product</label>
+                    <input type="text" name="product" id="product" [(ngModel)]="search.product" />
+                </div>
+            </div>
+            <div class="nvip-form-dropdown-field col-12" (click)="toggleContent($event, 'CVSS')">
+                <div class="nvip-form-dropdown-left col-11">
+                    <label>CVSS Scores</label>
+                </div>
+                <div class="nvip-form-dropdown-right col-1">
+                    <fa-icon [icon]="faAngleLeft" transform="rotate-{{rotationAmountCVSS}}" class="nvip-form-dropdown-caret" aria-hidden="true"></fa-icon>
+                </div>
+            </div>
+            <div class="nvip-form-dropdown-content col-11">
+                <div *ngFor="let cvssScore of cvssScores" class="nvip-form-field col-4">
+                    <div class="nvip-form-field-block col-11">
+                        <label for="{{cvssScore}}">{{cvssScore}}</label>
+                        <input type="checkbox" (change)="onCVSSChange($event, cvssScore)" />		
+                    </div>
+                </div>
+            </div>
+            <div class="nvip-form-dropdown-field col-12" (click)="toggleContent($event, 'VDO')">
+                <div class="nvip-form-dropdown-left col-11">
+                    <label>VDO</label>
+                </div>
+                <div class="nvip-form-dropdown-right col-1">
+                    <fa-icon [icon]="faAngleLeft" transform="rotate-{{rotationAmountVDO}}" class="nvip-form-dropdown-caret" aria-hidden="true"></fa-icon>
+                </div>
+            </div>
+            <div class="nvip-form-dropdown-content col-11">
+                <div class="nvip-form-dropdown-ctn col-4" *ngFor="let vdoNounGroupLabel of vdoNounGroupLabels">
+                    <search-dropdown 
+                        [label]="vdoNounGroupLabel"
+                        [entityLabels]="vdoEntityLabels[vdoNounGroupLabel]"
+                        (selected)="updateSelectedLabels($event)">
+                    </search-dropdown>
+                    
+                </div>
+            </div>
+            <!-- FORM PARAMETER FOR IF THE VULNERABILITY IS IN MITRE OR NVD, STILL IN WORKS  -->
+            <!--<div class="nvip-form-dropdown-field col-12" style="border-bottom-width: 2px;" ng-click="toggleContent($event)">
+                <div class="nvip-form-dropdown-left col-11">
+                    <label>Vulnerability Sites</label>
+                </div>
+                <div class="nvip-form-dropdown-right col-1">
+                    <fa-icon [icon]="faAngleLeft" class="nvip-form-dropdown-caret" aria-hidden="true"></fa-icon>
+                </div>
+            </div>
+            <div class="nvip-form-dropdown-content col-11">
+                <div ng-repeat="siteLabel in searchInfo.siteLabels" class="nvip-form-field col-4">
+                    <div class="nvip-form-field-block col-11">
+                        <label for="{{siteLabel}}">{{siteLabel}}</label>
+                        <input type="checkbox" ng-class="sites[$index]" checked/>		
+                    </div>
+                </div>
+            </div>-->				
+             <div class="nvip-form-dropdown-field col-12" style="border-bottom-width: 2px;" ng-click="toggleContent($event)">
+            
+            </div>
+            <div class="nvip-form-btn-ctn col-12">
+                <button class="nvip-button nvip-form-btn col-3"><span>Search</span></button>
+            </div>
+        </form>
+    </div>
+    <div class="nvip-search-result-ctn" [hidden]="showForm">
+        <div class="nvip-search-top-ctn col-12">
+        </div>
+        <div class="nvip-search-page-ctn">
+            <div class="nvip-search-result-count col-12">
+                <p>{{resultTotalCount}} records found</p>
+            </div>
+            <div class="nvip-paging-index col-12">
+                <p>Showing records {{pageRecord[0]}} to {{pageRecord[1]}}</p>
+            </div>
+            <div class="nvip-paging-bar-ctn" [hidden]="searchResults.length <= 10">
+                <div class="nvip-paging-bar" (click)="changePage(0)" [hidden]="currentPage == 0">
+                    <a>First</a>
+                </div>
+                <div class="nvip-paging-bar nvip-next-page" (click)="changePage(currentPage - 1)">
+                    <a>
+                        <fa-icon [icon]="faAngleLeft" size="lg" aria-hidden="true"></fa-icon>
+                    </a>
+                </div>
+                <div class="nvip-paging-bar" *ngFor="let pageIndex of pageBlocks" (click)="changePage(pageIndex)"
+                [ngClass]="{'current-page': pageIndex == currentPage}">
+                    <a>{{pageIndex + 1}}</a>
+                </div>
+                <div class="nvip-paging-bar nvip-next-page" (click)="changePage(currentPage + 1)">
+                    <a>
+                        <fa-icon [icon]="faAngleRight" size="lg" aria-hidden="true"></fa-icon>
+                    </a>
+                </div>
+                <div class="nvip-paging-bar" (click)="changePage(totalPages - 1)" [hidden]="currentPage >= (totalPages - 1)">
+                    <a>Last</a>
+                </div>
+            </div>
+            <div class="nvip-search-result-page col-10">
+                <p class="nvip-cve-panel-empty" [hidden]="searchResults.length > 0">No CVEs identified</p>
+                <div class="nvip-search-result col-12" *ngFor="let vuln of filteredSearchResults; let index = index;" [hidden]="searchResults.length == 0">
+                    <daily-vuln-dropdown [vuln]="vuln" [index]="index" [currentToggle]="currentSelected" (selected)="setCurrentSelected($event)"></daily-vuln-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
