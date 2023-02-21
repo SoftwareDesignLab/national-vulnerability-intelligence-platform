@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"NRJS-b0201ad1e72ae958c47","applicationID":"1096596451","transactionName":"ewsKF0EJVA1WQk5GQ1QKARFSBFENWkQYb0RdFAsRRxUXEltfFg==","queueTime":1,"applicationTime":41,"agent":""}</script>
+<script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={licenseKey:"NRJS-b0201ad1e72ae958c47",applicationID:"1096596451"};;(()=>{var e,t,r={9071:(e,t,r)=>{"use strict";r.d(t,{I:()=>n});var n=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(n=+i[1])},6900:(e,t,r)=>{"use strict";let n;if(r.d(t,{H:()=>i}),r(2374).il){const e=document.createElement("div");e.innerHTML="\x3c!--[if lte IE 6]><div></div><![endif]--\x3e\x3c!--[if lte IE 7]><div></div><![endif]--\x3e\x3c!--[if lte IE 8]><div></div><![endif]--\x3e\x3c!--[if lte IE 9]><div></div><![endif]--\x3e",n=e.getElementsByTagName("div").length}var i;i=4===n?6:3===n?7:2===n?8:1===n?9:0},6562:(e,t,r)=>{"use strict";r.d(t,{P_:()=>h,Mt:()=>v,C5:()=>d,DL:()=>w,OP:()=>B,lF:()=>V,Yu:()=>A,Dg:()=>p,CX:()=>l,GE:()=>y,sU:()=>M});var n={};r.r(n),r.d(n,{agent:()=>O,match:()=>_,version:()=>S});var i=r(6797),o=r(909),a=r(8610);class s{constructor(e,t){try{if(!e||"object"!=typeof e)return(0,a.Z)("New setting a Configurable requires an object as input");if(!t||"object"!=typeof t)return(0,a.Z)("Setting a Configurable requires a model to set its initial properties");Object.assign(this,t),Object.entries(e).forEach((e=>{let[t,r]=e;const n=(0,o.q)(t);n.length&&r&&"object"==typeof r&&n.forEach((e=>{e in r&&((0,a.Z)(`"${e}" is a protected attribute and can not be changed in feature ${t}.  It will have no effect.`),delete r[e])})),this[t]=r}))}catch(e){(0,a.Z)("An error occured while setting a Configurable",e)}}}const c={beacon:i.ce.beacon,errorBeacon:i.ce.errorBeacon,licenseKey:void 0,applicationID:void 0,sa:void 0,queueTime:void 0,applicationTime:void 0,ttGuid:void 0,user:void 0,account:void 0,product:void 0,extra:void 0,jsAttributes:{},userAttributes:void 0,atts:void 0,transactionName:void 0,tNamePlain:void 0},u={};function d(e){if(!e)throw new Error("All info objects require an agent identifier!");if(!u[e])throw new Error(`Info for ${e} was never set`);return u[e]}function l(e,t){if(!e)throw new Error("All info objects require an agent identifier!");u[e]=new s(t,c),(0,i.Qy)(e,u[e],"info")}const f={allow_bfcache:!1,privacy:{cookies_enabled:!0},ajax:{deny_list:void 0,enabled:!0,harvestTimeSeconds:10},distributed_tracing:{enabled:void 0,exclude_newrelic_header:void 0,cors_use_newrelic_header:void 0,cors_use_tracecontext_headers:void 0,allowed_origins:void 0},ssl:void 0,obfuscate:void 0,jserrors:{enabled:!0,harvestTimeSeconds:10},metrics:{enabled:!0,harvestTimeSeconds:10},page_action:{enabled:!0,harvestTimeSeconds:30},page_view_event:{enabled:!0},page_view_timing:{enabled:!0,harvestTimeSeconds:30},session_trace:{enabled:!0,harvestTimeSeconds:10},spa:{enabled:!0,harvestTimeSeconds:10}},g={};function h(e){if(!e)throw new Error("All configuration objects require an agent identifier!");if(!g[e])throw new Error(`Configuration for ${e} was never set`);return g[e]}function p(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");g[e]=new s(t,f),(0,i.Qy)(e,g[e],"config")}function v(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");var r=h(e);if(r){for(var n=t.split("."),i=0;i<n.length-1;i++)if("object"!=typeof(r=r[n[i]]))return;r=r[n[n.length-1]]}return r}const m={accountID:void 0,trustKey:void 0,agentID:void 0,licenseKey:void 0,applicationID:void 0,xpid:void 0},b={};function w(e){if(!e)throw new Error("All loader-config objects require an agent identifier!");if(!b[e])throw new Error(`LoaderConfig for ${e} was never set`);return b[e]}function y(e,t){if(!e)throw new Error("All loader-config objects require an agent identifier!");b[e]=new s(t,m),(0,i.Qy)(e,b[e],"loader_config")}const A=(0,i.mF)().o;var x=r(6900),E=r(2053),O=null,S=null;if(navigator.userAgent){var D=navigator.userAgent,j=D.match(/Version\/(\S+)\s+Safari/);j&&-1===D.indexOf("Chrome")&&-1===D.indexOf("Chromium")&&(O="Safari",S=j[1])}function _(e,t){if(!O)return!1;if(e!==O)return!1;if(!t)return!0;if(!S)return!1;for(var r=S.split("."),n=t.split("."),i=0;i<n.length;i++)if(n[i]!==r[i])return!1;return!0}var k=r(5526),T=r(2374);const P="NRBA_SESSION_ID";function C(){if(!T.il)return null;try{let e;return null===(e=window.sessionStorage.getItem(P))&&(e=(0,k.ky)(16),window.sessionStorage.setItem(P,e)),e}catch(e){return null}}var I=T._A?.XMLHttpRequest,N=I&&I.prototype;const R={};function B(e){if(!e)throw new Error("All runtime objects require an agent identifier!");if(!R[e])throw new Error(`Runtime for ${e} was never set`);return R[e]}function M(e,t){if(!e)throw new Error("All runtime objects require an agent identifier!");var r;R[e]=new s(t,(r=e,{customTransaction:void 0,disabled:!1,features:{},isolatedBacklog:!1,loaderType:void 0,maxBytes:6===x.H?2e3:3e4,offset:(0,E.yf)(),onerror:void 0,origin:""+T._A?.location,ptid:void 0,releaseIds:{},sessionId:1==v(r,"privacy.cookies_enabled")?C():null,xhrWrappable:I&&N&&N.addEventListener&&!/CriOS/.test(navigator.userAgent),userAgent:n})),(0,i.Qy)(e,R[e],"runtime")}function V(e){return function(e){try{const t=d(e);return!!t.licenseKey&&!!t.errorBeacon&&!!t.applicationID}catch(e){return!1}}(e)}},8226:(e,t,r)=>{"use strict";r.d(t,{q:()=>n});const n="1223.PROD"},9557:(e,t,r)=>{"use strict";r.d(t,{w:()=>o});var n=r(8610);const i={agentIdentifier:""};class o{constructor(e){try{if("object"!=typeof e)return(0,n.Z)("shared context requires an object as input");this.sharedContext={},Object.assign(this.sharedContext,i),Object.entries(e).forEach((e=>{let[t,r]=e;Object.keys(i).includes(t)&&(this.sharedContext[t]=r)}))}catch(e){(0,n.Z)("An error occured while setting SharedContext",e)}}}},4329:(e,t,r)=>{"use strict";r.d(t,{L:()=>d,R:()=>c});var n=r(3752),i=r(7022),o=r(4045),a=r(2325);const s={};function c(e,t){const r={staged:!1,priority:a.p[t]||0};u(e),s[e].get(t)||s[e].set(t,r)}function u(e){e&&(s[e]||(s[e]=new Map))}function d(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"feature";if(u(e),!e||!s[e].get(t))return a(t);s[e].get(t).staged=!0;const r=Array.from(s[e]);function a(t){const r=e?n.ee.get(e):n.ee,a=o.X.handlers;if(r.backlog&&a){var s=r.backlog[t],c=a[t];if(c){for(var u=0;s&&u<s.length;++u)l(s[u],c);(0,i.D)(c,(function(e,t){(0,i.D)(t,(function(t,r){r[0].on(e,r[1])}))}))}delete a[t],r.backlog[t]=null,r.emit("drain-"+t,[])}}r.every((e=>{let[t,r]=e;return r.staged}))&&(r.sort(((e,t)=>e[1].priority-t[1].priority)),r.forEach((e=>{let[t]=e;a(t)})))}function l(e,t){var r=e[1];(0,i.D)(t[r],(function(t,r){var n=e[0];if(r[0]===n){var i=r[1],o=e[3],a=e[2];i.apply(o,a)}}))}},3752:(e,t,r)=>{"use strict";r.d(t,{ee:()=>u});var n=r(6797),i=r(3916),o=r(7022),a=r(6562),s="nr@context";let c=(0,n.fP)();var u;function d(){}function l(){return new d}function f(){(u.backlog.api||u.backlog.feature)&&(u.aborted=!0,u.backlog={})}c.ee?u=c.ee:(u=function e(t,r){var n={},c={},g={},h=!1;try{h=16===r.length&&(0,a.OP)(r).isolatedBacklog}catch(e){}var p={on:b,addEventListener:b,removeEventListener:w,emit:m,get:A,listeners:y,context:v,buffer:x,abort:f,aborted:!1,isBuffering:E,debugId:r,backlog:h?{}:t&&"object"==typeof t.backlog?t.backlog:{}};return p;function v(e){return e&&e instanceof d?e:e?(0,i.X)(e,s,l):l()}function m(e,r,n,i,o){if(!1!==o&&(o=!0),!u.aborted||i){t&&o&&t.emit(e,r,n);for(var a=v(n),s=y(e),d=s.length,l=0;l<d;l++)s[l].apply(a,r);var f=O()[c[e]];return f&&f.push([p,e,r,a]),a}}function b(e,t){n[e]=y(e).concat(t)}function w(e,t){var r=n[e];if(r)for(var i=0;i<r.length;i++)r[i]===t&&r.splice(i,1)}function y(e){return n[e]||[]}function A(t){return g[t]=g[t]||e(p,t)}function x(e,t){var r=O();p.aborted||(0,o.D)(e,(function(e,n){t=t||"feature",c[n]=t,t in r||(r[t]=[])}))}function E(e){return!!O()[c[e]]}function O(){return p.backlog}}(void 0,"globalEE"),c.ee=u)},9252:(e,t,r)=>{"use strict";r.d(t,{E:()=>n,p:()=>i});var n=r(3752).ee.get("handle");function i(e,t,r,i,o){o?(o.buffer([e],i),o.emit(e,t,r)):(n.buffer([e],i),n.emit(e,t,r))}},4045:(e,t,r)=>{"use strict";r.d(t,{X:()=>o});var n=r(9252);o.on=a;var i=o.handlers={};function o(e,t,r,o){a(o||n.E,i,e,t,r)}function a(e,t,r,i,o){o||(o="feature"),e||(e=n.E);var a=t[o]=t[o]||{};(a[r]=a[r]||[]).push([e,i])}},8544:(e,t,r)=>{"use strict";r.d(t,{bP:()=>s,iz:()=>c,m$:()=>a});var n=r(2374),i=!1;try{var o=Object.defineProperty({},"passive",{get:function(){i=!0}});n._A?.addEventListener("testPassive",null,o),n._A?.removeEventListener("testPassive",null,o)}catch(e){}function a(e){return i?{passive:!0,capture:!!e}:!!e}function s(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2];window.addEventListener(e,t,a(r))}function c(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2];document.addEventListener(e,t,a(r))}},5526:(e,t,r)=>{"use strict";r.d(t,{Rl:()=>i,ky:()=>o});var n=r(2374);function i(){var e=null,t=0,r=n._A?.crypto||n._A?.msCrypto;function i(){return e?15&e[t++]:16*Math.random()|0}r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var o,a="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",s="",c=0;c<a.length;c++)s+="x"===(o=a[c])?i().toString(16):"y"===o?(o=3&i()|8).toString(16):o;return s}function o(e){var t=null,r=0,n=self.crypto||self.msCrypto;n&&n.getRandomValues&&Uint8Array&&(t=n.getRandomValues(new Uint8Array(31)));for(var i=[],o=0;o<e;o++)i.push(a().toString(16));return i.join("");function a(){return t?15&t[r++]:16*Math.random()|0}}},2053:(e,t,r)=>{"use strict";r.d(t,{nb:()=>c,os:()=>u,yf:()=>s,zO:()=>a});var n=r(7145),i=(new Date).getTime(),o=i;function a(){return n.G&&performance.now?Math.round(performance.now()):(i=Math.max((new Date).getTime(),i))-o}function s(){return i}function c(e){o=e}function u(){return o}},7145:(e,t,r)=>{"use strict";r.d(t,{G:()=>n});const n=void 0!==r(2374)._A?.performance?.timing?.navigationStart},6625:(e,t,r)=>{"use strict";r.d(t,{s:()=>c,v:()=>u});var n=r(8283),i=r(9071),o=r(2053),a=r(7145),s=r(2374);let c=!0;function u(e){var t=function(){if(i.I&&i.I<9)return;if(a.G)return c=!1,s._A?.performance?.timing?.navigationStart}();t&&((0,n.B)(e,"starttime",t),(0,o.nb)(t))}},8283:(e,t,r)=>{"use strict";r.d(t,{B:()=>o,L:()=>a});var n=r(2053),i={};function o(e,t,r){void 0===r&&(r=(0,n.zO)()+(0,n.os)()),i[e]=i[e]||{},i[e][t]=r}function a(e,t,r,n){const o=e.sharedContext.agentIdentifier;var a=i[o]?.[r],s=i[o]?.[n];void 0!==a&&void 0!==s&&e.store("measures",t,{value:s-a})}},9548:(e,t,r)=>{"use strict";r.d(t,{T:()=>i});var n=r(2374);const i={isFileProtocol:function(){let e=Boolean("file:"===(0,n.lW)()?.location?.protocol);e&&(i.supportabilityMetricSent=!0);return e},supportabilityMetricSent:!1}},8610:(e,t,r)=>{"use strict";function n(e,t){console&&console.warn&&"function"==typeof console.warn&&(console.warn(`New Relic: ${e}`),t&&console.warn(t))}r.d(t,{Z:()=>n})},3916:(e,t,r)=>{"use strict";r.d(t,{X:()=>i});var n=Object.prototype.hasOwnProperty;function i(e,t,r){if(n.call(e,t))return e[t];var i=r();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:i,writable:!0,enumerable:!1}),i}catch(e){}return e[t]=i,i}},2374:(e,t,r)=>{"use strict";r.d(t,{_A:()=>o,il:()=>n,lW:()=>a,v6:()=>i});const n=Boolean("undefined"!=typeof window&&window.document),i=Boolean("undefined"!=typeof WorkerGlobalScope&&self.navigator instanceof WorkerNavigator);let o=(()=>{if(n)return window;if(i){if("undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope)return globalThis;if(self instanceof WorkerGlobalScope)return self}throw new Error("New Relic browser agent shutting down due to error: Unable to locate global scope. This is possibly due to code redefining browser global variables like `self` and `window`.")})();function a(){return o}},7022:(e,t,r)=>{"use strict";r.d(t,{D:()=>i});var n=Object.prototype.hasOwnProperty;function i(e,t){var r=[],i="",o=0;for(i in e)n.call(e,i)&&(r[o]=t(i,e[i]),o+=1);return r}},9226:(e,t,r)=>{"use strict";r.d(t,{$c:()=>u,Ng:()=>d,RR:()=>c});var n=r(6562),i=r(9557),o=r(9548),a=r(8610),s={regex:/^file:\/\/(.*)/,replacement:"file://OBFUSCATED"};class c extends i.w{constructor(e){super(e)}shouldObfuscate(){return u(this.sharedContext.agentIdentifier).length>0}obfuscateString(e){if(!e||"string"!=typeof e)return e;for(var t=u(this.sharedContext.agentIdentifier),r=e,n=0;n<t.length;n++){var i=t[n].regex,o=t[n].replacement||"*";r=r.replace(i,o)}return r}}function u(e){var t=[],r=(0,n.Mt)(e,"obfuscate")||[];return t=t.concat(r),o.T.isFileProtocol()&&t.push(s),t}function d(e){for(var t=!1,r=!1,n=0;n<e.length;n++){"regex"in e[n]?"string"!=typeof e[n].regex&&e[n].regex.constructor!==RegExp&&((0,a.Z)('An obfuscation replacement rule contains a "regex" value with an invalid type (must be a string or RegExp)'),r=!0):((0,a.Z)('An obfuscation replacement rule was detected missing a "regex" value.'),r=!0);var i=e[n].replacement;i&&"string"!=typeof i&&((0,a.Z)('An obfuscation replacement rule contains a "replacement" value with an invalid type (must be a string)'),t=!0)}return!t&&!r}},2650:(e,t,r)=>{"use strict";r.d(t,{K:()=>a,b:()=>o});var n=r(8544);function i(){return"undefined"==typeof document||"complete"===document.readyState}function o(e,t){if(i())return e();(0,n.bP)("load",e,t)}function a(e){if(i())return e();(0,n.iz)("DOMContentLoaded",e)}},6797:(e,t,r)=>{"use strict";r.d(t,{EZ:()=>u,Qy:()=>c,ce:()=>o,fP:()=>a,gG:()=>d,mF:()=>s});var n=r(2053),i=r(2374);const o={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net"};function a(){return i._A.NREUM||(i._A.NREUM={}),void 0===i._A.newrelic&&(i._A.newrelic=i._A.NREUM),i._A.NREUM}function s(){let e=a();return e.o||(e.o={ST:i._A.setTimeout,SI:i._A.setImmediate,CT:i._A.clearTimeout,XHR:i._A.XMLHttpRequest,REQ:i._A.Request,EV:i._A.Event,PR:i._A.Promise,MO:i._A.MutationObserver,FETCH:i._A.fetch}),e}function c(e,t,r){let i=a();const o=i.initializedAgents||{},s=o[e]||{};return Object.keys(s).length||(s.initializedAt={ms:(0,n.zO)(),date:new Date}),i.initializedAgents={...o,[e]:{...s,[r]:t}},i}function u(e,t){a()[e]=t}function d(){return function(){let e=a();const t=e.info||{};e.info={beacon:o.beacon,errorBeacon:o.errorBeacon,...t}}(),function(){let e=a();const t=e.init||{};e.init={...t}}(),s(),function(){let e=a();const t=e.loader_config||{};e.loader_config={...t}}(),a()}},6998:(e,t,r)=>{"use strict";r.d(t,{N:()=>i,e:()=>o});var n=r(8544);function i(e){let t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];return void(0,n.iz)("visibilitychange",r);function r(){if(t){if("hidden"!=document.visibilityState)return;e()}e(document.visibilityState)}}function o(){return"hidden"===document.visibilityState?-1:1/0}},6034:(e,t,r)=>{"use strict";r.d(t,{t:()=>n});const n=r(2325).D.metrics},2484:(e,t,r)=>{"use strict";r.d(t,{t:()=>n});const n=r(2325).D.pageViewEvent},6382:(e,t,r)=>{"use strict";r.d(t,{t:()=>n});const n=r(2325).D.pageViewTiming},1509:(e,t,r)=>{"use strict";r.d(t,{W:()=>s});var n=r(6562),i=r(3752),o=r(2384),a=r(6797);class s{constructor(e,t,r){this.agentIdentifier=e,this.aggregator=t,this.ee=i.ee.get(e,(0,n.OP)(this.agentIdentifier).isolatedBacklog),this.featureName=r,this.blocked=!1,this.checkConfiguration()}checkConfiguration(){if(!(0,n.lF)(this.agentIdentifier)){let e={...(0,a.gG)().info?.jsAttributes};try{e={...e,...(0,n.C5)(this.agentIdentifier)?.jsAttributes}}catch(e){}(0,o.j)(this.agentIdentifier,{...(0,a.gG)(),info:{...(0,a.gG)().info,jsAttributes:e}})}}}},2384:(e,t,r)=>{"use strict";r.d(t,{j:()=>w});var n=r(8683),i=r.n(n),o=r(2325),a=r(6562),s=r(9252),c=r(7022),u=r(3752),d=r(2053),l=r(4329),f=r(2650),g=r(2374);function h(e,t,n){n||(0,l.R)(e,"api"),function(e){function t(t){for(var r=arguments.length,n=new Array(r>1?r-1:0),i=1;i<r;i++)n[i-1]=arguments[i];Object.values(e.initializedAgents).forEach((e=>{e.exposed&&e.api[t]&&e.api[t](...n)}))}["setErrorHandler","finished","addToTrace","inlineHit","addRelease","addPageAction","setCurrentRouteName","setPageViewName","setCustomAttribute","interaction","noticeError"].forEach((r=>{e[r]=function(){for(var e=arguments.length,n=new Array(e),i=0;i<e;i++)n[i]=arguments[i];return t(r,...n)}}))}(t);var h=u.ee.get(e),p=h.get("tracer"),v="api-",m="api-ixn-";function b(){}(0,c.D)(["setErrorHandler","finished","addToTrace","inlineHit","addRelease"],(function(e,r){t[r]=y(v,r,!0,"api")})),t.addPageAction=y(v,"addPageAction",!0,o.D.pageAction),t.setCurrentRouteName=y(v,"routeName",!0,o.D.spa),t.setPageViewName=function(t,r){if("string"==typeof t)return"/"!==t.charAt(0)&&(t="/"+t),(0,a.OP)(e).customTransaction=(r||"http://custom.transaction")+t,y(v,"setPageViewName",!0,"api")()},t.setCustomAttribute=function(t,r){const n=(0,a.C5)(e);return(0,a.CX)(e,{...n,jsAttributes:{...n.jsAttributes,[t]:r}}),y(v,"setCustomAttribute",!0,"api")()},t.interaction=function(){return(new b).get()};var w=b.prototype={createTracer:function(e,t){var r={},n=this,i="function"==typeof t;return(0,s.p)("api-ixn-tracer",[(0,d.zO)(),e,r],n,o.D.spa,h),function(){if(p.emit((i?"":"no-")+"fn-start",[(0,d.zO)(),n,i],r),i)try{return t.apply(this,arguments)}catch(e){throw p.emit("fn-err",[arguments,this,"string"==typeof e?new Error(e):e],r),e}finally{p.emit("fn-end",[(0,d.zO)()],r)}}}};function y(e,t,r,n){return function(){return(0,s.p)("record-supportability",["API/"+t+"/called"],void 0,o.D.metrics,h),(0,s.p)(e+t,[(0,d.zO)()].concat(i()(arguments)),r?null:this,n,h),r?void 0:this}}function A(){r.e(692).then(r.bind(r,5692)).then((t=>{let{setAPI:r}=t;r(e),(0,l.L)(e,"api")}))}(0,c.D)("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),(function(e,t){w[t]=y(m,t,void 0,o.D.spa)})),t.noticeError=function(e,t){"string"==typeof e&&(e=new Error(e)),(0,s.p)("record-supportability",["API/noticeError/called"],void 0,o.D.metrics,h),(0,s.p)("err",[e,(0,d.zO)(),!1,t],void 0,o.D.jserrors,h)},g.v6?A():(0,f.b)((()=>A()),!0)}var p=r(6797);const v={stn:o.D.sessionTrace,err:o.D.jserrors,ins:o.D.pageAction,spa:o.D.spa};function m(e,t){var r=u.ee.get(t);e&&"object"==typeof e&&((0,c.D)(e,(function(e,t){if(!t)return(0,s.p)("block-"+e,[],void 0,v[e],r);t&&!b[e]&&((0,s.p)("feat-"+e,[],void 0,v[e],r),b[e]=!0)})),(0,l.L)(t,o.D.pageViewEvent))}const b={};function w(e){let t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=arguments.length>2?arguments[2]:void 0,n=arguments.length>3?arguments[3]:void 0,{init:i,info:o,loader_config:s,runtime:c={loaderType:r},exposed:u=!0}=t;const d=(0,p.gG)();let l={};return o||(i=d.init,o=d.info,s=d.loader_config,l=d),g.v6&&(o.jsAttributes={...o.jsAttributes,isWorker:!0}),(0,a.CX)(e,o),(0,a.Dg)(e,i||{}),(0,a.GE)(e,s||{}),(0,a.sU)(e,c),h(e,l,n),(0,p.Qy)(e,d,"api"),(0,p.Qy)(e,u,"exposed"),g.v6||((0,p.EZ)("activatedFeatures",b),(0,p.EZ)("setToken",(t=>m(t,e)))),l}},909:(e,t,r)=>{"use strict";r.d(t,{Z:()=>i,q:()=>o});var n=r(2325);function i(e){switch(e){case n.D.ajax:return[n.D.jserrors];case n.D.sessionTrace:return[n.D.ajax,n.D.pageViewEvent];case n.D.pageViewTiming:return[n.D.pageViewEvent];default:return[]}}function o(e){return e===n.D.jserrors?[]:["auto"]}},2325:(e,t,r)=>{"use strict";r.d(t,{D:()=>n,p:()=>i});const n={ajax:"ajax",jserrors:"jserrors",metrics:"metrics",pageAction:"page_action",pageViewEvent:"page_view_event",pageViewTiming:"page_view_timing",sessionTrace:"session_trace",spa:"spa"},i={[n.pageViewEvent]:1,[n.pageViewTiming]:2,[n.metrics]:3,[n.jserrors]:4,[n.ajax]:5,[n.sessionTrace]:6,[n.pageAction]:7,[n.spa]:8}},8683:e=>{e.exports=function(e,t,r){t||(t=0),void 0===r&&(r=e?e.length:0);for(var n=-1,i=r-t||0,o=Array(i<0?0:i);++n<i;)o[n]=e[t+n];return o}},4992:(e,t,r)=>{var n={"./ajax/aggregate":[960,779,960],"./jserrors/aggregate":[6112,779,112],"./metrics/aggregate":[4325,779,325],"./page_action/aggregate":[6817,779,817],"./page_view_event/aggregate":[4823,779,823],"./page_view_timing/aggregate":[8785,779,785],"./session_trace/aggregate":[1307,779,307],"./spa/aggregate":[9378,779,378]};function i(e){if(!r.o(n,e))return Promise.resolve().then((()=>{var t=new Error("Cannot find module '"+e+"'");throw t.code="MODULE_NOT_FOUND",t}));var t=n[e],i=t[0];return Promise.all(t.slice(1).map(r.e)).then((()=>r(i)))}i.keys=()=>Object.keys(n),i.id=4992,e.exports=i}},n={};function i(e){var t=n[e];if(void 0!==t)return t.exports;var o=n[e]={exports:{}};return r[e](o,o.exports,i),o.exports}i.m=r,i.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return i.d(t,{a:t}),t},i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.f={},i.e=e=>Promise.all(Object.keys(i.f).reduce(((t,r)=>(i.f[r](e,t),t)),[])),i.u=e=>e+"."+i.h().slice(0,8)+"-1223.js",i.h=()=>"215647de1097144af948",i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),e={},t="NRBA:",i.l=(r,n,o,a)=>{if(e[r])e[r].push(n);else{var s,c;if(void 0!==o)for(var u=document.getElementsByTagName("script"),d=0;d<u.length;d++){var l=u[d];if(l.getAttribute("src")==r||l.getAttribute("data-webpack")==t+o){s=l;break}}s||(c=!0,(s=document.createElement("script")).charset="utf-8",s.timeout=120,i.nc&&s.setAttribute("nonce",i.nc),s.setAttribute("data-webpack",t+o),s.src=r),e[r]=[n];var f=(t,n)=>{s.onerror=s.onload=null,clearTimeout(g);var i=e[r];if(delete e[r],s.parentNode&&s.parentNode.removeChild(s),i&&i.forEach((e=>e(n))),t)return t(n)},g=setTimeout(f.bind(null,void 0,{type:"timeout",target:s}),12e4);s.onerror=f.bind(null,s.onerror),s.onload=f.bind(null,s.onload),c&&document.head.appendChild(s)}},i.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.p="https://js-agent.newrelic.com/",(()=>{var e={55:0,308:0};i.f.j=(t,r)=>{var n=i.o(e,t)?e[t]:void 0;if(0!==n)if(n)r.push(n[2]);else{var o=new Promise(((r,i)=>n=e[t]=[r,i]));r.push(n[2]=o);var a=i.p+i.u(t),s=new Error;i.l(a,(r=>{if(i.o(e,t)&&(0!==(n=e[t])&&(e[t]=void 0),n)){var o=r&&("load"===r.type?"missing":r.type),a=r&&r.target&&r.target.src;s.message="Loading chunk "+t+" failed.\n("+o+": "+a+")",s.name="ChunkLoadError",s.type=o,s.request=a,n[1](s)}}),"chunk-"+t,t)}};var t=(t,r)=>{var n,o,[a,s,c]=r,u=0;if(a.some((t=>0!==e[t]))){for(n in s)i.o(s,n)&&(i.m[n]=s[n]);if(c)c(i)}for(t&&t(r);u<a.length;u++)o=a[u],i.o(e,o)&&e[o]&&e[o][0](),e[o]=0},r=window.webpackChunkNRBA=window.webpackChunkNRBA||[];r.forEach(t.bind(null,0)),r.push=t.bind(null,r.push.bind(r))})();var o={};(()=>{"use strict";i.r(o);var e=i(2325),t=i(6562);const r=Object.values(e.D);function n(e){const n={};return r.forEach((r=>{n[r]=function(e,r){return!1!==(0,t.Mt)(r,`${e}.enabled`)}(r,e)})),n}var a=i(2384),s=i(909),c=i(9557),u=i(7022);class d extends c.w{constructor(e){super(e),this.aggregatedData={}}store(e,t,r,n,i){var o=this.getBucket(e,t,r,i);return o.metrics=function(e,t){t||(t={count:0});return t.count+=1,(0,u.D)(e,(function(e,r){t[e]=l(r,t[e])})),t}(n,o.metrics),o}merge(e,t,r,n,i){var o=this.getBucket(e,t,n,i);if(o.metrics){var a=o.metrics;a.count+=r.count,(0,u.D)(r,(function(e,t){if("count"!==e){var n=a[e],i=r[e];i&&!i.c?a[e]=l(i.t,n):a[e]=function(e,t){if(!t)return e;t.c||(t=f(t.t));return t.min=Math.min(e.min,t.min),t.max=Math.max(e.max,t.max),t.t+=e.t,t.sos+=e.sos,t.c+=e.c,t}(i,a[e])}}))}else o.metrics=r}storeMetric(e,t,r,n){var i=this.getBucket(e,t,r);return i.stats=l(n,i.stats),i}getBucket(e,t,r,n){this.aggregatedData[e]||(this.aggregatedData[e]={});var i=this.aggregatedData[e][t];return i||(i=this.aggregatedData[e][t]={params:r||{}},n&&(i.custom=n)),i}get(e,t){return t?this.aggregatedData[e]&&this.aggregatedData[e][t]:this.aggregatedData[e]}take(e){for(var t={},r="",n=!1,i=0;i<e.length;i++)t[r=e[i]]=g(this.aggregatedData[r]),t[r].length&&(n=!0),delete this.aggregatedData[r];return n?t:null}}function l(e,t){return null==e?function(e){e?e.c++:e={c:1};return e}(t):t?(t.c||(t=f(t.t)),t.c+=1,t.t+=e,t.sos+=e*e,e>t.max&&(t.max=e),e<t.min&&(t.min=e),t):{t:e}}function f(e){return{t:e,min:e,max:e,sos:e*e,c:1}}function g(e){return"object"!=typeof e?[]:(0,u.D)(e,h)}function h(e,t){return t}var p=i(6797),v=i(5526),m=i(8610);var b=i(9252),w=i(2053),y=i(8283),A=i(6625),x=i(4329),E=i(1509),O=i(2650),S=i(2374);class D extends E.W{constructor(e,t,r){let n=!(arguments.length>3&&void 0!==arguments[3])||arguments[3];super(e,t,r),this.completed=new Promise(((e,t)=>{this.resolve=e,this.reject=t})),this.hasAggregator=!1,this.auto=n,n&&(0,x.R)(e,r)}importAggregator(){try{if(this.hasAggregator||!this.auto)return;this.hasAggregator=!0;const e=async()=>{try{const{Aggregate:e}=await i(4992)(`./${this.featureName}/aggregate`);new e(this.agentIdentifier,this.aggregator),this.resolve()}catch(e){(0,m.Z)(`Failed to import aggregator class for ${this.featureName}`,e)}};S.v6?e():(0,O.b)((()=>e()),!0)}catch(e){this.reject(e)}}}var j,_,k,T=i(2484);class P extends D{constructor(e,t){let r=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,T.t,r),S.il&&((0,A.v)(e),(0,y.B)(e,"firstbyte",(0,w.yf)()),(0,O.K)((()=>this.measureDomContentLoaded())),(0,O.b)((()=>this.measureWindowLoaded()),!0),this.importAggregator())}measureWindowLoaded(){var t=(0,w.zO)();(0,y.B)(this.agentIdentifier,"onload",t+(0,w.os)()),(0,b.p)("timing",["load",t],void 0,e.D.pageViewTiming,this.ee)}measureDomContentLoaded(){(0,y.B)(this.agentIdentifier,"domContent",(0,w.zO)()+(0,w.os)())}}j=P,_="featureName",k=T.t,_ in j?Object.defineProperty(j,_,{value:k,enumerable:!0,configurable:!0,writable:!0}):j[_]=k;var C=i(6998),I=i(8544),N=i(6382);class R extends D{constructor(t,r){var n;let i=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];if(super(t,r,N.t,i),n=this,S.il){if(this.pageHiddenTime=(0,C.e)(),this.performanceObserver,this.lcpPerformanceObserver,this.clsPerformanceObserver,this.fiRecorded=!1,"PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){this.performanceObserver=new PerformanceObserver((function(){return n.perfObserver(...arguments)}));try{this.performanceObserver.observe({entryTypes:["paint"]})}catch(e){}this.lcpPerformanceObserver=new PerformanceObserver((function(){return n.lcpObserver(...arguments)}));try{this.lcpPerformanceObserver.observe({entryTypes:["largest-contentful-paint"]})}catch(e){}this.clsPerformanceObserver=new PerformanceObserver((function(){return n.clsObserver(...arguments)}));try{this.clsPerformanceObserver.observe({type:"layout-shift",buffered:!0})}catch(e){}}this.fiRecorded=!1;["click","keydown","mousedown","pointerdown","touchstart"].forEach((e=>{(0,I.iz)(e,(function(){return n.captureInteraction(...arguments)}))})),(0,C.N)((()=>{this.pageHiddenTime=(0,w.zO)(),(0,b.p)("docHidden",[this.pageHiddenTime],void 0,e.D.pageViewTiming,this.ee)}),!0),(0,I.bP)("pagehide",(()=>(0,b.p)("winPagehide",[(0,w.zO)()],void 0,e.D.pageViewTiming,this.ee))),this.importAggregator()}}perfObserver(t,r){t.getEntries().forEach((t=>{"first-paint"===t.name?(0,b.p)("timing",["fp",Math.floor(t.startTime)],void 0,e.D.pageViewTiming,this.ee):"first-contentful-paint"===t.name&&(0,b.p)("timing",["fcp",Math.floor(t.startTime)],void 0,e.D.pageViewTiming,this.ee)}))}lcpObserver(t,r){var n=t.getEntries();if(n.length>0){var i=n[n.length-1];if(this.pageHiddenTime<i.startTime)return;var o=[i],a=this.addConnectionAttributes({});a&&o.push(a),(0,b.p)("lcp",o,void 0,e.D.pageViewTiming,this.ee)}}clsObserver(t){t.getEntries().forEach((t=>{t.hadRecentInput||(0,b.p)("cls",[t],void 0,e.D.pageViewTiming,this.ee)}))}addConnectionAttributes(e){var t=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(t)return t.type&&(e["net-type"]=t.type),t.effectiveType&&(e["net-etype"]=t.effectiveType),t.rtt&&(e["net-rtt"]=t.rtt),t.downlink&&(e["net-dlink"]=t.downlink),e}captureInteraction(r){if(r instanceof t.Yu.EV&&!this.fiRecorded){var n=Math.round(r.timeStamp),i={type:r.type};this.addConnectionAttributes(i),n<=(0,w.zO)()?i.fid=(0,w.zO)()-n:n>(0,w.os)()&&n<=Date.now()?(n-=(0,w.os)(),i.fid=(0,w.zO)()-n):n=(0,w.zO)(),this.fiRecorded=!0,(0,b.p)("timing",["fi",n,i],void 0,e.D.pageViewTiming,this.ee)}}}!function(e,t,r){t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(R,"featureName",N.t);var B=i(4045),M="React",V="Angular",q="AngularJS",L="Backbone",z="Ember",W="Vue",$="Meteor",F="Zepto",G="Jquery";function Z(){if(!S.il)return[];var e=[];try{(function(){try{if(window.React||window.ReactDOM||window.ReactRedux)return!0;if(document.querySelector("[data-reactroot], [data-reactid]"))return!0;for(var e=document.querySelectorAll("body > div"),t=0;t<e.length;t++)if(Object.keys(e[t]).indexOf("_reactRootContainer")>=0)return!0;return!1}catch(e){return!1}})()&&e.push(M),function(){try{return!!window.angular||(!!document.querySelector(".ng-binding, [ng-app], [data-ng-app], [ng-controller], [data-ng-controller], [ng-repeat], [data-ng-repeat]")||!!document.querySelector('script[src*="angular.js"], script[src*="angular.min.js"]'))}catch(e){return!1}}()&&e.push(q),function(){try{return!!(window.hasOwnProperty("ng")&&window.ng.hasOwnProperty("coreTokens")&&window.ng.coreTokens.hasOwnProperty("NgZone"))||!!document.querySelectorAll("[ng-version]").length}catch(e){return!1}}()&&e.push(V),window.Backbone&&e.push(L),window.Ember&&e.push(z),window.Vue&&e.push(W),window.Meteor&&e.push($),window.Zepto&&e.push(F),window.jQuery&&e.push(G)}catch(e){}return e}var U=i(9548),H=i(9226),X=i(8226);const Q=Boolean(S._A?.Worker),K=Boolean(S._A?.SharedWorker),J=Boolean(S._A?.navigator?.serviceWorker);let Y,ee,te;var re=i(6034);class ne extends D{constructor(e,t){var r;let n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},i=!(arguments.length>3&&void 0!==arguments[3])||arguments[3];super(e,t,re.t,i),r=this,this.PfFeatStatusEnum=n,this.singleChecks(),this.eachSessionChecks(),(0,B.X)("record-supportability",(function(){return r.recordSupportability(...arguments)}),this.featureName,this.ee),(0,B.X)("record-custom",(function(){return r.recordCustom(...arguments)}),this.featureName,this.ee),this.importAggregator()}recordSupportability(e,t){var r=["sm",e,{name:e},t];return(0,b.p)("storeMetric",r,null,this.featureName,this.ee),r}recordCustom(e,t){var r=["cm",e,{name:e},t];return(0,b.p)("storeEventMetrics",r,null,this.featureName,this.ee),r}singleChecks(){this.recordSupportability(`Generic/Version/${X.q}/Detected`);const{loaderType:e}=(0,t.OP)(this.agentIdentifier);e&&this.recordSupportability(`Generic/LoaderType/${e}/Detected`),S.il&&(0,O.K)((()=>{Z().forEach((e=>{this.recordSupportability("Framework/"+e+"/Detected")}))})),U.T.isFileProtocol()&&(this.recordSupportability("Generic/FileProtocol/Detected"),U.T.supportabilityMetricSent=!0);const r=(0,H.$c)(this.agentIdentifier);r.length>0&&this.recordSupportability("Generic/Obfuscate/Detected"),r.length>0&&!(0,H.Ng)(r)&&this.recordSupportability("Generic/Obfuscate/Invalid"),S.il&&this.reportPolyfillsNeeded(),function(e){if(!Y){if(Q){Y=Worker;try{S._A.Worker=r(Y,"Dedicated")}catch(e){o(e,"Dedicated")}if(K){ee=SharedWorker;try{S._A.SharedWorker=r(ee,"Shared")}catch(e){o(e,"Shared")}}else n("Shared");if(J){te=navigator.serviceWorker.register;try{S._A.navigator.serviceWorker.register=(t=te,function(){for(var e=arguments.length,r=new Array(e),n=0;n<e;n++)r[n]=arguments[n];return i("Service",r[1]?.type),t.apply(navigator.serviceWorker,r)})}catch(e){o(e,"Service")}}else n("Service");var t;return}n("All")}function r(e,t){return new Proxy(e,{construct:(e,r)=>(i(t,r[1]?.type),new e(...r))})}function n(t){S.v6||e(`Workers/${t}/Unavailable`)}function i(t,r){e("module"===r?`Workers/${t}/Module`:`Workers/${t}/Classic`)}function o(t,r){e(`Workers/${r}/SM/Unsupported`),(0,m.Z)(`NR Agent: Unable to capture ${r} workers.`,t)}}(this.recordSupportability.bind(this))}reportPolyfillsNeeded(){this.recordSupportability(`Generic/Polyfill/Promise/${this.PfFeatStatusEnum.PROMISE}`),this.recordSupportability(`Generic/Polyfill/ArrayIncludes/${this.PfFeatStatusEnum.ARRAY_INCLUDES}`),this.recordSupportability(`Generic/Polyfill/ObjectAssign/${this.PfFeatStatusEnum.OBJECT_ASSIGN}`),this.recordSupportability(`Generic/Polyfill/ObjectEntries/${this.PfFeatStatusEnum.OBJECT_ENTRIES}`)}eachSessionChecks(){S.il&&(0,I.bP)("pageshow",(e=>{e.persisted&&this.recordCustom("Custom/BFCache/PageRestored")}))}}!function(e,t,r){t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r}(ne,"featureName",re.t);new class{constructor(t){let r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:(0,v.ky)(16);this.agentIdentifier=r,this.sharedAggregator=new d({agentIdentifier:this.agentIdentifier}),this.features={},this.desiredFeatures=t.features||[],this.desiredFeatures.sort(((t,r)=>e.p[t.featureName]-e.p[r.featureName])),Object.assign(this,(0,a.j)(this.agentIdentifier,t,t.loaderType||"agent")),this.start()}get config(){return{info:(0,t.C5)(this.agentIdentifier),init:(0,t.P_)(this.agentIdentifier),loader_config:(0,t.DL)(this.agentIdentifier),runtime:(0,t.OP)(this.agentIdentifier)}}start(){try{const e=n(this.agentIdentifier);this.desiredFeatures.forEach((t=>{if(e[t.featureName]){const r=(0,s.Z)(t.featureName);r.every((t=>e[t]))||(0,m.Z)(`${t.featureName} is enabled but one or more dependent features has been disabled (${JSON.stringify(r)}). This may cause unintended consequences or missing data...`),this.features[t.featureName]=new t(this.agentIdentifier,this.sharedAggregator)}})),(0,p.Qy)(this.agentIdentifier,this.features,"features")}catch(e){return(0,m.Z)("Failed to initialize instrument classes",e),!1}}}({features:[P,R,ne],loaderType:"lite"})})(),window.NRBA=o})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href=""/>
+  <title>
+    TALOS-2022-1619 ||  Cisco Talos Intelligence Group - Comprehensive Threat Intelligence
+  </title>
+  <meta name="description" content=""/>
+  <meta name="keywords" content=""/>
+  <link rel="stylesheet" media="all" href="/assets/application-095939005f583f81a14a287b4a1d3d59c57a4f41a8e7abfc356ff94a18fe51fe.css" />
+  <script src="/assets/application-982e7a94cdab5a4ce610a1210d8ae41c4b448e008e5799a77c56c32cf8a84b36.js"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicons/favicon-01f90f6b94ec4cceb73079603f6ae4329ac68a00d055125fd7e998b2ce4d5556.ico" />
+  
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="pla5DHgZbbnRvejcxzR1a1OsBQDVwnhHSJMeIXlz5fIGwRkfjntwz7rT4VeXEHfSq+S1jBQ3pNYac79n11ie1Q==" />
+  <script>
+//<![CDATA[
+
+      window.gmk = "AIzaSyDgclrR8QqACLDYcgLjsLd1RIZV9-V8Bpc";
+
+//]]>
+</script>  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-63204287-3', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <nav id='nav'>
+<div id='top-nav-bar'>
+<ul class='top-nav-links-wrapper'>
+<li>
+<a class='top-nav-link nav-blog-link' href='https://blog.talosintelligence.com' target='_blank'>Blog</a>
+</li>
+<li><a class="top-nav-link nav-podcast-link top-nav-divider-link" href="/podcasts">Podcasts</a></li>
+<li><a class="login-button" href="/users/auth/saml">Cisco Login</a></li>
+</ul>
+</div>
+<div id='navigation'>
+<div class='navigation-logos-wrapper'>
+<div id='cisco-logo-wrapper'></div>
+<div id='talos-logo-wrapper'>
+<a class="page-link" href="/"><!-- Generator: Adobe Illustrator 26.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 3361.3 912.4" style="enable-background:new 0 0 3361.3 912.4;" xml:space="preserve">
+<style type="text/css">
+	.st0{display:none;}
+	.ukraine_yellow{fill:#FCB83D;}
+	.ukraine_blue{fill:#006DB6;}
+</style>
+<g id="scaffold" class="st0">
+</g>
+<g>
+	<path class="ukraine_yellow" d="M1342.8,795.4c-0.1-20.7-0.2-41.3-0.2-62c-0.1-62.8-0.3-125.6-0.3-188.5c0-29.8-0.1-59.7-0.1-89.5h-97.5   c0,53.5-0.2,106.9-0.7,160.4c-0.1,10-1.4,20.4-4.1,30c-8.3,29.8-25.9,51.8-56.5,60.6c-10.4,3-21.6,4.3-32.5,4.4   c-63.5,0.4-127,0.2-190.5,0.2c-5.8,0-11.7,0.2-17.5,0.7c-39.7,3.1-70.5-18.3-80.8-56.7c-8.2-30.7-4-60.6,8-89.4   c15.4-36.8,40.5-64.3,78.6-78.4c17.8-6.6,36.3-7.1,55.1-7c72.3,0.3,144.6,0,217,0c1.8,0,3.5,0,5.1,0c0-8.3,0-16.6,0-24.9H836.4   c-26.4,28-46,61.3-60,98.4c-15.9,42-16.3,86-8.5,130.1c4.3,24.7,13,47.5,29.9,66.6c28.1,31.8,64.5,46.6,106,48.6   c29.4,1.4,59,1.2,88.4,1.1c61-0.1,121.9,0,182.9-1.2c34-0.7,65.4-10,90.5-35.2c21.3,18.3,46.2,29.1,73.2,36.8h4   C1342.8,798.5,1342.8,797,1342.8,795.4z"></path>
+	<path class="ukraine_yellow" d="M465.1,793.9c0-112.8,0-225.6,0-338.4H359.4c0,81.4,0,162.7,0,244.1c0,25.8,7,49,25.5,67.9   c15.5,15.9,34.9,24.8,56.2,29.6c6.9,1.6,14,2.4,21.5,3.6h2.5C465.1,797.7,465.1,795.8,465.1,793.9z"></path>
+	<path class="ukraine_yellow" d="M2896.8,494.3c76.3,0.9,152.6,0.3,229,0.3c3.5,0,7,0.1,10.5,0.3c24,1.3,39.4,17.8,39.6,42.1   c0.2,27.5,0.8,55,0.9,82.5c0.1,13,0.6,26.1-1.1,38.9c-3.4,25.2-25.5,43.4-50.8,43.5c-47.7,0.1-95.3,0.2-143,0.2   c-55.5,0-111,0.1-166.5-0.1c-7.5,0-13.9,1.6-20.3,5.3c-34.2,19.6-61.1,45.9-76.7,82.7c-1.4,3.4-2.4,6.9-3.7,10.9h427.6   c5.5-0.2,11-0.7,16.4-1.4c70-9.3,107.2-69.5,112.1-115.8c1.4-13.2,0.4-26.6,0.4-39.9c-0.1-39.5-0.2-79-0.4-118.5   c-0.1-17.5-2.6-34.7-10.5-50.4c-3.5-6.9-7.3-13.3-11.5-19.1h-444.5C2828.2,482.4,2860.4,493.8,2896.8,494.3z"></path>
+	<polygon class="ukraine_yellow" points="3251.7,800.6 3251.7,776.9 3260.5,776.9 3260.5,771.4 3235.9,771.4 3235.9,776.9 3244.5,776.9    3244.5,800.6  "></polygon>
+	<polygon class="ukraine_yellow" points="3279.4,791.9 3272.8,771.4 3263.5,771.4 3263.5,800.6 3270.6,800.6 3270.6,794 3269.9,779.9    3277,800.6 3281.8,800.6 3288.9,779.9 3288.2,794 3288.2,800.6 3295.3,800.6 3295.3,771.4 3285.9,771.4  "></polygon>
+	<path class="ukraine_yellow" d="M2403.3,792.4c77.5-17.2,143.1-55.5,194.5-116.5c52.3-62.1,75.8-134.9,76.5-215.3c0-1.7,0-3.4,0-5.1h-133.2   c0,57,0,114.1,0,171.1c0,15.4-5.3,28.8-17.1,39c-11,9.6-24.5,12.4-38.6,12.4c-51,0-102-0.2-153-0.3c-54-0.1-108-0.2-162-0.1   c-2.4,0-5.5,1.4-7.2,3.2c-13.2,13.9-26.2,28-39.3,42c-1.8,1.9-3.5,3.8-5.4,5.9c1.9,1.7,3.4,3.1,5,4.2c6.2,4.5,12.2,9.3,18.7,13.3   c53,33,108.8,51.5,167.2,54.4h33.7C2362.9,799.7,2383,796.9,2403.3,792.4z"></path>
+	<path class="ukraine_yellow" d="M2118.4,646.5c-12.9,13.5-26.4,27.7-40.7,42.7c8.7,8.7,17.2,17.2,25.9,25.9c13.5-14.1,26.1-27.4,38.7-40.5   c-5.2-4.3-10.5-7.7-14.4-12.3C2123.9,657.7,2121.5,651.9,2118.4,646.5z"></path>
+	<path class="ukraine_yellow" d="M1584.6,455.5h-106.8c0,81.9,0,163.7,0,245.6c0,6.8,0.4,13.7,1.3,20.4c5.9,46.5,42.1,78.6,88.5,78.6   c144.6,0,289.3,0,433.9,0c1.7,0,3.5,0,5.5,0c-0.9-15.3-4.1-29.2-9.2-42.6c-14-36.3-41.2-60.8-86.9-60.5   c-94.1,0.5-188.3,0-282.4-0.1c-22.3,0-34-8.9-39.7-30.3c-4.7-17.6-4.2-35.6-4.2-53.6C1584.6,560.5,1584.6,508,1584.6,455.5z"></path>
+	<path class="ukraine_yellow" d="M1989.8,499.1c7.2,61.5,30.6,116.9,68,166.3c2.2,2.9,4.6,5.5,6.9,8.3c0.9-0.6,1.3-0.8,1.6-1.2   c15.9-17,31.9-34,47.7-51.2c1.3-1.4,1.8-3.8,1.9-5.8c0.1-14.3,0-28.7,0-43c0-39,0-78-0.1-117H1987   C1987.2,469.9,1988.1,484.4,1989.8,499.1z"></path>
+</g>
+<g>
+	<path class="ukraine_blue" d="M2804.2,455.5h444.5c-23.8-33-58.9-48.6-100.8-49.9c-68.6-2.2-137.3-1-205.9-1.2c-13.7-0.1-27.3,0-41-0.3   c-11.6-0.3-21.4-4.7-28.1-14.6c-5.6-8.4-8.8-17.5-8.1-27.8c2.7-39.9,5.2-79.8,8.2-119.7c1.1-14.5,7.2-27,18.5-36.5   c12.5-10.4,27.4-13.2,43-13.2c87.2,0,174.3-0.3,261.5,0.3c13.8,0.1,24.9-3.9,35.3-12c0.9-0.7,1.9-1.4,2.8-2.1   c20.6-16.7,32.5-37.9,33.8-65.4c-2,0-3.3,0-4.6,0c-62-0.2-124-0.5-185.9-0.8c-42.7-0.2-85.3-0.5-128-0.5c-17.3,0-34.8-0.3-51.9,1.7   c-40.6,4.7-73.8,23-96.5,57.8c-10.8,16.6-19.1,34.5-20.3,54.6c-2.8,44.9-5,89.8-7.7,134.7c-1.8,30.8,5.1,59.4,23.1,84.6   C2798.6,448.9,2801.4,452.3,2804.2,455.5z"></path>
+	<path class="ukraine_blue" d="M1226,455.5c0-22.1,0-44,0-66c-2.6,0-4.7,0-6.8,0c-81,0-162,0.1-243,0c-33.4,0-64.3,8.6-92.3,26.6   c-17.9,11.5-33.6,24.7-47.5,39.4H1226z"></path>
+	<path class="ukraine_blue" d="M1584.6,455.5c0-81.1,0-162.2-0.1-243.4c0-24.5-7.6-46.3-25.1-63.9c-22.3-22.3-50.3-31.4-81.7-34.8   c0,3,0,5.2,0,7.3c0,111.6,0,223.1,0,334.7H1584.6z"></path>
+	<path class="ukraine_blue" d="M184.3,197.1c17.7,1.4,35.6,0.9,53.4,1c29,0.1,58,0,87,0c9,0,17.3,2.5,23.3,9.6c7.3,8.6,11.4,18.4,11.4,30.1   c-0.1,72.6-0.1,145.2-0.1,217.8h105.7c0-71.5,0-143,0-214.5c0-4,0.3-8,1.2-11.9c4.1-18.4,17.1-30.5,33.9-30.7   c25.3-0.2,50.6,0.4,76,0.4c21.5,0,43.1,1.1,64.4-0.8c44.5-3.9,75.5-27.3,91.8-69.2c2.2-5.7,3.5-11.7,5.4-18   c-216.3,0-431.7,0-647.9,0c0.4,2.7,0.6,5,1.1,7.3C100.4,162.1,137,193.5,184.3,197.1z"></path>
+	<path class="ukraine_blue" d="M2541,293.1c0.1,54.1,0.1,108.2,0.1,162.4h133.2c-0.3-74.2-23.4-141.4-66.3-202.1c-5-7-10.6-13.6-16.1-20.7   c-15.9,16.9-31,33.3-46.4,49.4C2542.4,285.4,2541,288.6,2541,293.1z"></path>
+	<path class="ukraine_blue" d="M2115.8,455.5c0-57,0-113.9,0-170.9c0-30.1,22.5-52.5,52.5-52.5c103,0,205.9,0,308.9,0.1   c6.2,0,10.7-1,15.3-6.1c13.9-15.5,28.7-30.2,43.3-45.3c-0.4-0.7-0.5-1-0.8-1.2c-1.4-1.2-2.8-2.3-4.3-3.4   c-54.2-37.9-114.3-59.4-180.4-63.8c-50.8-3.4-99.9,5.4-147.2,23.9c-73.2,28.7-132,75.1-171.4,143.9   c-31.5,55.1-45.3,113.9-44.7,175.3H2115.8z"></path>
+	<path class="ukraine_blue" d="M2526.7,245.7c4.4,4.2,7.8,9.4,11.9,14.4c13.1-13.7,26-27.2,39.9-41.8c-9.2-8.5-17.8-16.6-26.8-25   c-13.7,14.3-26.6,27.8-39.5,41.3C2517.2,238.4,2522.4,241.6,2526.7,245.7z"></path>
+	<path class="ukraine_blue" d="M894.7,191.4c2.1,1.1,4.7,1.5,7.1,1.6c14.2,0.1,28.3,0.1,42.5,0.1c60-0.2,120-0.2,179.9-0.6   c19.7-0.1,38.8,1.8,57.1,9.8c39.5,17.4,62,46.6,62.5,90.8c0.5,46.3,0.8,92.6,0.8,138.9c0,7.8,0,15.7,0,23.5h97.5   c0-50.8-0.1-101.6-0.3-152.4c-0.1-14.5-1-29-3-43.3c-4.6-34.3-17.3-65.2-42-90.3c-22.6-22.9-50.6-36.4-81.1-45.2   c-34.4-9.9-69.7-13.4-105.2-13.6c-34-0.2-68,0.8-101.9,0.9c-53.8,0.2-107.6,0-161.5,0c-1.9,0-3.9,0-5.8,0c-0.2,1.2-0.3,1.7-0.3,2.1   C846.2,148.4,863.4,174.9,894.7,191.4z"></path>
+</g>
+</svg>
+
+</a></div>
+</div>
+<div class='navigation-links-wrapper'>
+<ul class='main-nav-list'>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/software"><!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.white{fill:#FFFFFF;}
+</style>
+<path class="white" d="M19.4,17.1c0,0.1-0.1,0-0.2,0c0,0-1.3-0.9-2-1.4c-0.2-0.1-0.5-0.1-0.6,0.1c-0.3,0.3-0.6,0.8-0.9,1.3  c-0.1,0.2-0.1,0.5,0.1,0.6l2,1.5c0.1,0,0,0.1,0.1,0.2c0,0.1,0,0.1-0.1,0.2c-1.2,0.5-2.6,0.2-3.5-0.7c-0.8-0.9-1-2-0.7-3.1L4.5,6.5  c-1,0.3-2.3,0-3-0.9c-0.8-0.9-1.1-1.7-1-2.7c0-0.1,0-0.1,0.1-0.2c0.1,0,0.2,0.1,0.2,0.1l2,1.5C3,4.4,3.3,4.5,3.4,4.2  c0,0,0.5-0.8,0.9-1.3c0.1-0.2,0.1-0.5-0.1-0.6L2.3,0.9c-0.1,0,0-0.1-0.1-0.3c0-0.1,0-0.1,0.1-0.2C3.5-0.1,5,0.2,5.8,1.1  c0.8,0.9,1,2,0.7,3.1l9.1,9.3c1-0.3,2.3,0,3,0.9c0.7,0.7,0.9,1.5,0.9,2.5C19.5,16.9,19.5,17,19.4,17.1z"></path>
+</svg>
+
+<span>Software</span>
+</a></li>
+<li class='nav-item'>
+<div class='primary-link-wrapper'>
+<a class="primary_nav_link" href="/vulnerability_info"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26px" height="20px" viewBox="0 0 26 20">
+	<g id="vuln-icon" class="nav-icon">
+<path fill="#FFFFFF" d="M24.256,18.49L13.872,0.503C13.692,0.192,13.36,0,13,0c-0.359,0-0.692,0.192-0.872,0.503L1.744,18.49  c-0.18,0.312-0.18,0.695,0,1.006C1.924,19.809,2.257,20,2.616,20h20.769c0.359,0,0.691-0.191,0.871-0.504  C24.436,19.186,24.436,18.803,24.256,18.49 M14.268,18.215h-2.533v-1.85h2.533V18.215z M14.268,15.441h-2.533L10.89,6.515h4.222  L14.268,15.441z"></path>
+</g>
+</svg>
+
+<span>
+Vulnerability Information
+</span>
+</a></div>
+<input class='sub-nav-trigger' id='vuln-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='vuln-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="/vulnerability_info"><h1>Vulnerability Information</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='vuln-sub-trigger'>BACK</label>
+</li>
+<li><a href="/vulnerability_reports">Vulnerability Reports</a></li>
+<li><a href="/ms_advisories">Microsoft Advisories</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26px" height="20px" viewBox="0 0 26 20">
+	<g id="vuln-icon" class="nav-icon">
+<path fill="#FFFFFF" d="M24.256,18.49L13.872,0.503C13.692,0.192,13.36,0,13,0c-0.359,0-0.692,0.192-0.872,0.503L1.744,18.49  c-0.18,0.312-0.18,0.695,0,1.006C1.924,19.809,2.257,20,2.616,20h20.769c0.359,0,0.691-0.191,0.871-0.504  C24.436,19.186,24.436,18.803,24.256,18.49 M14.268,18.215h-2.533v-1.85h2.533V18.215z M14.268,15.441h-2.533L10.89,6.515h4.222  L14.268,15.441z"></path>
+</g>
+</svg>
+</div>
+</li>
+<li class='nav-item'>
+<div class='primary-link-wrapper'>
+<a class="primary_nav_link" href="/reputation"><!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" height="20px" width="20px" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.white{fill:#FFFFFF;}
+</style>
+<g>
+	<path class="white" d="M19.5,9.5h-1.1c-0.3-4.2-3.6-7.6-7.8-7.8V0.5C10.5,0.2,10.3,0,10,0l0,0C9.7,0,9.5,0.2,9.5,0.5l0,0v1.1   C5.3,1.9,1.9,5.3,1.6,9.5H0.5C0.2,9.5,0,9.7,0,10s0.2,0.5,0.5,0.5l0,0h1.1c0.3,4.2,3.6,7.6,7.8,7.8v1.1c0,0.3,0.2,0.5,0.5,0.5l0,0   c0.3,0,0.5-0.2,0.5-0.5l0,0v-1.1c4.2-0.3,7.6-3.6,7.8-7.8h1.1c0.3,0,0.5-0.2,0.5-0.5C20,9.7,19.8,9.5,19.5,9.5 M16.6,10.5h0.7   c-0.3,3.6-3.2,6.5-6.8,6.8v-0.8c0-0.3-0.2-0.5-0.5-0.5l0,0c-0.3,0-0.5,0.2-0.5,0.5v0.8C5.8,17,3,14.2,2.7,10.5h0.8   C3.8,10.5,4,10.3,4,10S3.8,9.5,3.5,9.5l0,0H2.7C3,5.8,5.8,3,9.5,2.7v0.8C9.5,3.7,9.7,4,10,4l0,0c0.3,0,0.5-0.2,0.5-0.5V2.7   C14.2,3,17,5.8,17.3,9.5h-0.7c-0.3,0-0.5,0.2-0.5,0.5C16.1,10.3,16.3,10.5,16.6,10.5L16.6,10.5"></path>
+	<circle class="white" cx="10" cy="10" r="3.2"></circle>
+</g>
+</svg>
+
+<span>
+Reputation Center
+</span>
+</a></div>
+<input class='sub-nav-trigger' id='reputation-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='reputation-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="/reputation"><h1>Reputation Center</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='reputation-sub-trigger'>BACK</label>
+</li>
+<li><a data-method="get" href="/reputation_center">IP &amp; Domain Reputation</a></li>
+<li><a href="/talos_file_reputation">Talos File Reputation</a></li>
+<li><a href="/amp-naming">Secure Endpoint Naming Conventions</a></li>
+<li><a href="/categories">Intelligence Categories</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" height="20px" width="20px" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.white{fill:#FFFFFF;}
+</style>
+<g>
+	<path class="white" d="M19.5,9.5h-1.1c-0.3-4.2-3.6-7.6-7.8-7.8V0.5C10.5,0.2,10.3,0,10,0l0,0C9.7,0,9.5,0.2,9.5,0.5l0,0v1.1   C5.3,1.9,1.9,5.3,1.6,9.5H0.5C0.2,9.5,0,9.7,0,10s0.2,0.5,0.5,0.5l0,0h1.1c0.3,4.2,3.6,7.6,7.8,7.8v1.1c0,0.3,0.2,0.5,0.5,0.5l0,0   c0.3,0,0.5-0.2,0.5-0.5l0,0v-1.1c4.2-0.3,7.6-3.6,7.8-7.8h1.1c0.3,0,0.5-0.2,0.5-0.5C20,9.7,19.8,9.5,19.5,9.5 M16.6,10.5h0.7   c-0.3,3.6-3.2,6.5-6.8,6.8v-0.8c0-0.3-0.2-0.5-0.5-0.5l0,0c-0.3,0-0.5,0.2-0.5,0.5v0.8C5.8,17,3,14.2,2.7,10.5h0.8   C3.8,10.5,4,10.3,4,10S3.8,9.5,3.5,9.5l0,0H2.7C3,5.8,5.8,3,9.5,2.7v0.8C9.5,3.7,9.7,4,10,4l0,0c0.3,0,0.5-0.2,0.5-0.5V2.7   C14.2,3,17,5.8,17.3,9.5h-0.7c-0.3,0-0.5,0.2-0.5,0.5C16.1,10.3,16.3,10.5,16.6,10.5L16.6,10.5"></path>
+	<circle class="white" cx="10" cy="10" r="3.2"></circle>
+</g>
+</svg>
+</div>
+</li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/resources"><svg xmlns="http://www.w3.org/2000/svg" width="124.999" height="153.391" viewBox="0 0 124.999 153.391">
+  <g>
+    <polygon points="89.149 8.214 89.149 37.263 118.199 37.263 89.149 8.214" fill="#fff"></polygon>
+    <path d="M80.2,44.8V0H21.122A3.72,3.72,0,0,0,17.4,3.719V135.361H121.28A3.719,3.719,0,0,0,125,131.643V44.8ZM36.6,30.7H68.138v7.809H36.6Zm0,24.188h64.427V62.7H36.6Zm0,24.185H79.557v7.809H36.6Zm64.752,32H36.6v-7.81h64.752Z" fill="#fff"></path>
+    <path d="M9.606,18.03H3.718A3.719,3.719,0,0,0,0,21.749V149.672a3.719,3.719,0,0,0,3.718,3.719H103.877a3.72,3.72,0,0,0,3.719-3.719v-6.354H9.942Z" fill="#fff"></path>
+  </g>
+</svg>
+
+<span>Library</span>
+</a></li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="https://support.talosintelligence.com"><svg xmlns="http://www.w3.org/2000/svg" width="26px" height="20px" viewBox="0 0 123.17 159.292">
+  <path d="M61.59,0,0,17.069v85.32c0,23.472,61.59,56.9,61.59,56.9s61.58-36.288,61.58-56.9V17.069Zm-.433,149.746C38.314,136.662,8.128,114.3,8.128,102.389V23.239l53.029-14.7Z" fill="#fff"></path>
+</svg>
+
+<span>Support</span>
+</a></li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/incident_response"><svg xmlns="http://www.w3.org/2000/svg" width="111.588" height="148.311" viewBox="0 0 111.588 148.311">
+  <path d="M1.181,128.446v15.7a4.167,4.167,0,0,0,4.167,4.167h100.9a4.167,4.167,0,0,0,4.167-4.167v-15.7a4.167,4.167,0,0,0-4.167-4.167H5.348a4.167,4.167,0,0,0-4.167,4.166M55.8,63.109a3.277,3.277,0,1,1,0,6.553c-10.344,0-20.755,8.578-20.755,18.57a3.277,3.277,0,1,1-6.554,0C28.489,73.947,41.93,63.109,55.8,63.109Zm0-12.016c-21.787,0-39.325,17.81-39.325,39.937v26.7H95.122V91.03c0-22.128-17.537-39.937-39.324-39.937m52.365-38.3a3.291,3.291,0,0,0-2.254,1.024L88.432,31.294a3.283,3.283,0,0,0,4.642,4.644l17.478-17.479a3.278,3.278,0,0,0-2.389-5.666m-105.138,0a3.276,3.276,0,0,0-1.98,5.666L18.522,35.938a3.283,3.283,0,0,0,4.643-4.644L5.687,13.817A3.255,3.255,0,0,0,3.025,12.793ZM55.389.026a3.276,3.276,0,0,0-2.867,3.345V19.642a3.277,3.277,0,1,0,6.554,0V3.371A3.283,3.283,0,0,0,55.389.026Z" fill="#fff"></path>
+</svg>
+
+<span>Incident Response</span>
+</a></li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/careers"><svg xmlns="http://www.w3.org/2000/svg" width="153.816" height="90" viewBox="0 0 153.816 90">
+  <g>
+    <path d="M56.336,47.451a31.328,31.328,0,0,0-17.1-10.872A19.564,19.564,0,0,0,50.91,19.1C50.91,8.868,42.008,0,31.735,0S12.559,8.868,12.559,19.1A19.564,19.564,0,0,0,24.22,36.574,31.239,31.239,0,0,0,0,66.717c0,2.343,12.671,10.9,31.883,10.9a63.142,63.142,0,0,0,6.536-.341,37,37,0,0,1,8.222-21.367,38.039,38.039,0,0,1,9.7-8.456" fill="#fff" fill-rule="evenodd"></path>
+    <path d="M106.731,70.729a32.386,32.386,0,0,0-1.889-4.815c-.014-.029-.028-.058-.043-.087a32.308,32.308,0,0,0-2.568-4.335c-.033-.047-.066-.095-.1-.142-.312-.436-.631-.866-.964-1.287l-.015-.02a32.215,32.215,0,0,0-2.185-2.483l-.166-.168c-.369-.372-.745-.737-1.131-1.09l-.025-.024c-.415-.379-.838-.744-1.272-1.1l-.081-.064q-.582-.474-1.189-.92l-.217-.159c-.43-.312-.866-.616-1.313-.9h0a31.084,31.084,0,0,0-9.679-4.164A19.564,19.564,0,0,0,95.566,31.488c0-10.234-8.9-19.1-19.175-19.1s-19.176,8.868-19.176,19.1A19.564,19.564,0,0,0,68.876,48.96a31.828,31.828,0,0,0-9.109,3.733h0a31.8,31.8,0,0,0-6.941,5.668l-.045.05a31.3,31.3,0,0,0-2.243,2.738l-.024.034q-.5.693-.969,1.415c-.014.023-.03.047-.046.07a31.053,31.053,0,0,0-1.7,3.019c-.028.059-.057.117-.085.175a30.16,30.16,0,0,0-1.33,3.185c-.02.056-.038.112-.058.169q-.255.741-.474,1.5c-.019.065-.039.13-.057.2a30.092,30.092,0,0,0-.741,3.374c-.015.094-.03.188-.044.282-.084.56-.158,1.123-.211,1.693v.007c-.087.935-.135,1.88-.135,2.834,0,2.343,12.671,10.9,31.883,10.9s31.583-8.555,31.583-10.9a32.8,32.8,0,0,0-1.384-8.35l-.007-.023" fill="#fff" fill-rule="evenodd"></path>
+    <path d="M129.588,36.579A19.564,19.564,0,0,0,141.261,19.1c0-10.234-8.9-19.1-19.175-19.1S102.91,8.868,102.91,19.1a19.562,19.562,0,0,0,11.66,17.472A31.817,31.817,0,0,0,96.916,47.859a38.586,38.586,0,0,1,17.373,29.253,63.062,63.062,0,0,0,7.945.5c19.212,0,31.582-8.554,31.582-10.9a31.947,31.947,0,0,0-24.228-30.138" fill="#fff" fill-rule="evenodd"></path>
+  </g>
+</svg>
+
+<span>Careers</span>
+</a></li>
+<li class='nav-item desktop-hide'>
+<div class='primary-link-wrapper'>
+<a id="link_blog" class="primary_nav_link" href="https://blog.talosintelligence.com"><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="260px" height="296.5px" viewBox="0 0 260 296.5" enable-background="new 0 0 260 296.5" xml:space="preserve">
+<path fill="#FFFFFF" d="M243.586,42.404h-14.448c-0.943-4.513-3.143-8.813-6.616-12.33L201.793,9.098  c-4.7-4.757-10.972-7.377-17.66-7.377c-6.578,0-12.777,2.547-17.457,7.173l-33.875,33.511H17.586c-6.6,0-12,5.399-12,12V226.28  c0,6.6,5.4,12,12,12H153.83l84.21,56.278l-27.448-56.278h32.994c6.6,0,12-5.4,12-12V54.404  C255.586,47.804,250.186,42.404,243.586,42.404z M214.662,48.045c-0.01,0.2-0.021,0.399-0.044,0.599  c-0.008,0.069-0.021,0.139-0.031,0.207c-0.046,0.345-0.113,0.688-0.196,1.026c-0.034,0.137-0.063,0.273-0.103,0.408  c-0.039,0.135-0.087,0.267-0.133,0.399c-0.051,0.151-0.102,0.302-0.16,0.45c-0.049,0.126-0.105,0.249-0.16,0.373  c-0.068,0.153-0.139,0.307-0.216,0.457c-0.059,0.116-0.12,0.23-0.184,0.345c-0.088,0.157-0.181,0.312-0.278,0.465  c-0.065,0.104-0.13,0.206-0.2,0.308c-0.115,0.168-0.239,0.33-0.366,0.492c-0.064,0.081-0.124,0.165-0.19,0.244  c-0.199,0.238-0.409,0.472-0.635,0.694L82.458,182.308l-47.932,12.871l13.427-47.74L177.223,19.561  c1.917-1.895,4.414-2.84,6.911-2.84c2.534,0,5.068,0.975,6.99,2.92l20.726,20.974c0.545,0.552,1.002,1.156,1.39,1.79  c0.574,0.938,0.975,1.951,1.206,2.993c0.004,0.021,0.01,0.04,0.014,0.06c0.049,0.226,0.086,0.453,0.119,0.682  c0.008,0.06,0.017,0.118,0.024,0.178c0.026,0.211,0.045,0.424,0.058,0.636c0.004,0.077,0.007,0.153,0.009,0.23  c0.007,0.203,0.011,0.407,0.005,0.61C214.673,47.877,214.666,47.961,214.662,48.045z"></path>
+</svg>
+
+<span>Blog</span>
+</a></div>
+<input class='sub-nav-trigger' id='blog-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='blog-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="https://blog.talosintelligence.com"><h1>Blog</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='blog-sub-trigger'>BACK</label>
+</li>
+<li><a href="https://blog.talosintelligence.com">Talos Blog</a></li>
+<li><a href="/newsletters">Talos Threat Source Newsletter</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="260px" height="296.5px" viewBox="0 0 260 296.5" enable-background="new 0 0 260 296.5" xml:space="preserve">
+<path fill="#FFFFFF" d="M243.586,42.404h-14.448c-0.943-4.513-3.143-8.813-6.616-12.33L201.793,9.098  c-4.7-4.757-10.972-7.377-17.66-7.377c-6.578,0-12.777,2.547-17.457,7.173l-33.875,33.511H17.586c-6.6,0-12,5.399-12,12V226.28  c0,6.6,5.4,12,12,12H153.83l84.21,56.278l-27.448-56.278h32.994c6.6,0,12-5.4,12-12V54.404  C255.586,47.804,250.186,42.404,243.586,42.404z M214.662,48.045c-0.01,0.2-0.021,0.399-0.044,0.599  c-0.008,0.069-0.021,0.139-0.031,0.207c-0.046,0.345-0.113,0.688-0.196,1.026c-0.034,0.137-0.063,0.273-0.103,0.408  c-0.039,0.135-0.087,0.267-0.133,0.399c-0.051,0.151-0.102,0.302-0.16,0.45c-0.049,0.126-0.105,0.249-0.16,0.373  c-0.068,0.153-0.139,0.307-0.216,0.457c-0.059,0.116-0.12,0.23-0.184,0.345c-0.088,0.157-0.181,0.312-0.278,0.465  c-0.065,0.104-0.13,0.206-0.2,0.308c-0.115,0.168-0.239,0.33-0.366,0.492c-0.064,0.081-0.124,0.165-0.19,0.244  c-0.199,0.238-0.409,0.472-0.635,0.694L82.458,182.308l-47.932,12.871l13.427-47.74L177.223,19.561  c1.917-1.895,4.414-2.84,6.911-2.84c2.534,0,5.068,0.975,6.99,2.92l20.726,20.974c0.545,0.552,1.002,1.156,1.39,1.79  c0.574,0.938,0.975,1.951,1.206,2.993c0.004,0.021,0.01,0.04,0.014,0.06c0.049,0.226,0.086,0.453,0.119,0.682  c0.008,0.06,0.017,0.118,0.024,0.178c0.026,0.211,0.045,0.424,0.058,0.636c0.004,0.077,0.007,0.153,0.009,0.23  c0.007,0.203,0.011,0.407,0.005,0.61C214.673,47.877,214.666,47.961,214.662,48.045z"></path>
+</svg>
+</div>
+</li>
+<li class='nav-item desktop-hide'>
+<div class='primary-link-wrapper'>
+<a class="primary_nav_link" href="/podcasts"><!-- Generator: Adobe Illustrator 21.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="podcast-icon-nav" x="0px" y="0px" viewBox="0 0 71.8 75" width="26px" height="20px" style="enable-background:new 0 0 71.8 75;" xml:space="preserve">
+<style type="text/css">
+	.podcast-fill{fill:#fff;}
+</style>
+<path class="podcast-fill" d="M21.8,15.1c0-7.8,6.3-14.1,14.1-14.1c7.8,0,14.1,6.3,14.1,14.1v25.4c0,7.8-6.3,14.1-14.1,14.1  c-7.8,0-14.1-6.3-14.1-14.1V15.1z M59.9,40.1c0,12.4-9.4,22.6-21.5,23.9v3.6h12.8c1.4,0,2.6,1.2,2.6,2.6c0,1.4-1.2,2.6-2.6,2.6H20.4  c-1.4,0-2.6-1.2-2.6-2.6c0-1.4,1.2-2.6,2.6-2.6h12.8V64c-12-1.3-21.5-11.5-21.5-23.9v-6.8c0-1.4,1.2-2.6,2.6-2.6  c1.4,0,2.6,1.2,2.6,2.6v6.8c0,10.4,8.5,18.8,18.8,18.8c10.4,0,18.8-8.5,18.8-18.9v-6.8c0-1.4,1.2-2.6,2.6-2.6c1.4,0,2.6,1.2,2.6,2.6  V40.1z"></path>
+</svg>
+
+<span>
+Podcasts
+</span>
+</a></div>
+<input class='sub-nav-trigger' id='podcast-sub-trigger' type='checkbox'>
+<label class='sub-nav-trigger-label' for='podcast-sub-trigger'>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.167px" height="47.75px" viewBox="0 0 48.167 47.75">
+<circle opacity="0.4" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="24.083" cy="23.875" r="22"></circle>
+<g>
+	<circle fill="#FFFFFF" cx="24.083" cy="16.068" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="23.875" r="2.496"></circle>
+	<circle fill="#FFFFFF" cx="24.083" cy="31.682" r="2.496"></circle>
+</g>
+</svg>
+
+</label>
+<ul class='sub-nav'>
+<li class='desktop-hide'>
+<a href="/podcasts"><h1>Podcasts</h1>
+</a></li>
+<li class='desktop-hide'>
+<label class='subnav-back-button' for='podcast-sub-trigger'>BACK</label>
+</li>
+<li><a href="/podcasts/shows/beers_with_talos">Beers with Talos</a></li>
+<li><a href="/podcasts/shows/talos_takes">Talos Takes</a></li>
+</ul>
+<div class='desktop-hide subnav-overlay'><!-- Generator: Adobe Illustrator 21.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="podcast-icon-nav" x="0px" y="0px" viewBox="0 0 71.8 75" width="26px" height="20px" style="enable-background:new 0 0 71.8 75;" xml:space="preserve">
+<style type="text/css">
+	.podcast-fill{fill:#fff;}
+</style>
+<path class="podcast-fill" d="M21.8,15.1c0-7.8,6.3-14.1,14.1-14.1c7.8,0,14.1,6.3,14.1,14.1v25.4c0,7.8-6.3,14.1-14.1,14.1  c-7.8,0-14.1-6.3-14.1-14.1V15.1z M59.9,40.1c0,12.4-9.4,22.6-21.5,23.9v3.6h12.8c1.4,0,2.6,1.2,2.6,2.6c0,1.4-1.2,2.6-2.6,2.6H20.4  c-1.4,0-2.6-1.2-2.6-2.6c0-1.4,1.2-2.6,2.6-2.6h12.8V64c-12-1.3-21.5-11.5-21.5-23.9v-6.8c0-1.4,1.2-2.6,2.6-2.6  c1.4,0,2.6,1.2,2.6,2.6v6.8c0,10.4,8.5,18.8,18.8,18.8c10.4,0,18.8-8.5,18.8-18.9v-6.8c0-1.4,1.2-2.6,2.6-2.6c1.4,0,2.6,1.2,2.6,2.6  V40.1z"></path>
+</svg>
+</div>
+</li>
+<li class='nav-item'>
+<a class="primary_nav_link" href="/about"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="55px" height="55px" viewBox="0 0 55 55">
+<g>
+	<g class="mobile-nav-home">
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M45.201,12.343c0.378,0.48,0.758,0.925,1.096,1.401    c2.975,4.207,4.543,8.876,4.494,14.044c-0.05,5.452-1.643,10.386-5.186,14.593c-3.484,4.133-7.929,6.73-13.182,7.895    c-6.313,1.398-12.216,0.275-17.695-3.131c-0.441-0.273-0.847-0.6-1.266-0.904c-0.11-0.078-0.208-0.174-0.337-0.287    c0.127-0.141,0.246-0.27,0.366-0.398c0.887-0.949,1.765-1.904,2.663-2.844c0.114-0.119,0.321-0.217,0.485-0.217    c3.658-0.006,7.318,0,10.975,0.008c3.458,0.006,6.913,0.02,10.369,0.02c0.957,0,1.871-0.193,2.62-0.844    c0.797-0.693,1.157-1.596,1.157-2.643c0.001-7.533,0.003-15.067-0.005-22.601c-0.002-0.309,0.088-0.524,0.3-0.743    C43.098,14.598,44.127,13.49,45.201,12.343"></path>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M41.402,8.822c-0.99,1.027-1.994,2.021-2.935,3.072    c-0.312,0.35-0.616,0.416-1.036,0.415c-6.98-0.009-13.957-0.007-20.938-0.007c-2.039,0-3.561,1.514-3.561,3.557    c0,6.504,0.002,13.008,0.006,19.512c0.002,0.973,0.011,1.943,0.004,2.914c0,0.133-0.04,0.301-0.127,0.393    c-1.069,1.162-2.15,2.314-3.229,3.469c-0.021,0.023-0.052,0.039-0.109,0.08c-0.159-0.188-0.323-0.369-0.471-0.562    c-2.535-3.348-4.119-7.102-4.605-11.268c-0.61-5.229,0.194-10.229,2.835-14.839c2.669-4.664,6.655-7.805,11.618-9.75    c3.205-1.257,6.533-1.852,9.977-1.621c4.478,0.298,8.553,1.754,12.227,4.325c0.101,0.072,0.197,0.151,0.291,0.229    C41.364,8.755,41.374,8.778,41.402,8.822"></path>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M39.799,12.47c0.873-0.911,1.749-1.829,2.676-2.797    c0.605,0.564,1.195,1.112,1.816,1.691c-0.941,0.985-1.817,1.903-2.703,2.83c-0.276-0.339-0.511-0.688-0.807-0.975    C40.492,12.941,40.145,12.728,39.799,12.47"></path>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M10.35,43.279c0.969-1.016,1.885-1.977,2.76-2.893    c0.213,0.369,0.376,0.762,0.639,1.072c0.265,0.312,0.627,0.539,0.98,0.832c-0.853,0.891-1.713,1.791-2.624,2.746    C11.513,44.445,10.939,43.869,10.35,43.279"></path>
+	</g>
+</g>
+</svg>
+
+<span>About</span>
+</a></li>
+<li class='acct_links desktop-hide'>
+<a class="login-button" href="/users/auth/saml">Cisco Login
+</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<input class='nav-trigger' id='nav-trigger' type='checkbox'>
+<label for='nav-trigger'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="16px" viewBox="0 0 22 16">
+<g id="menu-icon">
+	<path fill="#FFFFFF" d="M20.5,3h-19C0.672,3,0,2.329,0,1.5S0.672,0,1.5,0h19C21.328,0,22,0.671,22,1.5S21.328,3,20.5,3z"></path>
+	<path fill="#FFFFFF" d="M20.5,9.5h-19C0.672,9.5,0,8.828,0,8c0-0.829,0.672-1.5,1.5-1.5h19C21.328,6.5,22,7.171,22,8   C22,8.828,21.328,9.5,20.5,9.5z"></path>
+	<path fill="#FFFFFF" d="M20.5,16h-19C0.672,16,0,15.328,0,14.5S0.672,13,1.5,13h19c0.828,0,1.5,0.672,1.5,1.5S21.328,16,20.5,16z"></path>
+</g>
+</svg>
+</label>
+
+  <div id="page_wrapper">
+    <small>
+      <p class="success"></p>
+
+      <p class="error"></p>
+    </small>
+    <div class="container-fluid full-height">
+  <div class="row full-height">
+    <div class="col-xs-12 col_single">
+      <div class="row">
+        <div class="col-xs-12 report">
+          <h1>Talos Vulnerability Report</h1>
+
+          <h3 class="report_id">TALOS-2022-1619</h3>
+
+          <h2>Moxa SDS-3008 Series Industrial Ethernet Switch web application stored cross-site scripting vulnerability</h2>
+
+              <h5 class="date_time">February  2, 2023</h5>
+
+              <h5>CVE Number</h5>
+              <p>CVE-2022-41313,CVE-2022-41311,CVE-2022-41312</p>
+
+            <div><h5 id="summary">SUMMARY</h5>
+
+<p>A stored cross-site scripting vulnerability exists in the web application functionality of Moxa SDS-3008 Series Industrial Ethernet Switch 2.1. A specially-crafted HTTP request can lead to arbitrary Javascript execution. An attacker can send an HTTP request to trigger this vulnerability.</p>
+
+<h5 id="confirmed-vulnerable-versions">CONFIRMED VULNERABLE VERSIONS</h5>
+
+<p>The versions below were either tested or verified to be vulnerable by Talos or confirmed to be vulnerable by the vendor.</p>
+
+<p>Moxa SDS-3008 Series Industrial Ethernet Switch 2.1</p>
+
+<h5 id="product-urls">PRODUCT URLS</h5>
+
+<p>SDS-3008 Series Industrial Ethernet Switch - <a href="https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-smart-switches/sds-3008-series">https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-smart-switches/sds-3008-series</a></p>
+
+<h5 id="cvssv3-score">CVSSv3 SCORE</h5>
+
+<p>4.3 - CVSS:3.0/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:L/A:L</p>
+
+<h5 id="cwe">CWE</h5>
+
+<p>CWE-79 - Improper Neutralization of Input During Web Page Generation (‘Cross-site Scripting’)</p>
+
+<h5 id="details">DETAILS</h5>
+
+<p>The SDS-3008 is an 8-port smart Ethernet switch designed for industrial environments. In addition to standard smart switch functionality such as IEEE 802.1Q VLAN, port mirroring and SNMP, the SDS-3008 also implements variations of EtherNet/IP, PROFINET and Modbus TCP to support management functions. The switch is primarily managed via a web application.</p>
+
+<p>Multiple fields in the Switch Information section of the web application are vulnerable to stored cross-site scripting (XSS) exploits. An attacker can exploit these vulnerabilities to store malicious JavaScript, which would be executed by the web browser of all other users of the application. Potential attacks may include stealing session tokens, displaying false information and denying access to the application by clearing other user’s cookies.</p>
+
+<h4 id="cve-2022-41311---switch-location">CVE-2022-41311 - Switch Location</h4>
+
+<p>The Switch Location field (id=”webLocationMessage_text” name=”webLocationMessage_text”) in the Switch Information section of the web application is vulnerable to stored cross-site scripting exploits.</p>
+
+<h4 id="exploit-proof-of-concept">Exploit Proof of Concept</h4>
+
+<p>The following input in teh Switch Location field will result in stored JavaScript, which will be executed by the browser when the page is loaded.</p>
+
+<pre><code>&lt;script&gt;alert("XSS")//
+</code></pre>
+
+<h4 id="cve-2022-41312---switch-description">CVE-2022-41312 - Switch Description</h4>
+
+<p>The Switch Description field (name=”switch_description”) in the Switch Information section of the web application is vulnerable to stored cross-site scripting exploits.</p>
+
+<p>The field is enclosed in SCRIPT tags and includes the default text “SDS-3008”:</p>
+
+<pre><code>&lt;script&gt;document.switch_information_form.switch_description.value="SDS-3008";&lt;/script&gt;
+</code></pre>
+
+<h4 id="exploit-proof-of-concept-1">Exploit Proof of Concept</h4>
+
+<p>The following input in the Switch Description field will result in stored JavaScript, which will be executed by the browser when the page is loaded.</p>
+
+<pre><code>\";alert('XSS');//
+</code></pre>
+
+<h4 id="cve-2022-41313---contact-information">CVE-2022-41313 - Contact Information</h4>
+
+<p>The Contact Information field (name=”switch_contact”) in the Switch Information section of the web application is vulnerable to stored cross-site scripting exploits.</p>
+
+<p>The field is enclosed in SCRIPT tags:</p>
+
+<pre><code>&lt;script&gt;document.switch_information_form.switch_contact.value="";&lt;/script&gt;
+</code></pre>
+
+<h4 id="exploit-proof-of-concept-2">Exploit Proof of Concept</h4>
+
+<p>The following input in the Contact Information field will result in stored JavaScript, which will be executed by the browser when the page is loaded.</p>
+
+<pre><code>\";alert('XSS');//
+</code></pre>
+
+<h5 id="timeline">TIMELINE</h5>
+
+<p>2022-10-14 - Vendor Disclosure  <br />
+2022-10-14 - Initial Vendor Contact  <br />
+2023-02-02 - Public Release  <br />
+2023-02-02 - Vendor Patch Release</p>
+
+</div>
+
+            <h5>Credit</h5>
+            <p>Discovered by Patrick DeSantis of Cisco Talos.</p>
+
+
+          <hr/>
+          <div class="text-center button_area">
+            <a class="pull-left" href="/vulnerability_reports">
+                <button>Vulnerability Reports</button>
+</a>              <a class="pull-right" href="/vulnerability_reports/TALOS-2022-1618">
+                <button>Next Report</button>
+                <p class="report-button-helper">TALOS-2022-1618</p>
+</a>              <a class="pull-right" href="/vulnerability_reports/TALOS-2022-1617">
+                <button>Previous Report</button>
+                <p class="report-button-helper">TALOS-2022-1617</p>
+</a>          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  </div>
+
+<footer id='footer'>
+<div class='row footer_nav_wrapper'>
+<div class='col-lg-10 col-md-9 col-sm-12'>
+<div class='multi-col-list-wrapper'>
+<ul>
+<li><a href="/software">Software</a></li>
+<li><a href="/reputation_center">Reputation Center</a></li>
+<li><a href="/vulnerability_info">Vulnerability Information</a></li>
+<li><a href="/ms_advisories">Microsoft Advisory Snort Rules</a></li>
+<li><a href="/incident_response">Incident Response</a></li>
+<li><a href="/amp-naming">Secure Endpoint Naming Conventions</a></li>
+<li><a href="/talos_file_reputation">Talos File Reputation</a></li>
+<li><a href="/resources">Library</a></li>
+<li><a href="/support">Support</a></li>
+<li><a href="/about">About</a></li>
+<li><a href="/careers">Careers</a></li>
+<li><a href="https://blog.talosintelligence.com">Talos Blog</a></li>
+<li><a href="/newsletters">Threat Source Newsletter</a></li>
+<li><a href="/podcasts/shows/beers_with_talos">Beers with Talos Podcast</a></li>
+<li><a href="/podcasts/shows/talos_takes">Talos Takes Podcast</a></li>
+</ul>
+</div>
+</div>
+<div class='col-lg-2 col-md-3 col-sm-12 connect_social'>
+<h5>Connect with us</h5>
+<ul>
+<li>
+<a target="_blank" href="https://twitter.com/talossecurity"><img alt="Follow us on Twitter" src="/assets/footer_icon_tw-c509a7319882263bb32fbddd05eb2be24480c9ce6c30f66c02a6bc678421442f.svg" />
+</a></li><li>
+<a target="_blank" href="https://www.youtube.com/channel/UCPZ1DtzQkStYBSG3GTNoyfg/featured"><img alt="Watch our informational videos on YouTube" src="/assets/footer_icon_yt-c2674d42a1988be18992fb35462339eff13577c4860dfce91330b055b4f50661.svg" />
+</a></li><li>
+<a target="_blank" href="https://www.linkedin.com/company/cisco-talos-intelligence-group/"><img alt="Connect with us on LinkedIn" src="/assets/footer_icon_li-a47b99700e90f49cac61cfc41abe079ec1c8d61d68f035663c9e8f6be2131535.svg" />
+</a></li></ul>
+</div>
+</div>
+<div class='row'>
+<div class='col-xs-12 footer_corporate'>
+<a target="_blank" href="https://tools.cisco.com/security/center/home.x"><img alt="Cisco" src="/assets/logo_cisco_white-d87b7f7d3152ad412e48aad924a972cc5b802b7a53cb56b0792a4456c9b7b3a5.svg" />
+</a><p class='copyright'>
+&copy;
+2023
+Cisco Systems, Inc. and/or its affiliates. All rights
+reserved. View our
+<a target="_blank" class="underline" href="https://www.cisco.com/web/siteassets/legal/privacy_full.html">Privacy Policy.</a>
+</p>
+</div>
+</div>
+</footer>
+
+<!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+      a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','nzhct');
+  twq('track','PageView');
+</script>
+<!-- End Twitter universal website tag code -->
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993" integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA==" data-cf-beacon='{"rayId":"79989f303d431845","token":"35f8ae698f9d471b83b846a751388737","version":"2023.2.0","si":100}' crossorigin="anonymous"></script>
+</body>
+</html>

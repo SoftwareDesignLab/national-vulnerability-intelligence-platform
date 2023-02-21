@@ -1,35 +1,39 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.junit.Test;
 
-import edu.rit.se.nvip.crawler.CveCrawler;
-import edu.rit.se.nvip.model.CompositeVulnerability;
-import edu.rit.se.nvip.model.Vulnerability;
-import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.PropertyLoader;
-import edu.rit.se.nvip.utils.UtilHelper;
+import java.util.List;
 
-public class TalosIntelligenceParserTest {
+import static org.junit.Assert.*;
+
+public class TalosIntelligenceParserTest extends AbstractParserTest {
 
 	@Test
-	public void testTalosIntelligence() throws IOException {
+	public void testTalosIntelligence() {
+		String html = safeReadHtml("src/test/resources/test-talos.html");
+		List<CompositeVulnerability> list = new TalosIntelligenceParser("talosintelligence").parseWebPage("talosintelligence", html);
+		assertEquals(1, list.size());
+		CompositeVulnerability vuln = list.get(0);
+		assertEquals("CVE-2022-40224", vuln.getCveId());
+		assertEquals("2022/10/14 00:00:00", vuln.getPublishDate());
+		assertTrue(vuln.getDescription().contains("A denial of service vulnerability exists"));
+		assertTrue(vuln.getDescription().contains("An HTTP request to port 443"));
+		assertFalse(vuln.getDescription().contains("Discovered by Patrick"));
+	}
 
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-		
-		CveCrawler crawler = new CveCrawler(propertiesNvip);
-		String html = FileUtils.readFileToString(new File("src/test/resources/test-talos.html"));
-		List<CompositeVulnerability> list = crawler.parseWebPage("talosintelligence", html);
-		assertEquals(true, list.size()>0);
+
+	@Test
+	public void testTalosIntelligence2() {
+		String html = safeReadHtml("src/test/resources/test-talos-2.html");
+		List<CompositeVulnerability> list = new TalosIntelligenceParser("talosintelligence").parseWebPage("talosintelligence", html);
+		assertEquals(3, list.size());
+		CompositeVulnerability vuln = getVulnerability(list, "CVE-2022-41313");
+		assertNotNull(vuln);
+		assertEquals("2022/10/14 00:00:00", vuln.getPublishDate());
+		assertTrue(vuln.getDescription().contains("The SDS-3008 is an 8-port smart Ethernet switch"));
+		assertTrue(vuln.getDescription().contains("A stored cross-site scripting vulnerability"));
+		assertFalse(vuln.getDescription().contains("The following input in"));
 	}
 
 }

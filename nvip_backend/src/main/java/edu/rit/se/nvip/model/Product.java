@@ -23,7 +23,6 @@
  */
 package edu.rit.se.nvip.model;
 
-import edu.rit.se.nvip.crawler.htmlparser.CveParserInterface;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +33,7 @@ import java.util.regex.Pattern;
  *
  */
 public class Product {
+	private final String regexVersionInfo = "(?:(\\d+\\.(?:\\d+\\.)*\\d+))";
 	private final String domain;
 	private final String cpe;
 	private final int prodId;
@@ -63,7 +63,7 @@ public class Product {
 	}
 
 	public String getVersion() {
-		Pattern pattern = Pattern.compile(CveParserInterface.regexVersionInfo);
+		Pattern pattern = Pattern.compile(regexVersionInfo);
 		Matcher matcher = pattern.matcher(this.domain);
 		if (matcher.find())
 			return matcher.group();
