@@ -25,4 +25,4 @@ COPY --from=builder /home/app/target/nvip_lib /usr/local/lib/nvip_lib
 COPY --from=builder /home/app/target/nvip-1.0.jar /usr/local/lib/nvip-1.0.jar
 
 WORKDIR /usr/local/lib/
-ENTRYPOINT ["java", "-jar", "nvip-1.0.jar"]
+ENTRYPOINT ["java", "-cp", "nvip-1.0.jar:nvip_lib/*", "edu.rit.se.nvip.NVIPMain"]

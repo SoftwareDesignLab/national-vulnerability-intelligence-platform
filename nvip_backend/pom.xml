@@ -43,19 +43,47 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>edu.rit.se.nvip.NVIPMain</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<appendAssemblyId>false</appendAssemblyId>
-				</configuration>
+				<!--Copy Dependencies into nvip_lib Folder for Docker User-->
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/nvip_lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+				<!-- Removed FAT Jar for the time being in favor of adding libs to classpath -->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-assembly-plugin</artifactId>-->
+<!--				<version>3.1.1</version>-->
+<!--				<configuration>-->
+<!--					<descriptorRefs>-->
+<!--						<descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--					</descriptorRefs>-->
+
+<!--					<archive>-->
+<!--						<manifest>-->
+<!--							<mainClass>edu.rit.se.nvip.NVIPMain</mainClass>-->
+<!--						</manifest>-->
+<!--					</archive>-->
+<!--					<appendAssemblyId>false</appendAssemblyId>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>make-assembly</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>single</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
