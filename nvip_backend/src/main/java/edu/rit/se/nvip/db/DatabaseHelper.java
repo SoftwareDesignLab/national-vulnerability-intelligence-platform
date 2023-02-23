@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -192,6 +193,53 @@ public class DatabaseHelper {
 		}
 
 		String configFile = "db-" + databaseType + ".properties";
+
+		if(config == null){
+			logger.info("Attempting to create HIKARI from ENVVARs");
+			config = createHikariConfigFromEnvironment(configFile);
+		}
+
+		if(config == null){
+			config = createHikariConfigFromProperties(configFile);
+		}
+
+		try {
+
+			dataSource = new HikariDataSource(config); // init data source
+		} catch (PoolInitializationException e2) {
+			logger.error("Error initializing data source! Check the value of the database user/password in the config file '{}'! Current values are: {}", configFile, config.getDataSourceProperties());
+			System.exit(1);
+
+		}
+	}
+
+	private HikariConfig createHikariConfigFromEnvironment(String configFile) {
+
+		String url = System.getenv("HIKARI_URL");
+
+		HikariConfig hikariConfig;
+
+		if (url != null){
+			logger.info("Creating HikariConfig with url={}", url);
+			hikariConfig = new HikariConfig();
+			hikariConfig.setJdbcUrl(url);
+			hikariConfig.setUsername(System.getenv("HIKARI_USER"));
+			hikariConfig.setPassword(System.getenv("HIKARI_PASSWORD"));
+
+			System.getenv().entrySet().stream()
+					.filter(e -> e.getKey().startsWith("HIKARI_"))
+					.peek(e -> logger.info("Setting {} to HikariConfig", e.getKey()))
+					.forEach(e -> hikariConfig.addDataSourceProperty(e.getKey(), e.getValue()));
+
+		} else {
+			hikariConfig = null;
+		}
+
+		return hikariConfig;
+	}
+
+	private HikariConfig createHikariConfigFromProperties(String configFile) {
+		HikariConfig config;
 		try {
 			Properties props = new Properties();
 			try {
@@ -216,16 +264,10 @@ public class DatabaseHelper {
 		} catch (Exception e1) {
 			logger.warn("Could not load db.properties(" + configFile + ") from src/main/resources! Looking at the root path now!");
 			config = new HikariConfig("db-" + databaseType + ".properties"); // in the production system get it from the
-																				// root dir
+			// root dir
 		}
 
-		try {
-			dataSource = new HikariDataSource(config); // init data source
-		} catch (PoolInitializationException e2) {
-			logger.error("Error initializing data source! Check the value of the database user/password in the config file '{}'! Current values are: {}", configFile, config.getDataSourceProperties());
-			System.exit(1);
-
-		}
+		return config;
 	}
 
 	/**
