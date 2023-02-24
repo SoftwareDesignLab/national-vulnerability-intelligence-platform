@@ -127,7 +127,7 @@ public class DatabaseHelper {
 
 	private final String insertProductSql = "INSERT INTO product (CPE, domain) VALUES (?, ?);";
 	private final String getProductCountFromCpeSql = "SELECT count(*) from product where cpe = ?";
-	private final String getIdFromCpe = "SELECT * FROM nvip.product where cpe = ?;";
+	private final String getIdFromCpe = "SELECT * FROM product where cpe = ?;";
 
 	private final String getPatchSourceByIdSql = "SELECT source_url_id from patchsourceurl WHERE source_url = ?;";
 	private final String insertPatchSourceURLSql = "INSERT INTO patchsourceurl (vuln_id, source_url) VALUES (?, ?);";
@@ -144,7 +144,7 @@ public class DatabaseHelper {
 	private final String insertAffectedReleaseSql = "INSERT INTO affectedrelease (cve_id, product_id, release_date, version) VALUES (?, ?, ?, ?);";
 
 	private final String insertVulnerabilityUpdateSql = "INSERT INTO vulnerabilityupdate (vuln_id, column_name, column_value, run_id) VALUES (?,?,?,?);";
-	private final String selectVulnerabilityIdSql = "SELECT vuln_id FROM nvip.vulnerability WHERE cve_id = ?";
+	private final String selectVulnerabilityIdSql = "SELECT vuln_id FROM vulnerability WHERE cve_id = ?";
 	private final String selectCVEIdSql = "SELECT cve_id FROM vulnerability WHERE vuln_id = ?";
 
 	private final String selectVdoLabelSql = "SELECT * FROM vdolabel;";
@@ -1255,7 +1255,7 @@ public class DatabaseHelper {
 			pstmt.setInt(9, dailyRun.getUpdatedCveCount());
 			pstmt.executeUpdate();
 
-			String maxRunIdSQL = "SELECT max(run_id) as run_id FROM nvip.dailyrunhistory";
+			String maxRunIdSQL = "SELECT max(run_id) as run_id FROM dailyrunhistory";
 			rs = stmt.executeQuery(maxRunIdSQL);
 			if (rs.next()) {
 				maxRunId = rs.getInt("run_id");
@@ -1764,7 +1764,7 @@ public class DatabaseHelper {
 	} // updateVuln
 
 	public int getMaxRunId() {
-		String maxRunIdSQL = "SELECT max(run_id) as run_id FROM nvip.dailyrunhistory";
+		String maxRunIdSQL = "SELECT max(run_id) as run_id FROM dailyrunhistory";
 		try (Connection connection = getConnection(); ResultSet rs = connection.createStatement().executeQuery(maxRunIdSQL);) {
 			int maxRunId = 0;
 			if (rs.next())
