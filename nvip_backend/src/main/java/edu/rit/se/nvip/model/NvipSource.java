@@ -43,6 +43,10 @@ public class NvipSource {
 		this.sourceId = sourceId;
 	}
 
+	public int getSourceId() {
+		return this.sourceId;
+	}
+
 	public String getUrl() {
 		return url;
 	}
