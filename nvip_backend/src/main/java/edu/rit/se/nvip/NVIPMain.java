@@ -73,10 +73,34 @@ import edu.rit.se.nvip.utils.UtilHelper;
  */
 public class NVIPMain {
 	private static final Logger logger = LogManager.getLogger(NVIPMain.class);
-	private static DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+	private static DatabaseHelper databaseHelper = null;
 	private static MyProperties properties = null;
 
 	static String[] commandLineArgs = null;
+
+	public NVIPMain(boolean setDB) {
+		// load properties file
+		properties = new MyProperties();
+		properties = new PropertyLoader().loadConfigFile(properties);
+
+		UtilHelper.initLog4j(properties);
+
+		printProperties(properties); // print system params
+
+		// check required data directories
+		checkDataDirs(properties);
+
+		if (setDB) {
+			// get sources from the file or the database
+			databaseHelper = DatabaseHelper.getInstance();
+
+			if (!databaseHelper.testDbConnection()) {
+				String configFile = "src/main/resources/db-" + properties.getDatabaseType() + ".properties";
+				logger.error("Error in database connection! Please check if the database configured in {} is up and running!", configFile);
+				System.exit(1);
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		boolean refreshNvdCveList = true;
@@ -84,7 +108,7 @@ public class NVIPMain {
 		CveLogDiff cveLogger = new CveLogDiff(properties);
 
 		// start nvip
-		NVIPMain nvipMain = new NVIPMain();
+		NVIPMain nvipMain = new NVIPMain(false);
 		List<String> urls = nvipMain.startNvip();
 		if (refreshNvdCveList) {
 			logger.info("Refreshing NVD feeds before running NVIP...");
@@ -144,31 +168,13 @@ public class NVIPMain {
 	public List<String> startNvip() {
 		List<String> urls = new ArrayList<>();
 		try {
-			// load properties file
-			properties = new MyProperties();
-			properties = new PropertyLoader().loadConfigFile(properties);
 
-			UtilHelper.initLog4j(properties);
-
-			printProperties(properties); // print system params
-
-			// check required data directories
-			checkDataDirs(properties);
-
-			// get sources from the file or the database
-			DatabaseHelper db = DatabaseHelper.getInstance();
-
-			if (!db.testDbConnection()) {
-				String configFile = "src/main/resources/db-" + properties.getDatabaseType() + ".properties";
-				logger.error("Error in database connection! Please check if the database configured in {} is up and running!", configFile);
-				System.exit(1);
-			}
 
 			if (commandLineArgs.length > 0) {
 				urls = FileUtils.readLines(new File(commandLineArgs[0]));
 				logger.info("Loaded {} source URLs from file {}, running NVIP in test mode!", urls.size(), commandLineArgs[0]);
 			} else {
-				List<NvipSource> sources = db.getNvipCveSources();
+				List<NvipSource> sources = databaseHelper.getNvipCveSources();
 				if (sources.isEmpty())
 					logger.error("No source URLs in the database to crawl! Please make sure to include at least one source URL in the 'nvipsourceurl' table!");
 
@@ -260,7 +266,7 @@ public class NVIPMain {
 				count, list.size());
 
 		/**
-		 * crawl CVE from CNAs
+		 * Crawl CVE from CNAs
 		 */
 		logger.info("Starting the NVIP crawl process now to look for CVEs at {} locations with {} threads...",
 				urls.size(), properties.getNumberOfCrawlerThreads());
@@ -349,7 +355,7 @@ public class NVIPMain {
 	 * @param cveHashMapAll
 	 * @return
 	 */
-	private HashMap<String, List<Object>> processCVEs(HashMap<String, CompositeVulnerability> cveHashMapAll) {
+	public HashMap<String, List<Object>> processCVEs(HashMap<String, CompositeVulnerability> cveHashMapAll) {
 		// process
 		logger.info("Comparing CVES against NVD & MITRE..");
 		String cveDataPathNvd = properties.getDataDir() + "/nvd-cve.csv";
