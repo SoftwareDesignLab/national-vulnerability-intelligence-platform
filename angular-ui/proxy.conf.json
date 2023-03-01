@@ -1,8 +1,9 @@
 {
     "/nvip_ui-1.0/*": {
-    "target": "http://localhost:8080",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
+      "target": "http://ec2-3-234-206-219.compute-1.amazonaws.com:8080/",
+      "pathRewrite": { "^/nvip_ui-1.0": "" },
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
   }
 }
