@@ -52,6 +52,7 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 	/**
 	 * insert CPE products identified by the loader into the database
+	 * TODO: Should be in DB Helper
 	 */
 	private int insertNewCpeItemsIntoDatabase() {
 		CpeLookUp cpeLookUp = CpeLookUp.getInstance();
@@ -68,14 +69,14 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 	// run process
 	public void run() {
-		identifyAffectedReleases(vulnList);
+		identifyAffectedReleases();
 	}
 
-	public int identifyAffectedReleases(List<CompositeVulnerability> vulnList) {
+	public int identifyAffectedReleases() {
 		logger.info("Starting to identify affected products for " + vulnList.size() + " CVEs.");
 		long start = System.currentTimeMillis();
 
-		DetectProducts productNameDetector = null;
+		DetectProducts productNameDetector;
 		try {
 			productNameDetector = DetectProducts.getInstance();
 		} catch (Exception e1) {
@@ -108,7 +109,7 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 				continue; // skip the ones without a description
 			}
 
-			// if a CVE did did change, no need to extract products, assuming they are
+			// if a CVE did change, no need to extract products, assuming they are
 			// already in DB!!
 			if (vulnerability.getCveReconcileStatus() == CompositeVulnerability.CveReconcileStatus.DO_NOT_CHANGE) {
 				counterOfSkippedCVEs++;
@@ -119,7 +120,6 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 			if (counterOfProcessedCVEs > 1000)
 				break;
-			
 
 			long startCVETime = System.currentTimeMillis();
 			try {
@@ -135,7 +135,7 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 				// if no products found by crawlers, use AI/ML model to extract product/version
 				// from text
-				if (vulnerability.getAffectedReleases().isEmpty()) {
+				if (vulnerability.getAffectedReleases() == null || vulnerability.getAffectedReleases().isEmpty()) {
 
 					// Time measurement
 					long startNERTime = System.currentTimeMillis();
@@ -185,6 +185,7 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 					}
 
 					// set platform string
+					// TODO change this so it actually adds something to platform
 					vulnerability.setPlatform("");
 
 				}
@@ -206,10 +207,21 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 		logger.info("Extracted product(s) for {} out of {} CVEs so far! {} CVEs skipped, bc they are flagged as 'not-changed' by reconciliation process", counterOfProcessedCVEs, totalCVEtoProcess,
 				counterOfSkippedCVEs);
 
+		insertAffectedProductsToDB(vulnList);
+
+		return numOfProductsMappedToCpe;
+
+	}
+
+	/**
+	 * Store affected products in DB
+	 * TODO: This should be in DB Helper
+	 * @param vulnList
+	 */
+	public void insertAffectedProductsToDB(List<CompositeVulnerability> vulnList) {
 		// refresh db conn, it might be timed out if the process takes so much time!
 		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
-
-		int productCount = insertNewCpeItemsIntoDatabase();
+		insertNewCpeItemsIntoDatabase();
 
 		// get all identified affected releases
 		List<AffectedRelease> listAllAffectedReleases = new ArrayList<>();
@@ -225,19 +237,17 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 		// now insert affected releases (referenced products are already in db)
 		databaseHelper.insertAffectedReleasesV2(listAllAffectedReleases);
 
-		long elapsedTime = (System.currentTimeMillis() - start) / 1000;
-		logger.info("Done! Identified affected products for {} CVEs! Elapsed time : {} seconds.", vulnList.size(), elapsedTime);
-		logger.info("# of new CPE products identified: {}. # of products extracted from CVE descriptions and mapped to CPE items: {}", productCount, numOfProductsMappedToCpe);
+		//long elapsedTime = (System.currentTimeMillis() - start) / 1000;
+		//logger.info("Done! Identified affected products for {} CVEs! Elapsed time : {} seconds.", vulnList.size(), elapsedTime);
+		//logger.info("# of new CPE products identified: {}. # of products extracted from CVE descriptions and mapped to CPE items: {}", productCount, numOfProductsMappedToCpe);
 
 		// prepare CVE summary table for Web UI
+		// TODO: This should be in NVIPMAIN
 		logger.info("Preparing CVE summary table for Web UI...");
 		PrepareDataForWebUi cveDataForWebUi = new PrepareDataForWebUi();
 		cveDataForWebUi.prepareDataforWebUi();
 
 		databaseHelper.shutdown();
-
-		return numOfProductsMappedToCpe;
-
 	}
 
 }

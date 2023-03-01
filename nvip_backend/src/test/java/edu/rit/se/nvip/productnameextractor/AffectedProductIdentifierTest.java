@@ -29,11 +29,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * Test AffectedProductIdentifier
  * @author axoeec
- *
  */
 
 public class AffectedProductIdentifierTest {
@@ -43,9 +44,6 @@ public class AffectedProductIdentifierTest {
 	 */
 	@Test
 	public void affectedProductIdentifierTest() {
-
-		//String description = "--- Test CVE -- An attacker can exploit phpMyAdmin before 4.8.4 to leak the contents of a local file because of an error in the transformation feature. The attacker must have access to the phpMyAdmin Configuration Storage tables, although these can easily be created in any database to which the attacker has access. An attacker must have valid credentials to log in to phpMyAdmin; this vulnerability does not allow an attacker to circumvent the login system.";
-
 		String description = "A relative path traversal vulnerability has been reported to affect QNAP NAS running QTS and QuTS hero. If exploited, this vulnerability allows attackers to modify files that impact system integrity. QNAP have already fixed this vulnerability in the following versions: QTS 4.5.2.1630 Build 20210406 and later QTS 4.3.6.1663 Build 20210504 and later QTS 4.3.3.1624 Build 20210416 and later QuTS hero h4.5.2.1638 Build 20210414 and later QNAP NAS running QTS 4.5.3 are not affected";
 		List<CompositeVulnerability> vulnList = new ArrayList<CompositeVulnerability>();
 		CompositeVulnerability v = new CompositeVulnerability(0, null, "CVE-2021-28798", "", null, null, description, null);
@@ -53,10 +51,12 @@ public class AffectedProductIdentifierTest {
 		vulnList.add(v);
 
 		AffectedProductIdentifier affectedProductIdentifier = new AffectedProductIdentifier(vulnList);
-		int count = affectedProductIdentifier.identifyAffectedReleases(vulnList);
+		int count = affectedProductIdentifier.identifyAffectedReleases();
 
-		assertTrue((count > 0));
+		System.out.println(v.getAffectedReleases());
 
+		assertTrue((v.getAffectedReleases().size() > 0));
+		assertEquals(v.getAffectedReleases().size(), count);
 	}
 
 }
