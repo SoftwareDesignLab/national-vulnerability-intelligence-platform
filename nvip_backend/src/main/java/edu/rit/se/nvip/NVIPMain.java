@@ -23,7 +23,9 @@
  */
 package edu.rit.se.nvip;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Array;
 import java.text.DecimalFormat;
@@ -58,6 +60,7 @@ import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.NlpUtil;
 import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.rit.se.nvip.utils.UtilHelper;
+import org.python.antlr.ast.Str;
 
 /**
  * 
@@ -109,7 +112,7 @@ public class NVIPMain {
 		CveLogDiff cveLogger = new CveLogDiff(properties);
 
 		// start nvip
-		NVIPMain nvipMain = new NVIPMain(false);
+		NVIPMain nvipMain = new NVIPMain(true);
 		List<String> urls = nvipMain.startNvip();
 		if (refreshNvdCveList) {
 			logger.info("Refreshing NVD feeds before running NVIP...");
@@ -173,12 +176,32 @@ public class NVIPMain {
 				urls = FileUtils.readLines(new File(commandLineArgs[0]));
 				logger.info("Loaded {} source URLs from file {}, running NVIP in test mode!", urls.size(), commandLineArgs[0]);
 			} else {
-				List<NvipSource> sources = databaseHelper.getNvipCveSources();
-				if (sources.isEmpty())
+				List<NvipSource> dbsources = databaseHelper.getNvipCveSources();
+				if (dbsources.isEmpty())
 					logger.error("No source URLs in the database to crawl! Please make sure to include at least one source URL in the 'nvipsourceurl' table!");
 
-				for (NvipSource nvipSource : sources)
+				for (NvipSource nvipSource : dbsources)
 					urls.add(nvipSource.getUrl());
+
+				File seeds = properties.getSeedURLS();
+				BufferedReader seedReader = new BufferedReader(new FileReader(seeds));
+				List<String> seedURLs = new ArrayList<>();
+				logger.info("Loading the following urls: ");
+
+				String url = "";
+				while (url != null) {
+					System.out.println(url);
+					seedURLs.add(url);
+					url = seedReader.readLine();
+				}
+
+				logger.info("Loaded {} seed URLS from {}", seedURLs.size(), seeds.getAbsolutePath());
+
+				for (String seedURL : seedURLs) {
+					if (!urls.contains(seedURL))
+						urls.add(seedURL);
+				}
+
 				logger.info("Loaded {} source URLs from database!", urls.size());
 			}
 
@@ -261,7 +284,7 @@ public class NVIPMain {
 				count++;
 				cveHashMapGithub.put(vuln.getCveId(), vuln);
 			}
-		logger.info("{} of {} CVEs found in the CNA summary pages did not exist in the Mitre GitHub repo.",
+		logger.info("{} of {} CVEs found in the CNA summary pages did not xist in the Mitre GitHub repo.",
 				count, list.size());
 
 		/**
@@ -372,7 +395,6 @@ public class NVIPMain {
 	 */
 	private List<CompositeVulnerability> reconcileCVEs(HashMap<String, List<Object>> cveListMap) {
 		List<CompositeVulnerability> crawledVulnerabilityList = cveListMap.get("all").stream().map(e -> (CompositeVulnerability) e).collect(Collectors.toList());
-		databaseHelper = DatabaseHelper.getInstance();
 		identifyNewOrUpdatedCve(crawledVulnerabilityList, databaseHelper, properties);
 
 		return crawledVulnerabilityList;

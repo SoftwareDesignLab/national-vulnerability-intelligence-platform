@@ -23,6 +23,7 @@
  */
 package edu.rit.se.nvip.utils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -38,6 +39,10 @@ import java.util.Properties;
 
 public class MyProperties extends Properties {
 	private static final long serialVersionUID = 1L;
+
+	public File getSeedURLS() {
+		return new File(getProperty("dataDir") + "/" + getProperty("seedURLs"));
+	}
 
 	public int getNumberOfCrawlerThreads() {
 		return Integer.parseInt(getProperty("numberOfCrawlerThreads"));

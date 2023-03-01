@@ -82,7 +82,7 @@ public class CveCrawlController {
 			CrawlController delayedController = getCrawlController(crawlStorageFolder2, propertiesNvip.getDelayedCrawlerPoliteness());
 
 			logger.info("Controllers initialized. Adding {} seed urls to crawl controller...", urls.size());
-			// add seed urls
+
 			int count = 0, countDelayed = 0;
 			for (String url : urls) {
 				if (UtilHelper.isDelayedUrl(url)) {
