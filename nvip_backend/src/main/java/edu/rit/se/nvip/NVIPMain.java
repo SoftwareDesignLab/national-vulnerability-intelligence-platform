@@ -25,6 +25,7 @@ package edu.rit.se.nvip;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
@@ -76,7 +77,7 @@ public class NVIPMain {
 	private static DatabaseHelper databaseHelper = null;
 	private static MyProperties properties = null;
 
-	static String[] commandLineArgs = null;
+	static String[] commandLineArgs = new String[1];
 
 	public NVIPMain(boolean setDB) {
 		// load properties file
@@ -168,8 +169,6 @@ public class NVIPMain {
 	public List<String> startNvip() {
 		List<String> urls = new ArrayList<>();
 		try {
-
-
 			if (commandLineArgs.length > 0) {
 				urls = FileUtils.readLines(new File(commandLineArgs[0]));
 				logger.info("Loaded {} source URLs from file {}, running NVIP in test mode!", urls.size(), commandLineArgs[0]);
@@ -244,7 +243,7 @@ public class NVIPMain {
 	 * @param urls
 	 * @return
 	 */
-	private HashMap<String, CompositeVulnerability> crawlCVEs(List<String> urls) {
+	protected HashMap<String, CompositeVulnerability> crawlCVEs(List<String> urls) {
 		/**
 		 * scrape CVEs from CVE Automation Working Group Git Pilot (CVEProject.git)
 		 */
