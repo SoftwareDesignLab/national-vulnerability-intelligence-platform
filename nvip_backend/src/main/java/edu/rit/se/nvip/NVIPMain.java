@@ -294,9 +294,8 @@ public class NVIPMain {
 	 * @param cveHashMapScrapedFromCNAs
 	 * @return
 	 */
-	private HashMap<String, CompositeVulnerability> mergeCVEsDerivedFromCNAsAndGit(HashMap<String, CompositeVulnerability> cveHashMapGithub,
+	public HashMap<String, CompositeVulnerability> mergeCVEsDerivedFromCNAsAndGit(HashMap<String, CompositeVulnerability> cveHashMapGithub,
 																				   HashMap<String, CompositeVulnerability> cveHashMapScrapedFromCNAs) {
-
 		logger.info("Merging {} scraped CVEs with {} Github", cveHashMapScrapedFromCNAs.size(), cveHashMapGithub.size());
 		final String reservedStr = "** RESERVED **";
 		HashMap<String, CompositeVulnerability> cveHashMapAll = new HashMap<>(); // merged CVEs
