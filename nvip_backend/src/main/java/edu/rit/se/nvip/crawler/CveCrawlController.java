@@ -57,6 +57,8 @@ public class CveCrawlController {
 
 	public CveCrawlController(MyProperties propertiesNvip) {
 		super();
+		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+		robotstxtConfig.setEnabled(false);
 		this.propertiesNvip = propertiesNvip;
 		logger.info("Nvip is using CVE Reconciliation method: {} ", propertiesNvip.getCveReconciliationMethod());
 		cveUtils = reconcileFactory.createReconciler(propertiesNvip.getCveReconciliationMethod());
@@ -91,7 +93,6 @@ public class CveCrawlController {
 				} else {
 					controller.addSeed(url);
 					count++;
-					// logger.info("Adding seed: " + url);
 				}
 
 				if ((count + countDelayed) % 500 == 0)
@@ -177,6 +178,7 @@ public class CveCrawlController {
 
 		PageFetcher pageFetcher = new PageFetcher(config);
 		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+		robotstxtConfig.setEnabled(false);
 		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
 		return new CrawlController(config, pageFetcher, robotstxtServer);
 	}

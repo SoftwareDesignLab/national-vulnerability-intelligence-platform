@@ -66,7 +66,7 @@ public class CveCrawler extends WebCrawler {
 		cveUtils = reconcileFactory.createReconciler(propertiesNvip.getCveReconciliationMethod());
 
 		// initialize db
-		databaseHelper = DatabaseHelper.getInstance();
+		// databaseHelper = DatabaseHelper.getInstance();
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class CveCrawler extends WebCrawler {
 
 				if (vulnerabilityList.isEmpty()) {
 					nvip_logger.warn("No CVEs found at {}! Removing it from DB...", pageURL);
-					databaseHelper.deleteNvipSourceUrl(pageURL); // if we got no CVE from this URL, remove it from crawled URL list.
+					//databaseHelper.deleteNvipSourceUrl(pageURL); // if we got no CVE from this URL, remove it from crawled URL list.
 				} else
 					for (CompositeVulnerability vulnerability : vulnerabilityList) // reconcile extracted CVEs
 						hashMapNvipCve = cveUtils.addCrawledCveToExistingCveHashMap(hashMapNvipCve, vulnerability, false);
