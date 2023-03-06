@@ -321,7 +321,7 @@ public class NVIPMain {
 
 		// Extract and save exploits
 		if (propertiesNvip.isExploitScrapingEnabled()) {
-			logger.info("Identifying exploits for {} exploits...", crawledVulnerabilityList.size());
+			logger.info("Identifying exploits for {} crawled vulnerabilities...", crawledVulnerabilityList.size());
 			extractExploits(crawledVulnerabilityList, databaseHelper);
 		}
 
