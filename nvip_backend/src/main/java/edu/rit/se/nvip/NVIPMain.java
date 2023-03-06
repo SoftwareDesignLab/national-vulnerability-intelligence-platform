@@ -27,11 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -111,6 +107,7 @@ public class NVIPMain {
 			// load properties file
 			MyProperties propertiesNvip = new MyProperties();
 			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
+
 			UtilHelper.initLog4j(propertiesNvip);
 
 			printProperties(propertiesNvip); // print system params
