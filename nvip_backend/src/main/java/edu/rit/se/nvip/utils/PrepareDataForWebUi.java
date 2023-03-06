@@ -20,10 +20,12 @@ public class PrepareDataForWebUi {
 	 */
 	public void prepareDataforWebUi() {
 		LocalDateTime today = LocalDateTime.now();
-		String sql = "DELETE FROM nvip.vulnerabilityaggregate WHERE description like '%** RESERVED ** This candidate%' or description like '%\"** REJECT **  DO NOT%';";
 		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
 
-		try (Connection conn = databaseHelper.getConnection(); CallableStatement stmt = conn.prepareCall("CALL prepareDailyVulnerabilities(?, ?, ?)"); Statement stmt2 = conn.prepareStatement(sql);) {
+		try (
+				Connection conn = databaseHelper.getConnection();
+				CallableStatement stmt = conn.prepareCall("CALL prepareDailyVulnerabilities(?, ?, ?)");
+		) {
 
 			stmt.setTimestamp(1, Timestamp.valueOf(today.minusHours(168))); // 7 days
 			stmt.setTimestamp(2, Timestamp.valueOf(today));
@@ -33,10 +35,7 @@ public class PrepareDataForWebUi {
 			stmt.execute();
 			int count = stmt.getInt(3);
 
-			// remove reserved and rejected CVES for which a description is not found!
-			int count2 = stmt2.executeUpdate(sql);
-
-			logger.info("Prepared {} CVEs for Web UI, {} Reserved/Rejected CVEs ignnored.", count - count2, count2);
+			logger.info("Prepared {} CVEs for Web UI", count);
 
 			// send CVE notifactions
 			try {

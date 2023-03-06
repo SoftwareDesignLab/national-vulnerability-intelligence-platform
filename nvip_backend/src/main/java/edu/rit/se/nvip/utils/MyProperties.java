@@ -25,6 +25,7 @@ package edu.rit.se.nvip.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -51,7 +52,8 @@ public class MyProperties extends Properties {
 	}
 
 	public String getDataDir() {
-		return getProperty("dataDir");
+		Optional<String> dataDir = Optional.ofNullable(System.getenv("NVIP_DATA_DIR"));
+		return dataDir.orElse(this.getProperty("dataDir"));
 	}
 
 	public String getDatabaseType() {
