@@ -68,7 +68,10 @@ export class SearchComponent implements OnInit {
         });
       });
     this.searchResults = this.searchResService.getSearchResults();
-    if (this.searchResults.length) this.handleRes(this.searchResults);
+    if (this.searchResults.length) {
+      this.toggleSearchForm();
+      this.handleRes(this.searchResults);
+    }
   }
 
   toggleSearchForm() {
@@ -184,8 +187,6 @@ export class SearchComponent implements OnInit {
         .cveSearch({ ...this.search, username: username, token: token })
         .subscribe({
           next: (res: any) => {
-            this.resultTotalCount = res.pop();
-            this.searchResults = res;
             this.searchResService.setSearchResults(res);
             this.handleRes(res);
 
@@ -220,6 +221,8 @@ export class SearchComponent implements OnInit {
    * stored or newly received
    */
   handleRes(res: any) {
+    this.resultTotalCount = res[res.length - 1];
+    this.searchResults = res;
     this.searchSuccess = true;
     if (this.resultTotalCount < 10) {
       this.totalPageLimit = 1;
