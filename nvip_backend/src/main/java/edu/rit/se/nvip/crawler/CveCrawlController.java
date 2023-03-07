@@ -79,9 +79,8 @@ public class CveCrawlController {
 
 		try {
 			// set crawl params
-			logger.info("Initializing crawl controllers...");
-			CrawlController controller = getCrawlController(crawlStorageFolder, propertiesNvip.getDefaultCrawlerPoliteness());
-			CrawlController delayedController = getCrawlController(crawlStorageFolder2, propertiesNvip.getDelayedCrawlerPoliteness());
+			CrawlController controller = prepareCrawlController(crawlStorageFolder, propertiesNvip.getDefaultCrawlerPoliteness());
+			CrawlController delayedController = prepareCrawlController(crawlStorageFolder2, propertiesNvip.getDelayedCrawlerPoliteness());
 
 			logger.info("Controllers initialized. Adding {} seed urls to crawl controller...", urls.size());
 
@@ -95,12 +94,14 @@ public class CveCrawlController {
 					count++;
 				}
 
-				if ((count + countDelayed) % 500 == 0)
+				if ((count + countDelayed) % 1000 == 0)
 					logger.info("Added {} of {} seed URLs...", (count + countDelayed), urls.size());
 			}
-			logger.info("{} and {} seed URLs added to the 'Default' and 'Delayed' crawlers! Initializing crawler factories...", count, countDelayed);
 
 			// Create crawler factories.
+
+			// TODO: This is where we implement Generic Crawler Strategies (have the factories make the right ones)
+
 			CrawlController.WebCrawlerFactory<CveCrawler> factory = () -> new CveCrawler(propertiesNvip);
 			CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(propertiesNvip);
 
@@ -167,7 +168,7 @@ public class CveCrawlController {
 	 * @return
 	 * @throws Exception
 	 */
-	private CrawlController getCrawlController(String outputDirectory, int politeness) throws Exception {
+	private CrawlController prepareCrawlController(String outputDirectory, int politeness) throws Exception {
 		CrawlConfig config = new CrawlConfig();
 		config.setIncludeBinaryContentInCrawling(false);
 		config.setMaxDepthOfCrawling(propertiesNvip.getCrawlSearchDepth());

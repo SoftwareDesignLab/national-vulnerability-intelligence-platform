@@ -24,6 +24,8 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,18 @@ public abstract class AbstractCveParser {
 	protected String sourceDomainName = null;
 
 	public abstract List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML);
+
+	/**
+	 * Get Dynamic HTML with Selenium
+	 * JSoup only extracts static web pages
+	 * @param url
+	 * @return
+	 */
+	protected String grabDynamicHTML(String url) {
+		WebDriver driver = new FirefoxDriver();
+		driver.get(url);
+		return driver.getPageSource();
+	}
 
 	/**
 	 * get unique CVEs

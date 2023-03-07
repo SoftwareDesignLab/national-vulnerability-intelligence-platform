@@ -95,6 +95,8 @@ public class CveCrawler extends WebCrawler {
 				// get vulnerabilities form page
 				List<CompositeVulnerability> vulnerabilityList = parseWebPage(pageURL, html);
 
+				System.out.println(vulnerabilityList);
+
 				if (vulnerabilityList.isEmpty()) {
 					nvip_logger.warn("No CVEs found at {}! Removing it from DB...", pageURL);
 					//databaseHelper.deleteNvipSourceUrl(pageURL); // if we got no CVE from this URL, remove it from crawled URL list.
@@ -132,7 +134,7 @@ public class CveCrawler extends WebCrawler {
 	 * get Cve data from crawler thread
 	 */
 	@Override
-	public Object getMyLocalData() {
+	public HashMap<String, CompositeVulnerability> getMyLocalData() {
 		return hashMapNvipCve;
 	}
 

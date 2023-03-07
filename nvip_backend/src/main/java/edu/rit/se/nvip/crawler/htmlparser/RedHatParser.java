@@ -31,6 +31,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
+import org.openqa.selenium.WebDriver;
 
 /**
  * Web Parser for RedHat CVE Page
@@ -45,6 +46,8 @@ public class RedHatParser extends AbstractCveParser  {
 
     @Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
+
+        sCVEContentHTML = this.grabDynamicHTML(sSourceURL);
 
         List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
         String pattern = "yyyy/MM/dd";
