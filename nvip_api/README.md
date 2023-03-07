@@ -34,6 +34,22 @@
 
     - The Dockerfile provided in this folder make it easy to deploy the API locally. Get Docker here: https://docs.docker.com/get-docker/
 
+### Deploying the Project as a Docker container
+
+#### 1. Install Docker from https://docs.docker.com/get-docker/
+
+#### 2. Build NVIP_API image
+
+    $ docker build -t nvip_api .
+
+#### 3. Run Docker Image
+
+    $ docker run -p 8080:8080 nvip_api
+
+#### 4. Verify Deployment
+
+    Go to localhost:8080/nvip_ui-1.0/ to confirm API is online
+
 ## Deployment Steps via IDE
 
 #### 1. Open UI project as Maven project in IDE of choice
@@ -192,22 +208,6 @@
     - (Eclipse) Check the "Console" output. If successful the project will now deploy project to http://localhost:8080/nvip_site/.
 
     	- To change the port, see "Change Deployment Port" below
-
-### Deploying the Project as a Docker container
-
-#### 1. Install Docker from https://docs.docker.com/get-docker/
-
-#### 2. Build NVIP_API image
-
-    $ docker build -t nvip_api .
-
-#### 3. Run Docker Image
-
-    $ docker run -p 8080:8080 nvip_api
-
-#### 4. Verify Deployment
-
-    Go to localhost:8080/nvip_ui-1.0/ to confirm API is online
 
 ## Installation & Configuration Notes
 
