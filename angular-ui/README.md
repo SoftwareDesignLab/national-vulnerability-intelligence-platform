@@ -23,7 +23,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `ng serve --configuration=development` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Run Server w/ Prod. setup
+
+To test against Production environment locally, run `ng serve --configuration=production` or `ng serve --proxy-config proxy.conf.json` and navigate to `localhost:4200`.
+Here, API calls will be forwarded to AWS S3 URL instead of local TomCat instance.
 
 ## Code scaffolding
 
