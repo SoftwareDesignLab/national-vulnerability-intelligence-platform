@@ -34,7 +34,7 @@
 
     - The Dockerfile provided in this folder make it easy to deploy the API locally. Get Docker here: https://docs.docker.com/get-docker/
 
-### Deploying the Project as a Docker container
+#### Deploying the Project as a Docker container
 
 #### 1. Install Docker from https://docs.docker.com/get-docker/
 
