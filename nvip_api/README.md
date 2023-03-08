@@ -50,6 +50,19 @@
 
     Go to localhost:8080/nvip_ui-1.0/ to confirm API is online
 
+#### 5. Troubleshooting
+
+If you're running into issues with deploying on local, try the following
+
+1.) Provide a JDBC string for localhost DB connection in your run command
+    
+    docker run --name=nvip-api-dev -e JDBC_CONNECTION_STRING="jdbc:mysql://root:root@host.docker.internal:3306/nvip?useSSL=false&allowPublicKeyRetrieval=true" -p8080:8080 nvip-api
+
+2.) Include the additional params in the env.list file, and add it to the docker run command
+    
+    docker run --env-file env.list nvip_api
+
+
 ## Deployment Steps via IDE
 
 #### 1. Open UI project as Maven project in IDE of choice
