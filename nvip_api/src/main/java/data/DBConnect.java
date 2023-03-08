@@ -37,9 +37,8 @@ public class DBConnect {
 	private static Logger logger = LogManager.getLogger(DBConnect.class);
 
 	public static void main(String[] args) throws SQLException {
-		try(Connection conn = getConnection();
-			Statement stmt = conn.createStatement()
-		) {
+		try (Connection conn = getConnection();
+				Statement stmt = conn.createStatement()) {
 			ResultSet rs = stmt.executeQuery("SHOW TABLES;");
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
@@ -47,7 +46,8 @@ public class DBConnect {
 			while (rs.next()) {
 				StringBuilder rowInfo = new StringBuilder();
 				for (int i = 1; i <= columnsNumber; i++) {
-					if (i > 1) rowInfo.append(",  ");
+					if (i > 1)
+						rowInfo.append(",  ");
 					String columnValue = rs.getString(i);
 					rowInfo.append(columnValue).append(" ").append(rsmd.getColumnName(i));
 				}
@@ -66,12 +66,13 @@ public class DBConnect {
 
 		Connection conn = getConnectionFromEnvironment();
 
-		if(conn == null) {
+		if (conn == null) {
 			conn = getConnectionFromContext();
 		}
 
-		if(conn == null) {
-			throw new NullPointerException("Unable to create connection from Environment: " + System.getenv("JDBC_CONNECTION_STRING"));
+		if (conn == null) {
+			throw new NullPointerException(
+					"Unable to create connection from Environment: " + System.getenv("JDBC_CONNECTION_STRING"));
 		}
 
 		return conn;
@@ -88,14 +89,16 @@ public class DBConnect {
 			logger.error("Unable to create DataSource from Context");
 			logger.error(ex.getMessage());
 		} catch (SQLException ex) {
-			logger.error("Username or Password for NVIP database is incorrect, please check context.xml to correct --> " + ex.toString());
+			logger.error("Username or Password for NVIP database is incorrect, please check context.xml to correct --> "
+					+ ex.toString());
 			logger.error(ex.getMessage());
 		}
 		return conn;
 	}
 
 	/**
-	 * Retrieves and builds a connection from an environment or system property named JDBC_CONNECTION_STRING
+	 * Retrieves and builds a connection from an environment or system property
+	 * named JDBC_CONNECTION_STRING
 	 *
 	 * @return
 	 */
@@ -109,10 +112,17 @@ public class DBConnect {
 			jdbcConnString = System.getProperty("JDBC_CONNECTION_STRING");
 		}
 
+		if (jdbcConnString == null) {
+			logger.error(
+					"JBDC Connection String is null! Could not pull the connection string from env vars or system properties!");
+			throw new NullPointerException();
+		}
+
 		try {
 			conn = DriverManager.getConnection(jdbcConnString);
 		} catch (SQLException ex) {
-			logger.error("Username or Password for NVIP database is incorrect, please check context.xml to correct --> " + ex.toString());
+			logger.error("Username or Password for NVIP database is incorrect, please check context.xml to correct --> "
+					+ ex.toString());
 			logger.error(ex.getMessage());
 			throw new NullPointerException(ex.getMessage());
 		}
