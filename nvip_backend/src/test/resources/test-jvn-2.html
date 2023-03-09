@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja" class=""><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>JVNVU#99322074: Medtronic製臨床医アプリにおける未検証のパスワード変更の脆弱性</title>
+  <meta name="Keywords" content="Japan Vulnerability Notes">
+  <meta name="Description" content="Japan Vulnerability Notes">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link href="/common/css/master.css" rel="stylesheet" type="text/css" media="screen,print">
+  <link href="/common/css/font.css" rel="stylesheet" type="text/css" media="screen,print">
+  <link href="/common/css/print.css" rel="stylesheet" type="text/css" media="print">
+  <script src="/common/js/swapImg.js" type="text/javascript"></script>
+  <script src="/common/js/cvss.js" type="text/javascript"></script>
+  <style type="text/css">
+    .margin_list ul {
+      padding-left:16px;
+      margin-left:16px;
+    }
+  </style>
+
+  <link type="text/css" rel="stylesheet" charset="UTF-8" href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.cYEbrOmw59Q.L.W.O/d=0/rs=AN8SPfpU282joXDlbkUblMtWLWoZn4bb2g/m=el_main_css"></head>
+<body>
+<a name="top" id="top"></a>
+<div id="wrapper">
+  <!-- header begin -->
+  <div id="header">
+    <div class="logo"><img src="/common/img/note_logo.gif" border="0" alt="Japan Vulnerability Notes" width="370" height="45"></div>
+  </div>
+  <!-- header begin -->
+
+  <!-- mainarea begin -->
+  <div id="mainarea">
+    <!-- leftarea begin -->
+    <div id="leftarea">
+      <div id="head-bar2">
+        <div id="head-bar-txt"><span class="margin-lb">公開日：2023/03/03　最終更新日：2023/03/03</span></div>
+      </div>
+      <h1 class="h1ver2">
+        JVNVU#99322074<br>
+        Medtronic製臨床医アプリにおける未検証のパスワード変更の脆弱性<br>
+      </h1>
+      <!-- textbox begin -->
+      <div class="textbox margin_list">
+        <h2><img src="/common/img/m_gaiyo.gif" border="0" alt="概要" width="29" height="14"></h2>
+        <p>Medtronicが提供する臨床医アプリには、未検証のパスワード変更の脆弱性が存在します。</p>
+      </div>
+      <!-- textbox end -->
+
+
+      <!-- textbox begin -->
+      <div class="textbox margin_list">
+        <h2><img src="/common/img/m_eikyo.gif" border="0" alt="影響を受けるシステム" width="139" height="14"></h2>
+        <p></p><ul>
+        <li>Micro Clinician (A51200)</li>
+        <li>InterStim X Clinician (A51300)</li>
+      </ul>
+        当該アプリは、スマートプログラマと呼ばれる携帯型モバイルデバイスにインストールされています。<p></p>
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox margin_list">
+        <h2><img src="/common/img/m_detail.gif" border="0" alt="詳細情報" width="57" height="14"></h2>
+        <p>Medtronicが提供する臨床医アプリには、次の脆弱性が存在します。
+        </p><ul>
+        <li>未検証のパスワード変更 (CWE-620) - CVE-2023-25931</li>
+      </ul><p></p>
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox margin_list">
+        <h2><img src="/common/img/m_soutei.gif" border="0" alt="想定される影響" width="98" height="14"></h2>
+        <p>脆弱性を悪用された場合、次のような影響を受ける可能性があります。
+        </p><ul>
+        <li>当該アプリがインストールされている携帯型モバイルデバイスに物理的にアクセスできる第三者によって、パスワードがデフォルトにリセットされ、当該アプリを不正に制御される</li>
+      </ul><p></p>
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox margin_list">
+        <h2><img src="/common/img/m_taisaku.gif" border="0" alt="対策方法" width="57" height="15"></h2>
+        <p><strong>アップデートする</strong><br>
+          開発者は、アップデートを提供しています。<br>
+          <br>
+          詳細は、開発者が提供する情報をご確認ください。</p>
+      </div>
+      <!-- textbox end -->
+
+
+      <!-- textbox begin -->
+      <div class="textbox">
+        <!-- table begin -->
+        <h2><img src="/common/img/m_vendor.gif" border="0" alt="ベンダ情報" width="71" height="14"></h2>
+        <!-- table end -->
+
+        <!-- Vendor status written in English starts from here
+        Vendor status written in English is end -->
+
+        <!-- table begin -->
+        <div class="margin-tbd">
+
+          <div class="ie5">
+            <table class="style_table" border="0" cellspacing="1">
+              <tbody>
+              <tr>
+                <td class="style_td">
+                  ベンダ
+                </td>
+                <td class="style_td">
+
+                  リンク
+                </td>
+              </tr>
+              <tr>
+                <td class="style_td">
+                  Medtronic                  </td>
+                <td class="style_td">
+                  <a href="https://global.medtronic.com/xg-en/product-security/security-bulletins/pelvic-health-interstim-micro.html" target="_top">Pelvic Health InterStim™ Micro and InterStim X™ Clinician Application Security Update</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <!-- table end -->
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox">
+        <h2><img src="/common/img/m_sanko.gif" border="0" alt="参考情報" width="58" height="14"></h2>
+        <p>
+        </p><ol class="list1" style="padding-left:16px;margin-left:16px">
+        <li>
+          <a href="https://www.cisa.gov/news-events/ics-medical-advisories/icsma-23-061-01" target="_top">ICS Medical Advisory | ICSMA-23-061-01</a><br>Medtronic Micro Clinician and InterStim Apps                          </li>
+      </ol>
+        <p class="empty"></p>
+        <p></p>
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox">
+        <h2><img src="/common/img/m_hosoku.gif" border="0" alt="JPCERT/CCからの補足情報" width="189" height="13"></h2>
+        <p></p>
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox">
+        <h2><img src="/common/img/m_kekka.gif" border="0" alt="JPCERT/CCによる脆弱性分析結果" width="232" height="14"></h2>
+
+
+
+        <p></p>
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox">
+        <h2><img src="/common/img/m_shaji.gif" border="0" alt="謝辞" width="28" height="14"></h2>
+        <p></p>
+      </div>
+      <!-- textbox end -->
+
+      <!-- textbox begin -->
+      <div class="textbox">
+        <h2><img src="/common/img/m_kbunsho.gif" border="0" alt="関連文書" width="56" height="14"></h2>
+        <p>
+        </p><div class="ie5">
+        <table class="style_table" cellspacing="1" border="0">
+          <tbody><tr>
+            <td class="style_td">
+              JPCERT 緊急報告                </td>
+            <td class="style_td">
+              <a href="" target="_top"></a><br>                                  </td>
+          </tr>
+          <tr>
+            <td class="style_td">
+              JPCERT REPORT                </td>
+            <td class="style_td">
+              <a href="" target="_top"></a><br>                                  </td>
+          </tr>
+          <tr>
+            <td class="style_td">
+              CERT Advisory                </td>
+            <td class="style_td">
+              <a href="" target="_top"></a><br>                                  </td>
+          </tr>
+          <tr>
+            <td class="style_td">
+              CPNI Advisory                </td>
+            <td class="style_td">
+              <a href="" target="_top"></a><br>                                  </td>
+          </tr>
+          <tr>
+            <td class="style_td">
+              TRnotes                </td>
+            <td class="style_td">
+              <a href="" target="_top"></a><br>                                  </td>
+          </tr>
+          <tr>
+            <td class="style_td">
+              CVE                </td>
+            <td class="style_td">
+              <a href="" target="_top"></a><br>                                  </td>
+          </tr>
+          <tr>
+            <td class="style_td">
+              JVN iPedia                </td>
+            <td class="style_td">
+              <a href="" target="_top"></a><br>                                  </td>
+          </tr>
+          </tbody></table>
+      </div>
+        <p class="empty"></p>
+        <p></p>
+      </div>
+      <!-- textbox end -->
+
+
+    </div>
+    <!-- leftarea end -->
+
+    <!-- rightarea begin -->
+    <div id="rightarea">
+      <div id="navi">
+        <ul>
+          <li><img src="/common/img/t_rnav_jvn.gif" border="0" alt="JVN" width="150" height="50"></li>
+          <li><a href="/index.html" onmouseover="MM_swapImage('Image1','','/common/img/r_nav_1_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_1.gif" border="0" alt="HOME" width="150" height="27" id="Image1" name="Image1"></a></li>
+          <li><a href="/nav/jvn.html" onmouseover="MM_swapImage('Image2','','/common/img/r_nav_2_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_2.gif" border="0" alt="JVNとは" width="150" height="27" id="Image2" name="Image2"></a></li>
+          <li><a href="/nav/jvnhelp.html" onmouseover="MM_swapImage('Image3','','/common/img/r_nav_3_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_3.gif" border="0" alt="脆弱性レポートの読み方" width="150" height="27" id="Image3" name="Image3"></a></li>
+          <li><a href="/report/index.html" onmouseover="MM_swapImage('Image4','','/common/img/r_nav_4_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_4.gif" border="0" alt="脆弱性レポート一覧" width="150" height="27" id="Image4" name="Image4"></a></li>
+          <li><a href="/jp/index.html" onmouseover="MM_swapImage('Image41','','/common/img/r_nav_4_1_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_4_1.gif" border="0" alt="VN_JP" width="150" height="20" id="Image41" name="Image41"></a></li>
+          <li><a href="/adj/index.html" onmouseover="MM_swapImage('Image44','','/common/img/r_nav_4_4_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_4_4.gif" border="0" alt="VN_JP（連絡不能）" width="150" height="20" id="Image44" name="Image44"></a></li>
+          <li><a href="/vu/index.html" onmouseover="MM_swapImage('Image42','','/common/img/r_nav_4_2_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_4_2.gif" border="0" alt="VN_VU" width="150" height="20" id="Image42" name="Image42"></a></li>
+          <li><a href="/ta/index.html" onmouseover="MM_swapImage('Image43','','/common/img/r_nav_4_3_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_4_3.gif" border="0" alt="VN_TA" width="150" height="20" id="Image43" name="Image43"></a></li>
+          <li><a href="/tr/index.html" onmouseover="MM_swapImage('Image5','','/common/img/r_nav_5_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_5.gif" border="0" alt="TRnotes" width="150" height="27" id="Image5" name="Image5"></a></li>
+          <li><a href="http://jvndb.jvn.jp/" onmouseover="MM_swapImage('Image10','','/common/img/r_nav_10_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_10.gif" border="0" alt="JVN iPedia" width="150" height="27" id="Image10" name="Image10"></a></li>
+          <li><a href="http://jvndb.jvn.jp/apis/myjvn/index.html" onmouseover="MM_swapImage('Image15','','/common/img/r_nav_10_4_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_10_4.gif" border="0" alt="MyJVN" width="150" height="20" id="Image15" name="Image15"></a></li>
+          <li><a href="/rss/index.html" onmouseover="MM_swapImage('Image6','','/common/img/r_nav_6_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_6.gif" border="0" alt="JVNJS/RSS" width="150" height="27" id="Image6" name="Image6"></a></li>
+          <li><a href="/nav/index.html" onmouseover="MM_swapImage('Image7','','/common/img/r_nav_7_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_7.gif" border="0" alt="ベンダ情報一覧" width="150" height="27" id="Image7" name="Image7"></a></li>
+          <li><a href="/reply/index.html" onmouseover="MM_swapImage('Image11','','/common/img/r_nav_11_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_11.gif" border="0" alt="連絡不能開発者一覧" width="150" height="27" id="Image11" name="Image11"></a></li>
+          <li><a href="http://www.ipa.go.jp/security/vuln/report/" target="ipasecurity" onmouseover="MM_swapImage('Image8','','/common/img/r_nav_8_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_8.gif" border="0" alt="脆弱性情報の届出" width="150" height="27" id="Image8" name="Image8"></a></li>
+          <li><a href="/contact/index.html" onmouseover="MM_swapImage('Image9','','/common/img/r_nav_9_f2.gif',1)" onmouseout="MM_swapImgRestore()"><img src="/common/img/r_nav_9.gif" border="0" alt="お問合せ先" width="150" height="27" id="Image9" name="Image9"></a></li>
+        </ul>
+      </div>
+      <!-- rightarea end -->
+    </div>
+
+  </div>
+  <!-- mainarea end -->
+
+  <!-- footer begin -->
+  <div id="footer">
+    <div class="footertext">Copyright (c) 2000-2023 JPCERT/CC and IPA. All rights reserved.</div>
+  </div>
+  <!-- footer begin -->
+</div><div id="goog-gt-" class="skiptranslate VIpgJd-yAWNEb-L7lbkb" dir="ltr"><div style="padding: 8px;"><div><div class="VIpgJd-yAWNEb-l4eHX"><img src="https://www.gstatic.com/images/branding/product/1x/translate_24dp.png" width="20" height="20" alt="Google Translate"></div></div></div><div style="padding: 8px; float: left; width: 100%;"><h1 class="VIpgJd-yAWNEb-r4nke VIpgJd-yAWNEb-mrxPge">Original text</h1></div><div style="padding: 8px;"><div class="VIpgJd-yAWNEb-nVMfcd-fmcmS"></div></div><div class="VIpgJd-yAWNEb-cGMI2b" style="padding: 8px;"><div class="VIpgJd-yAWNEb-Z0Arqf-PLDbbf"><span class="VIpgJd-yAWNEb-Z0Arqf-hSRGPd">Contribute a better translation</span></div><div class="VIpgJd-yAWNEb-fw42Ze-Z0Arqf-haAclf"><hr style="color: #ccc; background-color: #ccc; height: 1px; border: none;"><div class="VIpgJd-yAWNEb-Z0Arqf-H9tDt"></div></div></div><div class="VIpgJd-yAWNEb-jOfkMb-Ne3sFf" style="display: none;"></div></div>
+
+
+
+</body></html>
