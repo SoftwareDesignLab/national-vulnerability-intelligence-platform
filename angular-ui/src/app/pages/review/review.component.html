@@ -1,0 +1,196 @@
+<h1>Review</h1>
+<!-- TODO: will this be used later on?? lots of dynamic entries, uncomment when filled in/referenced -->
+
+<!-- <div class="nvip-search-result-header col-12">
+    <p ng-show="showForm">Review Form</p>
+</div>
+
+<div style="width: 100%;">
+    <div style="width: 15%; float: left; padding-left: 10px;">
+        <div>
+            <label>Selected Date: {{review.curDate | date:'MM/dd/yyyy'}}</label><br>
+            <button id="btnSearch" ng-click="searchCVEs()">Search</button>
+            <input type="date" id="datePckr" ng-model="review.curDate"
+                md-placeholder="Enter date">
+            </md-datepicker>
+            <br>
+            <button ng-click="prevDay()">Previous Day</button>
+            <button ng-click="nextDay()">Next Day</button>
+        </div>
+
+        <div>
+            <label>CVE Status to Show:</label><br> 
+            <input type="checkbox" id="chAccepted" checked> <label for="chAccepted"> Accepted </label> 
+            <input type="checkbox" id="chReview" checked> <label for="chReview"> Under Review</label><br> 
+            <input type="checkbox" id="chRejected" checked> <label for="chRejected"> Rejected </label> 
+            <input type="checkbox" id="chCrawled" checked> <label for="chCrawled"> Crawled</label>
+        </div>
+
+        <label>Found {{totalCVEs}} CVEs</label>
+        
+
+
+        <div>
+            <button id="btnPrevPage" ng-click="prevPage()">Previous
+                Page</button>
+            <button id="btnNextPage" ng-click="nextPage()">Next Page</button>
+            <br>
+
+            <button id="btnGo" ng-click="goToPage()">Go</button>
+            <input type="number" size="3" min="0" max="10000000"
+                ng-model="review.jumpTo"> <label> out of
+                {{totalPages}}</label>
+        </div>
+
+
+
+        <div class="vertical-menu" style="width: 90%; height: 500px;">
+            <a id="{{cveItem.cve_id}}ListItem" ng:click="select(cveItem, $index)" ng-repeat="cveItem in cveToShow" ng-init="$last && highlightSelectedInit()">{{cveItem.cve_id}} , {{getStatusName(cveItem.status_id)}}</a>
+            <div id="listProgressCircle" style="width: 60px;  height: 100px;  position: absolute;  top: 20%;  left: 40%; display:none;">
+                <fa-icon [icon]="faSpinner" animation="spin" size="3x" [fixedWidth]="true" [ngStyle]="{ color: 'black'}"></fa-icon>
+                <span>Loading...</span>
+            </div>
+        </div>
+
+    </div>
+    <div style="float: left; padding-left: 10px; width: 35%;">
+        <label id="cveIDLabel">{{currentCVEid}}</label> 
+
+        <label>Selected: {{selected.cve_id}}</label><br>
+        <label>CVE Status: {{review.readableStatus}} </label> <br>
+        <label>Edited by: {{cveDetails.userFname}} {{cveDetails.userLname}} ({{userName}}) at {{updateDate}}</label>
+        
+        <div>
+            <button ng-click="prevCVE()">Previous CVE</button>
+            <button ng-click="nextCVE()">Next CVE</button>
+        </div>
+
+        <textarea style="width: 100%;" descriptionArea" rows="25" ng-model="review.currentCVEdesc"></textarea>
+        
+        <div id="detailsProgressCircle" style="width: 100%;  height: 100%;  position: absolute;  top: 50%;  left: 40%; display:none;">
+            <fa-icon [icon]="faSpinner" animation="spin" size="3x" [fixedWidth]="true" [ngStyle]="{ color: 'black'}"></fa-icon>
+            <span>Loading...</span>
+        </div>
+
+        <div class="nvip-form-field">
+            <button id="btnAccept" ng-click="acceptCVE()">Accept</button>
+            <button id="btnUpdate" ng-click="updateButton()">Update</button>
+            <button id="btnReject" ng-click="rejectCVE()">Reject</button>
+            <div style="display: inline; margin-left: 20px">
+                <input type="checkbox" id="chTweet" name="tweet" checked>
+                <label for="chTweet"> Tweet CVE upon accept</label>
+            </div>
+            <button style="float:right;" ng-click="updateDailyVulns()">Update<br/>Daily CVE Table</button>
+        </div>
+
+        <div class="nvip-message">
+            <p class="message-text" id="nvip_message_text">{{reviewMessage}}</p>
+        </div>
+
+    </div>
+    <div style="float: left; padding-left: 10px; padding-right: 10px; padding-bottom: 20px; width: 50%;">
+        
+        <div style="float: left; padding-left: 10px; padding-right: 10px; width: 50%;">
+            <label>Impact Method:</label><br>
+            <div class="review-unchecked-vdo" ng-repeat="item in impctList" id="div{{item}}">
+                <input type="checkbox" id="ch{{item}}" name="{{item}}" ng-click="manualCheck(item)"> 
+                <label> {{item}} : </label> 
+                <input type="radio" id="high{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,1)" checked disabled> 
+                <label for="high{{item}}"> High </label> 
+                <input type="radio" id="medium{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.66)" disabled> 
+                <label for="medium{{item}}"> Medium </label>
+                <input type="radio" id="low{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.33)" disabled>
+                <label for="low{{item}}"> Low </label><br>
+            </div>
+        </div>
+        <div style="float: left; padding-left: 10px; padding-right: 10px; width: 50%;">
+            <label>Mitigation:</label><br>
+            <div class="review-unchecked-vdo" ng-repeat="item in mitigationList" id="div{{item}}">
+                <input type="checkbox" id="ch{{item}}" name="{{item}}" ng-click="manualCheck(item)"> 
+                <label> {{item}} : </label> 
+                <input type="radio" id="high{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,1)" checked disabled> 
+                <label for="high{{item}}"> High </label> 
+                <input type="radio" id="medium{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.66)" disabled> 
+                <label for="medium{{item}}"> Medium </label>
+                <input type="radio" id="low{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.33)" disabled>
+                <label for="low{{item}}"> Low </label><br>
+            </div>
+        </div>
+    </div>
+    <div style="float: left; padding-left: 10px; padding-right: 10px; padding-bottom: 20px; width: 50%;">
+        <div style="float: left; padding-left: 10px; padding-right: 10px; width: 50%;">
+            <label>Context:</label><br>
+            <div class="review-unchecked-vdo" ng-repeat="item in ctxList" id="div{{item}}">
+                <input type="checkbox" id="ch{{item}}" name="{{item}}" ng-click="manualCheck(item)"> 
+                <label> {{item}} : </label> 
+                <input type="radio" id="high{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,1)" checked disabled> 
+                <label for="high{{item}}"> High </label> 
+                <input type="radio" id="medium{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.66)" disabled> 
+                <label for="medium{{item}}"> Medium </label>
+                <input type="radio" id="low{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.33)" disabled>
+                <label for="low{{item}}"> Low </label><br>
+            </div>
+        </div>
+        
+        <div style="float: left; padding-left: 10px; padding-right: 10px; width: 50%;">
+            <label>Logical Impact:</label><br>
+            <div class="review-unchecked-vdo" ng-repeat="item in lgclImpctList" id="div{{item}}">
+                <input type="checkbox" id="ch{{item}}" name="{{item}}" ng-click="manualCheck(item)"> 
+                <label> {{item}} : </label> 
+                <input type="radio" id="high{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,1)" checked disabled> 
+                <label for="high{{item}}"> High </label> 
+                <input type="radio" id="medium{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.66)" disabled> 
+                <label for="medium{{item}}"> Medium </label>
+                <input type="radio" id="low{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.33)" disabled>
+                <label for="low{{item}}"> Low </label><br>
+            </div>
+        </div>
+    </div>
+    <div style="float: left; padding-left: 10px; padding-right: 10px; width: 50%;">
+        <div style="float: left; padding-left: 10px; padding-right: 10px; width: 50%;">
+            <label>Attack Theater:</label><br>
+            <div class="review-unchecked-vdo" ng-repeat="item in attckThtrList" id="div{{item}}">
+                <input type="checkbox" id="ch{{item}}" name="{{item}}" ng-click="manualCheck(item)"> 
+                <label> {{item}} : </label> 
+                <input type="radio" id="high{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,1)" checked disabled> 
+                <label for="high{{item}}"> High </label> 
+                <input type="radio" id="medium{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.66)" disabled> 
+                <label for="medium{{item}}"> Medium </label>
+                <input type="radio" id="low{{item}}" name="confidence{{item}}" ng-click="enableRBgroup(item,0.33)" disabled>
+                <label for="low{{item}}"> Low </label><br>
+            </div>
+        </div>
+        
+        <div style="float: left; padding-left: 10px; padding-right: 10px; width: 50%;">
+            <label>CVSS Score:</label><br>
+            
+            <label>Severity:</label>
+            <div id="severityClassRBgroup">
+                <input type="radio" id="severiryLow" name="CVSSseverity" ng-click="setCVSSseverity('LOW')" > 
+                <label>LOW </label> 
+                <input type="radio" id="severiryMedium" name="CVSSseverity" ng-click="setCVSSseverity('MEDIUM')" > 
+                <label>MEDIUM </label> 
+                <input type="radio" id="severiryHigh" name="CVSSseverity" ng-click="setCVSSseverity('HIGH')" > 
+                <label>HIGH </label> 
+                <input type="radio" id="severiryCritical" name="CVSSseverity" ng-click="setCVSSseverity('CRITICAL')" > 
+                <label>CRITICAL</label> 
+            </div>
+            
+            <div>
+            <label>Impact Score:</label>
+            <input type="number" size="3" min="0" max="10" step="0.1"
+                ng-model="review.impactScore">
+            </div>
+            
+            
+            
+            <label>CPE Items:</label>
+            <div ng-repeat="product in cveDetails.vulnDomain">
+                <input type="checkbox" id="chProduct{{product.product_id}}" name="{{product.cpe}}"> 
+                <label>Remove: </label>
+                <a style="color:black;"  href="https://nvd.nist.gov/products/cpe/search/results?namingFormat=2.3&keyword={{product.cpe}}" target="_blank">{{product.cpe}}</a>
+                
+            </div>
+        </div>
+    </div>
+</div> -->

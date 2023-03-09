@@ -1,0 +1,39 @@
+.nvip-footer {
+  background-color: #F5F5F5;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 10em;
+  margin-top: 1em;
+  padding: 10px;
+  position: relative;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.nvip-footer > div {
+	height: 1em;
+	max-width: 50%;
+}
+
+.nvip-footer-contents {
+	height: 1em;
+	text-align: center;
+	width: 100%;
+}
+
+.nvip-footer-contents a {
+	color: #000000;
+}
+
+.nvip-footer-contents a:hover {
+	color: #ffffff;
+}
+
+.nvip-footer-contents a:not(:last-child)::after{
+	content: "|";
+	color: #ffffff;
+	margin: 0em 1em;
+}

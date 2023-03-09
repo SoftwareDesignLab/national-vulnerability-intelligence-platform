@@ -1,0 +1,53 @@
+<button type="button" class="col-12" [ngClass]="getHeaderClass()" (click)="selectDailyCve()">
+    <div class="daily-vuln-dropdown-row">
+        <div class="daily-vuln-dropdown-row-1">
+            <span class="nvip-cve-number-span cve_id">{{vuln.cveId}}</span>
+            <span class="description-text" [ngStyle]="{'color': (active ? activeDescColor : inactiveDescColor)}" ng-bind="vuln.description">{{vuln.description}}</span>
+                <span class="daily-vuln-dropdown-icon-box">
+                    <img class="nvd_logo" [ngClass]="vuln.existInNvd ? 'is_present' : ''" src="assets/images/nvd_logo.svg" aria-hidden="true"/>
+                    <img class="mitre_logo" [ngClass]="vuln.existInNvd ? 'is_present' : ''" src="assets/images/mitre_corporation_logo.svg" aria-hidden="true">
+                    <img class="mitigation_icon" [hidden]="!hasMitigation()" src="assets/images/mitigation_shield.svg" aria-hidden="true">
+                    <img class="is_fixed_logo" [hidden]="!isFixed()" src="assets/images/is_fixed_icon.svg" alt="Fixed">
+                </span>
+                <fa-icon [icon]="faAngleDown" class="nvip-vuln-dropdown-caret"></fa-icon>
+            </div>
+            <div class="daily-vuln-dropdown-row-2">
+                <span class="daily-vuln-product">Impact :</span>
+                <span class="daily-vuln-product product-items" [hidden]="vuln.vdoList.length !== 0">N/A</span>
+                <span *ngFor="let vdo of sortBy(2, 'vdoConfidence', VDO_NOUN_GROUPS.LOGICAL_IMPACT)" class="{{getLabelClass(vdo)}} daily-vuln-product product-items">
+                    {{vdo.vdoLabel}}
+                </span>
+                <span class="daily-vuln-product">Method :</span>
+                <span class="daily-vuln-product product-items" [hidden]="vuln.vdoList.length !== 0">N/A</span>
+                <span *ngFor="let vdo of sortBy(2, 'vdoConfidence', VDO_NOUN_GROUPS.IMPACT_METHOD)" class="{{getLabelClass(vdo)}} daily-vuln-product product-items">
+                     {{vdo.vdoLabel}}
+                </span>
+            </div>
+        </div>
+</button>
+    <div class="daily-vuln-content" [ngStyle]="{'max-height': (active ? '500px' : '0')}">
+        <div class="daily-vuln-description">
+            <p>Description</p>
+            <p class="nvip-vuln-desc">{{ getDescription() }}</p>
+        </div>
+        <div class="nvip-daily-vuln-desc-toggle">
+            <button class="nvip-button" (click)="vulnDescToggle($event)" [hidden]="vuln.description.length < 997">Show {{showMoreDescription ? "Less" : "More"}}</button>
+        </div>
+        <div class="daily-vuln-info"> 
+            <div>
+                <p>Impact:</p>
+                <span *ngFor="let vdo of sortBy(2, 'vdoConfidence', VDO_NOUN_GROUPS.LOGICAL_IMPACT)" class="{{getLabelClass(vdo)}} daily-vuln-product product-items">
+                    {{vdo.vdoLabel}}
+                </span>
+            </div>
+            <div>
+                <p>Method:</p>
+                <p style="margin-left: .5em; font-size: 15px">{{vuln.type}}</p>
+            </div>
+        </div>
+        <!-- todo view info to vulnerability page -->
+    <div class="daily-vuln-detail" ng-controller="SearchController as search">
+        <button class="nvip-button nvip-view-info-button" routerLink="/vulnerability/{{vuln.vulnId}}">
+            View Info
+        </button>
+    </div>
