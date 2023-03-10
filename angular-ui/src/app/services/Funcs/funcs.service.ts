@@ -20,6 +20,15 @@ export class FuncsService {
   }
 
   /**
+  * modifies CSS to add login failure message
+  */
+  incorrectLogin(){
+    var incorrectMessage = document.getElementById('loginMessage') as HTMLDivElement;
+
+    incorrectMessage.style.display = 'block';
+  }
+
+  /**
    * legacy angularjs function - return a page element to be updated later on
    * @param element parent element to search
    * @param className classname of given element
