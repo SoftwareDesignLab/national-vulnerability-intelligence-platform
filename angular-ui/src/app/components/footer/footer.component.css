@@ -7,7 +7,7 @@
   height: 10em;
   margin-top: 1em;
   padding: 10px;
-  position: relative;
+  position: fixed;
   bottom: 0;
   text-align: center;
   width: 100%;
