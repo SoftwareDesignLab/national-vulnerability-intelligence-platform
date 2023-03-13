@@ -49,15 +49,15 @@
                     <input type="text" name="product" id="product" [(ngModel)]="search.product" />
                 </div>
             </div>
-            <div class="nvip-form-dropdown-field col-12" (click)="toggleContent($event, 'CVSS')">
+            <div class="nvip-form-dropdown-field col-12 dropdown-opened" (click)="toggleContent($event, 'CVSS')">
                 <div class="nvip-form-dropdown-left col-11">
                     <label>CVSS Scores</label>
                 </div>
                 <div class="nvip-form-dropdown-right col-1">
-                    <fa-icon [icon]="faAngleLeft" transform="rotate-{{rotationAmountCVSS}}" class="nvip-form-dropdown-caret" aria-hidden="true"></fa-icon>
+                    <fa-icon [icon]="faAngleDown" transform="rotate-{{rotationAmountCVSS}}" class="nvip-form-dropdown-caret" aria-hidden="true"></fa-icon>
                 </div>
             </div>
-            <div class="nvip-form-dropdown-content col-11">
+            <div class="nvip-form-dropdown-content col-11" style="display: flex;">
                 <div *ngFor="let cvssScore of cvssScores" class="nvip-form-field col-4">
                     <div class="nvip-form-field-block col-11">
                         <label for="{{cvssScore}}">{{cvssScore}}</label>
@@ -65,15 +65,15 @@
                     </div>
                 </div>
             </div>
-            <div class="nvip-form-dropdown-field col-12" (click)="toggleContent($event, 'VDO')">
+            <div class="nvip-form-dropdown-field col-12 dropdown-opened" (click)="toggleContent($event, 'VDO')">
                 <div class="nvip-form-dropdown-left col-11">
                     <label>VDO</label>
                 </div>
                 <div class="nvip-form-dropdown-right col-1">
-                    <fa-icon [icon]="faAngleLeft" transform="rotate-{{rotationAmountVDO}}" class="nvip-form-dropdown-caret" aria-hidden="true"></fa-icon>
+                    <fa-icon [icon]="faAngleDown" transform="rotate-{{rotationAmountVDO}}" class="nvip-form-dropdown-caret" aria-hidden="true"></fa-icon>
                 </div>
             </div>
-            <div class="nvip-form-dropdown-content col-11">
+            <div class="nvip-form-dropdown-content col-11" style="display: flex;">
                 <div class="nvip-form-dropdown-ctn col-4" *ngFor="let vdoNounGroupLabel of vdoNounGroupLabels">
                     <search-dropdown 
                         [label]="vdoNounGroupLabel"
@@ -124,7 +124,7 @@
                 </div>
                 <div class="nvip-paging-bar nvip-next-page" (click)="changePage(currentPage - 1)">
                     <a>
-                        <fa-icon [icon]="faAngleLeft" size="lg" aria-hidden="true"></fa-icon>
+                        <fa-icon [icon]="faAngleDown" size="lg" aria-hidden="true"></fa-icon>
                     </a>
                 </div>
                 <div class="nvip-paging-bar" *ngFor="let pageIndex of pageBlocks" (click)="changePage(pageIndex)"

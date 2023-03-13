@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { faSpinner, faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faAngleDoubleLeft, faAngleDoubleRight, faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/services/Api/api-service.service';
 import { Session } from 'src/app/services/Auth/auth-service.service';
 import { CookieService } from 'src/app/services/Cookie/cookie.service';
@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   faAngleDoubleLeft = faAngleDoubleLeft;
   faAngleDoubleRight = faAngleDoubleRight;
   faAngleRight = faAngleRight;
-  faAngleLeft = faAngleLeft;
+  faAngleDown = faAngleDown;
   /** Hold state of icon rotation, rotated if a dropdown is opened */
   rotationAmountVDO = 0;
   rotationAmountCVSS = 0;
@@ -108,15 +108,15 @@ export class SearchComponent implements OnInit {
     )[0];
 
     if (formContent!.style.display == 'flex') {
-      if (drop === 'VDO') this.rotationAmountVDO = 0;
-      else if (drop === 'CVSS') this.rotationAmountCVSS = 0;
+      if (drop === 'VDO') this.rotationAmountVDO = 90;
+      else if (drop === 'CVSS') this.rotationAmountCVSS = 90;
       formDropdown!.classList.remove('dropdown-opened');
       formContent!.style.display = 'none';
       caretIcon.classList.add('fa-angle-left');
       caretIcon.classList.remove('fa-angle-down');
     } else {
-      if (drop === 'VDO') this.rotationAmountVDO = -90;
-      else if (drop === 'CVSS') this.rotationAmountCVSS = -90;
+      if (drop === 'VDO') this.rotationAmountVDO = 0;
+      else if (drop === 'CVSS') this.rotationAmountCVSS = 0;
       formDropdown!.classList.add('dropdown-opened');
       formContent!.style.display = 'flex';
       caretIcon.classList.remove('fa-angle-left');
