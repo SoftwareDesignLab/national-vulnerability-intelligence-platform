@@ -1,11 +1,6 @@
 package edu.rit.se.nvip.mitre.capec;
 
-import edu.rit.se.nvip.model.CompositeVulnerability;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import edu.rit.se.nvip.crawler.QuickCveCrawler;
 import org.apache.logging.log4j.LogManager;
@@ -17,14 +12,23 @@ import org.jsoup.select.Elements;
 
 public class CapecParser {
 
-    private String url;
-    private String html;
+    // comprehensive dictionary url from capec.mitre.org
+    private final String url;
 
-    private Logger logger = LogManager.getLogger(getClass().getSimpleName());
+    // logger
+    private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
+
+    // map capecs to their abstraction and relationships
+    private static final Map<String, CapecType> ABSTRACTIONS;
+    static {
+        ABSTRACTIONS = new HashMap<>();
+        ABSTRACTIONS.put("Standard", CapecType.STANDARD);
+        ABSTRACTIONS.put("Detailed", CapecType.DETAILED);
+        ABSTRACTIONS.put("Meta", CapecType.META);
+    }
 
     /**
      * Link -> HTML and parse HTML for CAPEC enums, output list of Capec
-     * @param page - capec.mitre.org 'Comprehensive CAPEC DICTIONARY'
      */
     public CapecParser() {
         // This page contains all:
@@ -36,11 +40,11 @@ public class CapecParser {
 
     }
 
-    public static void main (String[] args) {
-        CapecParser c = new CapecParser();
-        List<Capec> capecList = c.parseWebPage();
-    }
-
+    /**
+     * return a dropdown block from a dropdowns children
+     * @param children - child elements in dropdown
+     * @return - the dropdown block wanted
+     */
     private Element getExpandBlock(Elements children) {
         return children.select("div.expandblock").first();
     }
@@ -67,26 +71,49 @@ public class CapecParser {
             Elements rows = taxEl.children().select("tr");
             for (Element row : rows) {
                 // skip past the table header
-                if (row.text().contains(headerName)) continue;
+                if (row.text().contains(headerName) || row.childrenSize() < 2) continue;
                 String key = row.child(0).text();
                 String val = row.child(1).text();
                 table.put(key, val);
             }
         }
-
         return table;
     }
 
-    public List<Capec> parseWebPage() {
+    /**
+     * Pull list of strings from a given block dropdown
+     * @param capecChildren - list of dropdowns
+     * @param id - the dropdown we are looking for
+     * @return - list of strings gathered from dropdown
+     */
+    private ArrayList<String> getBlockList(Elements capecChildren, String id) {
 
-        QuickCveCrawler q = new QuickCveCrawler();
+        ArrayList<String> list = new ArrayList<>();
+        Element skillsEl = capecChildren.select("div#" + id).first();
+        if (skillsEl != null) {
+            Element block = getExpandBlock(skillsEl.children());
+            // get td entries from table element
+            Elements tdEls = block.children().select("td");
+            list = new ArrayList<>(tdEls.eachText());
+        }
+
+        return list;
+    }
+
+    /**
+     * Parse comprehensive list of CAPECs from capec.mitre.org
+     * to be used for automatic CAPEC characterization
+     * @param q - crawler to get content from url
+     * @return - list of Capec objects encapsulating all the info pulled from each CAPEC
+     */
+    public ArrayList<Capec> parseWebPage(QuickCveCrawler q) {
+
         String html = q.getContentFromUrl(this.url);
         logger.info("Parsing page: {}", this.url);
-
-        List<Capec> capecs = new ArrayList<>();
-
+        ArrayList<Capec> capecs = new ArrayList<>();
         Document doc = Jsoup.parse(html);
 
+        // get each CAPEC instance on the page and loop through each
         Elements capecDescriptions = doc.select("div#CAPECDefinition");
         for (Element capecDesc : capecDescriptions) {
             Element capecHeader = capecDesc.previousElementSibling();
@@ -99,9 +126,10 @@ public class CapecParser {
 
                     // get ID and Abstraction from title div
                     Element titleEl = capecChildren.select("div.title").first();
+                    if (titleEl == null) continue;
                     String titleText = titleEl.text();
                     String[] titleTextSplit = titleText.split("Abstraction: ");
-                    String abstraction = titleTextSplit[1];
+                    CapecType abstraction = ABSTRACTIONS.get(titleTextSplit[1]);
                     String id = titleTextSplit[0].split(": ")[1];
 
 
@@ -128,7 +156,9 @@ public class CapecParser {
                             // skip past the table header
                             if (row.text().contains("Nature")) continue;
                             String nature = row.child(0).text();
-                            String type = row.child(1).select("img").first().attr("alt");
+                            String type = "";
+                            Element typeImg = row.child(1).select("img").first();
+                            if (typeImg != null) type = typeImg.attr("alt");
                             if (type.equals("View")) continue;
                             String rowID = row.child(2).text();
                             String name = row.child(3).text();
@@ -138,25 +168,38 @@ public class CapecParser {
                         }
                     }
 
-
-                    // get execution flow
-                    //TODO:
-
                     // get prerequisites
-                    ArrayList<String> prereqs = new ArrayList<>();
-                    Element prereqEl = capecChildren.select("div#Prerequisites").first();
-                    if (prereqEl != null) {
-                        Element preReqBlock = getExpandBlock(prereqEl.children());
-                        // get prereq entries from table element
-                        Elements tdEls = preReqBlock.children().select("td");
-                        prereqs = new ArrayList<>(tdEls.eachText());
-                    }
+                    ArrayList<String> prereqs = getBlockList(capecChildren, "Prerequisites");
 
                     // get skills required
-                    //TODO:
+                    ArrayList<String> skills = getBlockList(capecChildren, "Skills_Required");
 
                     // get resources required
                     String resources = getBlockTextSimple(capecChildren, "Resources_Required");
+
+                    // get consequences table
+                    HashMap<String, ArrayList<String>> cons = new HashMap<>();
+                    Element consEl = capecChildren.select("div#Consequences").first();
+                    if (consEl != null) {
+                        Elements rows = consEl.select("tr");
+                        for (Element row : rows) {
+                            // skip header
+                            if (row.text().contains("Scope")) continue;
+                            // for each scope add an entry with that impact
+                            Elements scopes = row.child(0).children().select("div");
+                            for (Element scope : scopes) {
+                                String scopeText = scope.text();
+                                if (cons.containsKey(scopeText)) {
+                                    cons.get(scopeText).add(row.child(1).text());
+                                }
+                                else
+                                    cons.put(
+                                            scope.text(),
+                                            new ArrayList<>(Collections.singletonList(row.child(1).text()))
+                                    );
+                            }
+                        }
+                    }
 
                     // get mitigations
                     String mitigations = getBlockTextSimple(capecChildren, "Mitigations");
@@ -170,8 +213,10 @@ public class CapecParser {
                     // get taxonomy mappings
                     HashMap<String, String> tax = getBlockTable(capecChildren, "Taxonomy_Mappings", "Entry ID");
 
-                    String text = "";
-
+                    capecs.add(new Capec(
+                            id, abstraction, description, likelihood, severity, relationships,
+                            prereqs, skills, resources, cons, mitigations, examples, weaknesses, tax
+                    ));
                 }
             }
         }

@@ -1,22 +1,19 @@
 package edu.rit.se.nvip.mitre.capec;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Capec {
 
+    // Attack Pattern ID
+    private final String id;
 
-    // TODO: we might this in /model, not sure
-
-    private int id;
-
-    private String abstraction;
+    // CAPEC Abstraction
+    private CapecType abstraction;
 
     // CAPEC Description
     private String description;
 
-    // Likelihood of attack TODO: this and severity might be able to be enumed
+    // Likelihood of attack
     private String likelihood;
 
     // Typical Severity
@@ -35,7 +32,7 @@ public class Capec {
     private ArrayList<String> prereqs;
 
     // Skills required
-    private String skills;
+    private ArrayList<String> skills;
 
     // Resources required
     private String resources;
@@ -49,7 +46,7 @@ public class Capec {
      * that a pattern will be used to achieve a certain impact, but a low likelihood that it will
      * be exploited to achieve a different impact.
      */
-    private HashMap<String, String> consequences;
+    private HashMap<String, ArrayList<String>> consequences;
 
     // Mitigations
     private String mitigations;
@@ -75,14 +72,41 @@ public class Capec {
      */
     private HashMap<String, String> tax;
 
-    // References
-    private ArrayList<String> refs;
-
     /**
      * Common Attack Pattern Enumeration and Classification (CAPEC) model
      * capec.mitre.org
-     *
      * This class encapsulates 1 of 559 CAPEC Attack Patterns
      */
-    public Capec() {}
+    public Capec(
+            String id,
+            CapecType abstraction,
+            String description,
+            String likelihood,
+            String severity,
+            ArrayList<CapecRelationship> relationships,
+            ArrayList<String> prereqs,
+            ArrayList<String> skills,
+            String resources,
+            HashMap<String, ArrayList<String>> consequences,
+            String mitigations,
+            String examples,
+            HashMap<String, String> weaknesses,
+            HashMap<String, String> tax) {
+        this.id = id;
+        this.abstraction = abstraction;
+        this.description = description;
+        this.likelihood = likelihood;
+        this.severity = severity;
+        this.relationships = relationships;
+        this.prereqs = prereqs;
+        this.skills = skills;
+        this.resources = resources;
+        this.consequences = consequences;
+        this.mitigations = mitigations;
+        this.examples = examples;
+        this.weaknesses = weaknesses;
+        this.tax = tax;
+    }
+
+    public String getId() { return this.id; }
 }

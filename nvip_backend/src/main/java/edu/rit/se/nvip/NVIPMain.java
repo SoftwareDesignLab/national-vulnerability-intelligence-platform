@@ -30,6 +30,8 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import edu.rit.se.nvip.mitre.capec.Capec;
+import edu.rit.se.nvip.mitre.capec.CapecParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -289,6 +291,10 @@ public class NVIPMain {
 		List<CompositeVulnerability> crawledVulnerabilityList = cveListMap.get("all").stream().map(e -> (CompositeVulnerability) e).collect(Collectors.toList());
 		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
 		identifyNewOrUpdatedCve(crawledVulnerabilityList, databaseHelper, propertiesNvip);
+
+		// Parse CAPECs page to link CVEs to a given Attack Pattern in characterizer
+		CapecParser capecParser = new CapecParser();
+		ArrayList<Capec> capecs = capecParser.parseWebPage(crawler);
 
 		// characterize
 		logger.info("Characterizing and scoring NEW CVEs...");

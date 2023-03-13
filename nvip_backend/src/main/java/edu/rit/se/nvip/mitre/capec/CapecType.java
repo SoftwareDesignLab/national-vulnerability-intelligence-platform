@@ -1,6 +1,6 @@
 package edu.rit.se.nvip.mitre.capec;
 
-public enum CapecRelationshipType {
+public enum CapecType {
 
     /**
      * Standard Attack Pattern -
