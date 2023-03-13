@@ -8,16 +8,6 @@
     <div class="nvip-search-result-header col-12">
         <p>Search {{showForm ? "Form" : "Results"}}</p>
     </div>
-    <div class="nvip-search-nav-btn-ctn col-12" [hidden]="!searchSuccess && searchResults.length == 0">
-        <button class="nvip-button nvip-search-nav-form-btn" (click)="toggleSearchForm()" [disabled]="showForm">
-            <fa-icon [icon]="faAngleDoubleLeft" aria-hidden="true"></fa-icon>
-            Back to Form
-        </button>
-        <button class="nvip-button nvip-search-nav-results-btn" (click)="toggleSearchForm()" [disabled]="!showForm">
-            Go to Results
-            <fa-icon [icon]="faAngleDoubleRight" aria-hidden="true"></fa-icon>
-        </button>
-    </div>
     <div class="nvip-search-form-ctn" [hidden]="!showForm">
         <form novalidate class="nvip-search-form col-12" #form="ngForm" (ngSubmit)="searchVulns($event, form)">
             <div class="nvip-form-horizontal-block">
