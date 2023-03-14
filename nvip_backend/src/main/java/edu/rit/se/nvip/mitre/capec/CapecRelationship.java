@@ -2,10 +2,10 @@ package edu.rit.se.nvip.mitre.capec;
 
 public class CapecRelationship {
 
-    private String nature;
-    private CapecType type;
-    private String capecID;
-    private String capecName;
+    private final String nature;
+    private final CapecType type;
+    private final String capecID;
+    private final String capecName;
 
     public CapecRelationship(String nature, String type, String id, String name) {
         this.nature = nature;
@@ -23,4 +23,12 @@ public class CapecRelationship {
         this.capecID = id;
         this.capecName = name;
     }
+
+    public String getNature() { return nature; }
+
+    public CapecType getType() { return type; }
+
+    public String getCapecID() { return capecID; }
+
+    public String getCapecName() { return capecName; }
 }

@@ -130,7 +130,7 @@ public class CapecParser {
                     String titleText = titleEl.text();
                     String[] titleTextSplit = titleText.split("Abstraction: ");
                     CapecType abstraction = ABSTRACTIONS.get(titleTextSplit[1]);
-                    String id = titleTextSplit[0].split(": ")[1];
+                    String id = titleTextSplit[0].split(": ")[1].trim();
 
 
                     // get description
