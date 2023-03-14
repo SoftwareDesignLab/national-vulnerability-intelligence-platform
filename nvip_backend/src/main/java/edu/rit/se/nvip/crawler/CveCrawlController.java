@@ -37,8 +37,8 @@ public class CveCrawlController {
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
-        config1.setCrawlStorageFolder(properties.getDataDir() + "");
-        config2.setCrawlStorageFolder(properties.getDataDir() + "");
+        config1.setCrawlStorageFolder(properties.getDataDir() + "/crawler1");
+        config2.setCrawlStorageFolder(properties.getDataDir() + "/crawler2");
 
         config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
         config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
@@ -68,8 +68,6 @@ public class CveCrawlController {
         domains.add("https://www.ics.uci.edu/");
         domains.add("https://www.cnn.com/");
 
-        List<String> crawler1Domains = domains;
-
         controller1.addSeed("https://www.ics.uci.edu/");
         controller1.addSeed("https://www.cnn.com/");
         controller1.addSeed("https://www.ics.uci.edu/~lopes/");
@@ -80,8 +78,8 @@ public class CveCrawlController {
         controller2.addSeed("https://en.wikipedia.org/wiki/Bing");
 
         MyProperties finalProperties1 = properties;
-        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(finalProperties1);
-        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(finalProperties1);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(domains);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(domains);
 
         // The first crawler will have 5 concurrent threads and the second crawler will have 7 threads.
         controller1.startNonBlocking(factory1, 5);

@@ -20,7 +20,7 @@ public class CrawlerTest {
         MyProperties properties = new MyProperties();
         properties = new PropertyLoader().loadConfigFile(properties);
 
-        CveCrawler crawler = new CveCrawler(properties);
+        //CveCrawler crawler = new CveCrawler(properties);
         /*WebURL url = new WebURL();
         url.setURL("https://lists.apache.org/");
 
