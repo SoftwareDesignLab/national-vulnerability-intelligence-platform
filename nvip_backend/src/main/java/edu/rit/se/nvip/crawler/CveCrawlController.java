@@ -1,187 +1,98 @@
-/**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
- * government support under contract 70RSAT19CB0000020 awarded by the United
- * States Department of Homeland Security.
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package edu.rit.se.nvip.crawler;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import edu.rit.se.nvip.cvereconcile.AbstractCveReconciler;
-import edu.rit.se.nvip.cvereconcile.CveReconcilerFactory;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
-import edu.rit.se.nvip.utils.UtilHelper;
+import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
+import edu.uci.ics.crawler4j.frontier.FrontierConfiguration;
+import edu.uci.ics.crawler4j.frontier.SleepycatFrontierConfiguration;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import crawlercommons.filters.basic.BasicURLNormalizer;
+import edu.uci.ics.crawler4j.url.SleepycatWebURLFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-/**
- * Crawl controller implementation
- * 
- * @author axoeec
- *
- */
 public class CveCrawlController {
-	private Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	MyProperties propertiesNvip;
-	public static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0";
 
-	AbstractCveReconciler cveUtils;
-	CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
+    private static final Logger logger = LogManager.getLogger(CveCrawlController.class.getSimpleName());
+    MyProperties properties = new PropertyLoader().loadConfigFile(new MyProperties());
 
-	public CveCrawlController(MyProperties propertiesNvip) {
-		super();
-		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-		robotstxtConfig.setEnabled(false);
-		this.propertiesNvip = propertiesNvip;
-		logger.info("Nvip is using CVE Reconciliation method: {} ", propertiesNvip.getCveReconciliationMethod());
-		cveUtils = reconcileFactory.createReconciler(propertiesNvip.getCveReconciliationMethod());
-	}
+    public static void main(String[] args) throws Exception {
+        new CveCrawlController().crawl(new ArrayList<>());
+    }
 
-	/**
-	 * Crawl provided <urls> and look for CVEs
-	 * 
-	 * @param urls
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public HashMap<String, CompositeVulnerability> crawl(List<String> urls) {
-		HashMap<String, CompositeVulnerability> cveHashMapAll = new HashMap<>();
-		String crawlStorageFolder = propertiesNvip.getOutputDir() + "/crawler1";
-		String crawlStorageFolder2 = propertiesNvip.getOutputDir() + "/crawler2";
-		int numberOfCrawlers = propertiesNvip.getNumberOfCrawlerThreads();
+    public HashMap<String, CompositeVulnerability> crawl(List<String> urls) throws Exception {
 
-		try {
-			// set crawl params
-			CrawlController controller = prepareCrawlController(crawlStorageFolder, propertiesNvip.getDefaultCrawlerPoliteness());
-			CrawlController delayedController = prepareCrawlController(crawlStorageFolder2, propertiesNvip.getDelayedCrawlerPoliteness());
+        CrawlConfig config1 = new CrawlConfig();
+        CrawlConfig config2 = new CrawlConfig();
 
-			logger.info("Controllers initialized. Adding {} seed urls to crawl controller...", urls.size());
+        config1.setCrawlStorageFolder(properties.getDataDir() + "");
+        config2.setCrawlStorageFolder(properties.getDataDir() + "");
 
-			int count = 0, countDelayed = 0;
-			for (String url : urls) {
-				if (UtilHelper.isDelayedUrl(url)) {
-					delayedController.addSeed(url);
-					countDelayed++;
-				} else {
-					controller.addSeed(url);
-					count++;
-				}
+        config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
+        config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
 
-				if ((count + countDelayed) % 1000 == 0)
-					logger.info("Added {} of {} seed URLs...", (count + countDelayed), urls.size());
-			}
+        config1.setMaxPagesToFetch(10);
+        config2.setMaxPagesToFetch(100);
 
-			// Create crawler factories.
+        config1.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
+        config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
 
-			// TODO: This is where we implement Generic Crawler Strategies (have the factories make the right ones)
+        BasicURLNormalizer normalizer1 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
+        BasicURLNormalizer normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
+        PageFetcher pageFetcher1 = new PageFetcher(config1, normalizer1);
+        PageFetcher pageFetcher2 = new PageFetcher(config2, normalizer2);
 
-			CrawlController.WebCrawlerFactory<CveCrawler> factory = () -> new CveCrawler(propertiesNvip);
-			CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(propertiesNvip);
+        RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 
-			logger.info("Starting NVIP CVE Crawler with {} seed URLs and {} threads!", urls.size(), numberOfCrawlers);
+        FrontierConfiguration frontierConfiguration = new SleepycatFrontierConfiguration(config1);
+        FrontierConfiguration frontierConfiguration2 = new SleepycatFrontierConfiguration(config2);
 
-			// Start default crawler. It is blocking!
-			controller.start(factory, numberOfCrawlers);
-			logger.info("Fetching CVEs from regular crawler");
-			cveHashMapAll = getVulnerabilitiesFromCrawlerThreads(controller, cveHashMapAll);
+        RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher1, new SleepycatWebURLFactory());
 
-			// Start delayed crawler. It is blocking!
-			delayedController.start(factory2, numberOfCrawlers);
-			logger.info("Fetching CVEs from delayed crawler");
-			cveHashMapAll = getVulnerabilitiesFromCrawlerThreads(delayedController, cveHashMapAll);
+        CrawlController controller1 = new CrawlController(config1, normalizer1, pageFetcher1, robotstxtServer, frontierConfiguration);
+        CrawlController controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
 
-		} catch (Exception e) {
-			logger.error("Error!" + e);
-		}
-		return cveHashMapAll;
-	}
+        ArrayList<String> domains = new ArrayList<>();
+        domains.add("https://www.ics.uci.edu/");
+        domains.add("https://www.cnn.com/");
 
-	/**
-	 * Get CVEs from crawler controller and add them to cve map based on the
-	 * reconciliation result
-	 * 
-	 * @param controller
-	 * @param cveHashMapAll
-	 * @return the updated map
-	 */
-	private synchronized HashMap<String, CompositeVulnerability> getVulnerabilitiesFromCrawlerThreads(CrawlController controller, HashMap<String, CompositeVulnerability> cveHashMapAll) {
+        List<String> crawler1Domains = domains;
 
-		int cveCount = cveHashMapAll.size();
-		List<Object> crawlersLocalData = controller.getCrawlersLocalData();
-		logger.info("Adding CVEs from {} different crawlers to {} exiting CVEs", crawlersLocalData.size(), cveCount);
+        controller1.addSeed("https://www.ics.uci.edu/");
+        controller1.addSeed("https://www.cnn.com/");
+        controller1.addSeed("https://www.ics.uci.edu/~lopes/");
+        controller1.addSeed("https://www.cnn.com/POLITICS/");
 
-		HashMap<String, CompositeVulnerability> cveDataCrawler = null;
-		int nCrawlerID = 1;
-		int totCveCount = 0, crawlerCveCount = 0;
+        controller2.addSeed("https://en.wikipedia.org/wiki/Main_Page");
+        controller2.addSeed("https://en.wikipedia.org/wiki/Obama");
+        controller2.addSeed("https://en.wikipedia.org/wiki/Bing");
 
-		for (Object crawlerData : crawlersLocalData) {
-			try {
-				cveDataCrawler = (HashMap<String, CompositeVulnerability>) crawlerData;
+        MyProperties finalProperties1 = properties;
+        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(finalProperties1);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(finalProperties1);
 
-				crawlerCveCount = cveDataCrawler.values().size();
-				logger.info("Crawler {} scraped {} CVEs.", nCrawlerID, crawlerCveCount);
-				for (CompositeVulnerability newVuln : cveDataCrawler.values())
-					cveHashMapAll = cveUtils.addCrawledCveToExistingCveHashMap(cveHashMapAll, newVuln, false);
-			} catch (Exception e) {
-				logger.error("Error while getting data from crawler {}\tcveDataCrawler: {}, Error: {} ", nCrawlerID, cveDataCrawler, e.toString());
-			}
-			nCrawlerID++;
-			totCveCount += crawlerCveCount;
-		}
+        // The first crawler will have 5 concurrent threads and the second crawler will have 7 threads.
+        controller1.startNonBlocking(factory1, 5);
+        //controller2.startNonBlocking(factory2, 7);
 
-		logger.info("Controller derived {} unique CVEs from {} crawlers and {} total CVEs. New CVE count: {}", (cveHashMapAll.size() - cveCount), crawlersLocalData.size(), totCveCount, cveHashMapAll.size());
-		return cveHashMapAll;
-	}
+        controller1.waitUntilFinish();
+        logger.info("Crawler 1 is finished.");
 
-	/**
-	 * Instantiate crawl controller
-	 * 
-	 * @param outputDirectory
-	 * @param politeness
-	 * @return
-	 * @throws Exception
-	 */
-	private CrawlController prepareCrawlController(String outputDirectory, int politeness) throws Exception {
-		CrawlConfig config = new CrawlConfig();
-		config.setIncludeBinaryContentInCrawling(false);
-		config.setMaxDepthOfCrawling(propertiesNvip.getCrawlSearchDepth());
-		config.setUserAgentString(DEFAULT_USER_AGENT); // "Mozilla/5.0"
-		config.setIncludeHttpsPages(true);
-		config.setPolitenessDelay(politeness);
-		config.setCrawlStorageFolder(outputDirectory);
-
-		PageFetcher pageFetcher = new PageFetcher(config);
-		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-		robotstxtConfig.setEnabled(false);
-		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
-		return new CrawlController(config, pageFetcher, robotstxtServer);
-	}
+        //controller2.waitUntilFinish();
+        //logger.info("Crawler 2 is finished.");
+        return null;
+    }
 
 }

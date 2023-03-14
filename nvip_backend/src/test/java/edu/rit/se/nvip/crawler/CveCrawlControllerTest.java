@@ -17,17 +17,14 @@ import static org.junit.Assert.assertTrue;
 public class CveCrawlControllerTest {
 
     @Test
-    public void CveCrawlControllerTest() {
+    public void CveCrawlControllerTest() throws Exception {
         MyProperties properties = new MyProperties();
         properties = new PropertyLoader().loadConfigFile(properties);
 
         List<String> urls = new ArrayList<>();
         urls.add("https://access.redhat.com/security/cve/cve-2021-44228");
 
-        RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-        robotstxtConfig.setEnabled(false);
-
-        CveCrawlController controller = new CveCrawlController(properties);
+        CveCrawlController controller = new CveCrawlController();
         HashMap<String, CompositeVulnerability> map = controller.crawl(urls);
 
         System.out.println(map);

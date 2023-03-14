@@ -106,8 +106,8 @@ public class NVIPMain {
 		}
 	}
 
-	public static void main(String[] args) {
-		boolean refreshNvdCveList = true;
+	public static void main(String[] args) throws Exception {
+		boolean refreshNvdCveList = true; //TODO: Add a property for this
 		commandLineArgs = args;
 		CveLogDiff cveLogger = new CveLogDiff(properties);
 
@@ -115,7 +115,6 @@ public class NVIPMain {
 		NVIPMain nvipMain = new NVIPMain(true);
 		List<String> urls = nvipMain.startNvip();
 		if (refreshNvdCveList) {
-			logger.info("Refreshing NVD feeds before running NVIP...");
 			PullNvdCveMain.pullFeeds(); // update nvd CVEs
 		}
 
@@ -164,8 +163,6 @@ public class NVIPMain {
 	 * if you want to run nvip locally provide the path of the file that includes
 	 * source urls from the command line:
 	 * Otherwise, it will load source urls from the database
-	 *
-	 * TODO: Lets have it pull Seed URLS automatically and crawl the remaining URLs from the DB
 	 *
 	 * @return
 	 */
@@ -263,10 +260,14 @@ public class NVIPMain {
 	 * GitHub
 	 * CVE Summary Pages
 	 * NVIP Source URLs in DB and seeds txt file
+	 *
+	 * TODO: Break this up into separate functions
+	 * 	github, quick, and main
+	 *
 	 * @param urls
 	 * @return
 	 */
-	protected HashMap<String, CompositeVulnerability> crawlCVEs(List<String> urls) {
+	protected HashMap<String, CompositeVulnerability> crawlCVEs(List<String> urls) throws Exception {
 		/**
 		 * scrape CVEs from CVE Automation Working Group Git Pilot (CVEProject.git)
 		 */
@@ -292,7 +293,7 @@ public class NVIPMain {
 		 */
 		logger.info("Starting the NVIP crawl process now to look for CVEs at {} locations with {} threads...",
 				urls.size(), properties.getNumberOfCrawlerThreads());
-		CveCrawlController crawlerController = new CveCrawlController(properties);
+		CveCrawlController crawlerController = new CveCrawlController();
 
 		HashMap<String, CompositeVulnerability> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls);
 

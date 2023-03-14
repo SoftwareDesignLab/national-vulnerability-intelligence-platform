@@ -27,6 +27,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import edu.rit.se.nvip.crawler.htmlparser.AbstractCveParser;
@@ -74,6 +75,8 @@ public class CveCrawler extends WebCrawler {
 	 * we have discovered this new url and the second parameter is the new url. You
 	 * should implement this function to specify whether the given url should be
 	 * crawled or not (based on your crawling logic).
+	 *
+	 * TODO: Have it check seed domains here
 	 */
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
@@ -87,32 +90,28 @@ public class CveCrawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		String pageURL = page.getWebURL().getURL().trim();
+
 		if (page.getParseData() instanceof HtmlParseData) {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			String html = htmlParseData.getHtml();
+			Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
-			synchronized (this) {
-				// get vulnerabilities form page
-				List<CompositeVulnerability> vulnerabilityList = parseWebPage(pageURL, html);
+			// get vulnerabilities from page
+			List<CompositeVulnerability> vulnerabilityList = parseWebPage(pageURL, html);
 
-				System.out.println(vulnerabilityList);
+			if (vulnerabilityList.isEmpty()) {
+				nvip_logger.warn("No CVEs found at {}! Removing it from DB...", pageURL);
+				//databaseHelper.deleteNvipSourceUrl(pageURL); // if we got no CVE from this URL, remove it from crawled URL list.
+			} else
+				for (CompositeVulnerability vulnerability : vulnerabilityList) // reconcile extracted CVEs
+					hashMapNvipCve = cveUtils.addCrawledCveToExistingCveHashMap(hashMapNvipCve, vulnerability, false);
 
-				if (vulnerabilityList.isEmpty()) {
-					nvip_logger.warn("No CVEs found at {}! Removing it from DB...", pageURL);
-					//databaseHelper.deleteNvipSourceUrl(pageURL); // if we got no CVE from this URL, remove it from crawled URL list.
-				} else
-					for (CompositeVulnerability vulnerability : vulnerabilityList) // reconcile extracted CVEs
-						hashMapNvipCve = cveUtils.addCrawledCveToExistingCveHashMap(hashMapNvipCve, vulnerability, false);
-
-				long processedPageCount = getMyController().getFrontier().getNumberOfProcessedPages();
-				if (processedPageCount > 0 && processedPageCount % 250 == 0) {
-					long myQueueLength = getMyController().getFrontier().getNumberOfScheduledPages();
-					String percent = formatter.format(processedPageCount / (myQueueLength * 1.0) * 100);
-					nvip_logger.info("Crawler {} processed {} of total {} pages, %{} done!", getMyId(), processedPageCount, myQueueLength, percent);
-				}
-
+			long processedPageCount = getMyController().getFrontier().getNumberOfProcessedPages();
+			if (processedPageCount > 0 && processedPageCount % 250 == 0) {
+				long myQueueLength = getMyController().getFrontier().getNumberOfScheduledPages();
+				String percent = formatter.format(processedPageCount / (myQueueLength * 1.0) * 100);
+				nvip_logger.info("Crawler {} processed {} of total {} pages, %{} done!", getMyId(), processedPageCount, myQueueLength, percent);
 			}
-
 		}
 
 	}
