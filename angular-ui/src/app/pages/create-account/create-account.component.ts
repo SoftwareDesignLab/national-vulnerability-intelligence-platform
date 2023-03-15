@@ -42,7 +42,9 @@ export class CreateAccountComponent {
   /** displays error message is password and repeatPassword don't match */
   passwordError(){
     var passwordError = document.getElementById('registrationMessage') as HTMLDivElement;
+    var formSpacing = document.getElementById('regForm') as HTMLDivElement;
     passwordError.style.display = 'block';
+    formSpacing.style.marginTop = "6em";
   }
 
 }
