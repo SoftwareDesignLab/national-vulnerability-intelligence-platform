@@ -125,6 +125,8 @@ public class MyProperties extends Properties {
 		return getProperty("cpeSerialized");
 	}
 
+	public int getMaxNumberOfPages() {return Integer.parseInt(getProperty("MaxNumberOfPages"));}
+
 	/**
 	 * Hash map storing the list of known Cve sources (domains) that the system has
 	 * a parser for

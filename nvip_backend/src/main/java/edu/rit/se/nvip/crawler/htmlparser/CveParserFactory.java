@@ -37,6 +37,9 @@ public class CveParserFactory {
 		if (sPageUrl == null) {
 			return new NullParser();
 		}
+		/*
+		if (sPageUrl.contains("https://github.com/advisories/"))
+			return new GitHubAdvisoryParser*/
 
 		if (sPageUrl.contains("tenable") && !sPageUrl.contains("blog")) {
 			if (sPageUrl.contains("security"))

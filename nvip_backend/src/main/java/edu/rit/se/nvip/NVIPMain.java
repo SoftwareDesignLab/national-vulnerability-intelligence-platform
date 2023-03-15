@@ -120,12 +120,12 @@ public class NVIPMain {
 
 		// Crawler
 		long crawlStartTime = System.currentTimeMillis();
-		HashMap<String, CompositeVulnerability> crawledCVEs = nvipMain.crawlCVEs(urls);
+		HashMap<String, ArrayList<CompositeVulnerability>> crawledCVEs = nvipMain.crawlCVEs(urls);
 		long crawlEndTime = System.currentTimeMillis();
 		logger.info("Crawler Finished\nTime: {}", crawlEndTime - crawlStartTime);
 
 		// Process and Reconcile
-		HashMap<String, List<Object>> cveListMap = nvipMain.processCVEs(crawledCVEs);
+		HashMap<String, List<Object>> cveListMap = null;//nvipMain.processCVEs(crawledCVEs);
 		List<CompositeVulnerability> crawledVulnerabilityList = nvipMain.reconcileCVEs(cveListMap);
 
 		// Characterizer
@@ -267,7 +267,7 @@ public class NVIPMain {
 	 * @param urls
 	 * @return
 	 */
-	protected HashMap<String, CompositeVulnerability> crawlCVEs(List<String> urls) throws Exception {
+	protected HashMap<String, ArrayList<CompositeVulnerability>> crawlCVEs(List<String> urls) throws Exception {
 		/**
 		 * scrape CVEs from CVE Automation Working Group Git Pilot (CVEProject.git)
 		 */
@@ -295,12 +295,12 @@ public class NVIPMain {
 				urls.size(), properties.getNumberOfCrawlerThreads());
 		CveCrawlController crawlerController = new CveCrawlController();
 
-		HashMap<String, CompositeVulnerability> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls);
+		HashMap<String, ArrayList<CompositeVulnerability>> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls);
 
 		// merge CVEs from two sources (CNAs and Github repo)
-		HashMap<String, CompositeVulnerability> cveHashMapAll = mergeCVEsDerivedFromCNAsAndGit(cveHashMapGithub, cveHashMapScrapedFromCNAs);
+		//HashMap<String, CompositeVulnerability> cveHashMapAll = mergeCVEsDerivedFromCNAsAndGit(cveHashMapGithub, cveHashMapScrapedFromCNAs);
 
-		return cveHashMapAll;
+		return cveHashMapScrapedFromCNAs;
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class NVIPMain {
 	 * @param cveHashMapGithub
 	 * @param cveHashMapScrapedFromCNAs
 	 * @return
-	 */
+
 	public HashMap<String, CompositeVulnerability> mergeCVEsDerivedFromCNAsAndGit(HashMap<String, CompositeVulnerability> cveHashMapGithub,
 																				   HashMap<String, CompositeVulnerability> cveHashMapScrapedFromCNAs) {
 		logger.info("Merging {} scraped CVEs with {} Github", cveHashMapScrapedFromCNAs.size(), cveHashMapGithub.size());
@@ -340,14 +340,14 @@ public class NVIPMain {
 				/**
 				 * Git CVE already exists among CVEs derived from CNAs, then look at
 				 * descriptions!
-				 */
+
 				CompositeVulnerability vulnCna = cveHashMapAll.get(cveId);
 				String newDescr = "";
 
 				if (CveUtils.isCveReservedEtc(vulnGit.getDescription())) {
 					/**
 					 * CVE is reserved/rejected etc in Mitre but nvip found a description for it.
-					 */
+
 					newDescr = reservedStr + " - NVIP Description: " + vulnCna.getDescription();
 					cveCountReservedInGit++;
 
@@ -370,7 +370,7 @@ public class NVIPMain {
 		logger.info("***Merged CVEs! Out of {} Git CVEs, CVEs that exist only in Git (Not found at any available CNAs): {}, CVEs that are reserved in Git (But found at CNAs): {}",
 				cveHashMapGithub.size(), cveCountFoundOnlyInGit, cveCountReservedInGit);
 		return cveHashMapAll;
-	}
+	}*/
 
 	/**
 	 * Process CVEs by comparing pulled CVEs to NVD and MITRE

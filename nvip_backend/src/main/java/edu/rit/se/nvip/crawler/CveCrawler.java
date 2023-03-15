@@ -23,12 +23,10 @@
  */
 package edu.rit.se.nvip.crawler;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import edu.rit.se.nvip.crawler.htmlparser.AbstractCveParser;
@@ -57,14 +55,10 @@ public class CveCrawler extends WebCrawler {
 
 	private final Logger nvip_logger = LogManager.getLogger(getClass().getSimpleName());
 	private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg" + "|png|mp3|mp4|zip|gz))$");
-
 	private final List<String> myCrawlDomains;
-	private HashMap<String, CompositeVulnerability> hashMapNvipCve = new HashMap<>();
-	CveParserFactory parserFactory = new CveParserFactory();
-	AbstractCveReconciler cveUtils;
-	CveReconcilerFactory reconcileFactory = new CveReconcilerFactory();
-	DatabaseHelper databaseHelper;
-	NumberFormat formatter = new DecimalFormat("#0.000");
+	private HashMap<String, ArrayList<CompositeVulnerability>> foundCVEs = new HashMap<>();
+	private CveParserFactory parserFactory = new CveParserFactory();
+	private NumberFormat formatter = new DecimalFormat("#0.000");
 
 
 	public CveCrawler(List<String> myCrawlDomains) {
@@ -85,10 +79,15 @@ public class CveCrawler extends WebCrawler {
 		}
 
 		for (String crawlDomain : myCrawlDomains) {
-			if (href.startsWith(crawlDomain)) {
+
+			System.out.println(crawlDomain + " " + href);
+
+			if (href.contains(crawlDomain)) {
 				return true;
 			}
 		}
+
+		System.out.println("FAILED");
 
 		return false;
 	}
@@ -99,30 +98,33 @@ public class CveCrawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		String pageURL = page.getWebURL().getURL();
-
 		if (page.getParseData() instanceof HtmlParseData) {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			String html = htmlParseData.getHtml();
-			Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
-			System.out.println("successful crawl @ " + pageURL);
-/*
 			// get vulnerabilities from page
 			List<CompositeVulnerability> vulnerabilityList = parseWebPage(pageURL, html);
 
 			if (vulnerabilityList.isEmpty()) {
-				nvip_logger.warn("No CVEs found at {}! Removing it from DB...", pageURL);
-				//databaseHelper.deleteNvipSourceUrl(pageURL); // if we got no CVE from this URL, remove it from crawled URL list.
-			} else
-				for (CompositeVulnerability vulnerability : vulnerabilityList) // reconcile extracted CVEs
-					hashMapNvipCve = cveUtils.addCrawledCveToExistingCveHashMap(hashMapNvipCve, vulnerability, false);
+				nvip_logger.warn("No CVEs found at {}! Please remove this URL", pageURL);
+			} else {
+				for (CompositeVulnerability vulnerability : vulnerabilityList) {// reconcile extracted CVEs
+					if (foundCVEs.get(vulnerability.getCveId()) != null) {
+						foundCVEs.get(vulnerability.getCveId()).add(vulnerability);
+					} else {
+						ArrayList<CompositeVulnerability> newList = new ArrayList<>();
+						newList.add(vulnerability);
+						foundCVEs.put(vulnerability.getCveId(), newList);
+					}
+				}
 
-			long processedPageCount = getMyController().getFrontier().getNumberOfProcessedPages();
-			if (processedPageCount > 0 && processedPageCount % 250 == 0) {
-				long myQueueLength = getMyController().getFrontier().getNumberOfScheduledPages();
-				String percent = formatter.format(processedPageCount / (myQueueLength * 1.0) * 100);
-				nvip_logger.info("Crawler {} processed {} of total {} pages, %{} done!", getMyId(), processedPageCount, myQueueLength, percent);
-			}*/
+				long processedPageCount = getMyController().getFrontier().getNumberOfProcessedPages();
+				if (processedPageCount > 0 && processedPageCount % 250 == 0) {
+					long myQueueLength = getMyController().getFrontier().getNumberOfScheduledPages();
+					String percent = formatter.format(processedPageCount / (myQueueLength * 1.0) * 100);
+					nvip_logger.info("Crawler {} processed {} of total {} pages, %{} done!", getMyId(), processedPageCount, myQueueLength, percent);
+				}
+			}
 		}
 
 	}
@@ -144,8 +146,8 @@ public class CveCrawler extends WebCrawler {
 	 * get Cve data from crawler thread
 	 */
 	@Override
-	public HashMap<String, CompositeVulnerability> getMyLocalData() {
-		return hashMapNvipCve;
+	public HashMap<String, ArrayList<CompositeVulnerability>> getMyLocalData() {
+		return foundCVEs;
 	}
 
 }

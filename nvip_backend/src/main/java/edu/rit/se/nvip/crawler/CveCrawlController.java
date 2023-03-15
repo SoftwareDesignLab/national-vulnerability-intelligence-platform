@@ -1,11 +1,13 @@
 package edu.rit.se.nvip.crawler;
 
+import java.io.File;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
@@ -26,25 +28,35 @@ import org.apache.logging.log4j.Logger;
 public class CveCrawlController {
 
     private static final Logger logger = LogManager.getLogger(CveCrawlController.class.getSimpleName());
-    MyProperties properties = new PropertyLoader().loadConfigFile(new MyProperties());
+    static MyProperties properties = new PropertyLoader().loadConfigFile(new MyProperties());
+    private final HashMap<String, ArrayList<CompositeVulnerability>> cveHashMapAll = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
-        new CveCrawlController().crawl(new ArrayList<>());
+
+        ArrayList<String> urls = new ArrayList<>();
+
+        File seedURLs = properties.getSeedURLS();
+        Scanner reader = new Scanner(seedURLs);
+        while (reader.hasNextLine()) {
+            urls.add(reader.nextLine());
+        }
+
+        new CveCrawlController().crawl(urls);
     }
 
-    public HashMap<String, CompositeVulnerability> crawl(List<String> urls) throws Exception {
+    public HashMap<String, ArrayList<CompositeVulnerability>> crawl(List<String> urls) throws Exception {
 
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
-        config1.setCrawlStorageFolder(properties.getDataDir() + "/crawler1");
-        config2.setCrawlStorageFolder(properties.getDataDir() + "/crawler2");
+        config1.setCrawlStorageFolder(properties.getDataDir() + "/crawlers/crawler1");
+        config2.setCrawlStorageFolder(properties.getDataDir() + "/crawlers/crawler2");
 
         config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
         config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
 
-        config1.setMaxPagesToFetch(10);
-        config2.setMaxPagesToFetch(100);
+        config1.setMaxPagesToFetch(properties.getMaxNumberOfPages());
+        config2.setMaxPagesToFetch(properties.getMaxNumberOfPages());
 
         config1.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
         config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
@@ -64,33 +76,56 @@ public class CveCrawlController {
         CrawlController controller1 = new CrawlController(config1, normalizer1, pageFetcher1, robotstxtServer, frontierConfiguration);
         CrawlController controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
 
-        ArrayList<String> domains = new ArrayList<>();
-        domains.add("https://www.ics.uci.edu/");
-        domains.add("https://www.cnn.com/");
+        for (String url: urls) {
+            controller1.addSeed(url);
+        }
 
-        controller1.addSeed("https://www.ics.uci.edu/");
-        controller1.addSeed("https://www.cnn.com/");
-        controller1.addSeed("https://www.ics.uci.edu/~lopes/");
-        controller1.addSeed("https://www.cnn.com/POLITICS/");
+        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(urls);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(urls);
 
-        controller2.addSeed("https://en.wikipedia.org/wiki/Main_Page");
-        controller2.addSeed("https://en.wikipedia.org/wiki/Obama");
-        controller2.addSeed("https://en.wikipedia.org/wiki/Bing");
-
-        MyProperties finalProperties1 = properties;
-        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(domains);
-        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(domains);
-
-        // The first crawler will have 5 concurrent threads and the second crawler will have 7 threads.
-        controller1.startNonBlocking(factory1, 5);
-        //controller2.startNonBlocking(factory2, 7);
+        controller1.startNonBlocking(factory1, properties.getNumberOfCrawlerThreads());
+        controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());
 
         controller1.waitUntilFinish();
         logger.info("Crawler 1 is finished.");
 
-        //controller2.waitUntilFinish();
-        //logger.info("Crawler 2 is finished.");
-        return null;
+        controller2.waitUntilFinish();
+        logger.info("Crawler 2 is finished.");
+
+        cveHashMapAll.putAll(getVulnerabilitiesFromCrawlerThreads(controller1));
+        return cveHashMapAll;
     }
 
+    /**
+     * Get CVEs from crawler controller and add them to cve map based on the
+     * reconciliation result
+     *
+     * @param controller
+     * @return the updated map
+     */
+    private synchronized HashMap<String, ArrayList<CompositeVulnerability>> getVulnerabilitiesFromCrawlerThreads(CrawlController controller) {
+
+        List<Object> crawlersLocalData = controller.getCrawlersLocalData();
+        HashMap<String, ArrayList<CompositeVulnerability>> cveDataCrawler;
+        int nCrawlerID = 1;
+
+        for (Object crawlerData : crawlersLocalData) {
+            try {
+                cveDataCrawler = (HashMap<String, ArrayList<CompositeVulnerability>>) crawlerData;
+
+                for (String cveid : cveDataCrawler.keySet()) {
+                        if (cveHashMapAll.get(cveid) != null) {
+                            cveHashMapAll.get(cveid).addAll(cveDataCrawler.get(cveid));
+                        } else {
+                            cveHashMapAll.put(cveid, cveDataCrawler.get(cveid));
+                        }
+                }
+            } catch (Exception e) {
+                logger.error("Error while getting data from crawler {}\tcveDataCrawler: Error: {} ", nCrawlerID, e.toString());
+            }
+            nCrawlerID++;
+        }
+
+        return cveHashMapAll;
+    }
 }
