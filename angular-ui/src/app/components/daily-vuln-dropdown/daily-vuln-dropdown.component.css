@@ -1,5 +1,15 @@
-.daily-vuln-dropdown-icon-box {
-  float: right;
+.daily-vuln-dropdown-row {
+  height: 4em;
+  display: flex;
+  flex-direction: column;
+}
+
+.daily-vuln-dropdown-row-2{
+  padding-top: 1.5em;
+}
+
+.daily-vuln-product{
+  margin-left: .75em;
 }
 
 .daily-vuln-dropdown-icon-box > img {
@@ -22,7 +32,7 @@
 .daily-vuln-active {
   background-color: rgb(217, 137, 93);
   border-color: rgb(211, 211, 211);
-  color: #000;
+  color: #ffffff;
 }
 
 .vdo-high-confidence {
@@ -37,6 +47,15 @@
   color: #b51414;
 }
 
-.nvip-cve-number-span {
-  font-size: var(--font-size-lg);
+#cve_id {
+  font-size: 1.5em;
+  color: #286091;
+}
+
+.description-text{
+  font-size: 1.2em;
+}
+
+.product-items{
+  color: #ffa784;
 }
