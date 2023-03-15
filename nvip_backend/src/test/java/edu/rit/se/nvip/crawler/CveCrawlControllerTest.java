@@ -25,7 +25,7 @@ public class CveCrawlControllerTest {
         urls.add("https://access.redhat.com/security/cve/cve-2021-44228");
 
         CveCrawlController controller = new CveCrawlController();
-        HashMap<String, CompositeVulnerability> map = controller.crawl(urls);
+        HashMap<String, ArrayList<CompositeVulnerability>> map = controller.crawl(urls, new ArrayList<>());
 
         System.out.println(map);
 

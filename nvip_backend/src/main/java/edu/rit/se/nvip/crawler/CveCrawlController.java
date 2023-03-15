@@ -24,6 +24,7 @@ import crawlercommons.filters.basic.BasicURLNormalizer;
 import edu.uci.ics.crawler4j.url.SleepycatWebURLFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.python.antlr.ast.Str;
 
 public class CveCrawlController {
 
@@ -34,6 +35,7 @@ public class CveCrawlController {
     public static void main(String[] args) throws Exception {
 
         ArrayList<String> urls = new ArrayList<>();
+        ArrayList<String> whiteList = new ArrayList<>();
 
         File seedURLs = properties.getSeedURLS();
         Scanner reader = new Scanner(seedURLs);
@@ -41,10 +43,20 @@ public class CveCrawlController {
             urls.add(reader.nextLine());
         }
 
-        new CveCrawlController().crawl(urls);
+        File whiteListFile = properties.getWhiteListURLS();
+        reader = new Scanner(whiteListFile);
+        while (reader.hasNextLine()) {
+            whiteList.add(reader.nextLine());
+        }
+
+        HashMap<String, ArrayList<CompositeVulnerability>> data = new CveCrawlController().crawl(urls, whiteList);
+
+        for (String cveid : data.keySet()) {
+            System.out.println(data.get(cveid));
+        }
     }
 
-    public HashMap<String, ArrayList<CompositeVulnerability>> crawl(List<String> urls) throws Exception {
+    public HashMap<String, ArrayList<CompositeVulnerability>> crawl(List<String> urls, List<String> whiteList) throws Exception {
 
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
@@ -80,8 +92,8 @@ public class CveCrawlController {
             controller1.addSeed(url);
         }
 
-        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(urls);
-        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(urls);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList);
 
         controller1.startNonBlocking(factory1, properties.getNumberOfCrawlerThreads());
         controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());

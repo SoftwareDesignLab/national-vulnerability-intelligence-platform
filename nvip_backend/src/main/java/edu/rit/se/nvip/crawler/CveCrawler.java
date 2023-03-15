@@ -79,15 +79,10 @@ public class CveCrawler extends WebCrawler {
 		}
 
 		for (String crawlDomain : myCrawlDomains) {
-
-			System.out.println(crawlDomain + " " + href);
-
 			if (href.contains(crawlDomain)) {
 				return true;
 			}
 		}
-
-		System.out.println("FAILED");
 
 		return false;
 	}
@@ -106,7 +101,7 @@ public class CveCrawler extends WebCrawler {
 			List<CompositeVulnerability> vulnerabilityList = parseWebPage(pageURL, html);
 
 			if (vulnerabilityList.isEmpty()) {
-				nvip_logger.warn("No CVEs found at {}! Please remove this URL", pageURL);
+				nvip_logger.warn("No CVEs found at {}!", pageURL);
 			} else {
 				for (CompositeVulnerability vulnerability : vulnerabilityList) {// reconcile extracted CVEs
 					if (foundCVEs.get(vulnerability.getCveId()) != null) {
@@ -118,12 +113,7 @@ public class CveCrawler extends WebCrawler {
 					}
 				}
 
-				long processedPageCount = getMyController().getFrontier().getNumberOfProcessedPages();
-				if (processedPageCount > 0 && processedPageCount % 250 == 0) {
-					long myQueueLength = getMyController().getFrontier().getNumberOfScheduledPages();
-					String percent = formatter.format(processedPageCount / (myQueueLength * 1.0) * 100);
-					nvip_logger.info("Crawler {} processed {} of total {} pages, %{} done!", getMyId(), processedPageCount, myQueueLength, percent);
-				}
+				nvip_logger.info("{} CVEs found at {}", vulnerabilityList.size(),pageURL);
 			}
 		}
 

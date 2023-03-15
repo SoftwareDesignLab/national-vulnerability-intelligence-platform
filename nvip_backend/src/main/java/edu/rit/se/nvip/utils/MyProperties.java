@@ -44,6 +44,10 @@ public class MyProperties extends Properties {
 		return new File(getProperty("dataDir") + "/" + getProperty("seedURLs"));
 	}
 
+	public File getWhiteListURLS() {
+		return new File(getProperty("dataDir") + "/" + getProperty("whiteListDomains"));
+	}
+
 	public int getNumberOfCrawlerThreads() {
 		return Integer.parseInt(getProperty("numberOfCrawlerThreads"));
 	}
@@ -125,7 +129,7 @@ public class MyProperties extends Properties {
 		return getProperty("cpeSerialized");
 	}
 
-	public int getMaxNumberOfPages() {return Integer.parseInt(getProperty("MaxNumberOfPages"));}
+	public int getMaxNumberOfPages() {return Integer.parseInt(getProperty("maxNumberOfPages"));}
 
 	/**
 	 * Hash map storing the list of known Cve sources (domains) that the system has

@@ -295,7 +295,7 @@ public class NVIPMain {
 				urls.size(), properties.getNumberOfCrawlerThreads());
 		CveCrawlController crawlerController = new CveCrawlController();
 
-		HashMap<String, ArrayList<CompositeVulnerability>> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls);
+		HashMap<String, ArrayList<CompositeVulnerability>> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls, new ArrayList<>());
 
 		// merge CVEs from two sources (CNAs and Github repo)
 		//HashMap<String, CompositeVulnerability> cveHashMapAll = mergeCVEsDerivedFromCNAsAndGit(cveHashMapGithub, cveHashMapScrapedFromCNAs);
