@@ -165,7 +165,6 @@ public class KbCertCveParser extends AbstractCveParser  {
 	 * @return string of systems name
 	 */
 	private List<AffectedRelease> getVendors(Document document) {
-		DatabaseHelper.getInstance();
 		Element vendor = document.getElementById("vendorinfo");
 		Elements affected = vendor.getElementsByClass("vinfo affected info");
 		affected.addAll(vendor.getElementsByClass("vinfo affected")); // different classes for css

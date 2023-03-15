@@ -36,9 +36,6 @@ import java.util.regex.Pattern;
  * Parser for Gentoo Linux Bug Advisory
  * @author axoeec, aep7128
  *
- * TODO: ADD GENTOO SECURITY IN PRODUCTS
- * TODO: use this for extracting patches from this source
- * TODO: Update model to add Patches to composite Vulnerabilities
  */
 public class BugsGentooParser extends AbstractCveParser  {
 	
