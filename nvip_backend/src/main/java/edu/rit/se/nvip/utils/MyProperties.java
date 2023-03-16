@@ -48,6 +48,8 @@ public class MyProperties extends Properties {
 		return new File(getProperty("dataDir") + "/" + getProperty("whiteListDomains"));
 	}
 
+	public boolean refreshCVENVDList() { return Boolean.parseBoolean(getProperty("refreshCVENVDList")); }
+
 	public int getNumberOfCrawlerThreads() {
 		return Integer.parseInt(getProperty("numberOfCrawlerThreads"));
 	}

@@ -163,6 +163,7 @@
 			<groupId>de.hs-heilbronn.mi</groupId>
 			<artifactId>crawler4j-with-sleepycat</artifactId>
 			<version>5.0.1</version>
+			<type>pom</type>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
