@@ -73,6 +73,9 @@ public class CveCrawlController {
         config1.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
         config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
 
+        //config1.setResumableCrawling(true);
+        //config2.setResumableCrawling(true);
+
         BasicURLNormalizer normalizer1 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
         BasicURLNormalizer normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
         PageFetcher pageFetcher1 = new PageFetcher(config1, normalizer1);
@@ -89,7 +92,11 @@ public class CveCrawlController {
         CrawlController controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
 
         for (String url: urls) {
-            controller1.addSeed(url);
+            try {
+                controller1.addSeed(url);
+            } catch (Exception e) {
+                logger.info("Error trying to add {} as a seed URL", url);
+            }
         }
 
         CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList);

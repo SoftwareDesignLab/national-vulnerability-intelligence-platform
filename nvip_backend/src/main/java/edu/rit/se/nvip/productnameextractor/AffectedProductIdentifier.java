@@ -191,8 +191,10 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 				}
 
 			} catch (Exception e) {
-				logger.error("Error {} while extracting affected releases! Processed: {} out of {} CVEs; CVE: {}", e, Integer.toString(counterOfProcessedCVEs), Integer.toString(totalCVEtoProcess),
-						vulnerability.toString());
+				// TODO: This error gets hit for every CVE
+
+				//logger.error("Error {} while extracting affected releases! Processed: {} out of {} CVEs; CVE: {}", e, Integer.toString(counterOfProcessedCVEs), Integer.toString(totalCVEtoProcess),
+				//		vulnerability.toString());
 			}
 
 			totalCVEtime = totalCVEtime + (System.currentTimeMillis() - startCVETime);
