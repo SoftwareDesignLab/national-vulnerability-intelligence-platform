@@ -4,6 +4,8 @@ import java.io.File;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,8 +63,8 @@ public class CveCrawlController {
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
-        config1.setCrawlStorageFolder(properties.getDataDir() + "/crawlers/crawler1");
-        config2.setCrawlStorageFolder(properties.getDataDir() + "/crawlers/crawler2");
+        config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler1");
+        config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
 
         config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
         config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
@@ -72,9 +74,6 @@ public class CveCrawlController {
 
         config1.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
         config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
-
-        //config1.setResumableCrawling(true);
-        //config2.setResumableCrawling(true);
 
         BasicURLNormalizer normalizer1 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
         BasicURLNormalizer normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
@@ -99,8 +98,16 @@ public class CveCrawlController {
             }
         }
 
-        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList);
-        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList);
+        String outputFile = "";
+        if (properties.getCrawlerReport()) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            LocalDateTime now = LocalDateTime.now();
+            outputFile = properties.getOutputDir() + "crawler/reports/report" + now + ".txt";
+        }
+
+        String finalOutputFile = outputFile;
+        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList, finalOutputFile);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList, finalOutputFile);
 
         controller1.startNonBlocking(factory1, properties.getNumberOfCrawlerThreads());
         controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());

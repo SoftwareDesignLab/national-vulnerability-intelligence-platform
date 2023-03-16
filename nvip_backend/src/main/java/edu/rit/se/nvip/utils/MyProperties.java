@@ -58,6 +58,8 @@ public class MyProperties extends Properties {
 		return Integer.parseInt(getProperty("crawlSearchDepth"));
 	}
 
+	public boolean getCrawlerReport() { return Boolean.parseBoolean(getProperty("crawlerReportEnabled"));}
+
 	public String getOutputDir() {
 		return getProperty("outputDir");
 	}

@@ -23,6 +23,9 @@
  */
 package edu.rit.se.nvip.crawler;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -56,13 +59,22 @@ public class CveCrawler extends WebCrawler {
 	private final Logger nvip_logger = LogManager.getLogger(getClass().getSimpleName());
 	private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg" + "|png|mp3|mp4|zip|gz))$");
 	private final List<String> myCrawlDomains;
-	private HashMap<String, ArrayList<CompositeVulnerability>> foundCVEs = new HashMap<>();
-	private CveParserFactory parserFactory = new CveParserFactory();
-	private NumberFormat formatter = new DecimalFormat("#0.000");
+	private String outputDir;
+	private final HashMap<String, ArrayList<CompositeVulnerability>> foundCVEs = new HashMap<>();
+	private final CveParserFactory parserFactory = new CveParserFactory();
 
 
-	public CveCrawler(List<String> myCrawlDomains) {
+	public CveCrawler(List<String> myCrawlDomains, String outputDir) {
 		this.myCrawlDomains = myCrawlDomains;
+		this.outputDir = outputDir;
+	}
+
+	/**
+	 * get Cve data from crawler thread
+	 */
+	@Override
+	public HashMap<String, ArrayList<CompositeVulnerability>> getMyLocalData() {
+		return foundCVEs;
 	}
 
 	/**
@@ -98,10 +110,17 @@ public class CveCrawler extends WebCrawler {
 			String html = htmlParseData.getHtml();
 
 			// get vulnerabilities from page
-			List<CompositeVulnerability> vulnerabilityList = parseWebPage(pageURL, html);
+			List<CompositeVulnerability> vulnerabilityList = new ArrayList<>();
+			try {
+				vulnerabilityList = parseWebPage(pageURL, html);
+			} catch (Exception e) {
+				logger.info("Crawler error when parsing {} --> {}", page.getWebURL(), e.toString());
+				updateCrawlerReport("Crawler error when parsing " +  page.getWebURL() +" --> " + e);
+			}
 
 			if (vulnerabilityList.isEmpty()) {
 				nvip_logger.warn("No CVEs found at {}!", pageURL);
+				updateCrawlerReport("No CVEs found at " + pageURL + "!");
 			} else {
 				for (CompositeVulnerability vulnerability : vulnerabilityList) {// reconcile extracted CVEs
 					if (foundCVEs.get(vulnerability.getCveId()) != null) {
@@ -132,12 +151,15 @@ public class CveCrawler extends WebCrawler {
 		return parser.parseWebPage(sSourceURL, sCVEContentHTML);
 	}
 
-	/**
-	 * get Cve data from crawler thread
-	 */
-	@Override
-	public HashMap<String, ArrayList<CompositeVulnerability>> getMyLocalData() {
-		return foundCVEs;
+	private void updateCrawlerReport(String log) {
+		File reportFile = new File(outputDir);
+		try {
+			FileWriter write = new FileWriter(reportFile);
+			write.write(log);
+			write.close();
+		} catch (IOException ignored) {
+			logger.info("Failure writing report to {}", outputDir);
+		}
 	}
 
 }
