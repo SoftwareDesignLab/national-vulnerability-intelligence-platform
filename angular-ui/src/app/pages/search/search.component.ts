@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { faSpinner, faAngleDoubleLeft, faAngleDoubleRight, faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/services/Api/api-service.service';
@@ -355,5 +355,13 @@ export class SearchComponent implements OnInit {
   /** trigger emit of new active dropdown to collapse all other dropdowns on the page */
   setCurrentSelected(event: any) {
     this.currentSelected = event['index'];
+  }
+
+  /** When user clicks the back button while on the search results page, refreshes the page with the search form visible, otherwise goes back a page */
+  @HostListener('window:popstate')
+  onPopState(){
+    if(!this.showForm){
+      window.location.assign('/search');
+    }
   }
 }
