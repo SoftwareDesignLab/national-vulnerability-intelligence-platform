@@ -154,11 +154,12 @@ public class CveCrawler extends WebCrawler {
 	private void updateCrawlerReport(String log) {
 		File reportFile = new File(outputDir);
 		try {
-			FileWriter write = new FileWriter(reportFile);
-			write.write(log);
+			reportFile.createNewFile();
+			FileWriter write = new FileWriter(reportFile, true);
+			write.write(log + "\n");
 			write.close();
-		} catch (IOException ignored) {
-			logger.info("Failure writing report to {}", outputDir);
+		} catch (IOException e) {
+			logger.info("Failure writing report to {}: {}", outputDir, e);
 		}
 	}
 

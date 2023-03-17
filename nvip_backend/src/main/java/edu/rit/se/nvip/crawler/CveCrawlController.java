@@ -26,7 +26,6 @@ import crawlercommons.filters.basic.BasicURLNormalizer;
 import edu.uci.ics.crawler4j.url.SleepycatWebURLFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.python.antlr.ast.Str;
 
 public class CveCrawlController {
 
@@ -102,7 +101,7 @@ public class CveCrawlController {
         if (properties.getCrawlerReport()) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
             LocalDateTime now = LocalDateTime.now();
-            outputFile = properties.getOutputDir() + "crawler/reports/report" + now + ".txt";
+            outputFile = properties.getOutputDir() + "/crawlers/reports/report" + dtf.format(now) + ".txt";
         }
 
         String finalOutputFile = outputFile;
