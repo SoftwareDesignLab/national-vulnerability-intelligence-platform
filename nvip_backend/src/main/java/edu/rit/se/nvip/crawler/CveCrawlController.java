@@ -50,11 +50,11 @@ public class CveCrawlController {
             whiteList.add(reader.nextLine());
         }
 
+        long crawlStartTime = System.currentTimeMillis();
         HashMap<String, ArrayList<CompositeVulnerability>> data = new CveCrawlController().crawl(urls, whiteList);
+        long crawlEndTime = System.currentTimeMillis();
+        logger.info("Crawler Finished\nTime: {}", crawlEndTime - crawlStartTime);
 
-        for (String cveid : data.keySet()) {
-            System.out.println(data.get(cveid));
-        }
     }
 
     public HashMap<String, ArrayList<CompositeVulnerability>> crawl(List<String> urls, List<String> whiteList) throws Exception {
