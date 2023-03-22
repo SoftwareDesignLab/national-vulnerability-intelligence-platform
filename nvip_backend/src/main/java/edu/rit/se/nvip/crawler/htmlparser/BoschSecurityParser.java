@@ -32,12 +32,9 @@ public class BoschSecurityParser extends AbstractCveParser{
      */
     @Override
     public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
-
-        List<CompositeVulnerability> vulns = new ArrayList<>();
-
+        ArrayList<CompositeVulnerability> vulns = new ArrayList<>();
         Document doc = Jsoup.parse(sCVEContentHTML);
-
-        Elements dates = Objects.requireNonNull(Objects.requireNonNull(doc.getElementById("advisory-information")).nextElementSibling()).children();
+        Elements dates = doc.getElementsByClass("A-Text-RichText").get(0).children().get(1).children();
 
         String publishDate = dates.get(2).children().get(1).text().substring(10).trim();
         String updateDate = dates.get(3).children().get(1).text().substring(13).trim();
@@ -46,12 +43,17 @@ public class BoschSecurityParser extends AbstractCveParser{
         for (Element header: headers) {
             if (header.id().contains("cve-")) {
                 String cveId = header.id().toUpperCase();
-                String description = Objects.requireNonNull(header.nextElementSibling()).text().substring(17);
-
+                String description = "";
+                Element currentEl = header;
+                while (currentEl != null && Objects.requireNonNull(currentEl.nextElementSibling()).tagName().equals("p")) {
+                    currentEl = currentEl.nextElementSibling();
+                    if (currentEl != null && currentEl.text().startsWith("CVE description: ")) {
+                        description = currentEl.text().substring(17);
+                    }
+                }
                 vulns.add(new CompositeVulnerability(0, sSourceURL, cveId, null, publishDate, updateDate, description, sourceDomainName));
             }
         }
-
         return vulns;
     }
 }

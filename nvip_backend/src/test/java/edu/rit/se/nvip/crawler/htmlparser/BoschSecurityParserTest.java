@@ -13,22 +13,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Test for Bosch Security Parser
  * @author aep7128
  */
-public class BoschSecurityParserTest {
+public class BoschSecurityParserTest extends AbstractParserTest {
 
     @Test
-    public void testBoschSecurityParser() throws IOException {
-
-        MyProperties propertiesNvip = new MyProperties();
-        propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-
-        CveCrawler crawler = new CveCrawler(propertiesNvip);
-        String html = FileUtils.readFileToString(new File("src/test/resources/test-bosch-security.html"), StandardCharsets.US_ASCII);
-        List<CompositeVulnerability> list = crawler.parseWebPage("https://psirt.bosch.com/security-advisories/bosch-sa-247053-bt.html", html);
+    public void testBoschSecurityParser() {
+        String html = safeReadHtml("src/test/resources/test-bosch-security.html");
+        List<CompositeVulnerability> list = new BoschSecurityParser("bosch").parseWebPage("https://psirt.bosch.com/security-advisories/bosch-sa-247053-bt.html", html);
 
         assertEquals(105, list.size());
 
@@ -44,6 +40,18 @@ public class BoschSecurityParserTest {
                 vuln2.getDescription());
         assertEquals("23 Nov 2022", vuln1.getPublishDate());
         assertEquals("23 Nov 2022", vuln1.getLastModifiedDate());
+    }
 
+    @Test
+    public void testBoschSecurityParser2() {
+        String html = safeReadHtml("src/test/resources/test-bosch-security-3.html");
+        List<CompositeVulnerability> list = new BoschSecurityParser("bosch").parseWebPage("bosch", html);
+        assertEquals(2, list.size());
+        CompositeVulnerability vuln = getVulnerability(list, "CVE-2019-1182");
+        assertNotNull(vuln);
+        assertEquals("A remote code execution vulnerability exists in Remote Desktop Services - formerly known as Terminal Services - when an unauthenticated attacker connects to the target system using RDP and sends specially crafted requests, aka 'Remote Desktop Services Remote Code Execution Vulnerability'. This CVE ID is unique from CVE-2019-1181, CVE-2019-1222, CVE-2019-1226.",
+                vuln.getDescription());
+        assertEquals("03 Sep 2019", vuln.getPublishDate());
+        assertEquals("03 Sep 2019", vuln.getLastModifiedDate());
     }
 }
