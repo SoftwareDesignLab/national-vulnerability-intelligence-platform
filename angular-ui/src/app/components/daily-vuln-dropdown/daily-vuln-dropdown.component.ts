@@ -132,7 +132,7 @@ export class DailyVulnDropdownComponent implements OnChanges {
 
   /** styling for whether a dropdown is active or not */
   getHeaderClass() {
-    var c: string = this.active ? 'daily-vuln-active' : 'daily-vuln-dropdown-button';
+    var c: string = this.active ? 'daily-vuln-active' : '';
     return c;
   }
 
