@@ -30,6 +30,7 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import edu.rit.se.nvip.crawler.github.PyPAGithubScraper;
 import edu.rit.se.nvip.mitre.capec.Capec;
 import edu.rit.se.nvip.mitre.capec.CapecParser;
 
@@ -347,7 +348,6 @@ public class NVIPMain {
 	 * Insert a stats record to db
 	 * 
 	 * @param databaseHelper
-	 * @param totalCve
 	 * @param totNotInNvd
 	 * @param totNotInMitre
 	 * @param totNotInBoth
