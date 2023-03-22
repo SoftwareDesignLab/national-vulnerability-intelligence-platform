@@ -1,6 +1,30 @@
+/**
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
+ * government support under contract 70RSAT19CB0000020 awarded by the United
+ * States Department of Homeland Security.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 import { Component, OnInit } from '@angular/core';
+
 import { NgForm } from '@angular/forms';
-import { faSpinner, faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faAngleDoubleLeft, faAngleDoubleRight, faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/services/Api/api-service.service';
 import { Session } from 'src/app/services/Auth/auth-service.service';
 import { CookieService } from 'src/app/services/Cookie/cookie.service';
@@ -20,7 +44,7 @@ export class SearchComponent implements OnInit {
   faAngleDoubleLeft = faAngleDoubleLeft;
   faAngleDoubleRight = faAngleDoubleRight;
   faAngleRight = faAngleRight;
-  faAngleLeft = faAngleLeft;
+  faAngleDown = faAngleDown;
   /** Hold state of icon rotation, rotated if a dropdown is opened */
   rotationAmountVDO = 0;
   rotationAmountCVSS = 0;
@@ -108,15 +132,15 @@ export class SearchComponent implements OnInit {
     )[0];
 
     if (formContent!.style.display == 'flex') {
-      if (drop === 'VDO') this.rotationAmountVDO = 0;
-      else if (drop === 'CVSS') this.rotationAmountCVSS = 0;
+      if (drop === 'VDO') this.rotationAmountVDO = 90;
+      else if (drop === 'CVSS') this.rotationAmountCVSS = 90;
       formDropdown!.classList.remove('dropdown-opened');
       formContent!.style.display = 'none';
       caretIcon.classList.add('fa-angle-left');
       caretIcon.classList.remove('fa-angle-down');
     } else {
-      if (drop === 'VDO') this.rotationAmountVDO = -90;
-      else if (drop === 'CVSS') this.rotationAmountCVSS = -90;
+      if (drop === 'VDO') this.rotationAmountVDO = 0;
+      else if (drop === 'CVSS') this.rotationAmountCVSS = 0;
       formDropdown!.classList.add('dropdown-opened');
       formContent!.style.display = 'flex';
       caretIcon.classList.remove('fa-angle-left');
@@ -355,5 +379,13 @@ export class SearchComponent implements OnInit {
   /** trigger emit of new active dropdown to collapse all other dropdowns on the page */
   setCurrentSelected(event: any) {
     this.currentSelected = event['index'];
+  }
+
+  /** When user clicks the back button while on the search results page, refreshes the page with the search form visible, otherwise goes back a page */
+  @HostListener('window:popstate')
+  onPopState(){
+    if(!this.showForm){
+      window.location.assign('/search');
+    }
   }
 }

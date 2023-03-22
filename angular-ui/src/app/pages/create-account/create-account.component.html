@@ -5,18 +5,13 @@
 >
   <div class="create-account-panel">
     <div class="login-form-header col-11" style="margin-left: 0.5em">
-      <p style="margin: auto">
+      <p>
         Create NVIP Account
         <a href="#\login" style="color: black">
-          <fa-icon
-            [icon]="faTimes"
-            aria-hidden="true"
-            [ngStyle]="{ float: 'right' }"
-          ></fa-icon>
         </a>
       </p>
       <p id="registrationMessage" class="registration-message">
-        Passwords Don't Match
+        Passwords don't match
       </p>
     </div>
     <form
@@ -67,8 +62,8 @@
         <fa-icon [icon]="faLock"></fa-icon>
         <input
           type="password"
-          name="passwordReapeat"
-          id="passwordRepeat"
+          name="repeatPassword"
+          id="repeatPassword"
           class="form-control"
           [(ngModel)]="credentials.repeatPassword"
           required
@@ -121,6 +116,7 @@
             left: 50%;
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
+            margin-top: .5em;
           "
           class="login-submit-button btn btn-danger"
           type="submit"
