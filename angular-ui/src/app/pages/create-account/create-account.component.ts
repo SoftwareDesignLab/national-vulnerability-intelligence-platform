@@ -56,7 +56,18 @@ export class CreateAccountComponent {
 
   /** give ngForm to api endpoint to create user based on input html form */
   createAccount(f: NgForm) {
-    this.authService.createUser(f.value);
+    if(f.value.password === f.value.repeatPassword){
+      this.authService.createUser(f.value);
+    } else {
+      this.passwordError();
+    }
+  }
+  /** displays error message is password and repeatPassword don't match */
+  passwordError(){
+    var passwordError = document.getElementById('registrationMessage') as HTMLDivElement;
+    var formSpacing = document.getElementById('regForm') as HTMLDivElement;
+    passwordError.style.display = 'block';
+    formSpacing.style.marginTop = "6em";
   }
 
 }

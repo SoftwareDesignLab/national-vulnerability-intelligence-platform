@@ -24,6 +24,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../Api/api-service.service';
 import { CookieService } from '../Cookie/cookie.service';
+import { FuncsService } from 'src/app/services/Funcs/funcs.service';
 
 /* Related Interfaces */
 
@@ -55,7 +56,7 @@ export class AuthService {
    * @param api access login endpoints
    * @param cookieService access browser cookie
    */
-  constructor(private api: ApiService, private cookieService: CookieService) {}
+  constructor(private api: ApiService, private cookieService: CookieService, private funcs: FuncsService) {}
 
   /** establish a session on a successful user login */
   onLogin(credentials: AuthCredentials) {
@@ -76,9 +77,10 @@ export class AuthService {
             expirationDate: response.expirationDate
           }
           this.cookieService.put('nvip_user', session)
+          this.funcs.closeLogin();
         },
         error: (e) => {
-          alert(`Error ${e.status}: ${e.statusText}`)
+          this.funcs.incorrectLogin();
           console.log(e); return false
         },
         complete: () => {return true},

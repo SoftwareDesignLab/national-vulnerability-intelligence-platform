@@ -21,3 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+.create-account-panel {
+	z-index: 2;
+	border: 2px solid #d3d3d3;
+	border-radius: 25px;
+	background-color: #ffffff;
+	margin: 6.5em auto;
+	max-width: calc(35em + 10em);
+	min-height: 10em;
+    width: 100%;
+	padding-bottom: 3em;
+}
+
+.login-form-header {
+	color: #000000;
+	font-size: 2em;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	position: absolute;
+}
+
+#regForm {
+	margin-top: 4em;
+}
+
+.form-group {
+	margin: 1em 2em;
+	width: 100%;
+	color: #000000;
+}
+
+.registration-message{
+    font-size: .5em;
+    margin-left: 1em;
+    color: red;
+    display: none;
+}
+
