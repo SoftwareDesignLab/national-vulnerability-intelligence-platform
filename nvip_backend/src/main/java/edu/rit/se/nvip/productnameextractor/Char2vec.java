@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -25,6 +25,7 @@ package edu.rit.se.nvip.productnameextractor;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,8 +52,9 @@ public class Char2vec {
             '=', '>', '?', '@', '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
             'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
             'x', 'y', 'z'};
-	
-	private ArrayList<Character> dictList = null; //just to take advantage of Collections
+
+	// char[] dict -> ArrayList of Character dict
+	private final ArrayList<Character> dictList = new ArrayList<>(new String(dict).chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
 
 	private ComputationGraph model = null;
 	
@@ -63,8 +65,8 @@ public class Char2vec {
 
 	/**
 	 * Class constructor
-	 * @param String Model config file path (json file)
-	 * @param String Model weights' path (h5 file)
+	 * @param modelConfigPath Model config file path (json file)
+	 * @param modelWeightsPath Model weights' path (h5 file)
 	 */	
 	public Char2vec(String modelConfigPath, String modelWeightsPath) {
 		super();
@@ -91,7 +93,7 @@ public class Char2vec {
 	/**
 	 * Preprocess the word into the INDArray understanble by char2vec model
 	 * 
-	 * @param String input word
+	 * @param wordToVec input word
 	 * @return features array that can be fed into the model
 	 */	
 	private INDArray preprocessWord(String wordToVec) {
@@ -99,14 +101,7 @@ public class Char2vec {
 		wordToVec=wordToVec.toLowerCase();
 		
 		//We don't know what symbols are not supported in the word, so we use ArrayList
-		ArrayList<int[]> wordMatrix = new ArrayList<int[]>();
-		
-		if (dictList == null) {
-			dictList = new ArrayList<>();
-			for (int i=0; i<dict.length; i++) {
-				dictList.add(dict[i]);
-			}
-		}
+		ArrayList<int[]> wordMatrix = new ArrayList<>();
 		 
 		//Convert word into the vector (length = dict.length) of binary values, with only one "1" element, posistion of which corresponds to the this symbol position in the dict 
 		for (int i=0; i<wordToVec.length(); i++) {
@@ -137,13 +132,13 @@ public class Char2vec {
 	/**
 	 * Convert features array into the 1D-vector
 	 * 
-	 * @param INDArray input features array
+	 * @param features input features array
 	 * @return array of float values
 	 */
 	private float[] processWords(INDArray features)
 	{
 		
-		INDArray[] output = model.output(features); //Get output from he model
+		INDArray[] output = model.output(features); //Get output from the model
 
 		INDArray outputRow = output[0].getRow(0);
 		float[] resultVector = new float[outputRow.columns()];
@@ -156,7 +151,7 @@ public class Char2vec {
 	/**
 	 * Convert word into the 1D-vector
 	 * 
-	 * @param String input word
+	 * @param word input word
 	 * @return array of float values
 	 */	
 	public float[] word2vec(String word) {

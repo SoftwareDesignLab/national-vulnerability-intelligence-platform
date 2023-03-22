@@ -11,7 +11,7 @@
             (click)="clearListener()"
           ></fa-icon>
         </p>
-        <p id="loginMessage" class="login-message">Login is Required</p>
+        <p id="loginMessage" class="login-message">Login or Password is incorrect!</p>
       </div>
 
       <form
@@ -54,7 +54,6 @@
             class="login-submit-button btn btn-danger"
             type="submit"
             style="margin-left: 2em"
-            (click)="clearListener()"
             [disabled]="form.invalid || dataLoading"
           >
             Login
