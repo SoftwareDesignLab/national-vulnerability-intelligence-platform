@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="hydrated"><head>
+  <title>
+    Jenkins Security Advisory 2023-02-09
+  </title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta content="Jenkins – an open source automation server which enables developers around the world to reliably build, test, and deploy their software" name="description">
+  <meta charset="utf-8"><style class="anchorjs"></style><style data-styles="">ion-icon{visibility:hidden}.hydrated{visibility:inherit}</style>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="ie=edge" http-equiv="x-ua-compatible">
+  <link href="https://www.jenkins.io/security/advisory/2023-02-09/" rel="canonical">
+  <!-- Favicons -->
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+  <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+  <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+  <link href="/site.webmanifest" rel="manifest">
+  <link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon">
+  <meta content="#2b5797" name="msapplication-TileColor">
+  <meta content="#ffffff" name="theme-color">
+  <meta content="Jenkins Security Advisory 2023-02-09" name="apple-mobile-web-app-title">
+  <!-- Twitter Card data -->
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="@JenkinsCI" name="twitter:site">
+  <meta content="Jenkins Security Advisory 2023-02-09" name="twitter:title">
+  <meta content="Jenkins – an open source automation server which enables developers around the world to reliably build, test, and deploy their software" name="twitter:description">
+  <meta content="@JenkinsCI" name="twitter:creator">
+  <!-- Twitter Summary card images must be at least 120x120px -->
+  <meta content="/images/logo-title-opengraph.png" name="twitter:image">
+  <!-- Open Graph data -->
+  <meta content="Jenkins Security Advisory 2023-02-09" property="og:title">
+  <meta content="article" property="og:type">
+  <meta content="https://www.jenkins.io/security/advisory/2023-02-09/" property="og:url">
+  <meta content="Jenkins – an open source automation server which enables developers around the world to reliably build, test, and deploy their software" name="og:description">
+  <meta content="Jenkins Security Advisory 2023-02-09" property="og:site_name">
+  <meta content="/images/logo-title-opengraph.png" name="og:image">
+  <link href="/assets/bower/bootstrap/css/bootstrap.min.css" media="screen" rel="stylesheet">
+  <link href="/css/jenkins.css" media="screen" rel="stylesheet">
+  <link href="/stylesheets/styles.css" media="screen" rel="stylesheet">
+  <!-- Non-obtrusive CSS styles -->
+  <link href="/css/footer.css" media="screen" rel="stylesheet">
+  <link href="/css/font-awesome.min.css" media="screen" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" media="all"><style type="text/css">.DocSearch-Container { top: 56px; }</style><script defer="" src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script></head>
+<body>
+<script async="" src="//www.google-analytics.com/analytics.js"></script><script src="/assets/bower/jquery/jquery.min.js"></script>
+<!-- starting partial toptoolbar.html.haml -->
+<jio-navbar class="fixed-top" id="ji-toolbar" property="https://www.jenkins.io" showsearchbox=""></jio-navbar>
+<!-- Spacing to make the fixed-top sticky navbar not occlude any content below it -->
+<div class="pt-4">
+  &nbsp;
+</div>
+
+<!-- ending partial toptoolbar.html.haml -->
+<!-- starting partial anchors.html.haml -->
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    for (var i = 1 ; i <= 6 ; i ++) {
+      anchors.add('.container .row .col-lg-9 h' + i);
+    }
+  })
+</script>
+
+<!-- ending partial anchors.html.haml -->
+<div class="container">
+  <div class="row body">
+    <div class="col-lg-3">
+      <div class="sidebar-nav tour">
+        <p>
+          <a href="/security/" class="">Jenkins Security Home</a>
+        </p>
+        <strong>
+          For Administrators
+        </strong>
+        <ul>
+          <li>
+            <a href="/security/for-administrators/" class="">Overview</a>
+          </li>
+          <li>
+            <a href="/security/advisories/" class="">Security Advisories</a>
+          </li>
+          <li>
+            <a href="/security/scheduling/" class="">Advisory Schedule</a>
+          </li>
+          <li>
+            <a href="/security/plugins/" class="">Vulnerabilities in Plugins</a>
+          </li>
+          <li>
+            <a href="/security/fixing/" class="">How We Fix Security Issues</a>
+          </li>
+        </ul>
+        <strong>
+          For Reporters
+        </strong>
+        <ul>
+          <li>
+            <a href="/security/reporting/" class="">Reporting Vulnerabilities</a>
+          </li>
+          <li>
+            <a href="/security/cna/" class="">Jenkins CNA</a>
+          </li>
+        </ul>
+        <strong>
+          For Maintainers
+        </strong>
+        <ul>
+          <li>
+            <a href="/security/for-maintainers/" class="">Overview</a>
+          </li>
+          <li>
+            <a href="/security/plugins/" class="">Vulnerabilities in Plugins</a>
+          </li>
+        </ul>
+        <strong>
+          Jenkins Security Team
+        </strong>
+        <ul>
+          <li>
+            <a href="/security/team/" class="">About</a>
+          </li>
+          <li>
+            <a href="/security/improvements/" class="">Contributions</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <h1 id="jenkins-security-advisory-2023-02-09">
+        Jenkins Security Advisory 2023-02-09
+        <a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#jenkins-security-advisory-2023-02-09" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h1>
+      <p>
+        This advisory announces vulnerabilities in the following Jenkins deliverables:
+      </p>
+      <p>
+      </p><ul>
+      <li>
+        Jenkins Docker images
+      </li>
+    </ul>
+      <p></p>
+      <h2 id="descriptions">
+        Descriptions
+        <a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#descriptions" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
+      <h3 id="SECURITY-3039">
+        Git releases with critical vulnerabilities on Jenkins Docker images
+        <a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#SECURITY-3039" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h3>
+      <strong>
+        SECURITY-3039
+        /
+        CVE-2022-23521 and CVE-2022-41903
+      </strong>
+      <br>
+      <strong>
+        Severity (CVSS):
+      </strong>
+      <a href="https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H">
+        Critical
+      </a>
+      <br>
+      <strong>
+        Description:
+      </strong>
+      <div class="paragraph">
+        <p>The Jenkins project provides Docker images for both controllers and agents.
+          Most of these Docker images include the <code>git</code> command line tool to interact with Git repositories.</p>
+      </div>
+      <div class="paragraph">
+        <p>Git releases published before 2023-01-17 are affected by the vulnerabilities <a href="https://github.com/git/git/security/advisories/GHSA-c738-c5qq-xg89">CVE-2022-23521</a> and <a href="https://github.com/git/git/security/advisories/GHSA-475x-2q3q-hvwq">CVE-2022-41903</a>.
+          In the context of Jenkins, the former vulnerability could be exploited through crafted repository contents, allowing an attacker with commit access to a Git repository cloned on a Jenkins controller or agent to achieve remote code execution.</p>
+      </div>
+      <div class="admonitionblock important">
+        <table>
+          <tbody><tr>
+            <td class="icon">
+              <i class="fa icon-important" title="Important"></i>
+            </td>
+            <td class="content">
+              Building software is the primary use case for Jenkins.
+              To accomplish that, Jenkins invokes build scripts containing user-specified code, usually retrieved from an SCM like Git.
+              As a result, this vulnerability only has a real impact in very narrow circumstances:
+              when attackers can control repository contents, but are unable to change build steps, Jenkinsfiles, test code that gets executed by Jenkins, or similar.
+            </td>
+          </tr>
+          </tbody></table>
+      </div>
+      <div class="paragraph">
+        <p>Affected Jenkins controller and agent images for current releases of Jenkins have been updated to include releases of Git that include fixes for these vulnerabilities.</p>
+      </div>
+      <div class="paragraph">
+        <p>Administrators can confirm they’re using an up-to-date version of Git on their Jenkins Docker images as follows:</p>
+      </div>
+      <div class="ulist">
+        <ul>
+          <li>
+            <p><strong>Debian-based images</strong> (the default, tags include <code>latest</code>, <code>lts</code>, <code>jdk11</code>, etc., as well as all <code>slim</code> images)
+              for both controller (<code>jenkins/jenkins</code>) and agents (<code>jenkins/agent</code>, <code>jenkins/inbound-agent</code>, <code>jenkins/ssh-agent</code>)
+              need Git 2.30.2-1+deb11u1 or newer to be safe.
+              Run the following command to confirm the image is up to date (replacing <code>${IMAGE}</code> and <code>${TAG}</code> as needed):<br>
+              <code>docker run --rm --entrypoint='' jenkins/${IMAGE}:${TAG} sh -c 'dpkg -l git'</code></p>
+          </li>
+          <li>
+            <p><strong>Alpine-based images</strong> for both controller (<code>jenkins/jenkins</code>) and agents (<code>jenkins/agent</code>, <code>jenkins/inbound-agent</code>, <code>jenkins/ssh-agent</code>)
+              need a version that’s considered fixed in the Git security advisory (e.g., 2.36.4, 2.34.6, 2.32.5).
+              Run the following command to confirm the image is up to date (replacing <code>${IMAGE}</code> and <code>${TAG}</code> as needed):<br>
+              <code>docker run --rm --entrypoint='' jenkins/${IMAGE}:alpine-${TAG} sh -c 'apk list git 2&gt;/dev/null'</code></p>
+          </li>
+          <li>
+            <p><strong>AlmaLinux-based images</strong> for the controller (<code>jenkins/jenkins</code>)
+              need Git 2.31.1-3 or newer to be safe.
+              Run the following command to confirm the image is up to date (replacing <code>${TAG}</code> as needed):<br>
+              <code>docker run --rm --entrypoint='' jenkins/jenkins:${TAG} sh -c 'rpm -qa git-core'</code></p>
+          </li>
+          <li>
+            <p><strong>Red Hat-based (UBI and CentOS) images</strong> (tags include, e.g., <code>rhel-ubi8-jdk11</code>, <code>rhel-ubi9-jdk17</code>, <code>centos7</code>)
+              for the controller (<code>jenkins/jenkins</code>)
+              need Git 2.31.1-3 or newer to be safe.
+              Run the following command to confirm the image is up to date (replacing <code>${TAG}</code> as needed):<br>
+              <code>docker run --rm --entrypoint='' jenkins/jenkins:${TAG} sh -c 'rpm -qa git'</code></p>
+          </li>
+          <li>
+            <p><strong>Windows-based images for controller</strong> (<code>jenkins/jenkins</code>)
+              do not include Git.</p>
+          </li>
+          <li>
+            <p><strong>Windows-based images for agents</strong> (<code>jenkins/agent</code>, <code>jenkins/inbound-agent</code>, <code>jenkins/ssh-agent</code>)
+              need a version that’s considered fixed in the Git security advisory (e.g., 2.36.4, 2.34.6, 2.32.5).
+              Run the following command inside a container to confirm it is up to date:<br>
+              <code>git --version</code></p>
+          </li>
+        </ul>
+      </div>
+      <h2 id="severity">
+        Severity
+        <a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#severity" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
+      <ul>
+        <li>
+          SECURITY-3039:
+          <a href="https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H">
+            Critical
+          </a>
+        </li>
+      </ul>
+      <h2 id="affected-versions">
+        Affected Versions
+        <a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#affected-versions" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
+      <ul>
+        <li>
+          <strong>
+            Jenkins Docker images
+          </strong>
+          up to and including
+          n/a (see above)
+        </li>
+      </ul>
+      <h2 id="fix">
+        Fix
+        <a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#fix" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
+      <ul>
+        <li>
+          <strong>
+            Jenkins Docker images
+          </strong>
+          should be updated to version
+          n/a (see above)
+        </li>
+      </ul>
+      <p>
+        These versions include fixes to the vulnerabilities described above. All prior versions are considered to be affected by these vulnerabilities unless otherwise indicated.
+      </p>
+
+    </div>
+  </div>
+</div>
+
+
+<script src="/assets/bower/anchor-js/anchor.min.js"></script>
+<script src="/assets/bower/@popperjs/core/umd/popper.min.js"></script>
+<script src="/assets/bower/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lit@2.5.0/polyfill-support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2.6.0/webcomponents-loader.js"></script>
+<script data="ionicons" defer="" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js" type="module"></script>
+<script data="ionicons" defer="" nomodule="" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/@jenkinsci/jenkins-io-components/+esm" type="module"></script>
+<script defer="" nomodule="" src="https://cdn.jsdelivr.net/npm/@jenkinsci/jenkins-io-components/"></script>
+<jio-footer githubbranch="master" githubrepo="jenkins-infra/jenkins.io" property="https://www.jenkins.io" sourcepath="content//security/advisory/2023-02-09.adoc"></jio-footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4216293-5', 'auto');
+  ga('send', 'pageview');
+  ga('set', 'anonymizeIp', true);
+
+</script>
+
+<script>
+  $(function(){
+    var $body = $(document.body);
+    $body.on("keydown", function(){
+      $body.removeClass("no-outline");
+    })
+  })
+</script>
+
+
+</body></html>
