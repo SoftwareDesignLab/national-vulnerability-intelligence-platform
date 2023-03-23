@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head> <title>curl - HTTP multi-header compression denial of service - CVE-2023-23916</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<link rel="stylesheet" type="text/css" href="/curl.css">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" href="/logo/curl-symbol.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="cURL Releases" href="https://github.com/curl/curl/releases.atom">
+<link rel="STYLESHEET" type="text/css" href="https://curl.se/manpage.css">
+</head>
+<body>
+<div class="main">
+<div class="menu">
+<a href="/docs/" class="menuitem" title="Documentation Overview">Docs Overview</a>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/projdocs.html">Project</a>
+  <div class="dropdown-content">
+    <a href="/docs/bugbounty.html">Bug Bounty</a>
+    <a href="/docs/bugs.html">Bug Report</a>
+    <a href="/docs/code-of-conduct.html">Code of conduct</a>
+    <a href="/docs/libs.html">Dependencies</a>
+    <a href="/donation.html">Donate</a>
+    <a href="/docs/faq.html">FAQ</a>
+    <a href="/docs/features.html">Features</a>
+    <a href="/docs/governance.html">Governance</a>
+    <a href="/docs/history.html">History</a>
+    <a href="/docs/install.html">Install</a>
+    <a href="/docs/knownbugs.html">Known Bugs</a>
+    <a href="/logo/">Logo</a>
+    <a href="/docs/todo.html">TODO</a>
+    <a href="/about.html">Web Site Info</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/protdocs.html">Protocols</a>
+  <div class="dropdown-content">
+    <a href="/docs/alt-svc.html">alt-svc</a>
+    <a href="/docs/caextract.html">CA Extract</a>
+    <a href="/docs/hsts.html">HSTS</a>
+    <a href="/docs/http-cookies.html">HTTP cookies</a>
+    <a href="/docs/http2.html">HTTP/2</a>
+    <a href="/docs/http3.html">HTTP/3</a>
+    <a href="/docs/mqtt.html">MQTT</a>
+    <a href="/docs/sslcerts.html">SSL certs</a>
+    <a href="/docs/ssl-compared.html">SSL libs compared</a>
+    <a href="/docs/url-syntax.html">URL syntax</a>
+    <a href="/docs/websocket.html">WebSocket</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/reldocs.html">Releases</a>
+  <div class="dropdown-content">
+    <a href="/changes.html">Changelog</a>
+    <a href="/docs/releases.html">Release Table</a>
+    <a href="/docs/security.html">Security Problems</a>
+    <a href="/docs/versions.html">Version Nums</a>
+    <a href="/docs/vulnerabilities.html">Vulnerabilities</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/tooldocs.html">Tool</a>
+  <div class="dropdown-content">
+    <a href="/docs/comparison-table.html">Comparison Table</a>
+    <a href="/docs/manpage.html">curl man page</a>
+    <a href="/docs/httpscripting.html">HTTP Scripting</a>
+    <a href="/docs/mk-ca-bundle.html">mk-ca-bundle</a>
+    <a href="/docs/manual.html">Tutorial</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/whodocs.html">Who and Why</a>
+  <div class="dropdown-content">
+    <a href="/docs/companies.html">Companies</a>
+    <a href="/docs/copyright.html">Copyright</a>
+    <a href="/sponsors.html">Sponsors</a>
+    <a href="/docs/thanks.html">Thanks</a>
+    <a href="/docs/thename.html">The name</a>
+  </div>
+</div>
+</div>
+<div class="contents">
+<div class="where"><a href="/">curl</a> / <a href="/docs/">Docs</a> / <a href="/docs/security.html">Security Problems</a> / <b>HTTP multi-header compression denial of service</b></div>
+<div class="relatedbox">
+<b>Related:</b>
+<br><a href="/docs/bugbounty.html">Bug Bounty</a>
+<br><a href="/changes.html">Changelog</a>
+<br><a href="/donation.html">Donate</a>
+<br><a href="faq.html">FAQ</a>
+<br><a href="security.html">Security Problems</a>
+<br><a href="/dev/secprocess.html">Security Process</a>
+<br><a href="vulnerabilities.html">Vulnerabilities Table</a>
+</div>
+<h1 id="cve-2023-23916-http-multi-header-compression-denial-of-service">CVE-2023-23916: HTTP multi-header compression denial of service</h1>
+<p>Project curl Security Advisory, February 15th 2023 - <a href="https://curl.se/docs/CVE-2023-23916.html">Permalink</a></p>
+<h2 id="vulnerability">VULNERABILITY</h2>
+<p>curl supports "chained" HTTP compression algorithms, meaning that a server response can be compressed multiple times and potentially with different algorithms. The number of acceptable "links" in this "decompression chain" was capped, but the cap was implemented on a per-header basis allowing a malicious server to insert a virtually unlimited number of compression steps simply by using many headers.</p>
+<p>The use of such a decompression chain could result in a "malloc bomb", making curl end up spending enormous amounts of allocated heap memory, or trying to and returning out of memory errors.</p>
+<p>We are not aware of any exploit of this flaw.</p>
+<h2 id="info">INFO</h2>
+<p>CVE-2023-23916 was introduced in <a href="https://github.com/curl/curl/commit/dbcced8e32b50c06">commit dbcced8e32b50c06</a>, shipped in curl <a href="vuln-7.57.0.html">7.57.0</a>.</p>
+<p>Automatic decompression of content needs to be enabled per transfer. It is disabled by default and then nothing bad happens.</p>
+<p>This flaw exists with one or more of the compression algorithms built-in (gzip, brotli or zstd), but the individual algorithms have different "exploding" powers.</p>
+<p>Both <code>Content-Encoding:</code> and <code>Transfer-Encoding:</code> are affected over all HTTP versions.</p>
+<p>This flaw is almost identical to the previous <a href="https://curl.se/docs/CVE-2022-32206.html">CVE-2022-32206: HTTP compression denial of service</a>, as the fix for that earlier flaw was incomplete.</p>
+<p>CWE-770: Allocation of Resources Without Limits or Throttling</p>
+<p>Severity: Medium</p>
+<h2 id="affected-versions">AFFECTED VERSIONS</h2>
+<ul>
+<li>Affected versions: curl <a href="vuln-7.57.0.html">7.57.0</a> to and including <a href="vuln-7.87.0.html">7.87.0</a></li>
+<li>Not affected versions: curl &lt; <a href="vuln-7.57.0.html">7.57.0</a> and curl &gt; <a href="vuln-7.87.0.html">7.87.0</a></li>
+</ul>
+<p>libcurl is used by many applications, but not always advertised as such!</p>
+<h2 id="the-solution">THE SOLUTION</h2>
+<p>The amount of accepted "chained" algorithms is now capped to 5 in total, independently of the number of headers.</p>
+<p>A <a href="https://github.com/curl/curl/commit/119fb187192a9ea13dc">fix for CVE-2023-23916</a></p>
+<h2 id="recommendations">RECOMMENDATIONS</h2>
+<p>A - Upgrade curl to version <a href="vuln-7.88.0.html">7.88.0</a></p>
+<p>B - Apply the patch to your local version</p>
+<p>C - Do not enable automatic decompression</p>
+<h2 id="timeline">TIMELINE</h2>
+<p>This issue was reported to the curl project on January 8, 2023. We contacted distros@openwall on February 7, 2023.</p>
+<p>libcurl <a href="vuln-7.88.0.html">7.88.0</a> was released on February 15 2023, coordinated with the publication of this advisory.</p>
+<h2 id="credits">CREDITS</h2>
+<ul>
+<li>Reported-by: Patrick Monnerat</li>
+<li>Patched-by: Patrick Monnerat</li>
+</ul>
+<p>Thanks a lot!</p>
+</div>
+</div>
+<script defer src="https://www.fastly-insights.com/insights.js?k=8cb1247c-87c2-4af9-9229-768b1990f90b" type="text/javascript"></script>
+</body> </html>

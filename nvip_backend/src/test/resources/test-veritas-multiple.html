@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en-US"><head class="at-element-marker">
+  <meta charset="UTF-8">
+  <title>Hotfix for Security Advisory Impacting NetBackup Servers</title>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <meta name="description" content="Veritas has addressed vulnerabilities affecting NetBackup Primary and Media servers.">
+  <meta name="template" content="support-base-page">
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <link rel="stylesheet" href="/etc.clientlibs/vdlb5-core/clientlibs/clientlib-site.min.e18e3bce3926b2e313b3f76bc6a79da8.css" type="text/css">
+
+
+
+
+
+  <link rel="stylesheet" href="/etc.clientlibs/support/clientlibs/Suppot_VDL_B_5/clientlib-all.min.f8898cf186fde1e9ffd3bce79f59ff85.css" type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/ms-icon-144x144.png">
+  <!-- favicons -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/ms-icon-144x144.png">
+  <!-- /favicons -->
+
+  <meta name="om.page_type" content="support-base-page:Security Alerts:Hotfix for Security Advisory Impacting NetBackup Servers">
+  <meta name="om.site_country" content="US">
+  <meta name="om.site_language" content="en (US)">
+  <iframe src="javascript:void(0)" title="" role="presentation" style="width: 0px; height: 0px; border: 0px; display: none;"></iframe><script>
+  function targetPageParams() {
+    return {
+      "at_property": "73785e81-4bd8-29b9-83f1-694b5b86fa2e"
+    };
+  }
+</script>
+  <script src="//assets.adobedtm.com/launch-ENcf4409e8d7d84c4cb0c5e8b9bff21374.min.js"></script><script src="https://assets.adobedtm.com/extensions/EP171e731c9ba34f1c950c36d26e3efd61/AppMeasurement.min.js" async=""></script><script src="https://assets.adobedtm.com/extensions/EP171e731c9ba34f1c950c36d26e3efd61/AppMeasurement_Module_ActivityMap.min.js" async=""></script><script>_satellite["_runScript1"](function(event, target, Promise) {
+  function targetPageParams() {
+    return {
+      'at_property': '73785e81-4bd8-29b9-83f1-694b5b86fa2e'
+    };
+  }
+
+  window._dataManager = {
+    initPage: function() {
+      document.addEventListener('searchResultsUpdated', function(e) {
+        _dataManager.trackEvent('search results updated', e.detail);
+      });
+    },
+
+    trackEvent: function(name, data) {
+      if (!name) {
+        return;
+      }
+
+      if (data) {
+        _dataManager.eventData = data;
+        _dataManager.eventData.eventName = name;
+      } else {
+        _dataManager.eventData = {
+          eventName: name
+        };
+      }
+
+      if (name == 'related article click') {
+        s.Util.cookieWrite('e41', 'true');
+      } else if (name == 'related search click') {
+        s.Util.cookieWrite('v56', 'related');
+      } else if (name == 'suggested search link click') {
+        s.Util.cookieWrite('v55', data.link.suggestedSearchText.toLowerCase());
+      } else if (name == 'search results updated' || (name == 'pageView' && (_satellite.getVar('Page_Type') !== 'search results' || _satellite.getVar('Query_q') == '*'))) {
+        _satellite.track('pageView');
+      } else if (name !== 'pageView') {
+        _satellite.track('pageEvent');
+      }
+    }
+  };
+  _dataManager.initPage();
+
+});</script><style id="at-makers-style" class="at-flicker-control">
+  .mboxDefault {visibility: hidden;}
+</style>
+
+
+
+  <script>(window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"false","rua.upre":"false","rua.cpre":"false","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"SJ-411f63ae-8cdd-4ff8-96fa-2181db5e2f0e","rua.cook":"true","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false","rua.isuxp":"false","rua.texp":"norulematch"}]);</script>
+  <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("True"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="DBJ88-GSVDU-M2DSD-VRUXA-63SUJ",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,_,o,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",o=document.getElementsByTagName("script")[0],o.parentNode.insertBefore(r,o);try{_=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",_=r.contentWindow.document}_.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"DBJ88-GSVDU-M2DSD-VRUXA-63SUJ",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},_.write("<bo"+'dy onload="document._l();">'),_.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e="false"=="true"?1:0,t="cookiepresent",n="ndswhsixykidczaquria-f-7316a155a-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,_={"ak.v":"34","ak.cp":"391475","ak.ai":parseInt("244923",10),"ak.ol":"0","ak.cr":45,"ak.ipv":4,"ak.proto":"h2","ak.rid":"5d17c19","ak.r":44331,"ak.a2":e,"ak.m":"g","ak.n":"essl","ak.bpcip":"104.229.99.0","ak.cport":55666,"ak.gh":"23.33.23.20","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.csrc":"-","ak.acc":"","ak.t":"1678812240","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==qI5qSGWIUTsfMJ2OkrOogJnXcK7Bs79FNacYXLDkEPqWXlUL05MAwFOhTHE3X6JJ1kw0R9s2E3P2iOGJqfEgQqn/Sjjidd+tjnBs9MRF8lzWWzz8/iE1G/wt3IPoRMGDylAGxgynWnod4z2Mbp89IY6zwFFaK/aPfQa0oetMEo58ag6snnI3btz5fZ3kTeVXsHEBpWj5M6aOi3VAdPTGsL9LeBVI2HY8czkVcUCB3vjrd2qyaYqBRlTN17jI/U19NB/d+zbingmFC4HZi/CbM5w/e/gugaGkNTwwNfYATkuALhSFOGtNLyEOtj1hwrjGXyOdvu/saXhahNesgdS28z1f/umAkv8JqntxGD1bLzfmfKBWplU/VOPE8L6AeJkBruOP4UkA1xtA/xJIMmlWkvW/xZPjvlFCUwcwc+MTQM4=","ak.pv":"262","ak.dpoabenc":"","ak.tf":i};if(""!==t)_["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))_["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(_)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:_,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script><style>INPUT:-webkit-autofill,SELECT:-webkit-autofill,TEXTAREA:-webkit-autofill{animation-name:onautofillstart}INPUT:not(:-webkit-autofill),SELECT:not(:-webkit-autofill),TEXTAREA:not(:-webkit-autofill){animation-name:onautofillcancel}@keyframes onautofillstart{}@keyframes onautofillcancel{}</style><script src="https://assets.adobedtm.com/762dde70eb01/018812ae7e7b/e82a6175b222/RCd5d0608f476644619a65a741251ea0c5-source.min.js" async=""></script><style> @-webkit-keyframes loadingoverlay_animation__rotate_right { to { -webkit-transform : rotate(360deg); transform : rotate(360deg); } } @keyframes loadingoverlay_animation__rotate_right { to { -webkit-transform : rotate(360deg); transform : rotate(360deg); } } @-webkit-keyframes loadingoverlay_animation__rotate_left { to { -webkit-transform : rotate(-360deg); transform : rotate(-360deg); } } @keyframes loadingoverlay_animation__rotate_left { to { -webkit-transform : rotate(-360deg); transform : rotate(-360deg); } } @-webkit-keyframes loadingoverlay_animation__fadein { 0% { opacity   : 0; -webkit-transform : scale(0.1, 0.1); transform : scale(0.1, 0.1); } 50% { opacity   : 1; } 100% { opacity   : 0; -webkit-transform : scale(1, 1); transform : scale(1, 1); } } @keyframes loadingoverlay_animation__fadein { 0% { opacity   : 0; -webkit-transform : scale(0.1, 0.1); transform : scale(0.1, 0.1); } 50% { opacity   : 1; } 100% { opacity   : 0; -webkit-transform : scale(1, 1); transform : scale(1, 1); } } @-webkit-keyframes loadingoverlay_animation__pulse { 0% { -webkit-transform : scale(0, 0); transform : scale(0, 0); } 50% { -webkit-transform : scale(1, 1); transform : scale(1, 1); } 100% { -webkit-transform : scale(0, 0); transform : scale(0, 0); } } @keyframes loadingoverlay_animation__pulse { 0% { -webkit-transform : scale(0, 0); transform : scale(0, 0); } 50% { -webkit-transform : scale(1, 1); transform : scale(1, 1); } 100% { -webkit-transform : scale(0, 0); transform : scale(0, 0); } } </style></head>
+<body class="vdlPage page basicpage" id="vdlPage-343eccc4a7"><div class="slide-reveal-overlay" style="display: none; position: fixed; top: 0px; left: 0px; height: 100%; width: 100%; z-index: 1049; background-color: rgba(0, 0, 0, 0.5);"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="root responsivegrid">
+
+
+  <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+
+    <div class="experiencefragment aem-GridColumn aem-GridColumn--default--12">
+
+
+
+
+
+
+
+
+      <div class="xf-content-height">
+
+
+
+        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+
+          <div class="vdlheader parbase aem-GridColumn aem-GridColumn--default--12">
+
+
+
+
+
+
+
+            <input type="hidden" id="oktaSessionURL" value="https://sso.veritas.com/api/v1/sessions/me" data-headinfourl="https://sso.veritas.com/api/v1/sessions/me">
+            <input type="hidden" id="oktaValueId" value="okta">
+            <input type="hidden" id="siteTimeOut" value="60">
+
+            <div class="fixed-top">
+              <nav id="UtilityNav" class="nav nav-vtas-utility">
+                <div class="container px-sm-0 px-lg-3">
+                  <ul class="nav nav-vtas-utility-ul">
+                    <li class="nav-item">
+                      <a class="nav-link px-0 me-0 me-sm-4" href="https://www.veritas.com">Veritas.com</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link px-0 me-0 me-sm-4" href="https://vox.veritas.com">VOX</a>
+                    </li>
+                    <li class="nav-item">
+                      <div class="dropdown">
+                        <a class="utility-dropdown dropdown-toggle px-0 me-0 me-sm-4" type="button" id="utilGetSupport" data-mdb-toggle="dropdown" aria-expanded="false">Get Support</a>
+                        <ul id="utilGetSupportMenu" class="dropdown-menu utilGetSupportMenu" aria-labelledby="utilGetSupport">
+                          <li class="filtrable dropdown-item  "><a data-href="/content/support/en_US/manageCases.html">My Support Cases</a></li>
+
+                          <li class="filtrable dropdown-item  "><a data-href="/content/support/en_US/manageCases/createCase.html">Create Case</a></li>
+
+                          <li class="filtrable dropdown-item  "><a data-href="/content/support/en_US/startChat.html">Start Chat</a></li>
+
+                          <li class="filtrable dropdown-item  "><a data-href="/content/support/en_US/contact-us.html">Call Us</a></li>
+
+                          <li class="filtrable dropdown-item dropdown-separator "><a data-href="/content/support/en_US/terms/support-fundamentals.html">Learn about Veritas Support</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <div class="dropdown">
+                        <a class="utility-dropdown dropdown-toggle px-0 me-2 me-sm-4" type="button" id="utilLanguage" data-mdb-toggle="dropdown" aria-expanded="false">English</a>
+                        <ul id="utilLanguageMenu" class="dropdown-menu active" aria-labelledby="utilLanguage">
+                          <li id="en_US" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">English</li>
+
+                          <li id="zh_CN" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">简体中文</li>
+
+                          <li id="fr_FR" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">Français</li>
+
+                          <li id="de_DE" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">Deutsch</li>
+
+                          <li id="it_IT" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">Italiano</li>
+
+                          <li id="ja_JP" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">日本語</li>
+
+                          <li id="ko_KR" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">한국어</li>
+
+                          <li id="pt_BR" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">Português</li>
+
+                          <li id="es_ES" class="filtrable dropdown-item" onclick="onChangeLanguageSelector(this.id);">Español</li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li id="utilSignIn" class="nav-item" style="">
+                      <a id="vtas_signInPanelTrigger" class="nav-link px-0 me-1 me-sm-2 me-lg-0" href="#" onclick="event.preventDefault()">Sign in</a>
+                    </li>
+                    <li id="utilAccounts" class="nav-item dropdown utilAccount" style="display:none">
+                      <span class="dropdown-toggle monogram ms-1" id="utilAccountMenu" data-mdb-toggle="dropdown" aria-expanded="false"></span>
+                      <ul id="utilAccountMenuList" class="dropdown-menu" aria-labelledby="utilAccountMenu">
+                        <li class="dropdown-item"><a href="https://www.veritas.com/support/en_US/settings?returnURL=https%3A%2F%2Fwww.veritas.com%2Fsupport%2Fen_US" target="_blank">My profile</a></li>
+                        <li class="p-0">
+                          <hr class="dropdown-divider m-0">
+                        </li>
+                        <li id="btnSignOut" class="dropdown-item">Sign out</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+
+
+              <nav id="MainNav" class="navbar navbar-expand-xl navbar-vtas container sticky-top">
+                <div class="container-fluid p-0">
+                  <a class="navbar-brand d-flex align-items-center flex-fill me-0 me-sm-3" href="/content/support/en_US">
+                    <img src="/content/dam/support-new/logo/veritas-red.png" class="me-3" alt="Veritas">
+                    <div class="navbar-vtas-title-block d-block">
+                      <div class="navbar-vtas-title">Support</div>
+                    </div>
+                  </a>
+
+                  <a class="btnGlobalSearch d-inline-block d-xl-none nav-link ms-4 me-2 mt-1" aria-current="page">
+                    <i class="mdi mdi-magnify mdi-24px"></i>
+                  </a>
+
+                  <button class="navbar-toggler mt-1" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportMain" aria-controls="navbarSupportMain" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="mdi mdi-menu mdi-24px"></i>
+                  </button>
+                  <div class="collapse navbar-collapse mt-1 pb-3 pb-lg-0" id="navbarSupportMain">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" data-href="/content/support/en_US/products.html"> Products </a>
+                      </li>
+
+
+
+
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" data-href="/content/support/en_US/search-results.html?fq=(document_type%3A%22Knowledge_Base%22)"> Knowledge Base </a>
+                      </li>
+
+
+
+
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" data-href="/content/support/en_US/search-results.html?q=*&amp;fq=(document_type%3A%22document%22)"> Documentation </a>
+                      </li>
+
+
+
+
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" data-href="/content/support/en_US/downloads.html"> Downloads </a>
+                      </li>
+
+
+
+
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" data-href="https://sso.veritas.com/app/veritassso_vems_1/exk1dn2qzmgXJCl9c417/sso/saml.html"> Licensing </a>
+                      </li>
+
+
+
+
+
+
+                      <li class="nav-item d-none d-xl-block">
+                        <div class="dropdown me-2">
+                          <span class="utility-dropdown dropdown-toggle" type="button" id="navNetInsights" data-mdb-toggle="dropdown" aria-expanded="false">NetInsights</span>
+                          <ul id="navNetInsightsMenu" class="dropdown-menu" aria-labelledby="navNetInsightsMenu">
+                            <li class="filtrable dropdown-item"><a class="nav-link" data-href="https://netinsights.veritas.com">NetInsights Console</a></li>
+
+                            <li class="filtrable dropdown-item"><a class="nav-link" data-href="https://www.veritas.com/support/en_US/netinsights-status.html">NetInsights Status</a></li>
+                          </ul>
+                        </div>
+                      </li>
+
+
+                      <li class="nav-item d-block d-xl-none">
+                        <div class="dropdown dropend">
+                          <span class="utility-dropdown dropdown-toggle" type="button" id="navNetInsights" data-mdb-toggle="dropdown" aria-expanded="false">NetInsights</span>
+                          <ul id="navNetInsightsMenu" class="dropdown-menu" style="top:-8px" aria-labelledby="navNetInsightsMenu">
+                            <li class="filtrable dropdown-item"><a class="nav-link" data-href="https://netinsights.veritas.com">NetInsights Console</a></li>
+
+                            <li class="filtrable dropdown-item"><a class="nav-link" data-href="https://www.veritas.com/support/en_US/netinsights-status.html">NetInsights Status</a></li>
+                          </ul>
+                        </div>
+                      </li>
+
+
+                    </ul>
+                  </div>
+
+                  <a class="btnGlobalSearch d-none d-xl-inline block nav-link ms-4 me-2 mt-2" aria-current="page">
+                    <i class="mdi mdi-magnify mdi-24px"></i>
+                  </a>
+
+                </div>
+              </nav>
+            </div>
+
+
+
+
+
+            <div class="modal fade" id="modalGlobalSearch" tabindex="-1" role="dialog" aria-labelledby="modalGlobalSearchLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-search" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <!-- Search form -->
+                    <div class="form-outline input-group rounded d-flex align-items-center my-4">
+                      <input id="heroSearchBar" type="search" class="d-block text-truncate form-control form-control-lg rounded placeholder-active" placeholder="Search all support and community content..." aria-label="Search" aria-describedby="search-addon" data-available-content-types="Knowledge_Base,Alerts,document,Downloads,VOX_Community,Tools,landing-pages" data-products-versions="Access:7.4.2,7.4.1,7.4,7.3.2,7.3.1,7.3.0.1,7.3,7.2.1,7.2,7.1; AdvisorMail:; Appliances:R4 (3600),R3 (3600),7.4.2 (3340),7.4.2,7.3.2 (3340),7.3.2,3.1.2 (5340),3.1.2 (5330),3.1.2 (5240),3.1.2 (5230),3.1.2 (3.1.2 - Virtual),3.1.2,3.1.1 (5340),3.1.1 (5330),3.1.1 (5240),3.1.1 (5230),3.1.1 (5220),3.1.1 (3.1.1 - Virtual),3.1 (5340),3.1 (5330),3.1 (5240),3.1 (5230),3.1 (5220),3.1 (3.1 - Virtual),3.0 (5330),3.0 (5240),3.0 (5230),3.0 (5220),3.0 (3.0 - Virtual),2.7.3 (5330),2.7.3 (5240),2.7.3 (5230),2.7.3 (5220),2.7.2 (5330),2.7.2 (5230),2.7.2 (5220),2.7.1 (5330),2.7.1 (5230),2.7.1 (5220),2.7 (5330),2.7 (5240),2.7 (5230),2.7 (5220),2.6.1.2 (5330),2.6.1.2 (5230),2.6.1.2 (5200),2.6.1.1 (5330),2.6.1.1 (5230),2.6.1.1 (5200),2.6.1 (5330),2.6.1 (5230),2.6.1 (5220),2.6.1 (5200),2.6.0.4 (5230),2.6.0.4 (5220),2.6.0.3 (5230),2.6.0.3 (5220),2.6.0.2 (5230),2.6.0.2 (5220),2.6.0.2 (5200),2.6 (5330),2.6 (5230),2.6 (5220),2.0 (3600),1.4.5 (5030),1.4.5 (5020),1.4.5 (5000),1.4.3.1 (5030),1.4 (5030),1.4 (5000),1.2.6 (7330),1.2.6 (6.6),1.1 (Flex),1.1 (5200),1.0 (Flex),5340 3.1.2,5340 3.1.1,5340 3.1,5330 3.1.2,5330 3.1.1,5330 3.1,5240 3.1.2,5240 3.1.1,5240 3.1,5230 3.1.2,5230 3.1.1,5230 3.1,5220 3.1.1,5220 3.1,3.1.1 (5330 HA),2.6.1.2 (5220),2.6.1.1 (5220),2.6.0.4 (5200),2.6.0.3 (5200),2.6 (5200),2.5.4 (5230),2.5.3 (5230),2.5.2 (5230),2.5 (5230),1.4 (5020),1.2.7 (7330),1.1.0.2 (5200),2.0,1.1,1.0;ApplicationHA:6.2,6.1,6.0,5.1;Backup Exec:20.3,20.2,20.1,20.0,16.2,16.1,16.0,15.0,2014,2012,2010,0.3 (3600),2.3;Cloud Storage:1.0.2,1.0.1,1.0;CloudPoint:3.0,2.1.2,2.1,2.0,1.0.2,1.0;Cognitive Object Storage:1.5.1,1.5;CommandCentral:5.2;Data Insight:6.1.3,6.1.2,6.1.1,6.1,6.0,5.2,5.1,5.0,4.5,4.0,3.0,2.5,1.0;Desktop Laptop Option:9.3.1,9.3,9.2,9.1,9.0,8.0,7.6,7.5,7.0;Disaster Recovery Orchestrator:6.1;eDiscovery Platform:9.1,9.0.3,9.0.2,9.0.1,9.0,8.3 CHF3,8.3 CHF2,8.3 CHF1,8.3,8.2 CHF8,8.2 CHF7,8.2 CHF6,8.2,8.1.1 CHF10,8.1.1 CHF9,8.0,7.0;Enterprise Vault:12.4,12.3,12.2,12.1,12.0,11.0.1,11.0,10.0.4,10.0.3,10.0.2,10.0.1,10.0.1,10.0,9.0,8.0,7.0,6.0;Enterprise Vault.cloud:;HPE Helion and Veritas Continuity:2.0;HyperScale:2.0,1.5,1.1,1.0;Information Map:1.0;InfoScale &amp; Storage Foundation:7.4,7.3.1,7.3,7.2,7.1,7.0.1,7.0,6.2.1,,6.2,6.1.1,6.1,6.0.5,6.0.4,6.0.3,6.0.2,6.0.1,6.0,5.5,5.1 SP1 PR2,5.1 SP1,5.1,5.0 MP4,5.0 MP3,5.0 MP2,5.0 MP1,5.0;NetBackup:8.1.3,8.1.21,8.1.2,8.1.1,8.1,8.0,7.7.3,7.7,7.6,7.5,6.6;Resiliency Platform &amp; CloudMobility:3.3.2,3.3.1,3.3,3.2,3.1,3.0,2.2,2.1,2.0,1.2,1.0;Risk Advisor:7.3.1,7.3,7.2.4,7.2.3,7.2.2,7.2,7.0.1,6.4,6.3,6.2,6.1,6,5.4,2013;SaaS Backup:2.0,1.0;System Recovery:18.0.2,18.0.1,18,16.0.2,16.0.1,16 SP2,16 SP1,16,2013,2011,2010,8.5,8.0,7.0,6.3;Velocity:3.0,2.9,2.8,2.7" data-locale-value="en_US" autocomplete="off">
+                      <span class="input-group-text border-0" id="search-addon" onclick="event.preventDefault()">
+              <i class="mdi mdi-magnify mdi-24px"></i>
+            </span>
+                      <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 0px;"></div><div class="form-notch-trailing"></div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <input type="hidden" id="hiddenEmailId" value="">
+            <input type="hidden" id="loginErrorText">
+            <!-- <input type="hidden" id="signOutUrl" value="" /> -->
+            <!-- <input type="hidden" id="vamAutoLoginURL" value="" /> -->
+            <input type="hidden" id="sessionexpiremessage" value="Your session is expired">
+            <input type="hidden" id="signoutflag" value="false">
+            <input type="hidden" id="signinclicked" value="false">
+            <input id="supportpageLogin" type="hidden" value="false">
+            <input id="createCasepageLogin" type="hidden" value="false">
+            <input id="startChatpageLogin" type="hidden" value="false">
+            <input id="licensingCheck" type="hidden" value="false">
+            <input id="userClickedLink" type="hidden" value="false">
+            <input id="passRegex" type="hidden" value="/(?=^.{10,}$)((?=.*\d))(?![.\n])(?=(.*[\W_]){1,})(?!.*\s)(?=.*[a-z])(?=.*[A-Z]).*$/">
+            <img src="" id="sso-image" style="display:none">
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+    <div class="pageContainer responsivegrid aem-GridColumn aem-GridColumn--default--12"><main class="container">
+      <div class="vtas-support-content">
+
+
+
+        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+
+          <div class="supporthero aem-GridColumn aem-GridColumn--default--12">
+            <section id="sctn_VTAS_Products_Hero" class="vtas-hero vtas-overview-content-bkgnd pb-1 pt-0 mt-0">
+              <div class="row vtas-box-hero">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0 d-flex align-items-center">
+                  <div class="w-100">
+                    <!-- /* Hero title goes here */ -->
+
+
+
+                    <h3>VTS22-013</h3>
+
+
+
+
+                    <!-- /* Hero tagline goes here */ -->
+
+
+
+                    <h1 class="display-2  vtas-page-hero-tagline-1">Hotfix for Security Advisory Impacting NetBackup Servers</h1>
+
+
+
+
+                    <!-- /* Hero text goes here */ -->
+
+                  </div>
+                </div>
+
+
+                <!-- /* Empty DIV if none selected */ -->
+                <div class="col-12 col-lg-6 p-0 text-end overflow-hidden d-flex align-items-center justify-content-end">
+                </div>
+
+                <!-- /* Hero image if image selected */ -->
+
+
+                <!-- /* Hero video if video is selected */ -->
+
+
+              </div>
+            </section>
+          </div>
+          <div class="vdlText parbase aem-GridColumn aem-GridColumn--default--12">
+
+            <link rel="stylesheet" href="/etc.clientlibs/support/components/vdlb5_core/content/vdlText/clientlibs.min.48cf7f3a59a9b930e1b0b81e7d314eb5.css" type="text/css">
+
+
+
+
+
+            <div class="vtas-container-content-page-white pb-0">
+              <h3>Revision History</h3>
+              <ul>
+                <li>1.0: End of September 2022 – Initial Public Release</li>
+              </ul>
+              <h3>Summary</h3>
+              <p>Veritas has addressed vulnerabilities affecting NetBackup Primary and Media servers.</p>
+              <h3>Issues</h3>
+              <p id="M1"><b>Issue #1: XML External Entity Injection</b></p>
+              <p>The NetBackup Primary server is vulnerable to an XML External Entity (XXE) injection attack through the nbars process.</p>
+              <ul>
+                <li>CVE ID: <a href="https://nvd.nist.gov/vuln/detail/CVE-2022-42301">CVE-2022-42301</a></li>
+                <li>Severity: Medium</li>
+                <li>CVSS v3.1 Base Score: 5.4 (<a href="https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:L">AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:L</a>)</li>
+                <li>Impacted Components: Primary and Media servers</li>
+                <li>Affected Versions: 10.0.0.1 and earlier</li>
+                <li>Recommended Action:<ul>
+                  <li>NetBackup Primary and Media Servers: Upgrade to 8.3.0.2 or 9.0.0.1, or 9.1.0.1 or 10.0.0.1 and apply appropriate Hotfix.</li>
+                  <li>NetBackup Clients: Not impacted. No action needed.</li>
+                  <li>NetBackup Appliance: Upgrade to any Maintenance Release (MR) of 3.3.0.2 or 4.0.0.1, or 4.1.0.1 or 5.0.0.1 MR1 and apply appropriate <a>Hotfix</a>.</li>
+                  <li>Flex Appliance: Please apply the NetBackup Hotfix corresponding to the NetBackup Container version on Flex appliances.</li>
+                  <li>Flex Scale: Please contact <a href="https://www.veritas.com/content/support/en_US/manageCases">Veritas Technical Support</a> and reference Knowledge Article ID 100053006 to obtain a fix.</li>
+                </ul>
+                </li>
+              </ul>
+              <p id="M2"><b>Issue #2: Denial of Service</b></p>
+              <p>The NetBackup Primary server nbars process can be crashed resulting in a denial of service attack.&nbsp;(Note – watchdog service will automatically restart the process.)</p>
+              <ul>
+                <li>CVE ID: <a href="https://nvd.nist.gov/vuln/detail/CVE-2022-42300">CVE-2022-42300</a></li>
+                <li>Severity: Medium</li>
+                <li>CVSS v3.1 Base Score: 4.3 (<a href="https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L">AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L</a>)</li>
+                <li>Impacted Components: Primary and Media servers</li>
+                <li>Affected Versions: 10.0.0.1 and earlier</li>
+                <li>Recommended action:<ul>
+                  <li>NetBackup Primary and Media Servers: upgrade to 8.3.0.2 or 9.0.0.1, or 9.1.0.1 or 10.0.0.1 and apply appropriate Hotfix.</li>
+                  <li>NetBackup Clients: Not impacted. No action needed.</li>
+                  <li>NetBackup Appliance: Upgrade to any Maintenance Release (MR) of 3.3.0.2 or 4.0.0.1, or 4.1.0.1 or 5.0.0.1 MR1 and apply appropriate <a>Hotfix</a>.</li>
+                  <li>Flex Appliance: Please apply the NetBackup Hotfix corresponding to the NetBackup Container version on Flex appliances.</li>
+                  <li>Flex Scale: Please contact <a href="https://www.veritas.com/content/support/en_US/manageCases">Veritas Technical Support</a> and reference Knowledge Article ID 100053006 to obtain a fix.</li>
+                </ul>
+                </li>
+              </ul>
+              <h3>Notes</h3>
+              <p>This Security Advisory, VTS22-013, also addresses the issues identified in <a href="https://www.veritas.com/content/support/en_US/security/VTS22-004">VTS22-004</a> and <a href="https://www.veritas.com/content/support/en_US/security/VTS22-011">VTS22-011</a>, which were released earlier. If you have not already applied <a href="https://www.veritas.com/content/support/en_US/security/VTS22-004">VTS22-004</a> or <a href="https://www.veritas.com/content/support/en_US/security/VTS22-011">VTS22-011</a>, it is not necessary to apply them first. If you have already applied either <a href="https://www.veritas.com/content/support/en_US/security/VTS22-004">VTS22-004</a> or <a href="https://www.veritas.com/content/support/en_US/security/VTS22-011">VTS22-011</a> you can safely apply VTS22-013 on top of them.</p>
+              <h3>Questions&nbsp;</h3>
+              <p>For questions or problems regarding this advisory please contact Veritas Technical Support (<a href="https://www.veritas.com/support">https://www.veritas.com/support</a>)&nbsp;</p>
+              <h3>Acknowledgement&nbsp;</h3>
+              <p>Veritas would like to thank the following Airbus Security Team members for notifying us about these issues:  &nbsp;<br>
+                Mouad Abouhali, Benoît Camredon, Nicholas Devillers, Anaïs Gantet, and Jean-Romain Garnier.  </p>
+              <h3><a>Disclaimer</a></h3>
+              <p>THE SECURITY ADVISORY IS PROVIDED "AS IS" AND ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE DISCLAIMED, EXCEPT TO THE EXTENT THAT SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. VERITAS TECHNOLOGIES LLC SHALL NOT BE LIABLE FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES IN CONNECTION WITH THE FURNISHING, PERFORMANCE, OR USE OF THIS DOCUMENTATION. THE INFORMATION CONTAINED IN THIS DOCUMENTATION IS SUBJECT TO CHANGE WITHOUT NOTICE.&nbsp;ANY FORWARD-LOOKING INDICATION OF PLANS FOR PRODUCTS IS PRELIMINARY AND ALL FUTURE RELEASE DATES ARE TENTATIVE AND ARE SUBJECT TO CHANGE. ANY FUTURE RELEASE OF THE PRODUCT OR PLANNED MODIFICATIONS TO PRODUCT CAPABILITY, FUNCTIONALITY, OR FEATURE ARE SUBJECT TO ONGOING EVALUATION BY VERITAS, AND MAY NOT BE IMPLEMENTED AND SHOULD NOT BE CONSIDERED FIRM COMMITMENTS BY VERITAS AND SHOULD NOT BE RELIED UPON IN MAKING DECISIONS.</p>
+              <p>Veritas Technologies LLC<br>
+                2625 Augustine Drive<br>
+                Santa Clara, CA 95054</p>
+
+            </div>
+
+
+
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </main></div>
+    <div class="experiencefragment aem-GridColumn aem-GridColumn--default--12">
+
+
+
+
+
+
+
+
+      <div class="xf-content-height">
+
+
+
+        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+
+          <div class="vdlfooter parbase aem-GridColumn aem-GridColumn--default--12">
+            <div class="container vtas-footer">
+              <footer class="page-footer support">
+                <div class="container">
+                  <div class="row align-items-lg-center p-0">
+                    <div class="col-12 col-xl-2 d-flex justify-content-center justify-content-xl-start">
+                      <img src="/content/dam/support-new/logo/veritas-red.png" class="mb-0 me-0 me-xl-5">
+                    </div>
+                    <div class="col-12 col-xl-8 flex-column flex-sm-row d-flex justify-content-center footer-links py-0 py-lg-3 py-xl-3">
+                      <a href="/content/support/en_US/contact-us" target="_self" class="text-nowrap my-3 my-sm-0 mb-0 me-0 ">Contact Us</a>
+
+                      <a href="https://www.veritas.com/about/privacy" target="_self" class="text-nowrap my-3 my-sm-0 mb-0 me-0 ">Privacy Policy</a>
+
+                      <a href="https://www.veritas.com/about/legal" target="_self" class="text-nowrap my-3 my-sm-0 mb-0 me-0 ">Legal</a>
+
+                      <a href="https://www.veritas.com/content/dam/support/terms/Veritas%20Support%20Web%20User%20Terms_05042018.pdf" target="_self" class="text-nowrap my-3 my-sm-0 mb-0 me-0 ">User Agreement</a>
+                    </div>
+                    <div class="col-12 col-xl-2 d-flex justify-content-center justify-content-xl-end py-lg-1 py-xl-0 social-btns">
+                      <div class="d-flex align-items-center justify-content-center justify-content-xl-end social-btns-container">
+                        <a href="https://twitter.com/veritastechllc" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Twitter" class="social">
+                          <i class="mdi mdi-24px mdi mdi-24px mdi-twitter"></i>
+                        </a>
+
+                        <a href="https://www.linkedin.com/company/veritas-technologies-llc" target="_blank" data-toggle="tooltip" data-placement="bottom" title="LinkedIn" class="social">
+                          <i class="mdi mdi-24px mdi mdi-24px mdi-linkedin"></i>
+                        </a>
+
+                        <a href="https://www.youtube.com/channel/UCVb__XbSVgaxo1d6B1x2ZoQ" target="_blank" data-toggle="tooltip" data-placement="bottom" title="YouTube" class="social">
+                          <i class="mdi mdi-24px mdi mdi-24px mdi-youtube"></i>
+                        </a>
+
+                        <a href="https://instagram.com/veritastechllc/" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Instagram" class="social">
+                          <i class="mdi mdi-24px mdi mdi-24px mdi-instagram"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <p class="caption text-nowrap p-0 mt-0 mt-lg-3 mb-0 mb-lg-3 text-center">© 2023 Veritas</p>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            </div></div>
+          <div class="vdlLogin aem-GridColumn aem-GridColumn--default--12">
+
+
+            <input type="hidden" id="pageLocale" value="en_US">
+            <input type="hidden" id="originalErrorMsg" value="Sign in failed. Please try again.">
+
+
+            <div id="signInPanel" class="sld-panel sld-panel" style="position: fixed; width: 414px; transition: all 300ms ease 0s; height: 100%; top: 0px; right: -414px; z-index: 1050;">
+              <div class="sld-header">
+                Sign in
+                <span class="mdi mdi-close mdi-24px lh-1" onclick="$('#signInPanel').slideReveal('hide');"></span>
+              </div>
+              <div class="sld-body">
+                <form id="form_SignIn" action="javascript:;">
+
+                  <div id="loginerror" class="alert alert-danger error-signin" role="alert" style="display: none;">
+                    Sign in failed. Please try again.
+                  </div>
+
+                  <div id="isSessionExpired" class="alert alert-danger error-signin" role="alert" style="display: none;">
+                    Your Session is Expired.
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="signIn_Username" name="signIn_Username" class="form-control" autocomplete="off">
+                    <label class="form-label" for="signIn_Username" style="margin-left: 0px;"> Username</label>
+                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 58.4px;"></div><div class="form-notch-trailing"></div></div></div>
+                  <div class="form-outline mb-4">
+                    <input type="password" id="signIn_Password" name="signIn_Password" class="form-control" autocomplete="off">
+                    <label class="form-label" for="signIn_Password" style="margin-left: 0px;">Password</label>
+                    <a href="https://www.veritas.com/support/en_US/reset_password?returnURL=https://www.veritas.com/support/en_US" class="anchorval">
+                      <div class="form-helper mb-3 text-primary">Forgot Password</div>
+                    </a>
+                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 82.4px;"></div><div class="form-notch-trailing"></div></div></div>
+                  <div class="pt-3 pb-2">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultUnchecked">
+                      <label class="form-check-label mt-1" for="defaultUnchecked">Remember me</label>
+                    </div>
+                  </div>
+                  <hr>
+                  <p class="">Don’t have an account?<a href="https://www.veritas.com/support/en_US/register?returnURL=https://www.veritas.com/support/en_US" class="ml-2"> Create One</a>.</p>
+                  <div class="sld-footer p-1">
+                    <button id="btn-SignInCancel" class="btn btn-secondary me-2">Cancel</button>
+                    <button id="btn-SignIn" class="btn btn-primary" disabled="">Sign In</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Expired Password Modal -->
+            <div class="modal fade" id="modalExpiredPassword" tabindex="-1" role="dialog" aria-labelledby="modalExpirdPasswordLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalExpirdPasswordLabel">Reset password</h5>
+                  </div>
+                  <div class="modal-body">
+                    <div id="passwordResetError" class="alert alert-danger" role="alert" style="display: none;"></div>
+                    <!-- Search form -->
+                    <form id="formExpiredPassword" action="#" method="post">
+                      <p>Your password has expired. To reset your password please complete the form below</p>
+                      <!-- Password -->
+                      <div class="form-outline mb-4">
+                        <input type="password" id="passwordOld" name="passwordOld" class="form-control" autocomplete="off" required="">
+                        <label class="form-label" for="passwordOld" required="" style="margin-left: 0px;">Old password</label>
+                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
+                      <div class="form-outline mb-4">
+                        <input type="password" id="passwordNew" name="passwordNew" class="form-control" autocomplete="off" required="">
+                        <label class="form-label" for="passwordNew" required="" style="margin-left: 0px;">New password</label>
+                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
+                      <p>For account security, your password must meet the following criteria:</p>
+                      <div><ul>
+                        <li>At least 10 characters</li>
+                        <li>A lowercase letter</li>
+                        <li>An uppercase letter</li>
+                        <li>A number</li>
+                        <li>A symbol</li>
+                        <li>No parts of your username</li>
+                        <li>Your password cannot be any of your last 4 passwords</li>
+                      </ul>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-control" autocomplete="off" required="">
+                        <label class="form-label" for="passwordConfirm" required="" style="margin-left: 0px;">Confirm new password</label>
+                        <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancel</button>
+                    <button id="resetPasswordModal" type="button" class="btn btn-primary" disabled="">Change password</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- ./Expired Password Modal -->
+            <!-- Unregistered Account Dialog -->
+            <div class="modal fade" id="modalUnregisteredAccount" tabindex="-1" role="dialog" aria-labelledby="modalUnregisteredAccountLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <!-- Search form -->
+                    <p class="fs-6 m-0">Hello! We noticed that while you have a Veritas Account, you aren't yet registered to manage cases and use chat. Contact us for help registering your account</p>
+                  </div>
+                  <div class="modal-footer border-0">
+                    <a href="/content/support/en_US/contact-us"><button type="button" class="btn btn-primary">Contact Us</button></a>
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancel</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- ./Unregistered Account Dialog -->
+            <!-- CHAT MODAL -->
+
+
+
+            <input type="hidden" id="actionUrl" value="https://veritastech.custhelp.com/app/chat/chat_landing_vtas_sales/">
+            <input type="hidden" id="chatRestUrl" value="//veritastech.custhelp.com/ci/ws/get/">
+            <input type="hidden" id="chatLoginUrl" value="/app/chat/chat_launch_vtas_partner/">
+
+            <!-- Modal -->
+            <div class="modal fade" id="startChatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <!--Content-->
+                <div class="modal-content">
+                  <!--Header-->
+                  <div class="modal-header modal-grey">
+                    <h5 class="modal-title" id="exampleModalLabel">Live chat</h5>
+                    <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true"><i class="mdi mdi-close mdi-24px"></i></span>
+                    </button>
+                  </div>
+                  <!--Body-->
+                  <div class="modal-body">
+
+                    <div class="text-left mb-3">
+                      <p>Chat is available in English only.</p>
+                      <p id="checkUnAvlDescId">Chat is currently not available. Please check back on Monday when our supported chat hours begin.</p>
+                      <p id="checkAvlMsgId">Please select from the list below to check availability.</p>
+                    </div>
+
+                    <div class="row mt-4" id="chatTypeDiv">
+                      <div class="col-12">
+                        <div class="md-form">
+                          <div class="md-select-wrapper">
+                            <div id="select-wrapper-918003" class="select-wrapper"><div class="form-outline"><input class="form-control select-input" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="true"><label class="form-label select-label" required="" style="margin-left: 0px;">Chat type</label><span class="select-arrow"></span><div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div><select class="select select-initialized" id="chatTypeDropdown">
+
+                            </select></div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-4" id="caseTypeDiv">
+                      <div class="col-12">
+                        <div class="md-form">
+                          <div class="md-select-wrapper">
+                            <div id="select-wrapper-151842" class="select-wrapper"><div class="form-outline"><input class="form-control select-input" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="true"><label class="form-label select-label" required="" style="margin-left: 0px;">Case type</label><span class="select-arrow"></span><div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div><select class="select mb-2 select-initialized" id="caseTypeDropdown">
+
+                            </select></div>
+
+                            <small class="form-text text-muted m-0">Only chat-supported case types are listed.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="alert alert-info text-center w-100 p-3 mb-3 mt-3" id="operationMessageChat">Hours of operation: 24 hours per day, depending on agent availability.</div>
+
+
+                    <div class="row mt-4" id="caseNumberDiv">
+                      <div class="col-12">
+                        <div class="md-form">
+                          <div class="md-select-wrapper">
+                            <div id="select-wrapper-897336" class="select-wrapper"><div class="form-outline"><input class="form-control select-input" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="true"><label class="form-label select-label" required="" style="margin-left: 0px;">Case number</label><span class="select-arrow"></span><div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div><select class="select mb-2 select-initialized" id="existingCaseDropdown">
+
+                            </select></div>
+
+                            <small class="form-text text-muted m-0">Only chat-supported cases are listed.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="alert alert-info text-center w-100 p-3 mb-3 mt-3" id="operationMessageChatTiming">Technical Chat Support is only available for the Backup Exec Product Family. Hours of operation: Monday-Friday: 24 hours per day.</div>
+
+
+                    <div class="row mt-4" id="requestTypeDiv">
+                      <div class="col-12">
+                        <div class="md-form">
+                          <div class="md-select-wrapper">
+                            <div id="select-wrapper-281948" class="select-wrapper"><div class="form-outline"><input class="form-control select-input" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="true"><label class="form-label select-label" required="" style="margin-left: 0px;">Request Type</label><span class="select-arrow"></span><div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div><select class="select mb-2 select-initialized" id="requestTypeDropdown">
+
+                            </select></div>
+
+                            <small class="form-text text-muted m-0">Only chat-supported request types are listed.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-4" id="productTypeDiv">
+                      <div class="col-12">
+                        <div class="md-form">
+                          <div class="md-select-wrapper">
+                            <div id="select-wrapper-817408" class="select-wrapper"><div class="form-outline"><input class="form-control select-input" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="true"><label class="form-label select-label" required="" style="margin-left: 0px;">Product</label><span class="select-arrow"></span><div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div><select class="select mb-2 select-initialized" id="productTypeDropdown">
+
+                            </select></div>
+
+                            <small class="form-text text-muted m-0">Only chat-supported products are listed.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="alert alert-info text-left w-100 p-3 mb-3 mt-3" id="operationMessageExecBackUp">Veritas Backup Exec Technical Support is extending Chat service hours to 24 x 5 (Monday to Friday) providing enhanced flexibility for our Customers. For faster resolution, all low severity issues will be handled in chat, where business operations have not been adversely affected, or for enhancement requests. For responsive support, start a Chat now.</div>
+
+
+                    <div class="row mt-4" id="featureTypeDiv">
+                      <div class="col-12">
+                        <div class="md-form">
+                          <div class="md-select-wrapper">
+                            <div id="select-wrapper-606180" class="select-wrapper"><div class="form-outline"><input class="form-control select-input" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="true"><label class="form-label select-label" required="" style="margin-left: 0px;">Feature</label><span class="select-arrow"></span><div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div><select class="select mb-2 select-initialized" id="featureTypeDropdown">
+
+                            </select></div>
+
+                            <small class="form-text text-muted m-0">Only chat-supported features are listed.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-4" id="platformTypeDiv">
+                      <div class="col-12">
+                        <div class="md-form">
+                          <div class="md-select-wrapper">
+                            <div id="select-wrapper-362684" class="select-wrapper"><div class="form-outline"><input class="form-control select-input" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="true"><label class="form-label select-label" required="" style="margin-left: 0px;">Platform</label><span class="select-arrow"></span><div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div><select class="select mb-2 select-initialized" id="platformTypeFeatureDropdown">
+
+                            </select></div>
+
+                            <small class="form-text text-muted m-0">Only chat-supported platforms are listed.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-4" id="subjectDiv">
+                      <div class="col-12">
+                        <div class="form-outline">
+                          <input type="text" id="inputSubjectChat" name="inputSubjectChat" class="form-control">
+                          <label class="form-label" for="inputSubjectChat" style="margin-left: 0px;">Subject</label>
+                          <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 8px;"></div><div class="form-notch-trailing"></div></div></div>
+                      </div>
+                    </div>
+                    <form id="form_LiveChat" method="post" action="https://veritastech.custhelp.com/app/chat/chat_landing_vtas_sales" target="chat">
+
+                      <input type="hidden" id="cFirstName" name="Contact.Name.First" required=""> <!-- Contact.Name.First -->
+                      <input type="hidden" id="cLastName" name="Contact.Name.Last"> <!-- Contact.Name.Last -->
+                      <input type="hidden" id="cemail" name="Contact.Emails.PRIMARY.Address"> <!-- Contact.Emails.PRIMARY.Address -->
+
+                      <input type="hidden" id="cExisting" name="Incident.CustomFields.c.chat_existing_case"> <!-- Incident.CustomFields.c.chat_existing_case -->
+                      <input type="hidden" id="cChatNumber" name="Incident.CustomFields.c.chat_case_number"> <!-- Incident.CustomFields.c.chat_case_number -->
+                      <input type="hidden" id="cIProduct" name="Incident.Product"> <!-- Incident.Product -->
+                      <input type="hidden" id="cICategory" name="Incident.Category"> <!-- Incident.Category -->
+                      <input type="hidden" name="Incident.CustomFields.c.chat_target_queue">
+                      <input type="hidden" id="cSubject" name="Incident.Subject">
+
+                    </form>
+                  </div>
+                  <!--Footer-->
+
+                  <div class="modal-footer">
+                    <div class="col-8 m-0 p-0 d-flex align-items-center">
+                      <div id="btnLiveChatLink"></div> <!-- need something to bind against for polling to work -->
+                      <button type="button" class="btn btn-flat" id="checkAvlChat" disabled="">Check availability</button>
+                      <!-- <div class="preloader-wrapper x-small active mr-2" style="display: none;">
+                        <div class="spinner-layer spinner-blue-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="gap-patch">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div> -->
+                      <small class="text-muted" id="chatUnavailable"></small>
+                    </div>
+                    <div class="col-4 m-0 p-0 d-flex justify-content-end" style="padding-right:6px !important">
+                      <button type="button" class="btn btn-primary float-right" id="launchChat" disabled="">Launch chat</button>
+                    </div>
+                  </div>
+
+                  <input type="hidden" name="within_tech_support_chat_hours" id="within_tech_support_chat_hours" value="">
+                  <input type="hidden" name="within_customer_care_chat_hours" id="within_customer_care_chat_hours" value="">
+                </div>
+                <!--/.Content-->
+              </div>
+            </div>
+
+
+            <script type="text/javascript" src="https://veritastech.custhelp.com/euf/core/3.6/js/4.333/min/RightNow.js"></script>
+            <script type="text/javascript" src="https://veritastech.custhelp.com/euf/rightnow/RightNow.Client.js"></script>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<script src="/etc.clientlibs/clientlibs/granite/jquery.min.cee8557e8779d371fe722bbcdd3b3eb7.js"></script>
+<script src="/etc.clientlibs/clientlibs/granite/utils.min.4a192b590a2c2926fb000264370c0588.js"></script>
+<script src="/etc.clientlibs/clientlibs/granite/jquery/granite.min.543d214c88dfa6f4a3233b630c82d875.js"></script>
+<script src="/etc.clientlibs/foundation/clientlibs/jquery.min.dd9b395c741ce2784096e26619e14910.js"></script>
+<script src="/etc.clientlibs/foundation/clientlibs/shared.min.e9d9a3990d7779c2e8e3361187f3d36b.js"></script>
+
+
+
+
+
+<script src="/etc.clientlibs/vdlb5-core/clientlibs/clientlib-site.min.36b3fcad1e2e75ba20270f06947f06a6.js"></script>
+
+
+
+
+
+<script src="/etc.clientlibs/support/clientlibs/Suppot_VDL_B_5/clientlib-all.min.781d1f47ffe771d9e40b305dc139386a.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>_satellite["_runScript2"](function(event, target, Promise) {
+  _dataManager.trackEvent("pageView");
+});</script></body></html>

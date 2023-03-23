@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -29,6 +29,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import edu.rit.se.nvip.crawler.github.PyPAGithubScraper;
+import edu.rit.se.nvip.mitre.capec.Capec;
+import edu.rit.se.nvip.mitre.capec.CapecParser;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -253,6 +257,13 @@ public class NVIPMain {
 		GithubScraper githubScraper = new GithubScraper();
 		HashMap<String, CompositeVulnerability> cveHashMapGithub = githubScraper.scrapeGithub();
 
+		// scrape CVEs from PyPA advisory database GitHub Repo
+		PyPAGithubScraper pyPaScraper = new PyPAGithubScraper();
+		HashMap<String, CompositeVulnerability> cvePyPAGitHub = pyPaScraper.scrapePyPAGithub();
+
+		logger.info("Merging {} PyPA CVEs with {} found GitHub CVEs", cvePyPAGitHub.size(), cveHashMapGithub.size());
+		cveHashMapGithub.putAll(cvePyPAGitHub);
+
 		/**
 		 * Scrape CVE summary pages (frequently updated CVE providers)
 		 */
@@ -289,6 +300,10 @@ public class NVIPMain {
 		List<CompositeVulnerability> crawledVulnerabilityList = cveListMap.get("all").stream().map(e -> (CompositeVulnerability) e).collect(Collectors.toList());
 		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
 		identifyNewOrUpdatedCve(crawledVulnerabilityList, databaseHelper, propertiesNvip);
+
+		// Parse CAPECs page to link CVEs to a given Attack Pattern in characterizer
+		CapecParser capecParser = new CapecParser();
+		ArrayList<Capec> capecs = capecParser.parseWebPage(crawler);
 
 		// characterize
 		logger.info("Characterizing and scoring NEW CVEs...");
@@ -333,7 +348,6 @@ public class NVIPMain {
 	 * Insert a stats record to db
 	 * 
 	 * @param databaseHelper
-	 * @param totalCve
 	 * @param totNotInNvd
 	 * @param totNotInMitre
 	 * @param totNotInBoth
