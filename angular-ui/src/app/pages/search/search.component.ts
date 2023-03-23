@@ -171,14 +171,6 @@ export class SearchComponent implements OnInit {
       }
 
       if (
-        (this.search.keyword === undefined || this.search.keyword.length < 2) &&
-        this.search.cve_id === undefined
-      ) {
-        document.getElementById('searchKeyWordError')!.style.display = 'block';
-        return;
-      }
-
-      if (
         !Number.isInteger(this.search.limitCount) &&
         this.search.limitCount !== null &&
         this.search.limitCount !== undefined
@@ -206,7 +198,7 @@ export class SearchComponent implements OnInit {
 
       this.searchResults = [];
       this.filteredSearchResults = [];
-
+      console.log(this.search);
       this.apiService
         .cveSearch({ ...this.search, username: username, token: token })
         .subscribe({
@@ -245,6 +237,7 @@ export class SearchComponent implements OnInit {
    * stored or newly received
    */
   handleRes(res: any) {
+    console.log(res);
     this.resultTotalCount = res[res.length - 1];
     this.searchResults = res;
     this.searchSuccess = true;
