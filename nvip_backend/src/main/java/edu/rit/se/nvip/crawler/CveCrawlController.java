@@ -59,6 +59,8 @@ public class CveCrawlController {
 
     public HashMap<String, ArrayList<CompositeVulnerability>> crawl(List<String> urls, List<String> whiteList) throws Exception {
 
+        long crawlStartTime = System.currentTimeMillis();
+
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
@@ -118,6 +120,9 @@ public class CveCrawlController {
         logger.info("Crawler 2 is finished.");
 
         cveHashMapAll.putAll(getVulnerabilitiesFromCrawlerThreads(controller1));
+
+        long crawlEndTime = System.currentTimeMillis();
+
         return cveHashMapAll;
     }
 

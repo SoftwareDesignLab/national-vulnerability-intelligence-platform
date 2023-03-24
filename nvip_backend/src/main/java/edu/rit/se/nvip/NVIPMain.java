@@ -118,9 +118,7 @@ public class NVIPMain {
 		}
 
 		// Crawler
-		long crawlStartTime = System.currentTimeMillis();
 		HashMap<String, CompositeVulnerability> crawledCVEs = nvipMain.crawlCVEs(urls);
-		long crawlEndTime = System.currentTimeMillis();
 		logger.info("Crawler Finished\nTime: {}", crawlEndTime - crawlStartTime);
 
 		// Process and Reconcile
@@ -159,48 +157,38 @@ public class NVIPMain {
 	}
 
 	/**
-	 * if you want to run nvip locally provide the path of the file that includes
-	 * source urls from the command line:
-	 * Otherwise, it will load source urls from the database
 	 *
 	 * @return
 	 */
 	public List<String> startNvip() {
 		List<String> urls = new ArrayList<>();
 		try {
-			if (commandLineArgs.length > 0) {
-				urls = FileUtils.readLines(new File(commandLineArgs[0]));
-				logger.info("Loaded {} source URLs from file {}, running NVIP in test mode!", urls.size(), commandLineArgs[0]);
-			} else {
-				List<NvipSource> dbsources = databaseHelper.getNvipCveSources();
-				if (dbsources.isEmpty())
-					logger.error("No source URLs in the database to crawl! Please make sure to include at least one source URL in the 'nvipsourceurl' table!");
+			List<NvipSource> dbsources = databaseHelper.getNvipCveSources();
+			if (dbsources.isEmpty())
+				logger.error("No source URLs in the database to crawl! Please make sure to include at least one source URL in the 'nvipsourceurl' table!");
 
-				for (NvipSource nvipSource : dbsources)
-					urls.add(nvipSource.getUrl());
+			for (NvipSource nvipSource : dbsources)
+				urls.add(nvipSource.getUrl());
 
-				File seeds = properties.getSeedURLS();
-				BufferedReader seedReader = new BufferedReader(new FileReader(seeds));
-				List<String> seedURLs = new ArrayList<>();
-				logger.info("Loading the following urls: ");
+			File seeds = properties.getSeedURLS();
+			BufferedReader seedReader = new BufferedReader(new FileReader(seeds));
+			List<String> seedURLs = new ArrayList<>();
+			logger.info("Loading the following urls: ");
 
-				String url = "";
-				while (url != null) {
-					System.out.println(url);
-					seedURLs.add(url);
-					url = seedReader.readLine();
-				}
-
-				logger.info("Loaded {} seed URLS from {}", seedURLs.size(), seeds.getAbsolutePath());
-
-				for (String seedURL : seedURLs) {
-					if (!urls.contains(seedURL))
-						urls.add(seedURL);
-				}
-
-				logger.info("Loaded {} source URLs from database!", urls.size());
+			String url = "";
+			while (url != null) {
+				seedURLs.add(url);
+				url = seedReader.readLine();
 			}
 
+			logger.info("Loaded {} seed URLS from {}", seedURLs.size(), seeds.getAbsolutePath());
+
+			for (String seedURL : seedURLs) {
+				if (!urls.contains(seedURL))
+					urls.add(seedURL);
+			}
+
+			logger.info("Loaded {} source URLs from database!", urls.size());
 			UtilHelper.setProperties(properties);
 		} catch (IOException e) {
 			logger.error("Error while starting NVIP: {}", e.toString());
