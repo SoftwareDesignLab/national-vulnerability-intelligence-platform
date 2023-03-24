@@ -1,15 +1,20 @@
 package servlet;
 
 import dao.UserDAO;
+import data.DBConnect;
 import model.User;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +37,9 @@ public class LoginServletTest {
         String dbUser = props.getProperty("dataSource.user");
         String dbPass = props.getProperty("dataSource.password");
 
+        //Note database username/password must be set in dbUser and dbPass
+        System.setProperty("JDBC_CONNECTION_STRING", "jdbc:mysql://" + dbUser + ":" + dbPass + "@localhost:3306/nvip?useSSL=false&allowPublicKeyRetrieval=true");
+
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpServletRequest request = mock(HttpServletRequest.class);
 
@@ -45,9 +53,6 @@ public class LoginServletTest {
         }
 
         LoginServlet loginServlet = new LoginServlet();
-
-        //Note database username/password must be set in dbUser and dbPass
-        System.setProperty("JDBC_CONNECTION_STRING", "jdbc:mysql://" + dbUser + ":" + dbPass + "@localhost:3306/nvip?useSSL=false&allowPublicKeyRetrieval=true");
 
         try {
             loginServlet.handleRequest(request, response);
@@ -73,6 +78,9 @@ public class LoginServletTest {
         String dbUser = props.getProperty("dataSource.user");
         String dbPass = props.getProperty("dataSource.password");
 
+        //Note database username/password must be set in dbUser and dbPass
+        System.setProperty("JDBC_CONNECTION_STRING", "jdbc:mysql://" + dbUser + ":" + dbPass + "@localhost:3306/nvip?useSSL=false&allowPublicKeyRetrieval=true");
+
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpServletRequest request = mock(HttpServletRequest.class);
 
@@ -90,9 +98,6 @@ public class LoginServletTest {
         }
 
         LoginServlet loginServlet = new LoginServlet();
-
-        //Note database username/password must be set in dbUser and dbPass
-        System.setProperty("JDBC_CONNECTION_STRING", "jdbc:mysql://" + dbUser + ":" + dbPass + "@localhost:3306/nvip?useSSL=false&allowPublicKeyRetrieval=true");
 
         try {
             loginServlet.doGet(request, response);
@@ -123,5 +128,118 @@ public class LoginServletTest {
         verifyNoMoreInteractions(req);
         verifyNoInteractions(resp);
         assertEquals(0, resp.getStatus());
+    }
+
+    @Test
+    public void testDoPostExistingUser() {
+        //Get the current db username/password
+        Properties props = new Properties();
+        try {
+            props.load(new FileReader("../nvip_backend/src/main/resources/db-mysql.properties"));
+        } catch (IOException e) {
+            System.out.println("Cannot find db-mysql.properties file in backend resources!");
+            System.exit(1);
+        }
+
+        String dbUser = props.getProperty("dataSource.user");
+        String dbPass = props.getProperty("dataSource.password");
+
+        //Note database username/password must be set in dbUser and dbPass
+        System.setProperty("JDBC_CONNECTION_STRING", "jdbc:mysql://" + dbUser + ":" + dbPass + "@localhost:3306/nvip?useSSL=false&allowPublicKeyRetrieval=true");
+
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        HttpServletRequest req = mock(HttpServletRequest.class);
+
+        when (req.getParameter("createUser")).thenReturn("true");
+
+        //Mock the request's reader
+        BufferedReader buffMock = mock(BufferedReader.class);
+        try {
+            //Set mocked buffered reader as requests reader
+            when(req.getReader()).thenReturn(buffMock);
+            //Insert test arguments
+            when(buffMock.readLine()).thenReturn("{username:testUser, password:testPass, fname:testFirstName, lname:testLastName, email:testEmail@rit.edu}", null);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Mock the responses writer
+        PrintWriter printMock = mock(PrintWriter.class);
+        try {
+            when(resp.getWriter()).thenReturn(printMock);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        LoginServlet loginServlet = new LoginServlet();
+
+        //Create test user to ensure user is already created when trying to log in
+        User testUser = new User(null, "testUser", "testFirstName", "testLastName", "testEmail@rit.edu", 2);
+        UserDAO.createUser(testUser, "testPass");
+
+        try {
+            loginServlet.doPost(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        verify(resp).setStatus(409);
+        verify(printMock).write("User already exists!");
+
+    }
+
+    @Test
+    public void testDoPostNewUser() {
+        //Get the current db username/password
+        Properties props = new Properties();
+        try {
+            props.load(new FileReader("../nvip_backend/src/main/resources/db-mysql.properties"));
+        } catch (IOException e) {
+            System.out.println("Cannot find db-mysql.properties file in backend resources!");
+            System.exit(1);
+        }
+
+        String dbUser = props.getProperty("dataSource.user");
+        String dbPass = props.getProperty("dataSource.password");
+
+        //Note database username/password must be set in dbUser and dbPass
+        System.setProperty("JDBC_CONNECTION_STRING", "jdbc:mysql://" + dbUser + ":" + dbPass + "@localhost:3306/nvip?useSSL=false&allowPublicKeyRetrieval=true");
+
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        HttpServletRequest req = mock(HttpServletRequest.class);
+
+        when (req.getParameter("createUser")).thenReturn("true");
+
+        //Mock the request's reader
+        BufferedReader buffMock = mock(BufferedReader.class);
+        try {
+            //Set mocked buffered reader as requests reader
+            when(req.getReader()).thenReturn(buffMock);
+            //Insert test arguments
+            when(buffMock.readLine()).thenReturn("{username:testUserNew, password:testPass, fname:testFirstNameNew, lname:testLastNameNew, email:testEmailNew@rit.edu}", null);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Remove user if they exist in the table to allow for new user creation
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM user WHERE (user_name = 'testusernew') AND (first_name = 'testFirstNameNew') AND (last_name = 'testLastNameNew')");
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        LoginServlet loginServlet = new LoginServlet();
+
+        try {
+            loginServlet.doPost(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        verifyNoInteractions(resp);
+        assertEquals(0, resp.getStatus());
+
     }
 }
