@@ -158,23 +158,7 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 						if (productIDs == null || productIDs.isEmpty()) {
 							numOfProductsNotMappedToCPE++;
-							long averageCPEtime = 0;
-							if (counterOfProcessedCPEs > 0) {
-								averageCPEtime = totalCPEtime / counterOfProcessedCPEs;
-							}
-							long averageNERtime = 0;
-							if (counterOfProcessedNERs > 0) {
-								averageNERtime = totalNERtime / counterOfProcessedNERs;
-							}
-							long averageCVEtime = 0;
-							if (counterOfProcessedCVEs > 0) {
-								averageCVEtime = totalCVEtime / counterOfProcessedCVEs;
-							}
-							logger.warn("CVEs processed: " + counterOfProcessedCVEs + " out of " + totalCVEtoProcess + "; Average NER time (ms): "
-									+ averageNERtime + "; Average CPE time (ms): " + Float.toString(averageCPEtime) + "; Average CVE time (ms): " + averageCVEtime
-									+ "; Current NER time (ms): " + nerTime + "; Not mapped to CPE: " + numOfProductsNotMappedToCPE + "; Mapped to CPE: "
-									+ numOfProductsMappedToCpe + "; The product name (" + productItem.toString()
-									+ ") predicted by AI/ML model could not be found in the CPE dictionary!\tCVE-ID: " + vulnerability.getCveId() + "\tDescription: " + vulnerability.getDescription());
+							logger.warn("The product name ({}) predicted by AI/ML model could not be found in the CPE dictionary!\tCVE-ID: {}", productItem.toString(), vulnerability.getCveId());
 							continue;
 						}
 						// if CPE identified, add it as affected release

@@ -31,10 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -780,18 +777,31 @@ public class DatabaseHelper {
 			pstmt.setString(1, vuln.getDescription());
 			pstmt.setString(2, vuln.getPlatform());
 			pstmt.setString(3, vuln.getPatch());
-			pstmt.setString(4, vuln.getPublishDate());
 
-			pstmt.setString(5, vuln.getLastModifiedDate());
-			pstmt.setString(6, vuln.getFixDate());
+			if (vuln.getPublishDate() != null && vuln.getPublishDate().contains("T")) {
+				pstmt.setString(4, vuln.getPublishDate().substring(0, 10) + " " + vuln.getPublishDate().substring(11, 19));
+			} else {
+				pstmt.setString(4, vuln.getPublishDate());
+			}
+
+			if (vuln.getLastModifiedDate() != null && vuln.getLastModifiedDate().contains("T")) {
+				pstmt.setString(5, vuln.getLastModifiedDate().substring(0, 10) + " " + vuln.getLastModifiedDate().substring(11, 19));
+			} else {
+				pstmt.setString(5, vuln.getLastModifiedDate());
+			}
+
+			if (vuln.getFixDate() != null && vuln.getFixDate().contains("T")) {
+				pstmt.setString(6, vuln.getFixDate().substring(0, 10) + " " + vuln.getFixDate().substring(11, 19));
+			} else {
+				pstmt.setString(6, vuln.getFixDate());
+			}
+
 			pstmt.setString(7, vuln.getCveId()); // WHERE clause in SQL statement
 
 			pstmt.executeUpdate();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		} catch (Exception e1) {
 			// you may still continue updating other vuln attribs below!
-			logger.error("Error while updating Vuln: {} Exception: {}", vuln, e1);
-
+			logger.error("Error while updating CVE: {} Exception: {}:{}", vuln.getCveId(), e1.toString(), e1.getMessage());
 		}
 
 		/**
