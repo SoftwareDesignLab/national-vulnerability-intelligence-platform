@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 
+import static org.junit.Assert.assertEquals;
+
 import static org.mockito.Mockito.*;
 
 public class ReviewServletTest{
@@ -100,6 +102,7 @@ public class ReviewServletTest{
 
         when(req.getParameter("username")).thenReturn("testUsername");
         when(req.getParameter("token")).thenReturn("2");
+        when(req.getParameter("cveID")).thenReturn("CVE-2021-22317");
 
         //Setup mock writer for response
         PrintWriter printMock = mock(PrintWriter.class);
@@ -116,5 +119,20 @@ public class ReviewServletTest{
             System.out.println(e.getMessage());
         }
 
+        verify(printMock).write("{\n" +
+                "  \"vuln_id\": \"2409866\",\n" +
+                "  \"cve_id\": \"CVE-2021-22317\",\n" +
+                "  \"description\": \"\\\"There is an Information Disclosure vulnerability in Huawei Smartphone. Successful exploitation of this vulnerability may impair data confidentiality.\\\"\",\n" +
+                "  \"status_id\": \"1\",\n" +
+                "  \"run_date_time\": \"2023-02-03 18:38:49\",\n" +
+                "  \"vdoGroups\": {\n" +
+                "    \"null\": {\n" +
+                "      \"vdoLabel\": {}\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"vulnDomain\": []\n" +
+                "}");
+        assertEquals(0, resp.getStatus());
+        verifyNoMoreInteractions(resp);
     }
 }
