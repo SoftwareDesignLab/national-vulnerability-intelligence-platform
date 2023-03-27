@@ -1,0 +1,3 @@
+https://www.autodesk.com/trust/security-advisories
+https://access.redhat.com/security/security-updates/#/cve
+https://www.tibco.com/services/support/advisories

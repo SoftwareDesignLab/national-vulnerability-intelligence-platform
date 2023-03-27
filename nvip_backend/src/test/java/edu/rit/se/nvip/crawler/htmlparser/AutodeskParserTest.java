@@ -23,6 +23,7 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
+import edu.rit.se.nvip.crawler.QuickCveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.junit.Test;
 
@@ -34,7 +35,9 @@ public class AutodeskParserTest extends AbstractParserTest{
 
     @Test
     public void testAutodesk() {
-        String html = safeReadHtml("src/test/resources/test-autodesk-table-multi.html");
+        QuickCveCrawler q = new QuickCveCrawler();
+        String html = q.getContentFromDynamicPage("https://autodesk.com/trust/security-advisories/adsk-sa-2022-0017", null);
+//        String html = safeReadHtml("src/test/resources/test-autodesk-table-multi.html");
         List<CompositeVulnerability> list = new AutodeskParser("autodesk").parseWebPage("autodesk", html);
         assertEquals(18, list.size());
         CompositeVulnerability vuln = getVulnerability(list, "CVE-2021-45960");
