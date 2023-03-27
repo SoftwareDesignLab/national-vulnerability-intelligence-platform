@@ -40,9 +40,9 @@ public class TrustWaveParserTest extends AbstractParserTest {
      */
     @Test
     public void testTrustWaveSingle() {
-        QuickCveCrawler q = new QuickCveCrawler();
-        String html = q.getContentFromUrl("https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/cve-2022-37461-two-reflected-xss-vulnerabilities-in-canon-medicals-vitrea-view/");
-//        String html = safeReadHtml("src/test/resources/test-trustwave-single.html");
+        // QuickCveCrawler q = new QuickCveCrawler();
+        // String html = q.getContentFromUrl("https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/cve-2022-37461-two-reflected-xss-vulnerabilities-in-canon-medicals-vitrea-view/");
+        String html = safeReadHtml("src/test/resources/test-trustwave-single.html");
         List<CompositeVulnerability> list = crawler.parseWebPage(
                 "https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/cve-2022-37461-two-reflected-xss-vulnerabilities-in-canon-medicals-vitrea-view/",
                 html

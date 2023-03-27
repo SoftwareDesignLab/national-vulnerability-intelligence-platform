@@ -40,8 +40,7 @@ public class RedHatParserTest extends AbstractParserTest {
 
 	@Test
 	public void testRedHat() {
-		QuickCveCrawler q = new QuickCveCrawler();
-		String html = q.getContentFromDynamicPage("https://access.redhat.com/security/cve/CVE-2023-25725", null);
+		String html = QuickCveCrawler.getContentFromDynamicPage("https://access.redhat.com/security/cve/CVE-2023-25725", null);
 		RedHatParser parser = new RedHatParser("redhat");
 		// String html = safeReadHtml("src/test/resources/test-redhat-cve.html");
 		List<CompositeVulnerability> list = parser.parseWebPage("redhat", html);

@@ -36,9 +36,8 @@ public class TibcoParserTest extends AbstractParserTest{
 
     @Test
     public void testTibco() {
-        QuickCveCrawler q = new QuickCveCrawler();
-        String html = q.getContentFromDynamicPage("https://www.tibco.com/support/advisories/2023/02/tibco-security-advisory-february-22-2023-tibco-businessconnect-cve-2022-41567", null);
-//        String html = safeReadHtml("src/test/resources/test-tibco.html");
+        String html = QuickCveCrawler.getContentFromDynamicPage("https://www.tibco.com/support/advisories/2023/02/tibco-security-advisory-february-22-2023-tibco-businessconnect-cve-2022-41567", null);
+        // String html = safeReadHtml("src/test/resources/test-tibco.html");
         List<CompositeVulnerability> list = crawler.parseWebPage(
                 "https://www.tibco.com/support/advisories/2023/02/tibco-security-advisory-february-22-2023-tibco-businessconnect-cve-2022-41567",
                 html
