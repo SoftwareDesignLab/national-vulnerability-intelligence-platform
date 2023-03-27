@@ -4,7 +4,6 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,30 +23,47 @@ public class ZeroDaysParser extends AbstractCveParser {
         Document doc = Jsoup.parse(sCVEContentHTML);
 
         Element rightColumn = doc.select("div.second-half").first();
+        if (rightColumn == null) return vulnList;
 
-        // get CVE Id from right column
-        String cve = rightColumn.children().select("li:contains(CVE Number)").first().children().select("span").first().text();
+        // get CVE ID from right column
+        Element cveEl = rightColumn.children().select("li:contains(CVE Number)").first();
+        if (cveEl == null) return vulnList;
+        Element cveIdEl = cveEl.children().select("span").first();
+        if (cveIdEl == null) return vulnList;
+        String cve = cveIdEl.text();
 
         // get publish date from top row
-        String publishDate = doc.select("h4:contains(Date)").first().nextElementSibling().text();
+        String publishDate = "";
+        Element dateHeader = doc.select("h4:contains(Date)").first();
+        if (dateHeader != null) {
+            Element dateEl = dateHeader.nextElementSibling();
+            if (dateEl != null)
+                publishDate = dateEl.text();
+        }
 
         // get description in p tags under Description header
         Element descHeader = doc.select("h3:contains(Description)").first();
 //        String description = doc
-        String description = "";
-        Element nextDesc = descHeader.nextElementSibling();
-        while (nextDesc != null) {
-            description += nextDesc.text();
-            nextDesc = nextDesc.nextElementSibling();
+        StringBuilder description = new StringBuilder();
+        if (descHeader != null) {
+            Element nextDesc = descHeader.nextElementSibling();
+            while (nextDesc != null) {
+                description.append(nextDesc.text());
+                nextDesc = nextDesc.nextElementSibling();
+            }
         }
 
         // get last modified date from last date in timeline on the bottom
+        String lastModifiedDate = publishDate;
         Element timeline = doc.select("div#timeline").last();
-        Element lastDate = timeline.children().select("li").last();
-        String lastModifiedDate = lastDate.children().select("strong").text().replace(":", "");
+        if (timeline != null) {
+            Element lastDate = timeline.children().select("li").last();
+            if (lastDate != null)
+                lastModifiedDate = lastDate.children().select("strong").text().replace(":", "");
+        }
 
         vulnList.add(new CompositeVulnerability(
-                0, sSourceURL, cve, null, publishDate, lastModifiedDate, description, sourceDomainName
+                0, sSourceURL, cve, null, publishDate, lastModifiedDate, description.toString(), sourceDomainName
         ));
 
         return vulnList;
