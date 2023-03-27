@@ -38,7 +38,7 @@ public class CveParserFactory {
 			return new NullParser();
 		}
 
-		if (sPageUrl.contains("tenable") && !sPageUrl.contains("blog")) {
+		if (sPageUrl.contains("tenable.com") && !sPageUrl.contains("blog")) {
 			if (sPageUrl.contains("security"))
 				return new TenableSecurityParser("tenable");
 			else
@@ -130,6 +130,8 @@ public class CveParserFactory {
 			return new AmpereRootParser("amperecomputing.com/products/product-security");
 		else if (sPageUrl.contains("arubanetworks"))
 			return new ArubaParser("arubanetworks");
+		else if (sPageUrl.contains("cybersecurityworks"))
+			return new ZeroDaysParser("cybersecurityworks");
 
 
 		// sources that you want to ignore
