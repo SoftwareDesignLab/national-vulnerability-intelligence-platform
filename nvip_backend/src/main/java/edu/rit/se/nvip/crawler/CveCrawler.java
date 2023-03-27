@@ -26,6 +26,7 @@ package edu.rit.se.nvip.crawler;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -98,15 +99,14 @@ public class CveCrawler extends WebCrawler {
 	}
 
 	private String getPageHtml(Page page, String url) {
-		//TODO: should be more robust
-		if (url.contains("redhat") || url.contains("tibco") || url.contains("autodesk")) {
-			logger.info("Getting content from DYNAMIC page {}", url);
+		//TODO: move this list
+		List<String> dynamicSeeds = Arrays.asList("redhat", "tibco", "autodesk");
+		if (dynamicSeeds.stream().anyMatch(url::contains)) {
+			logger.info("Getting content from page with dynamically-loaded HTML {}", url);
 			return QuickCveCrawler.getContentFromDynamicPage(url, driver);
 		}
-		logger.info("Getting parse data for static page: {} ", url);
 		HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-		String html = htmlParseData.getHtml();
-		return html;
+		return htmlParseData.getHtml();
 	}
 
 	/**
@@ -114,10 +114,8 @@ public class CveCrawler extends WebCrawler {
 	 */
 	@Override
 	public void visit(Page page) {
-		logger.info("Visiting...");
 		String pageURL = page.getWebURL().getURL().trim();
 		if (page.getParseData() instanceof HtmlParseData) {
-			logger.info("Getting html...");
 			String html = getPageHtml(page, pageURL);
 
 			synchronized (this) {
