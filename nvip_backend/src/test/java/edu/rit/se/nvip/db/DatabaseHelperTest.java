@@ -38,10 +38,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -430,6 +434,7 @@ public class DatabaseHelperTest {
 		String id = "cve_id0";
 		ReflectionTestUtils.setField(this.dbh, "existingVulnMap", new HashMap<String, Vulnerability>());
 		CompositeVulnerability vuln = new CompositeVulnerability(1337, "url", id, "platform", "pubdate", "moddate", "description", "domain");
+		CompositeVulnerability vuln2 = new CompositeVulnerability(1337, "url", id, "platform", "2023-12-23T12:33:12", "2023-12-23T12:33:12", "description", "domain");
 		HashMap<String, Vulnerability> existing = new HashMap<>();
 		existing.put(id, vuln);
 		try {
@@ -438,11 +443,16 @@ public class DatabaseHelperTest {
 
 			DatabaseHelper spyDB = spy(dbh);
 			vuln.setCveReconcileStatus(CveReconcileStatus.UPDATE);
+
 			assertEquals(1, spyDB.updateVulnerability(vuln, conn, existing, 1111));
+			assertEquals(1, spyDB.updateVulnerability(vuln2, conn, existing, 1112));
+
 			verify(pstmt, atLeast(7)).setString(anyInt(), anyString());
 			ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 			verify(pstmt, atLeastOnce()).setString(anyInt(), captor.capture());
+
 			assertTrue(captor.getAllValues().contains(id));
+
 			verify(spyDB).deleteVulnSource(id, conn);
 			verify(spyDB).insertVulnSource(vuln.getVulnSourceList(), conn);
 			verify(spyDB).deleteCvssScore(id, conn);
