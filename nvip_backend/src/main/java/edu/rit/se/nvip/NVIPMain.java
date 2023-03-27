@@ -243,42 +243,41 @@ public class NVIPMain {
 	private void startNvipProcesses(MyProperties propertiesNvip, List<String> urls) {
 
 		// initialize logger, characterizer
-//		CveLogDiff cveLogger = new CveLogDiff(propertiesNvip);
-//		String[] trainingDataInfo = propertiesNvip.getCveCharacterizationTrainingDataInfo();
-//		CveCharacterizer cveCharacterizer = new CveCharacterizer(trainingDataInfo[0], trainingDataInfo[1], propertiesNvip.getCveCharacterizationApproach(),
-//				propertiesNvip.getCveCharacterizationMethod(), false);
-//
-//		if (refreshNvdCveList) {
-//			logger.info("Refreshing NVD feeds before running NVIP...");
-//			PullNvdCveMain.pullFeeds(); // update nvd CVEs
-//		}
-//
+		CveLogDiff cveLogger = new CveLogDiff(propertiesNvip);
+		String[] trainingDataInfo = propertiesNvip.getCveCharacterizationTrainingDataInfo();
+		CveCharacterizer cveCharacterizer = new CveCharacterizer(trainingDataInfo[0], trainingDataInfo[1], propertiesNvip.getCveCharacterizationApproach(),
+				propertiesNvip.getCveCharacterizationMethod(), false);
+
+		if (refreshNvdCveList) {
+			logger.info("Refreshing NVD feeds before running NVIP...");
+			PullNvdCveMain.pullFeeds(); // update nvd CVEs
+		}
+
 		/**
 		 * scrape CVEs from CVE Automation Working Group Git Pilot
 		 */
 		GithubScraper githubScraper = new GithubScraper();
-//		HashMap<String, CompositeVulnerability> cveHashMapGithub = githubScraper.scrapeGithub();
-		HashMap<String, CompositeVulnerability> cveHashMapGithub = new HashMap<>();
+		HashMap<String, CompositeVulnerability> cveHashMapGithub = githubScraper.scrapeGithub();
 
-//		// scrape CVEs from PyPA advisory database GitHub Repo
-//		PyPAGithubScraper pyPaScraper = new PyPAGithubScraper();
-//		HashMap<String, CompositeVulnerability> cvePyPAGitHub = pyPaScraper.scrapePyPAGithub();
-//
-//		logger.info("Merging {} PyPA CVEs with {} found GitHub CVEs", cvePyPAGitHub.size(), cveHashMapGithub.size());
-//		cveHashMapGithub.putAll(cvePyPAGitHub);
+		// scrape CVEs from PyPA advisory database GitHub Repo
+		PyPAGithubScraper pyPaScraper = new PyPAGithubScraper();
+		HashMap<String, CompositeVulnerability> cvePyPAGitHub = pyPaScraper.scrapePyPAGithub();
 
-//		/**
-//		 * Scrape CVE summary pages (frequently updated CVE providers)
-//		 */
-//		int count = 0;
-//		QuickCveCrawler crawler = new QuickCveCrawler();
-//		List<CompositeVulnerability> list = crawler.getCVEsfromKnownSummaryPages();
-//		for (CompositeVulnerability vuln : list)
-//			if (!cveHashMapGithub.containsKey(vuln.getCveId())) {
-//				count++;
-//				cveHashMapGithub.put(vuln.getCveId(), vuln);
-//			}
-//		logger.info("{} of {} CVEs found in the CNA summary pages did not exist in the Mitre GitHub repo.", count, list.size());
+		logger.info("Merging {} PyPA CVEs with {} found GitHub CVEs", cvePyPAGitHub.size(), cveHashMapGithub.size());
+		cveHashMapGithub.putAll(cvePyPAGitHub);
+
+		/**
+		 * Scrape CVE summary pages (frequently updated CVE providers)
+		 */
+		int count = 0;
+		QuickCveCrawler crawler = new QuickCveCrawler();
+		List<CompositeVulnerability> list = crawler.getCVEsfromKnownSummaryPages();
+		for (CompositeVulnerability vuln : list)
+			if (!cveHashMapGithub.containsKey(vuln.getCveId())) {
+				count++;
+				cveHashMapGithub.put(vuln.getCveId(), vuln);
+			}
+		logger.info("{} of {} CVEs found in the CNA summary pages did not exist in the Mitre GitHub repo.", count, list.size());
 
 		/**
 		 * crawl CVE from CNAs
@@ -290,59 +289,59 @@ public class NVIPMain {
 		long crawlEndTime = System.currentTimeMillis();
 
 		// merge CVEs from two sources (CNAs and Github repo)
-//		HashMap<String, CompositeVulnerability> cveHashMapAll = mergeCVEsDerivedFromCNAsAndGit(cveHashMapGithub, cveHashMapScrapedFromCNAs);
-//
-//		// process
-//		logger.info("Comparing CVES against NVD & MITRE..");
-//		String cveDataPathNvd = propertiesNvip.getDataDir() + "/nvd-cve.csv";
-//		String cveDataPathMitre = propertiesNvip.getDataDir() + "/mitre-cve.csv";
-//		CveProcessor cveProcessor = new CveProcessor(cveDataPathNvd, cveDataPathMitre);
-//		HashMap<String, List<Object>> cveListMap = cveProcessor.checkAgainstNvdMitre(cveHashMapAll); // CVEs not in Nvd, Mitre
-//
-//		// Identify NEW CVEs. Reconcile for Characterization and DB processes
-//		List<CompositeVulnerability> crawledVulnerabilityList = cveListMap.get("all").stream().map(e -> (CompositeVulnerability) e).collect(Collectors.toList());
-//		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
-//		identifyNewOrUpdatedCve(crawledVulnerabilityList, databaseHelper, propertiesNvip);
-//
-//		// Parse CAPECs page to link CVEs to a given Attack Pattern in characterizer
-//		CapecParser capecParser = new CapecParser();
-//		ArrayList<Capec> capecs = capecParser.parseWebPage(crawler);
-//
-//		// characterize
-//		logger.info("Characterizing and scoring NEW CVEs...");
-//		crawledVulnerabilityList = cveCharacterizer.characterizeCveList(crawledVulnerabilityList, databaseHelper); // characterize
-//
-//		DailyRun dailyRunStats = insertStats(databaseHelper, crawledVulnerabilityList, cveListMap.get("nvd").size(), cveListMap.get("mitre").size(), cveListMap.get("nvd-mitre").size());
-//		int runId = dailyRunStats.getRunId();
-//
-//		// insert/update CVEs in the NVIP database
-//		double dbTime = 0;
-//		try {
-//			long databaseStoreStartTime = System.currentTimeMillis();
-//			logger.info("Storing crawled {} CVEs into the NVIP database with run id: {}", crawledVulnerabilityList.size(), runId);
-//			new DbParallelProcessor().executeInParallel(crawledVulnerabilityList, runId);
-//			dbTime = (System.currentTimeMillis() - databaseStoreStartTime) / 60000.0;
-//			logger.info("Spent {} minutes to store {} vulnerabilties.", formatter.format(dbTime), crawledVulnerabilityList.size());
-//		} catch (Exception e) {
-//			logger.error("Error occurred while storing CVEs: {}", e.toString());
-//		}
-//
-//		// log .csv files
-//		logger.info("Creating output CSV files...");
-//		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap);
-//
-//		// record additional available stats
-//		recordAdditionalStats(databaseHelper, runId, dailyRunStats, crawlStartTime, crawlEndTime, dbTime);
-//
-//		// Extract and save exploits
-//		if (propertiesNvip.isExploitScrapingEnabled()) {
-//			logger.info("Identifying exploits for {} crawled vulnerabilities...", crawledVulnerabilityList.size());
-//			extractExploits(crawledVulnerabilityList, databaseHelper);
-//		}
-//
-//		// save affected releases
-//		// this should be the last process, it is shutting down db connections!
-//		spawnProcessToIdentifyAndStoreAffectedReleases(crawledVulnerabilityList);
+		HashMap<String, CompositeVulnerability> cveHashMapAll = mergeCVEsDerivedFromCNAsAndGit(cveHashMapGithub, cveHashMapScrapedFromCNAs);
+
+		// process
+		logger.info("Comparing CVES against NVD & MITRE..");
+		String cveDataPathNvd = propertiesNvip.getDataDir() + "/nvd-cve.csv";
+		String cveDataPathMitre = propertiesNvip.getDataDir() + "/mitre-cve.csv";
+		CveProcessor cveProcessor = new CveProcessor(cveDataPathNvd, cveDataPathMitre);
+		HashMap<String, List<Object>> cveListMap = cveProcessor.checkAgainstNvdMitre(cveHashMapAll); // CVEs not in Nvd, Mitre
+
+		// Identify NEW CVEs. Reconcile for Characterization and DB processes
+		List<CompositeVulnerability> crawledVulnerabilityList = cveListMap.get("all").stream().map(e -> (CompositeVulnerability) e).collect(Collectors.toList());
+		DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+		identifyNewOrUpdatedCve(crawledVulnerabilityList, databaseHelper, propertiesNvip);
+
+		// Parse CAPECs page to link CVEs to a given Attack Pattern in characterizer
+		CapecParser capecParser = new CapecParser();
+		ArrayList<Capec> capecs = capecParser.parseWebPage(crawler);
+
+		// characterize
+		logger.info("Characterizing and scoring NEW CVEs...");
+		crawledVulnerabilityList = cveCharacterizer.characterizeCveList(crawledVulnerabilityList, databaseHelper); // characterize
+
+		DailyRun dailyRunStats = insertStats(databaseHelper, crawledVulnerabilityList, cveListMap.get("nvd").size(), cveListMap.get("mitre").size(), cveListMap.get("nvd-mitre").size());
+		int runId = dailyRunStats.getRunId();
+
+		// insert/update CVEs in the NVIP database
+		double dbTime = 0;
+		try {
+			long databaseStoreStartTime = System.currentTimeMillis();
+			logger.info("Storing crawled {} CVEs into the NVIP database with run id: {}", crawledVulnerabilityList.size(), runId);
+			new DbParallelProcessor().executeInParallel(crawledVulnerabilityList, runId);
+			dbTime = (System.currentTimeMillis() - databaseStoreStartTime) / 60000.0;
+			logger.info("Spent {} minutes to store {} vulnerabilties.", formatter.format(dbTime), crawledVulnerabilityList.size());
+		} catch (Exception e) {
+			logger.error("Error occurred while storing CVEs: {}", e.toString());
+		}
+
+		// log .csv files
+		logger.info("Creating output CSV files...");
+		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap);
+
+		// record additional available stats
+		recordAdditionalStats(databaseHelper, runId, dailyRunStats, crawlStartTime, crawlEndTime, dbTime);
+
+		// Extract and save exploits
+		if (propertiesNvip.isExploitScrapingEnabled()) {
+			logger.info("Identifying exploits for {} crawled vulnerabilities...", crawledVulnerabilityList.size());
+			extractExploits(crawledVulnerabilityList, databaseHelper);
+		}
+
+		// save affected releases
+		// this should be the last process, it is shutting down db connections!
+		spawnProcessToIdentifyAndStoreAffectedReleases(crawledVulnerabilityList);
 
 		logger.info("Done!");
 	}
