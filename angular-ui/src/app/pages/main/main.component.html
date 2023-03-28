@@ -115,20 +115,20 @@
     <div class="container" style="width: 100%" [hidden]="!isChartsLoaded()">
       <div class="row">
         <div id="graph" class="col-xl-4 col-lg-4 nvip_column_chart">
-          <h5 style="color: black">Number of CVEs added or updated daily</h5>
+          <h5 style="color: black">Number of CVEs added to NVIP</h5>
           <div id="chart_values1"></div>
           <nvip-chart [chartType]="0" (loaded)="isLoaded($event, 0)"></nvip-chart>
         </div>
         <div class="graph-breakpoint2"></div>
         <div class="col-xl-4 col-lg-4 nvip_column_chart">
-          <h5 style="color: black">Number of CVEs not in NVD</h5>
+          <h5 style="color: black">Number of Found CVEs not in NVD</h5>
           <div id="chart_values2"></div>
           <nvip-chart [chartType]="1" (loaded)="isLoaded($event, 1)"></nvip-chart>
         </div>
         <div class="graph-breakpoint1"></div>
         <div class="col-xl-4 col-lg-4 nvip_column_chart">
           <h5 style="color: black">
-            Average time gap compared to NVD (in hours)
+            Average time gap compared to NVD in hours
           </h5>
           <div id="chart_values3"></div>
           <nvip-chart [chartType]="2" (loaded)="isLoaded($event, 2)"></nvip-chart>
