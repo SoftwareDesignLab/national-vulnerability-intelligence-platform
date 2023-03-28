@@ -46,7 +46,8 @@ export class NvipChartComponent implements OnInit, OnDestroy {
     gradient: false,
     showLegend: false,
     showXAxisLabel: false,
-    showYAxisLabel: false,
+    showYAxisLabel: true,
+    yAxisLabel: "Quantity"
   };
 
   colorScheme = {
@@ -64,6 +65,9 @@ export class NvipChartComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.chartsService.getData().subscribe((data) => this.data = data[this.chartType])
+    if(this.chartType == 2){
+      this.options.yAxisLabel = "Hours"
+    }
     this.loaded.emit({ loaded: true })
   }
 
