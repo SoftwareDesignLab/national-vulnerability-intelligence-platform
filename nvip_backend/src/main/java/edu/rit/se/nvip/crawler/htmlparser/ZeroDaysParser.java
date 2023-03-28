@@ -43,7 +43,6 @@ public class ZeroDaysParser extends AbstractCveParser {
 
         // get description in p tags under Description header
         Element descHeader = doc.select("h3:contains(Description)").first();
-//        String description = doc
         StringBuilder description = new StringBuilder();
         if (descHeader != null) {
             Element nextDesc = descHeader.nextElementSibling();

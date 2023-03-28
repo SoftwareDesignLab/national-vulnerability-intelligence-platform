@@ -132,6 +132,8 @@ public class CveParserFactory {
 			return new ArubaParser("arubanetworks");
 		else if (sPageUrl.contains("cybersecurityworks"))
 			return new ZeroDaysParser("cybersecurityworks");
+		else if (sPageUrl.contains("dragos"))
+			return new DragosParser("dragos");
 
 
 		// sources that you want to ignore
