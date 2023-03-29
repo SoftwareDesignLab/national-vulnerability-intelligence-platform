@@ -5,7 +5,7 @@
             <span class="description-text" [ngStyle]="{'color': (active ? activeDescColor : inactiveDescColor)}" ng-bind="vuln.description">{{vuln.description}}</span>
                 <span class="daily-vuln-dropdown-icon-box">
                     <img class="nvd_logo" [ngClass]="vuln.existInNvd ? 'is_present' : ''" src="assets/images/nvd_logo.svg" aria-hidden="true"/>
-                    <img class="mitre_logo" [ngClass]="vuln.existInNvd ? 'is_present' : ''" src="assets/images/mitre_corporation_logo.svg" aria-hidden="true">
+                    <img class="mitre_logo" [ngClass]="vuln.existInMitre ? 'is_present' : ''" src="assets/images/mitre_corporation_logo.svg" aria-hidden="true">
                     <img class="mitigation_icon" [hidden]="!hasMitigation()" src="assets/images/mitigation_shield.svg" aria-hidden="true">
                     <img class="is_fixed_logo" [hidden]="!isFixed()" src="assets/images/is_fixed_icon.svg" alt="Fixed">
                 </span>
