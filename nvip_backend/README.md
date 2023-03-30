@@ -44,6 +44,11 @@ It scrapes disclosed CVEs, scores/characterizes them automatically and stores th
 #### 2. Run Docker Image
     $ docker run -m=10g nvip_backend
 
+OR
+
+#### 3. Run with Env List
+    $ docker run -m=10g --env-file env.list nvip_backend
+
 # Installation Guide (Default)
 
 ## 1. Download & Install MySQL, Create the Database
