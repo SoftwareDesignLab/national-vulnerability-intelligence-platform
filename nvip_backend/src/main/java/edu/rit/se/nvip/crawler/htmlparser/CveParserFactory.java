@@ -138,6 +138,8 @@ public class CveParserFactory {
 			return new CyberArkRootParser("cyberark");
 		else if (sPageUrl.contains("dotcms"))
 			return new DotCMSParser("dotcms");
+		else if (sPageUrl.contains("pandorafms"))
+			return new PandoraFMSRootParser("pandorafms");
 
 
 		// sources that you want to ignore
