@@ -136,6 +136,8 @@ public class CveParserFactory {
 			return new DragosParser("dragos");
 		else if (sPageUrl.contains("cyberark"))
 			return new CyberArkRootParser("cyberark");
+		else if (sPageUrl.contains("dotcms"))
+			return new DotCMSParser("dotcms");
 
 
 		// sources that you want to ignore
