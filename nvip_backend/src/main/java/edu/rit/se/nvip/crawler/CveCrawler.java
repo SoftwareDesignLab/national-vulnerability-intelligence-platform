@@ -100,7 +100,7 @@ public class CveCrawler extends WebCrawler {
 
 	private String getPageHtml(Page page, String url) {
 		//TODO: move this list
-		List<String> dynamicSeeds = Arrays.asList("redhat", "tibco", "autodesk", "trustwave");
+		List<String> dynamicSeeds = Arrays.asList("redhat", "tibco", "autodesk", "trustwave", "mend.io");
 		if (dynamicSeeds.stream().anyMatch(url::contains)) {
 			logger.info("Getting content from page with dynamically-loaded HTML {}", url);
 			return QuickCveCrawler.getContentFromDynamicPage(url, driver);
