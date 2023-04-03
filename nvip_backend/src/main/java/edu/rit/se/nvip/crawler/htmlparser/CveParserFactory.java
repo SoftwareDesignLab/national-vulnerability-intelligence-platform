@@ -140,6 +140,10 @@ public class CveParserFactory {
 			return new DotCMSParser("dotcms");
 		else if (sPageUrl.contains("pandorafms"))
 			return new PandoraFMSRootParser("pandorafms");
+		else if (sPageUrl.contains("libreoffice"))
+			return new LibreOfficeParser("libreoffice");
+		else if (sPageUrl.contains("samba.org"))
+			return new SambaParser("samba.org");
 
 
 		// sources that you want to ignore
