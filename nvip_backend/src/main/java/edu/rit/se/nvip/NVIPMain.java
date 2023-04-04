@@ -118,14 +118,16 @@ public class NVIPMain {
 		}
 
 		// Crawler
+		long crawlStartTime = System.currentTimeMillis();
 		HashMap<String, CompositeVulnerability> crawledCVEs = nvipMain.crawlCVEs(urls);
+		long crawlEndTime = System.currentTimeMillis();
 		logger.info("Crawler Finished\nTime: {}", crawlEndTime - crawlStartTime);
 
 		// Process and Reconcile
 		HashMap<String, List<Object>> cveListMap = nvipMain.processCVEs(crawledCVEs);
 		List<CompositeVulnerability> crawledVulnerabilityList = nvipMain.reconcileCVEs(cveListMap);
 
-		// Characterizer
+		// Characterize
 		crawledVulnerabilityList = nvipMain.characterizeCVEs(crawledVulnerabilityList, cveListMap);
 
 		// Prepare stats and Store found CVEs in DB
@@ -534,6 +536,7 @@ public class NVIPMain {
 		} catch (Exception e) {
 			logger.error("Error occurred while storing CVEs: {}", e.toString());
 		}
+
 	}
 
 
