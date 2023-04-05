@@ -1,16 +1,12 @@
 package edu.rit.se.nvip.crawler;
 
 import java.io.File;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import edu.rit.se.nvip.utils.MyProperties;
@@ -57,9 +53,15 @@ public class CveCrawlController {
 
     }
 
+    /**
+     * Prepare Crawlers and begin crawling
+     * return all raw vulnerability data found
+     * @param urls
+     * @param whiteList
+     * @return
+     * @throws Exception
+     */
     public HashMap<String, ArrayList<CompositeVulnerability>> crawl(List<String> urls, List<String> whiteList) throws Exception {
-
-        long crawlStartTime = System.currentTimeMillis();
 
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
@@ -120,8 +122,6 @@ public class CveCrawlController {
         logger.info("Crawler 2 is finished.");
 
         cveHashMapAll.putAll(getVulnerabilitiesFromCrawlerThreads(controller1));
-
-        long crawlEndTime = System.currentTimeMillis();
 
         return cveHashMapAll;
     }

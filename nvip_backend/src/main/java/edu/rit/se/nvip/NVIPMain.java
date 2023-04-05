@@ -82,6 +82,11 @@ public class NVIPMain {
 
 	static String[] commandLineArgs = new String[1];
 
+	/**
+	 * NVIP Main Constructor
+	 * Load properties and prepare initial data
+	 * @param setDB
+	 */
 	public NVIPMain(boolean setDB) {
 		// load properties file
 		properties = new MyProperties();
@@ -106,6 +111,12 @@ public class NVIPMain {
 		}
 	}
 
+	/**
+	 * Main function
+	 * this is how the NVIP backend runs as of now
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		commandLineArgs = args;
 		CveLogDiff cveLogger = new CveLogDiff(properties);
@@ -159,7 +170,7 @@ public class NVIPMain {
 	}
 
 	/**
-	 *
+	 * Prepares sourceURLs for NVIPs crawlers
 	 * @return
 	 */
 	public List<String> startNvip() {
