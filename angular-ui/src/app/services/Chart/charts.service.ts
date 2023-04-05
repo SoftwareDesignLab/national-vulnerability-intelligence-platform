@@ -2,17 +2,17 @@
  * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,11 +49,15 @@ export class ChartsService {
 
       const dates = run_date_times.split(";").map((d: string) => new Date(d));
 
+      console.log(dates)
+
       const addedOrUpdatedSeries = this.makeAddedOrUpdatedSeries(
         CvesAdded.split(";").map((d: string) => parseInt(d)),
         CvesUpdated.split(";").map((d: string) => parseInt(d)),
         dates
       )
+
+      console.log(addedOrUpdatedSeries);
 
       const notInNvdSeries = this.makeNotInNVDSeries(
         not_in_nvd_count.split(";").map((d: string) => parseInt(d)),
@@ -86,6 +90,7 @@ export class ChartsService {
     return date.toLocaleDateString("en-US", {
       month: "numeric",
       day: "numeric",
+      hour: "numeric"
     })
   }
 
