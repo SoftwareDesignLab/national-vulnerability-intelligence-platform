@@ -49,15 +49,11 @@ export class ChartsService {
 
       const dates = run_date_times.split(";").map((d: string) => new Date(d));
 
-      console.log(dates)
-
       const addedOrUpdatedSeries = this.makeAddedOrUpdatedSeries(
         CvesAdded.split(";").map((d: string) => parseInt(d)),
         CvesUpdated.split(";").map((d: string) => parseInt(d)),
         dates
       )
-
-      console.log(addedOrUpdatedSeries);
 
       const notInNvdSeries = this.makeNotInNVDSeries(
         not_in_nvd_count.split(";").map((d: string) => parseInt(d)),

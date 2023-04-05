@@ -64,8 +64,6 @@ export class NvipChartComponent implements OnInit, OnDestroy {
     this.mySubscription?.unsubscribe();
   }
   ngOnInit(): void {
-    console.log(this.chartsService.getData())
-    console.log(this.chartType)
 
     this.chartsService.getData().subscribe((data) => this.data = data[this.chartType])
     if(this.chartType == 2){
