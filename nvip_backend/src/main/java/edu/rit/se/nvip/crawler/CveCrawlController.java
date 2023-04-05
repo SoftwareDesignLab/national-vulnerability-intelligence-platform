@@ -90,7 +90,7 @@ public class CveCrawlController {
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
-        config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers");
+        config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler1");
         config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
 
         config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());

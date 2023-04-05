@@ -2,15 +2,6 @@ FROM maven:3.8-jdk-11-slim AS builder
 
 WORKDIR /home/app
 
-ADD sleepycat-5.0.84.jar .
-RUN mvn install:install-file \
-   -Dfile=sleepycat-5.0.84.jar \
-   -DgroupId=com.sleepycat \
-   -DartifactId=je \
-   -Dversion=5.0.84 \
-   -Dpackaging=jar \
-   -DgeneratePom=true
-
 ADD pom.xml .
 RUN mvn dependency:go-offline
 ADD src/main src/main
