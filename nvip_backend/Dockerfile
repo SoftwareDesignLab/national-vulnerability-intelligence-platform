@@ -23,6 +23,9 @@ FROM openjdk:11-jre-slim
 VOLUME /usr/local/lib/nvip_data
 ADD nvip_data /usr/local/lib/nvip_data
 
+VOLUME /usr/local/lib/output
+ADD output /usr/local/lib/output
+
 COPY --from=builder /home/app/target/nvip_lib /usr/local/lib/nvip_lib
 COPY --from=builder /home/app/target/nvip-1.0.jar /usr/local/lib/nvip-1.0.jar
 
