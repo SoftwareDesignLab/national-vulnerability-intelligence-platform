@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -118,6 +118,7 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 			counterOfProcessedCVEs++;
 
+			//TODO: Add this limit to props
 			if (counterOfProcessedCVEs > 1000)
 				break;
 
@@ -158,27 +159,12 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 
 						if (productIDs == null || productIDs.isEmpty()) {
 							numOfProductsNotMappedToCPE++;
-							long averageCPEtime = 0;
-							if (counterOfProcessedCPEs > 0) {
-								averageCPEtime = totalCPEtime / counterOfProcessedCPEs;
-							}
-							long averageNERtime = 0;
-							if (counterOfProcessedNERs > 0) {
-								averageNERtime = totalNERtime / counterOfProcessedNERs;
-							}
-							long averageCVEtime = 0;
-							if (counterOfProcessedCVEs > 0) {
-								averageCVEtime = totalCVEtime / counterOfProcessedCVEs;
-							}
-							logger.warn("CVEs processed: " + counterOfProcessedCVEs + " out of " + totalCVEtoProcess + "; Average NER time (ms): "
-									+ averageNERtime + "; Average CPE time (ms): " + Float.toString(averageCPEtime) + "; Average CVE time (ms): " + averageCVEtime
-									+ "; Current NER time (ms): " + nerTime + "; Not mapped to CPE: " + numOfProductsNotMappedToCPE + "; Mapped to CPE: "
-									+ numOfProductsMappedToCpe + "; The product name (" + productItem.toString()
-									+ ") predicted by AI/ML model could not be found in the CPE dictionary!\tCVE-ID: " + vulnerability.getCveId() + "\tDescription: " + vulnerability.getDescription());
+							logger.warn("The product name ({}) poundredicted by AI/ML model could not be f in the CPE dictionary!\tCVE-ID: {}", productItem.toString(), vulnerability.getCveId());
 							continue;
 						}
 						// if CPE identified, add it as affected release
 						for (String itemID : productIDs) {
+							logger.info("Found Affected Product for {}: {}", vulnerability.getCveId(), itemID);
 							vulnerability.getAffectedReleases().add(new AffectedRelease(0, vulnerability.getCveId(), itemID, null, CpeLookUp.getVersionFromCPEid(itemID)));
 							numOfProductsMappedToCpe++;
 						}
@@ -187,7 +173,6 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 					// set platform string
 					// TODO change this so it actually adds something to platform
 					vulnerability.setPlatform("");
-
 				}
 
 			} catch (Exception e) {
@@ -233,6 +218,7 @@ public class AffectedProductIdentifier extends Thread implements Runnable {
 			listAllAffectedReleases.addAll(vulnerability.getAffectedReleases());
 		}
 
+		logger.info("Inserting Affected Releases to DB!");
 		// delete existing affected release info in db ( for CVEs in the list)
 		databaseHelper.deleteAffectedReleases(listAllAffectedReleases);
 

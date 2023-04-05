@@ -15,7 +15,7 @@ RUN mvn package -Dmaven.test.skip=true
 FROM tomcat:9.0-alpine as deploy
 
 RUN rm -r /usr/local/tomcat/webapps/ROOT
-COPY --from=builder /home/app/target/nvip_ui-1.0.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=builder /home/app/target/nvip_ui-1.0.war /usr/local/tomcat/webapps/nvip_ui-1.0.war
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]

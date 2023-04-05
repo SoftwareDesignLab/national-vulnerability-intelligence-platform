@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -162,7 +162,8 @@ public class NERmodel {
 				logger.info("Timing for Sentence detector model loading: " + Long.toString(endTime - startTime) + "ms.");
 			}
 		} catch (Exception e) {
-			logger.error("Error initializing NERmodel {}", e.toString());
+			logger.error("ERROR: Error initializing NERmodel {}", e.toString());
+			e.printStackTrace();
 		}
 
 	}

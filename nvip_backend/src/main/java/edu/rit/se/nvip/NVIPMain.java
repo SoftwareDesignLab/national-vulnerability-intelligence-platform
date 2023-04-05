@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -32,6 +32,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import edu.rit.se.nvip.crawler.github.PyPAGithubScraper;
+import edu.rit.se.nvip.mitre.capec.Capec;
+import edu.rit.se.nvip.mitre.capec.CapecParser;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -274,6 +278,13 @@ public class NVIPMain {
 		GithubScraper githubScraper = new GithubScraper();
 		HashMap<String, CompositeVulnerability> cveHashMapGithub = githubScraper.scrapeGithub();
 
+		// scrape CVEs from PyPA advisory database GitHub Repo
+		PyPAGithubScraper pyPaScraper = new PyPAGithubScraper();
+		HashMap<String, CompositeVulnerability> cvePyPAGitHub = pyPaScraper.scrapePyPAGithub();
+
+		logger.info("Merging {} PyPA CVEs with {} found GitHub CVEs", cvePyPAGitHub.size(), cveHashMapGithub.size());
+		cveHashMapGithub.putAll(cvePyPAGitHub);
+
 		/**
 		 * Scrape CVE summary pages (frequently updated CVE providers)
 		 */
@@ -482,6 +493,11 @@ public class NVIPMain {
 	 * @return
 	 */
 	private List<CompositeVulnerability> characterizeCVEs(List<CompositeVulnerability> crawledVulnerabilityList, HashMap<String, List<Object>> cveListMap) {
+		// Parse CAPECs page to link CVEs to a given Attack Pattern in characterizer
+		// CapecParser capecParser = new CapecParser();
+		// ArrayList<Capec> capecs = capecParser.parseWebPage(crawler);
+
+		// characterize
 		logger.info("Characterizing and scoring NEW CVEs...");
 
 		String[] trainingDataInfo = properties.getCveCharacterizationTrainingDataInfo();
@@ -502,6 +518,7 @@ public class NVIPMain {
 	 */
 	private DailyRun insertStats(DatabaseHelper databaseHelper, List<CompositeVulnerability> crawledVulnerabilityList, int totNotInNvd, int totNotInMitre, int totNotInBoth) {
 		// insert a record to keep track of daily run history
+		logger.info("Preparing Daily Run Stats...");
 		DailyRun dailyRunStats = new DailyRun();
 		try {
 			dailyRunStats.setRunDateTime(UtilHelper.longDateFormat.format(new Date()));
@@ -524,7 +541,7 @@ public class NVIPMain {
 			int runId = databaseHelper.insertDailyRun(dailyRunStats);
 			dailyRunStats.setRunId(runId);
 		} catch (Exception e1) {
-			logger.error("Error while recording stats! Could not get a run ID! - {}", e1.toString());
+			logger.error("ERROR: Error while recording stats! Could not get a run ID! - {}", e1.toString());
 			System.exit(1);
 		}
 		return dailyRunStats;

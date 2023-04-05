@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -87,6 +87,53 @@ public class CveParserFactory {
 			return new BoschSecurityParser("bosch");
 		else if (sPageUrl.contains("cloud.google") && sPageUrl.contains("bulletins"))
 			return new GoogleCloudParser("google");
+		else if (sPageUrl.contains("atlassian"))
+			return new AtlassianParser("atlassian");
+		else if (sPageUrl.contains("mend.io"))
+			return new MendParser("mend.io");
+		else if (sPageUrl.contains("autodesk"))
+			return new AutodeskParser("autodesk");
+		else if (sPageUrl.contains("jenkins.io"))
+			return new JenkinsParser("jenkins.io");
+		else if (sPageUrl.contains("coresecurity"))
+			return new CoreParser("coresecurity");
+		else if (sPageUrl.contains("mozilla"))
+			return new MozillaParser("mozilla");
+		else if (sPageUrl.contains("intel"))
+			return new IntelParser("intel");
+		else if (sPageUrl.contains("msrc"))
+			return new MicrosoftParser("msrc");
+		else if (sPageUrl.contains("trustwave"))
+			return new TrustWaveParser("trustwave");
+		else if (sPageUrl.contains("zerodayinitiative"))
+			return new TrendMicroParser("zerodayinitiative");
+		else if (sPageUrl.contains("tibco"))
+			return new TibcoParser("tibco");
+		else if (sPageUrl.contains("android"))
+			return new AndroidParser("android");
+		else if (sPageUrl.contains("huntr"))
+			return new HuntrParser("huntr");
+		else if (sPageUrl.contains("jvn"))
+			return new JVNParser("jvn");
+		else if (sPageUrl.contains("github.com/advisories"))
+			return new GitHubAdvisoryParser("github.com/advisories");
+		else if (sPageUrl.contains("curl"))
+			return new CurlParser("curl");
+		else if (sPageUrl.contains("snyk.io"))
+			return new SnykParser("snyk.io");
+		else if (sPageUrl.contains("acronis"))
+			return new AcronisParser("acronis");
+		else if (sPageUrl.contains("veritas"))
+			return new VeritasParser("veritas");
+		else if (sPageUrl.contains("adobe"))
+			return new AdobeParser("adobe");
+		else if (sPageUrl.contains("aliasrobotics"))
+			return new AliasRoboParser("aliasrobotics");
+		else if (sPageUrl.contains("amperecomputing.com/products/product-security"))
+			return new AmpereRootParser("amperecomputing.com/products/product-security");
+		else if (sPageUrl.contains("arubanetworks"))
+			return new ArubaParser("arubanetworks");
+
 
 		// sources that you want to ignore
 		// we ignore mitre/nvd because we pull their up to date CVEs from Github

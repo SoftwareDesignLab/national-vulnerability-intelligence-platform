@@ -1,3 +1,27 @@
+
+/**
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
+ * government support under contract 70RSAT19CB0000020 awarded by the United
+ * States Department of Homeland Security.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package edu.rit.se.nvip.crawler;
 
 import java.io.File;
@@ -66,32 +90,32 @@ public class CveCrawlController {
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
-        config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler1");
-        config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
+        config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers");
+        //config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
 
         config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
-        config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
+        //config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
 
         config1.setMaxPagesToFetch(properties.getMaxNumberOfPages());
-        config2.setMaxPagesToFetch(properties.getMaxNumberOfPages());
+        //config2.setMaxPagesToFetch(properties.getMaxNumberOfPages());
 
         config1.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
-        config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
+        //config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
 
         BasicURLNormalizer normalizer1 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
-        BasicURLNormalizer normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
+        // normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
         PageFetcher pageFetcher1 = new PageFetcher(config1, normalizer1);
-        PageFetcher pageFetcher2 = new PageFetcher(config2, normalizer2);
+        //PageFetcher pageFetcher2 = new PageFetcher(config2, normalizer2);
 
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 
         FrontierConfiguration frontierConfiguration = new SleepycatFrontierConfiguration(config1);
-        FrontierConfiguration frontierConfiguration2 = new SleepycatFrontierConfiguration(config2);
+        // frontierConfiguration2 = new SleepycatFrontierConfiguration(config2);
 
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher1, new SleepycatWebURLFactory());
 
         CrawlController controller1 = new CrawlController(config1, normalizer1, pageFetcher1, robotstxtServer, frontierConfiguration);
-        CrawlController controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
+        // controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
 
         for (String url: urls) {
             try {
@@ -110,16 +134,16 @@ public class CveCrawlController {
 
         String finalOutputFile = outputFile;
         CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList, finalOutputFile);
-        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList, finalOutputFile);
+        //CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList, finalOutputFile);
 
         controller1.startNonBlocking(factory1, properties.getNumberOfCrawlerThreads());
-        controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());
+        //controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());
 
         controller1.waitUntilFinish();
         logger.info("Crawler 1 is finished.");
 
-        controller2.waitUntilFinish();
-        logger.info("Crawler 2 is finished.");
+        //controller2.waitUntilFinish();
+        //logger.info("Crawler 2 is finished.");
 
         cveHashMapAll.putAll(getVulnerabilitiesFromCrawlerThreads(controller1));
 

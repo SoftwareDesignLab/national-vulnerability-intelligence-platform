@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -40,6 +40,7 @@ public class CveReconciler {
 
 	public boolean isCveIdCorrect(String cveId) {
 		// CVE-XXXX-YYYY
+		//logger.info("Verifying ID for {}", cveId);
 		String[] arr = cveId.split("-");
 		boolean lengthOk = arr[1].length() >= 4 && arr[2].length() >= 4;
 		boolean rangeOk = false;
@@ -48,8 +49,13 @@ public class CveReconciler {
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 			if (year >= 1999 && year <= (currentYear + 1))
 				rangeOk = true;
+			if (lengthOk && rangeOk) {
+				logger.info("PASS: CVE with ID {} is correct!", cveId);
+			} else {
+				logger.info("FAIL: CVE with ID {} is incorrect!", cveId);
+			}
 		} catch (NumberFormatException e) {
-			logger.error("Error!" + e);
+			logger.error("ERROR: Failure in trying to verify CVE ID for CVE {}\n{}", cveId, e.toString());
 		}
 
 		return lengthOk && rangeOk;

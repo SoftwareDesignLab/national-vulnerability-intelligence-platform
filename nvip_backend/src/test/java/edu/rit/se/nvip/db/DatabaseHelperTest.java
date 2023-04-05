@@ -1,3 +1,26 @@
+/**
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
+ * government support under contract 70RSAT19CB0000020 awarded by the United
+ * States Department of Homeland Security.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package edu.rit.se.nvip.db;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -15,10 +38,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -158,6 +185,33 @@ public class DatabaseHelperTest {
 			when(hds.getConnection()).thenReturn(null);
 			assertFalse(this.dbh.testDbConnection());
 		} catch (SQLException ignored) {}
+	}
+
+	@Test
+	public void testDateFormatting() {
+		String testDate1 = "06/09/2020";
+		String testDate2 = "June 1, 2020";
+		String testDate3 = "August 10, 2020";
+		String testDate4 = "2022-11-08T17:02:51.666229Z";
+		String testDate5 = "2020-05-23 01:04:05";
+		String testDate6 = "";
+		String testDate7 = "2023/03/29 18:34:30";
+
+		String formatDate1 = this.dbh.formatDate(testDate1);
+		String formatDate2 = this.dbh.formatDate(testDate2);
+		String formatDate3 = this.dbh.formatDate(testDate3);
+		String formatDate4 = this.dbh.formatDate(testDate4);
+		String formatDate5 = this.dbh.formatDate(testDate5);
+		String formatDate6 = this.dbh.formatDate(testDate6);
+		String formatDate7 = this.dbh.formatDate(testDate7);
+
+		assertEquals(formatDate1, "2020-06-09 00:00:00");
+		assertEquals(formatDate2, "2020-06-01 00:00:00");
+		assertEquals(formatDate3, "2020-08-10 00:00:00");
+		assertEquals(formatDate4, "2022-11-08 17:02:51");
+		assertEquals(formatDate5, "2020-05-23 01:04:05");
+		assertEquals(formatDate6, "");
+		assertEquals(formatDate7, "2023-03-29 18:34:30");
 	}
 
 	@Test
@@ -415,11 +469,15 @@ public class DatabaseHelperTest {
 
 			DatabaseHelper spyDB = spy(dbh);
 			vuln.setCveReconcileStatus(CveReconcileStatus.UPDATE);
+
 			assertEquals(1, spyDB.updateVulnerability(vuln, conn, existing, 1111));
+
 			verify(pstmt, atLeast(7)).setString(anyInt(), anyString());
 			ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 			verify(pstmt, atLeastOnce()).setString(anyInt(), captor.capture());
+
 			assertTrue(captor.getAllValues().contains(id));
+
 			verify(spyDB).deleteVulnSource(id, conn);
 			verify(spyDB).insertVulnSource(vuln.getVulnSourceList(), conn);
 			verify(spyDB).deleteCvssScore(id, conn);
@@ -885,16 +943,18 @@ public class DatabaseHelperTest {
 		setResStrings("email", 5);
 		setResStrings("first_name", 5);
 		setResInts("role_id", 5);
-		ArrayList<String> emails = dbh.getEmailsRoleId();
-		String joiner = ";!;~;#&%:;!";
+		ArrayList<ArrayList<String>> emails = dbh.getEmailsRoleId();
 		assertEquals(5, emails.size());
-		assertEquals(String.join(joiner, "email0", "first_name0", "0"), emails.get(0));
-		assertEquals(String.join(joiner, "email4", "first_name4", "5348"), emails.get(4));
+		assertEquals("email0", emails.get(0).get(0));
+		assertEquals("email4", emails.get(4).get(0));
+		assertEquals("first_name0", emails.get(0).get(1));
+		assertEquals("first_name4", emails.get(4).get(1));
+		assertEquals("0", emails.get(0).get(2));
+		assertEquals("5348", emails.get(4).get(2));
 	}
 
 	@Test
 	public void getEmailRoleIdByUserTest() {
-		String joiner = ";!;~;#&%:;!";
 		String username = "uname";
 		setResNextCount(1);
 		setResStrings("email", 1);
@@ -903,8 +963,11 @@ public class DatabaseHelperTest {
 		ArrayList<String> out = dbh.getEmailRoleIdByUser(username);
 		try {
 			verify(pstmt).setString(1, username);
-			assertEquals(1, out.size());
-			assertEquals(String.join(joiner, "email0", "first_name0", "0"), out.get(0));
+			assertEquals(3, out.size());
+			assertEquals("email0", out.get(0));
+			assertEquals("first_name0", out.get(1));
+			assertEquals("0", out.get(2));
+
 		} catch (SQLException ignored) {}
 	}
 

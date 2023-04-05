@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -77,6 +77,8 @@ public class MitreCveController {
 		try {
 			pullDir = f.exists() && (f.list().length > 1); // dir exists and there are some files in it!
 		} catch (Exception e) {
+			logger.error("ERROR: Directory {} does not exist", localPath);
+			e.printStackTrace();
 		}
 
 		if (pullDir) {

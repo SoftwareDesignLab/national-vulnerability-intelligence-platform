@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -53,20 +53,17 @@ public class RedHatParser extends AbstractCveParser  {
         String pattern = "yyyy/MM/dd";
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 
-        try {
-            Document doc = Jsoup.parse(sCVEContentHTML);
+        Document doc = Jsoup.parse(sCVEContentHTML);
 
-            String cve = doc.select("h1.headline").text();
-            String description = doc.select("#cve-details-description > div > div > pfe-markdown > p").text();
+        String cve = doc.select("h1.headline").text();
+        String description = doc.select("#cve-details-description > div > div > pfe-markdown > p").text();
 
-            String publishedDate = doc.select("p.cve-public-date > pfe-datetime > span").text().trim();
+        String publishedDate = doc.select("p.cve-public-date > pfe-datetime > span").text().trim();
 
-            String lastModifiedDate = doc.select("p.cve-last-modified > pfe-datetime > span").text().split("at")[0].trim();
+        String lastModifiedDate = doc.select("p.cve-last-modified > pfe-datetime > span").text().split("at")[0].trim();
 
-            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
+
         return vulnerabilities;
 	}
 

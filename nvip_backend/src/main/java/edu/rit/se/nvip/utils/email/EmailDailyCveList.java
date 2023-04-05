@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  *
@@ -64,19 +64,18 @@ public class EmailDailyCveList {
 	 */
 	public boolean sendCveNotificationEmailToSystemAdmin() {
 		try {
-			ArrayList<String> data = db.getEmailsRoleId();
+			ArrayList<ArrayList<String>> data = db.getEmailsRoleId();
 			HashMap<String, String> newCves = db.getCVEByRunDate(new Date(System.currentTimeMillis()));
 			if (newCves.size() > 0) {
-				for (String info : data) {
-					String[] userData = info.split(";!;~;#&%:;!");
-					if (Integer.parseInt(userData[2]) == 1) {
-						sendEmailV2(userData[0], newCves);
+				for (ArrayList<String> info : data) {
+					if (Integer.parseInt(info.get(2)) == 1) {
+						sendEmail(info.get(0), newCves);
 					}
 				}
 			}
 			return true;
-		} catch (NumberFormatException e) {
-			logger.error("Error sending email {}", e);
+		} catch (Exception e) {
+			logger.error("ERROR: Failed to prepare and send email notification\n{}", e.toString());
 		}
 		return false;
 
@@ -92,11 +91,11 @@ public class EmailDailyCveList {
 		ArrayList<String> userInfo = db.getEmailRoleIdByUser(username);
 
 		if (!userInfo.isEmpty()) {
-			String[] userData = userInfo.get(0).split(";!;~;#&%:;!");
-			if (newCves.size() > 0 && Integer.parseInt(userData[2]) == 1) {
-				sendEmailV2(userData[0], newCves);
+			if (newCves.size() > 0 && Integer.parseInt(userInfo.get(2)) == 1) {
+				sendEmail(userInfo.get(0), newCves);
 			}
 		}
+
 	}
 
 	/**
@@ -105,11 +104,13 @@ public class EmailDailyCveList {
 	 * @param toEmail
 	 * @param newCves
 	 */
-	private void sendEmailV2(String toEmail, HashMap<String, String> newCves) {
+	private void sendEmail(String toEmail, HashMap<String, String> newCves) {
 		try {
 			logger.info("Sending notification to " + toEmail);
 
-			HashMap<String, String> paramsFromConfigFile = getPropValues();
+			HashMap<String, String> emailParams = getPropValues();
+			String location = emailParams.get("email_url");
+
 			MimeMultipart content = new MimeMultipart("related");
 
 			// Collect HTML Template
@@ -123,15 +124,12 @@ public class EmailDailyCveList {
 			}
 			Document doc = Jsoup.parse(sFileContent);
 			int i = 0;
-			String location = paramsFromConfigFile.get("location");
 
 			// Apply HTML for every CVE
 			for (String cveId : newCves.keySet()) {
-
 				if (i >= 20) {
 					break;
 				}
-
 				Element cveList = doc.select(".cve_list").first();
 				cveList.append("<h3 class=\"cve_id\">" + cveId + "</h3>" + "   <p class=\"cve_description\">" + newCves.get(cveId) + "</p>" + "   <span><table><tr><td class=\"btn btn-primary\">"
 						+ "       <div class=\"review_button\">" + "           <a style=\"color: #fff; text-decoration: none\" href=\"" + location + "#/review?cveid=" + cveId
@@ -145,19 +143,22 @@ public class EmailDailyCveList {
 			MimeBodyPart body = new MimeBodyPart();
 			body.setContent(doc.toString(), "text/html; charset=ISO-8859-1");
 			content.addBodyPart(body);
-			
-			sendFromGMail(paramsFromConfigFile.get("email"), paramsFromConfigFile.get("password"), new String[] { toEmail }, "Daily CVE Notification", doc.toString(), true);
-			logger.info("Message sent to successfully!", toEmail);
+
+			sendFromEmailGeneric(toEmail, "Daily CVE Notification", doc.toString(), true);
+			//sendFromGMail(paramsFromConfigFile.get("email_address"), paramsFromConfigFile.get("email_password"), toEmail, "Daily CVE Notification", doc.toString(), true);
+			//logger.info("Message sent to successfully!", toEmail);
 		} catch (AuthenticationFailedException e) {
-			logger.error("Username or Password for sending address is incorrect, please check your password in the config file! " + e.toString());
+			logger.error("ERROR: Username or Password for sending address is incorrect, please check your password in the config file!\n{} ", e.toString());
+			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error(e.toString());
+			logger.error("ERROR: Failed to send email\n{}", e.toString());
+			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * Send email via javax.mail.Transport
-	 * 
+	 *
 	 * @param from
 	 * @param pass
 	 * @param to
@@ -225,13 +226,62 @@ public class EmailDailyCveList {
 			// load nvip config file
 			MyProperties propertiesNvip = new MyProperties();
 			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-			props.put("email", propertiesNvip.getProperty("Email"));
-			props.put("password", propertiesNvip.getProperty("Password"));
-			props.put("location", propertiesNvip.getProperty("location"));
+			props.put("email_from", propertiesNvip.getProperty("email_from"));
+			props.put("email_user", propertiesNvip.getProperty("email_user"));
+			props.put("email_password", propertiesNvip.getProperty("email_password"));
+			props.put("email_port", propertiesNvip.getProperty("email_port"));
+			props.put("email_url", propertiesNvip.getProperty("email_url"));
+			props.put("email_host", propertiesNvip.getProperty("email_host"));
 		} catch (Exception e) {
-			logger.error(e.toString());
+			logger.error("ERROR: Failed to grab properties for NVIP Email\n{}", e.toString());
+			e.printStackTrace();
 		}
 
 		return props;
 	}
+
+
+	/**
+	 * Generic email function
+	 * Credentials are in props
+	 */
+	public void sendFromEmailGeneric(String to, String subject, String body, boolean asHtml) {
+		HashMap<String, String> vars = getPropValues();
+		String username = vars.get("email_user");
+		String password = vars.get("email_password");
+
+		Properties props = new Properties();
+		props.put("mail.transport.protocol", "smtp");
+		props.put("mail.smtp.port", vars.get("email_port"));
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", vars.get("email_host"));
+		Authenticator auth = new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		};
+		Session session = Session.getDefaultInstance(props, auth);
+
+		MimeMessage message = new MimeMessage(session);
+		try {
+			message.setFrom(new InternetAddress(vars.get("email_address")));
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			message.setSubject(subject);
+
+			if (asHtml)
+				message.setContent(body, "text/html; charset=utf-8");
+			else
+				message.setText(body);
+
+			Transport.send(message);
+			logger.info("Sent email to {}", to);
+		} catch (Exception e) {
+			logger.error("ERROR: Failed to prepare email for daily notifications\n{}", e.toString());
+			e.printStackTrace();
+		}
+
+	}
+
+
 }

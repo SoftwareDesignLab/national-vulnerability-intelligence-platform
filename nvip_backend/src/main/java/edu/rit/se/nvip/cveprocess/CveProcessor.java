@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Rochester Institute of Technology (RIT). Developed with
+ * Copyright 2023 Rochester Institute of Technology (RIT). Developed with
  * government support under contract 70RSAT19CB0000020 awarded by the United
  * States Department of Homeland Security.
  * 
@@ -88,21 +88,20 @@ public class CveProcessor {
 	 */
 	public HashMap<String, List<Object>> checkAgainstNvdMitre(HashMap<String, CompositeVulnerability> hashMapNvipCve) {
 		HashMap<String, List<Object>> newCVEMap = new HashMap<>();
-
+		logger.info("Comparing with NVD and MITRE");
 		// get list from hash map
 		List<Object> allCveData = new ArrayList<>();
 		List<Object> newCVEDataNotInMitre = new ArrayList<>();
 		List<Object> newCVEDataNotInNvd = new ArrayList<>();
 		List<Object> newCVEDataNotInNvdAndMitre = new ArrayList<>();
 		for (CompositeVulnerability vuln : hashMapNvipCve.values()) {
-
 			try {
-				// if somehow a wrong CVE id is found, ignore it
+				// If somehow a wrong CVE id is found, ignore it
 				if (!cveUtils.isCveIdCorrect(vuln.getCveId())) {
 					String note = "Wrong CVE ID! Check for typo? ";
 					vuln.setNvipNote(note);
-					logger.warn("The CVE ID {} found at {} does not appear to be valid!", vuln.getCveId(), Arrays.deepToString(vuln.getSourceURL().toArray()));
-					continue; // skip this CVE
+					logger.warn("WARNING: The CVE ID {} found at {} does not appear to be valid!", vuln.getCveId(), Arrays.deepToString(vuln.getSourceURL().toArray()));
+					continue;
 				}
 
 				/**
@@ -110,12 +109,11 @@ public class CveProcessor {
 				 * a description for it]
 				 */
 				if (!hashMapNvdCve.containsKey(vuln.getCveId()) || vuln.isFoundNewDescriptionForReservedCve()) {
+					//logger.info("CVE: {}, is NOT in NVD", vuln.getCveId());
 					vuln.setNvdSearchResult("NA");
-
 					int status = 0;
-					if (vuln.isFoundNewDescriptionForReservedCve())
-						status = -1;
-
+//					if (vuln.isFoundNewDescriptionForReservedCve())
+//						status = -1;
 					vuln.setNvdStatus(status);
 					newCVEDataNotInNvd.add(vuln);
 				}
@@ -125,25 +123,25 @@ public class CveProcessor {
 				 * found a description for it]
 				 */
 				if (!hashMapMitreCve.containsKey(vuln.getCveId()) || vuln.isFoundNewDescriptionForReservedCve()) {
+					//logger.info("CVE: {}, is NOT in MITRE", vuln.getCveId());
 					vuln.setNvdSearchResult("NA");
-
 					int status = 0;
-					if (vuln.isFoundNewDescriptionForReservedCve())
-						status = -1;
-
+//					if (vuln.isFoundNewDescriptionForReservedCve())
+//						status = -1;
 					vuln.setMitreStatus(status);
 					newCVEDataNotInMitre.add(vuln);
 				}
 
 				// not in both?
 				if (!vuln.doesExistInNvd() && !vuln.doesExistInMitre()) {
+					//logger.info("CVE: {}, is NOT in either", vuln.getCveId());
 					newCVEDataNotInNvdAndMitre.add(vuln);
 				}
 
 				// add to all CVEs list
 				allCveData.add(vuln);
 			} catch (Exception e) {
-				logger.error("Error while checking against NVD/MITRE, CVE: " + vuln.toString());
+				logger.error("ERROR: Error while checking against NVD/MITRE, CVE: {}", vuln.getCveId());
 			}
 		}
 
@@ -152,7 +150,7 @@ public class CveProcessor {
 		newCVEMap.put("nvd", newCVEDataNotInNvd); // CVEs not in Nvd
 		newCVEMap.put("nvd-mitre", newCVEDataNotInNvdAndMitre); // CVEs not in Nvd and Mitre
 
-		logger.info("Out of {} total valid CVEs crawled: {} do not appear in NVD, {} not in MITRE and {} not in Both!", allCveData.size(), newCVEDataNotInNvd.size(), newCVEDataNotInMitre.size(),
+		logger.info("Out of {} total valid CVEs crawled: \n{} do not appear in NVD, \n{} not in MITRE and \n{} not in either!", allCveData.size(), newCVEDataNotInNvd.size(), newCVEDataNotInMitre.size(),
 				newCVEDataNotInNvdAndMitre.size());
 
 		return newCVEMap;
