@@ -227,7 +227,7 @@ public class CveCharacterizer {
 							//logger.info("Added the following VDO Characteristic to {}:\n{}", vulnerability.getCveId(), vdoCharacteristic);
 						}
 					}
-					logger.info("Added VDO Characteristics for {}", vulnerability.getCveId());
+					//logger.info("Added VDO Characteristics for {}", vulnerability.getCveId());
 				}
 
 				// get severity

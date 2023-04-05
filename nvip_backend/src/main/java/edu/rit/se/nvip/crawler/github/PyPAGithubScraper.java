@@ -84,7 +84,7 @@ public class PyPAGithubScraper {
                     continue;
                 }
                 for (File file : files ) {
-                    logger.info("Parsing file: " + file.getName());
+                    //logger.info("Parsing file: " + file.getName());
                     PyPAYamlFile parsedFile = new PyPAYamlFile(file);
                     ArrayList<String> cvesInFile = parsedFile.getCves();
                     for (String c : cvesInFile) {

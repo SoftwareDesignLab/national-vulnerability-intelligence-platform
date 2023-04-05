@@ -91,31 +91,31 @@ public class CveCrawlController {
         CrawlConfig config2 = new CrawlConfig();
 
         config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers");
-        //config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
+        config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
 
         config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
-        //config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
+        config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
 
         config1.setMaxPagesToFetch(properties.getMaxNumberOfPages());
-        //config2.setMaxPagesToFetch(properties.getMaxNumberOfPages());
+        config2.setMaxPagesToFetch(properties.getMaxNumberOfPages());
 
-        config1.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
-        //config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
+        config1.setMaxDepthOfCrawling(2);
+        config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
 
         BasicURLNormalizer normalizer1 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
-        // normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
+        BasicURLNormalizer normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
         PageFetcher pageFetcher1 = new PageFetcher(config1, normalizer1);
-        //PageFetcher pageFetcher2 = new PageFetcher(config2, normalizer2);
+        PageFetcher pageFetcher2 = new PageFetcher(config2, normalizer2);
 
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 
         FrontierConfiguration frontierConfiguration = new SleepycatFrontierConfiguration(config1);
-        // frontierConfiguration2 = new SleepycatFrontierConfiguration(config2);
+        FrontierConfiguration frontierConfiguration2 = new SleepycatFrontierConfiguration(config2);
 
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher1, new SleepycatWebURLFactory());
 
         CrawlController controller1 = new CrawlController(config1, normalizer1, pageFetcher1, robotstxtServer, frontierConfiguration);
-        // controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
+        CrawlController controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
 
         for (String url: urls) {
             try {
@@ -132,18 +132,20 @@ public class CveCrawlController {
             outputFile = properties.getOutputDir() + "/crawlers/reports/report" + dtf.format(now) + ".txt";
         }
 
+        logger.info("CURRENT CRAWL DEPTH ----> " + config1.getMaxDepthOfCrawling());
+
         String finalOutputFile = outputFile;
         CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList, finalOutputFile);
-        //CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList, finalOutputFile);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList, finalOutputFile);
 
         controller1.startNonBlocking(factory1, properties.getNumberOfCrawlerThreads());
-        //controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());
+        controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());
 
         controller1.waitUntilFinish();
         logger.info("Crawler 1 is finished.");
 
-        //controller2.waitUntilFinish();
-        //logger.info("Crawler 2 is finished.");
+        controller2.waitUntilFinish();
+        logger.info("Crawler 2 is finished.");
 
         cveHashMapAll.putAll(getVulnerabilitiesFromCrawlerThreads(controller1));
 

@@ -108,13 +108,13 @@ public class NvdCveController {
 		for (int year = START_YEAR; year <= END_YEAR; year++) {
 
 			// pull and parse CVE feeds from NVD
-			logger.info("\tPulling CVEs for " + year + "...");
+			//logger.info("\tPulling CVEs for " + year + "...");
 
 			try {
 				// get all CVEs
 				ArrayList<JsonObject> jsonList = pullCVEs(year);
 				List<String[]> listCVEData = myCVEParser.parseCVEs(jsonList);
-				logger.info("\tDONE! Pulled " + listCVEData.size() + " CVEs");
+				//logger.info("\tDONE! Pulled " + listCVEData.size() + " CVEs");
 
 				if (extractNamedEntities) {
 					// annotate
@@ -171,8 +171,8 @@ public class NvdCveController {
 				}
 
 				count++;
-				if (count % 10000 == 0)
-					logger.info("Processed " + count + " URLs...");
+//				if (count % 10000 == 0)
+//					logger.info("Processed " + count + " URLs...");
 
 			}
 
@@ -227,14 +227,14 @@ public class NvdCveController {
 						sBuilder.append(buffer, 0, charsRead);
 					}
 
-					logger.info("\tExtracted " + zipEntry.getName() + " FROM " + sURL);
+					//logger.info("\tExtracted " + zipEntry.getName() + " FROM " + sURL);
 
 					// parse entry contents
-					logger.info("\tParsing " + zipEntry.getName());
+					//logger.info("\tParsing " + zipEntry.getName());
 					String sJsonContent = sBuilder.toString();
 					JsonObject json = JsonParser.parseString(sJsonContent).getAsJsonObject();
 					jsonList.add(json);
-					logger.info("\tDONE! Parsed " + zipEntry.getName());
+					//logger.info("\tDONE! Parsed " + zipEntry.getName());
 				}
 				zipEntry = zipInputStream.getNextEntry(); // next entry?
 			}
