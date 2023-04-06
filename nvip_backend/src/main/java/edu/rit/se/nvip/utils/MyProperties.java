@@ -41,11 +41,11 @@ public class MyProperties extends Properties {
 	private static final long serialVersionUID = 1L;
 
 	public File getSeedURLS() {
-		return new File(getProperty("dataDir") + "/" + getProperty("seedURLs"));
+		return new File(System.getenv("NVIP_DATA_DIR") + "/" + System.getenv("NVIP_SEED_URLS"));
 	}
 
 	public File getWhiteListURLS() {
-		return new File(getProperty("dataDir") + "/" + getProperty("whiteListDomains"));
+		return new File(System.getenv("NVIP_DATA_DIR") + "/" + System.getenv("NVIP_WHITELIST_URLS"));
 	}
 
 	public boolean refreshCVENVDList() { return Boolean.parseBoolean(getProperty("refreshCVENVDList")); }

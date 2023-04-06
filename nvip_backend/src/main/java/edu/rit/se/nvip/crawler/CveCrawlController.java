@@ -90,17 +90,17 @@ public class CveCrawlController {
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
-        config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler1");
-        config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
+        config1.setCrawlStorageFolder(System.getenv("NVIP_OUTPUT_DIR") + "/crawlers/crawler1");
+        config2.setCrawlStorageFolder(System.getenv("NVIP_OUTPUT_DIR") + "/crawlers/crawler2");
 
-        config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
-        config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
+        config1.setPolitenessDelay(Integer.parseInt(System.getenv("NVIP_CRAWLER_POLITENESS")));
+        config2.setPolitenessDelay(Integer.parseInt(System.getenv("NVIP_CRAWLER_POLITENESS")));
 
-        config1.setMaxPagesToFetch(properties.getMaxNumberOfPages());
-        config2.setMaxPagesToFetch(properties.getMaxNumberOfPages());
+        config1.setMaxPagesToFetch(Integer.parseInt(System.getenv("NVIP_CRAWLER_MAX_PAGES")));
+        config2.setMaxPagesToFetch(Integer.parseInt(System.getenv("NVIP_CRAWLER_MAX_PAGES")));
 
-        config1.setMaxDepthOfCrawling(2);
-        config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
+        config1.setMaxDepthOfCrawling(Integer.parseInt(System.getenv("NVIP_CRAWLER_DEPTH")));
+        config2.setMaxDepthOfCrawling(Integer.parseInt(System.getenv("NVIP_CRAWLER_DEPTH")));
 
         BasicURLNormalizer normalizer1 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
         BasicURLNormalizer normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
@@ -126,10 +126,10 @@ public class CveCrawlController {
         }
 
         String outputFile = "";
-        if (properties.getCrawlerReport()) {
+        if (Boolean.parseBoolean(System.getenv("NVIP_CRAWLER_REPORT_ENABLE"))) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
             LocalDateTime now = LocalDateTime.now();
-            outputFile = properties.getOutputDir() + "/crawlers/reports/report" + dtf.format(now) + ".txt";
+            outputFile = System.getenv("NVIP_OUTPUT_DIR") + "/crawlers/reports/report" + dtf.format(now) + ".txt";
         }
 
         logger.info("CURRENT CRAWL DEPTH ----> " + config1.getMaxDepthOfCrawling());
@@ -138,8 +138,8 @@ public class CveCrawlController {
         CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList, finalOutputFile);
         CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList, finalOutputFile);
 
-        controller1.startNonBlocking(factory1, properties.getNumberOfCrawlerThreads());
-        controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());
+        controller1.startNonBlocking(factory1, Integer.parseInt(System.getenv("NVIP_NUM_OF_CRAWLER")));
+        controller2.startNonBlocking(factory2, Integer.parseInt(System.getenv("NVIP_NUM_OF_CRAWLER")));
 
         controller1.waitUntilFinish();
         logger.info("Crawler 1 is finished.");
