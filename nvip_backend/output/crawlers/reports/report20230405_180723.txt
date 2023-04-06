@@ -1,0 +1,201 @@
+No CVEs found at https://www.boschsecurity.com/xc/en/support/product-security/security-advisories.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-sa-553243.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/!
+Crawler error when parsing https://curl.se/docs/security.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/security.html!
+Crawler error when parsing https://www.atlassian.com/trust/security/advisories --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.atlassian.com/trust/security/advisories!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0404.html!
+Crawler error when parsing https://curl.se/docs/sslcerts.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/sslcerts.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.58.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.58.0.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing!
+Crawler error when parsing https://confluence.atlassian.com/security/july-2022-atlassian-security-advisories-overview-1142446703.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/july-2022-atlassian-security-advisories-overview-1142446703.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.51.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.51.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.11.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.11.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.40.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.40.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.46.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.46.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.49.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.49.1.html!
+Crawler error when parsing https://www.jenkins.io/security/advisories/ --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.jenkins.io/security/advisories/!
+Crawler error when parsing https://confluence.atlassian.com/security/january-2023-security-advisories-overview-1207183418.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/january-2023-security-advisories-overview-1207183418.html!
+Crawler error when parsing https://curl.se/docs/vuln-6.0.html --> java.lang.NullPointerException
+Crawler error when parsing https://curl.se/docs/vulnerabilities.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-6.0.html!
+No CVEs found at https://curl.se/docs/vulnerabilities.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/1 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/1!
+Crawler error when parsing https://confluence.atlassian.com/security/november-2022-atlassian-security-advisories-overview-1167844594.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/november-2022-atlassian-security-advisories-overview-1167844594.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.42.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.42.0.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories!
+Crawler error when parsing https://curl.se/docs/manpage.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/manpage.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/2 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/2!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8624.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8624.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/3 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/3!
+Crawler error when parsing https://curl.se/docs/vuln-7.84.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.84.0.html!
+Crawler error when parsing https://www.intel.com/content/www/us/en/security-center/default.html --> java.lang.NullPointerException
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/default.html!
+Crawler error when parsing https://curl.se/docs/protdocs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/protdocs.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.7.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.7.html!
+Crawler error when parsing https://confluence.atlassian.com/security/august-2022-atlassian-security-advisories-overview-1155155092.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/august-2022-atlassian-security-advisories-overview-1155155092.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/4 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/4!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.6.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.6.html!
+Crawler error when parsing https://www.mozilla.org/en-US/security/advisories/ --> java.lang.NullPointerException
+No CVEs found at https://www.mozilla.org/en-US/security/advisories/!
+Crawler error when parsing https://curl.se/docs/vuln-7.82.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.82.0.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0403.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/5 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/5!
+Crawler error when parsing https://msrc.microsoft.com/update-guide/vulnerability --> java.lang.NullPointerException
+No CVEs found at https://msrc.microsoft.com/update-guide/vulnerability!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0402.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.14.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.14.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.39.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.39.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.80.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.80.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.16.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.16.0.html!
+Crawler error when parsing https://curl.se/docs/copyright.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/copyright.html!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/9 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/9!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/6 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/6!
+No CVEs found at https://www.trendmicro.com/vinfo/us/threat-encyclopedia/vulnerability!
+Crawler error when parsing https://curl.se/docs/bugbounty.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/bugbounty.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.73.0.html --> java.lang.NullPointerException
+Crawler error when parsing https://curl.se/docs/manual.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.73.0.html!
+No CVEs found at https://curl.se/docs/manual.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8622.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8622.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/8 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/8!
+Crawler error when parsing https://curl.se/docs/vuln-7.86.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.86.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.4.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-9594.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-9594.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/7 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/7!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/7 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/7!
+Crawler error when parsing https://source.android.com/docs/security/bulletin --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin!
+Crawler error when parsing https://curl.se/docs/vuln-7.7.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.7.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8615.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8615.html!
+Crawler error when parsing https://curl.se/docs/http2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/http2.html!
+Crawler error when parsing https://curl.se/docs/hsts.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/hsts.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/8 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/8!
+Crawler error when parsing https://curl.se/docs/vuln-7.35.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.35.0.html!
+Crawler error when parsing https://curl.se/docs/governance.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/governance.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/6 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/6!
+No CVEs found at https://huntr.dev/bounties/hacktivity/!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2019/10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2019/10!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2018-1202.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.70.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.70.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.27.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.27.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-4.9.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-4.9.html!
+Crawler error when parsing https://curl.se/docs/http3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/http3.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.24.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.24.0.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/5 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/5!
+Crawler error when parsing https://curl.se/docs/vuln-7.64.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.64.1.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2019/11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2019/11!
+No CVEs found at https://jvn.jp/!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/4 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/4!
+Crawler error when parsing https://curl.se/docs/ssl-compared.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/ssl-compared.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-sa-710832.html!
+Crawler error when parsing https://curl.se/docs/knownbugs.html --> java.lang.NullPointerException
+Crawler error when parsing https://curl.se/docs/vuln-7.21.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/knownbugs.html!
+No CVEs found at https://curl.se/docs/vuln-7.21.0.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2019/12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2019/12!
+Crawler error when parsing https://curl.se/docs/thanks.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/thanks.html!
+No CVEs found at https://github.com/advisories!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/3 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/3!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2003/9 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2003/9!
+Crawler error when parsing https://curl.se/docs/vuln-7.42.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.42.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.4.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.5.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.5.html!
+Crawler error when parsing https://curl.se/docs/reldocs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/reldocs.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/2 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/2!
+Crawler error when parsing https://curl.se/docs/vuln-7.37.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.37.1.html!
+Crawler error when parsing https://www.kb.cert.org/vuls/ --> java.lang.NullPointerException
+No CVEs found at https://www.kb.cert.org/vuls/!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2020/11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2020/11!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2014/9 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2014/9!
+Crawler error when parsing https://curl.se/docs/CVE-2017-7407.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2017-7407.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.83.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.83.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.30.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.30.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.49.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.49.0.html!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2020/12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2020/12!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2002/12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2002/12!
+Crawler error when parsing https://www.mend.io/vulnerability-database/full-listing/2020/10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.mend.io/vulnerability-database/full-listing/2020/10!
+Crawler error when parsing https://curl.se/docs/vuln-7.85.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.85.0.html!
