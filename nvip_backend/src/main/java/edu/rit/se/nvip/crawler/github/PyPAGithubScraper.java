@@ -136,6 +136,9 @@ public class PyPAGithubScraper {
                     logger.error("Could not clone git repo at: " + remotePath + " to: " + gitFolder);
 
             }
+        } catch(Exception e) {
+            logger.error("ERROR: Failed to clone or pull PythonPA Repo");
+            e.printStackTrace();
         }
     }
 

@@ -48,6 +48,14 @@ public class MyProperties extends Properties {
 		return new File(System.getenv("NVIP_DATA_DIR") + "/" + System.getenv("NVIP_WHITELIST_URLS"));
 	}
 
+	public File getSeedURLSprops() {
+		return new File(getProperty("dataDir") + "/" + getProperty("seedURLs"));
+	}
+
+	public File getWhiteListURLSprops() {
+		return new File(getProperty("dataDir") + "/" + getProperty("whiteListDomains"));
+	}
+
 	public boolean refreshCVENVDList() { return Boolean.parseBoolean(getProperty("refreshCVENVDList")); }
 
 	public int getNumberOfCrawlerThreads() {

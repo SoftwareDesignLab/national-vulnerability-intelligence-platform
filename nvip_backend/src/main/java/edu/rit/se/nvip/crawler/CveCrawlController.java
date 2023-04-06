@@ -58,20 +58,20 @@ public class CveCrawlController {
         ArrayList<String> urls = new ArrayList<>();
         ArrayList<String> whiteList = new ArrayList<>();
 
-        File seedURLs = properties.getSeedURLS();
+        File seedURLs = properties.getSeedURLSprops();
         Scanner reader = new Scanner(seedURLs);
         while (reader.hasNextLine()) {
             urls.add(reader.nextLine());
         }
 
-        File whiteListFile = properties.getWhiteListURLS();
+        File whiteListFile = properties.getWhiteListURLSprops();
         reader = new Scanner(whiteListFile);
         while (reader.hasNextLine()) {
             whiteList.add(reader.nextLine());
         }
 
         long crawlStartTime = System.currentTimeMillis();
-        HashMap<String, ArrayList<CompositeVulnerability>> data = new CveCrawlController().crawl(urls, whiteList);
+        HashMap<String, ArrayList<CompositeVulnerability>> data = new CveCrawlController().crawlwProps(urls, whiteList);
         long crawlEndTime = System.currentTimeMillis();
         logger.info("Crawler Finished\nTime: {}", crawlEndTime - crawlStartTime);
 
@@ -89,6 +89,14 @@ public class CveCrawlController {
 
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
+
+        logger.info("ENVVARS\n{}\n{}\n{}\n{}\n{}\n{}",
+                System.getenv("NVIP_OUTPUT_DIR"),
+                System.getenv("NVIP_CRAWLER_POLITENESS"),
+                System.getenv("NVIP_CRAWLER_MAX_PAGES"),
+                System.getenv("NVIP_CRAWLER_DEPTH"),
+                System.getenv("NVIP_CRAWLER_REPORT_ENABLE"),
+                System.getenv("NVIP_NUM_OF_CRAWLER"));
 
         config1.setCrawlStorageFolder(System.getenv("NVIP_OUTPUT_DIR") + "/crawlers/crawler1");
         config2.setCrawlStorageFolder(System.getenv("NVIP_OUTPUT_DIR") + "/crawlers/crawler2");
@@ -121,7 +129,7 @@ public class CveCrawlController {
             try {
                 controller1.addSeed(url);
             } catch (Exception e) {
-                logger.info("Error trying to add {} as a seed URL", url);
+                logger.warn("WARNING: Error trying to add {} as a seed URL", url);
             }
         }
 
@@ -140,6 +148,74 @@ public class CveCrawlController {
 
         controller1.startNonBlocking(factory1, Integer.parseInt(System.getenv("NVIP_NUM_OF_CRAWLER")));
         controller2.startNonBlocking(factory2, Integer.parseInt(System.getenv("NVIP_NUM_OF_CRAWLER")));
+
+        controller1.waitUntilFinish();
+        logger.info("Crawler 1 is finished.");
+
+        controller2.waitUntilFinish();
+        logger.info("Crawler 2 is finished.");
+
+        cveHashMapAll.putAll(getVulnerabilitiesFromCrawlerThreads(controller1));
+        cveHashMapAll.putAll(getVulnerabilitiesFromCrawlerThreads(controller2));
+
+        return cveHashMapAll;
+    }
+
+    public HashMap<String, ArrayList<CompositeVulnerability>> crawlwProps(List<String> urls, List<String> whiteList) throws Exception {
+
+        CrawlConfig config1 = new CrawlConfig();
+        CrawlConfig config2 = new CrawlConfig();
+
+        config1.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler1");
+        config2.setCrawlStorageFolder(properties.getOutputDir() + "/crawlers/crawler2");
+
+        config1.setPolitenessDelay(properties.getDefaultCrawlerPoliteness());
+        config2.setPolitenessDelay(properties.getDelayedCrawlerPoliteness());
+
+        config1.setMaxPagesToFetch(properties.getMaxNumberOfPages());
+        config2.setMaxPagesToFetch(properties.getMaxNumberOfPages());
+
+        config1.setMaxDepthOfCrawling(2);
+        config2.setMaxDepthOfCrawling(properties.getCrawlSearchDepth());
+
+        BasicURLNormalizer normalizer1 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
+        BasicURLNormalizer normalizer2 = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
+        PageFetcher pageFetcher1 = new PageFetcher(config1, normalizer1);
+        PageFetcher pageFetcher2 = new PageFetcher(config2, normalizer2);
+
+        RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+
+        FrontierConfiguration frontierConfiguration = new SleepycatFrontierConfiguration(config1);
+        FrontierConfiguration frontierConfiguration2 = new SleepycatFrontierConfiguration(config2);
+
+        RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher1, new SleepycatWebURLFactory());
+
+        CrawlController controller1 = new CrawlController(config1, normalizer1, pageFetcher1, robotstxtServer, frontierConfiguration);
+        CrawlController controller2 = new CrawlController(config2, normalizer2, pageFetcher2, robotstxtServer, frontierConfiguration2);
+
+        for (String url: urls) {
+            try {
+                controller1.addSeed(url);
+            } catch (Exception e) {
+                logger.info("Error trying to add {} as a seed URL", url);
+            }
+        }
+
+        String outputFile = "";
+        if (properties.getCrawlerReport()) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            LocalDateTime now = LocalDateTime.now();
+            outputFile = properties.getOutputDir() + "/crawlers/reports/report" + dtf.format(now) + ".txt";
+        }
+
+        logger.info("CURRENT CRAWL DEPTH ----> " + config1.getMaxDepthOfCrawling());
+
+        String finalOutputFile = outputFile;
+        CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList, finalOutputFile);
+        CrawlController.WebCrawlerFactory<CveCrawler> factory2 = () -> new CveCrawler(whiteList, finalOutputFile);
+
+        controller1.startNonBlocking(factory1, properties.getNumberOfCrawlerThreads());
+        controller2.startNonBlocking(factory2, properties.getNumberOfCrawlerThreads());
 
         controller1.waitUntilFinish();
         logger.info("Crawler 1 is finished.");

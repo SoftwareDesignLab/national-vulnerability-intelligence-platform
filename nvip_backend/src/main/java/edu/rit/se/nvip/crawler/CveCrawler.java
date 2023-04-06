@@ -114,15 +114,15 @@ public class CveCrawler extends WebCrawler {
 			try {
 				vulnerabilityList = parseWebPage(pageURL, html);
 			} catch (Exception e) {
-				logger.info("Crawler error when parsing {} --> {}", page.getWebURL(), e.toString());
+				logger.warn("WARNING: Crawler error when parsing {} --> {}", page.getWebURL(), e.toString());
 				updateCrawlerReport("Crawler error when parsing " +  page.getWebURL() +" --> " + e);
 			}
 
 			if (vulnerabilityList.isEmpty()) {
-				nvip_logger.warn("No CVEs found at {}!", pageURL);
+				nvip_logger.warn("WARNING: No CVEs found at {}!", pageURL);
 				updateCrawlerReport("No CVEs found at " + pageURL + "!");
 			} else {
-				for (CompositeVulnerability vulnerability : vulnerabilityList) {// reconcile extracted CVEs
+				for (CompositeVulnerability vulnerability : vulnerabilityList) {
 					if (foundCVEs.get(vulnerability.getCveId()) != null) {
 						foundCVEs.get(vulnerability.getCveId()).add(vulnerability);
 					} else {
