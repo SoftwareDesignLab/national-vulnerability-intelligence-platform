@@ -27,17 +27,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import edu.rit.se.nvip.crawler.github.PyPAGithubScraper;
-import edu.rit.se.nvip.mitre.capec.Capec;
-import edu.rit.se.nvip.mitre.capec.CapecParser;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,7 +60,6 @@ import edu.rit.se.nvip.utils.MyProperties;
 import edu.rit.se.nvip.utils.NlpUtil;
 import edu.rit.se.nvip.utils.PropertyLoader;
 import edu.rit.se.nvip.utils.UtilHelper;
-import org.python.antlr.ast.Str;
 
 /**
  * 
@@ -306,7 +301,15 @@ public class NVIPMain {
 				urls.size(), properties.getNumberOfCrawlerThreads());
 		CveCrawlController crawlerController = new CveCrawlController();
 
-		HashMap<String, ArrayList<CompositeVulnerability>> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls, new ArrayList<>());
+		ArrayList<String> whiteList = new ArrayList<>();
+
+		File whiteListFile = properties.getWhiteListURLS();
+		Scanner reader = new Scanner(whiteListFile);
+		while (reader.hasNextLine()) {
+			whiteList.add(reader.nextLine());
+		}
+
+		HashMap<String, ArrayList<CompositeVulnerability>> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls, whiteList);
 
 		return mergeCVEsDerivedFromCNAsAndGit(cveHashMapGithub, list, cveHashMapScrapedFromCNAs);
 	}
