@@ -70,12 +70,8 @@ public class QuickCveCrawler {
 
 	public List<CompositeVulnerability> getCVEsfromKnownSummaryPages() {
 
-		MyProperties propertiesNvip = new MyProperties();
 		List<CompositeVulnerability> list = new ArrayList<>();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-		/*CveCrawler crawler = new CveCrawler(propertiesNvip);
-
-
+		CveCrawler crawler = new CveCrawler(new ArrayList<>(), "");
 
 		// Seclists
 		getSeclistsCveUpdates(crawler, list);
@@ -87,7 +83,7 @@ public class QuickCveCrawler {
 		getPacketStrormCveUpdates(crawler, list);
 
 		// Tenable
-		getTenableCveUpdates(crawler, list);*/
+		getTenableCveUpdates(crawler, list);
 
 		return list;
 	}

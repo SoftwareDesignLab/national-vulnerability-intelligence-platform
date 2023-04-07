@@ -18,14 +18,11 @@ public class CveCrawlControllerTest {
 
     @Test
     public void CveCrawlControllerTest() throws Exception {
-        MyProperties properties = new MyProperties();
-        properties = new PropertyLoader().loadConfigFile(properties);
-
         List<String> urls = new ArrayList<>();
-        urls.add("https://access.redhat.com/security/cve/cve-2021-44228");
+        urls.add("https://www.jenkins.io/security/advisory/2023-03-21/");
 
         CveCrawlController controller = new CveCrawlController();
-        HashMap<String, ArrayList<CompositeVulnerability>> map = controller.crawl(urls, new ArrayList<>());
+        HashMap<String, ArrayList<CompositeVulnerability>> map = controller.crawlwProps(urls, new ArrayList<>());
 
         System.out.println(map);
 

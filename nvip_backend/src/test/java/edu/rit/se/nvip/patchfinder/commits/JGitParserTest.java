@@ -91,7 +91,7 @@ public class JGitParserTest {
         String testSourceURl = "https://github.com/plotly/dash-core-components.git";
         try (MockedStatic<Git> git = Mockito.mockStatic(Git.class)) {
             git.when(Git::cloneRepository).thenReturn(cc);
-            JGitParser jGit = new JGitParser(testSourceURl, "src/test/resources/test-jgitparser/");
+            JGitParser jGit = new JGitParser(testSourceURl, "src/test/resources/test-jgitparser");
             jGit.cloneRepository();
             Map<Date, ArrayList<String>> commits = jGit.parseCommits(testCveId);
             assertEquals(2, commits.size());

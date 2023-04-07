@@ -1097,9 +1097,10 @@ public class DatabaseHelper {
 			pstmt.setInt(7, timeGapRecorded);
 			pstmt.setInt(8, timeGap);
 			try {
-				pstmt.setTimestamp(9, new java.sql.Timestamp(new Date(formatDate(vuln.getLastModifiedDate())).getTime()));
+				pstmt.setTimestamp(9, new java.sql.Timestamp(longDateFormatMySQL.parse(formatDate(vuln.getLastModifiedDate())).getTime()));
 			} catch (Exception e) {
-				pstmt.setTimestamp(9, new java.sql.Timestamp(new Date(formatDate(vuln.getLastModifiedDate())).getTime()));
+				logger.warn("WARNING: Failed to parse last modified date: {}", vuln.getLastModifiedDate());
+				pstmt.setTimestamp(9, new java.sql.Timestamp(longDateFormatMySQL.parse(formatDate(vuln.getPublishDate())).getTime()));
 			}
 			pstmt.setTimestamp(10,
 					new java.sql.Timestamp(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
@@ -1107,6 +1108,7 @@ public class DatabaseHelper {
 			logger.info("Recorded CVE status change for CVE {}", vuln.getCveId());
 		} catch (Exception e) {
 			logger.error("Error recording CVE status change for {}: {}", vuln.getCveId(), e);
+			e.printStackTrace();
 			return false;
 		}
 

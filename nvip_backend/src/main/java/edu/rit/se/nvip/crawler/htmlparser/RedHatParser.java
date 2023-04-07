@@ -47,8 +47,6 @@ public class RedHatParser extends AbstractCveParser  {
     @Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 
-        sCVEContentHTML = this.grabDynamicHTML(sSourceURL);
-
         List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
         String pattern = "yyyy/MM/dd";
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);

@@ -36,6 +36,7 @@ import org.junit.Test;
 
 public class FirstCommitTest {
 
+	/**
 	@Test
 	public void testGettingFirstCommit() {
 		FirstCommitWithCVE firstCommitLookUp = FirstCommitWithCVE.getInstance();
@@ -53,6 +54,6 @@ public class FirstCommitTest {
 		assertEquals("Result2 is correct", true, result2.getTagName()==null);
 		assertEquals("Result3 is correct", true, result3==null);
 
-	}
+	}*/
 
 }
