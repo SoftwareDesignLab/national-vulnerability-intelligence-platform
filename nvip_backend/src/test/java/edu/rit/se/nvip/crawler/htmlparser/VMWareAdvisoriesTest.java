@@ -45,7 +45,7 @@ import static org.junit.Assert.assertEquals;
  * then redirects to MITRE), we may want to ignore those cases for now. Just test on the recent web page layout
  *
  */
-public class VMWareAdvisoriesTest {
+public class VMWareAdvisoriesTest extends AbstractParserTest {
 
 	/**
 	 * Test Parser for page that has 1 CVE
@@ -53,10 +53,8 @@ public class VMWareAdvisoriesTest {
 	 */
 	@Test
 	public void testVMWareAdvisoriesSingleCVE() throws IOException {
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-		CveCrawler crawler = new CveCrawler(propertiesNvip);
+		CveCrawler crawler = getCrawler();
 		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware-advisories-single-cve.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = crawler.parseWebPage("https://www.vmware.com/security/advisories/VMSA-2023-0003.html", html);
 
@@ -77,10 +75,8 @@ public class VMWareAdvisoriesTest {
 	 */
 	@Test
 	public void testVMWareAdvisoriesMultiCVE() throws IOException {
-		MyProperties propertiesNvip = new MyProperties();
-		propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
 
-		CveCrawler crawler = new CveCrawler(propertiesNvip);
+		CveCrawler crawler = getCrawler();
 		String html = FileUtils.readFileToString(new File("src/test/resources/test-vmware-advisories-multi-cve.html"), StandardCharsets.UTF_8);
 		List<CompositeVulnerability> list = crawler.parseWebPage("https://www.vmware.com/security/advisories/VMSA-2023-0001.html", html);
 

@@ -33,6 +33,7 @@ import org.junit.BeforeClass;
 import java.io.IOException;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.fail;
@@ -45,7 +46,11 @@ public abstract class AbstractParserTest {
     public static void crawlerInit() {
         MyProperties propertiesNvip = new MyProperties();
         propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-        crawler = new CveCrawler(propertiesNvip);
+        crawler = new CveCrawler(new ArrayList<String>(), "dir");
+    }
+
+    protected CveCrawler getCrawler() {
+        return crawler;
     }
 
     protected static String safeReadHtml(String path) {

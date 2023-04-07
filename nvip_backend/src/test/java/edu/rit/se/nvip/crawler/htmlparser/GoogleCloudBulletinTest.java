@@ -47,10 +47,7 @@ public class GoogleCloudBulletinTest extends AbstractParserTest {
     @Test
     public void testGoogleCloudsecurityBulletinParser() throws IOException {
 
-        MyProperties propertiesNvip = new MyProperties();
-        propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-
-        CveCrawler crawler = new CveCrawler(propertiesNvip);
+        CveCrawler crawler = getCrawler();
         String html = FileUtils.readFileToString(new File("src/test/resources/test-google-cloud-bulletin.html"), StandardCharsets.US_ASCII);
         List<CompositeVulnerability> list = crawler.parseWebPage("https://cloud.google.com/support/bulletins", html);
 
