@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 
 import edu.rit.se.nvip.crawler.github.PyPAGithubScraper;
 
+import edu.rit.se.nvip.patchfinder.JGitCVEPatchDownloader;
+import edu.rit.se.nvip.patchfinder.PatchFinder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -164,6 +166,14 @@ public class NVIPMain {
 
 		//Patch Collection
 		nvipMain.spawnProcessToIdentifyAndStoreAffectedReleases(crawledVulnerabilityList);
+
+		// Parse for patches and store them in the database
+		PatchFinder patchFinder = new PatchFinder();
+		Map<String, ArrayList<String>> cpes = databaseHelper.getCPEsAndCVE();
+		patchFinder.parseMassURLs(cpes);
+		JGitCVEPatchDownloader jGitCVEPatchDownloader = new JGitCVEPatchDownloader();
+		// repos will be cloned to patch-repos directory, multi-threaded 6 threads.
+		jGitCVEPatchDownloader.parseMulitThread("patch-repos", 6);
 
 		logger.info("Done!");
 	}
