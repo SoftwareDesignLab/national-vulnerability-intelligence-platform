@@ -23,7 +23,10 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,18 +56,25 @@ public class RedHatParser extends AbstractCveParser  {
         String pattern = "yyyy/MM/dd";
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 
-        Document doc = Jsoup.parse(sCVEContentHTML);
+        try {
+            Document doc = Jsoup.parse(sCVEContentHTML);
 
-        String cve = doc.select("h1.headline").text();
-        String description = doc.select("#cve-details-description > div > div > pfe-markdown > p").text();
+            String cve = doc.select("h1.headline").text();
+            String description = doc.select("#cve-details-description > div > div > pfe-markdown > p").text();
 
-        String publishedDate = doc.select("p.cve-public-date > pfe-datetime > span").text().trim();
+            String publishedDate = doc.select("p.cve-public-date > pfe-datetime").attr("datetime");
+            String modifiedTimestamp = doc.select("p.cve-last-modified > pfe-datetime").attr("timestamp");
 
-        String lastModifiedDate = doc.select("p.cve-last-modified > pfe-datetime > span").text().split("at")[0].trim();
+            String lastModifiedDate = new Timestamp(Integer.parseInt(modifiedTimestamp)*1000L).toLocalDateTime().toString();
+            DateTimeFormatter publishFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+            LocalDateTime date = LocalDateTime.parse(publishedDate, publishFormatter);
+            publishedDate = date.toString();
 
-        vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
-
+            vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cve, null, publishedDate, lastModifiedDate, description, sourceDomainName));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return vulnerabilities;
-	}
+    }
 
 }

@@ -25,7 +25,15 @@ package edu.rit.se.nvip.crawler.htmlparser;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,7 +65,20 @@ public abstract class AbstractCveParser {
 	
 	protected String sourceDomainName = null;
 
+	protected static volatile WebDriver driver = null;
+
 	public abstract List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML);
+
+	public static WebDriver startDynamicWebDriver() {
+		System.setProperty("webdriver.chrome.silentOutput", "true");
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--headless","--user-agent=Mozilla/5.0");
+		options.addArguments("--remote-allow-origins=*");
+		options.addArguments("--enable-javascript");
+		WebDriverManager.chromedriver().setup();
+		ChromeDriverService chromeDriverService = new ChromeDriverService.Builder().build();
+		return new ChromeDriver(chromeDriverService, options);
+	}
 
 	/**
 	 * Get Dynamic HTML with Selenium
@@ -65,9 +86,15 @@ public abstract class AbstractCveParser {
 	 * @param url
 	 * @return
 	 */
-	protected String grabDynamicHTML(String url) {
-		WebDriver driver = new FirefoxDriver();
+	 protected String grabDynamicHTML(String url) {
+
+		// null in unit tests for now
+		if (driver == null)
+			driver = startDynamicWebDriver();
+		while(driver == null) {} // wait for driver to be initialized
 		driver.get(url);
+		if (url.contains("mend.io"))
+			return (String) ((JavascriptExecutor) driver).executeScript("return document.getElementsByTagName('html')[0].innerHTML");
 		return driver.getPageSource();
 	}
 

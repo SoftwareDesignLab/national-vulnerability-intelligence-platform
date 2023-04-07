@@ -33,6 +33,8 @@ import org.junit.BeforeClass;
 import java.io.IOException;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,16 @@ public abstract class AbstractParserTest {
     public static void crawlerInit() {
         MyProperties propertiesNvip = new MyProperties();
         propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-        crawler = new CveCrawler(new ArrayList<String>(), "dir");
+        String outputFile = "";
+        if (propertiesNvip.getCrawlerReport()) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            LocalDateTime now = LocalDateTime.now();
+            outputFile = propertiesNvip.getOutputDir() + "/crawlers/reports/report" + dtf.format(now) + ".txt";
+        }
+
+        String finalOutputFile = outputFile;
+
+        crawler = new CveCrawler(new ArrayList<>(), finalOutputFile);
     }
 
     protected CveCrawler getCrawler() {
