@@ -283,8 +283,13 @@ public class NVIPMain {
 		/**
 		 * scrape CVEs from CVE Automation Working Group Git Pilot (CVEProject.git)
 		 */
-		GithubScraper githubScraper = new GithubScraper();
-		HashMap<String, CompositeVulnerability> cveHashMapGithub = githubScraper.scrapeGithub();
+
+		HashMap<String, CompositeVulnerability> cveHashMapGithub = new HashMap<>();
+
+		if (Boolean.parseBoolean(System.getenv("NVIP_ENABLE_GITHUB"))) {
+			GithubScraper githubScraper = new GithubScraper();
+			cveHashMapGithub = githubScraper.scrapeGithub();
+		}
 
 		// scrape CVEs from PyPA advisory database GitHub Repo
 		PyPAGithubScraper pyPaScraper = new PyPAGithubScraper();

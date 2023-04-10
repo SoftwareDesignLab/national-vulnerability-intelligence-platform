@@ -109,7 +109,6 @@ public class CveProcessor {
 				 * a description for it]
 				 */
 				if (!hashMapNvdCve.containsKey(vuln.getCveId()) || vuln.isFoundNewDescriptionForReservedCve()) {
-					//logger.info("CVE: {}, is NOT in NVD", vuln.getCveId());
 					vuln.setNvdSearchResult("NA");
 					int status = 0;
 //					if (vuln.isFoundNewDescriptionForReservedCve())
