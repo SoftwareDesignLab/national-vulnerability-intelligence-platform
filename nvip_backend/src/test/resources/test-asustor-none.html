@@ -1,0 +1,2693 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="ROBOTS" content="all">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!--<meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none'; style-src cdn.asustor.com third-party.org; child-src https:">-->
+
+
+  <title>AS-2022-008: ADM: DeadBolt ransomware | ASUSTOR NAS</title>
+
+
+
+  <meta name="keywords" content="ASUSTOR,ASUSTOR NAS,ASUS NAS, Windows, mac,serveur de stockage, serviur de stockage nas, réseau nas, backup,Hardware &amp; Packaging,Hardware Specifications,spec">
+
+
+  <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="https://www.asustor.com//css/bootstrap.min.css">
+  <!--<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">-->
+  <!--<link rel="stylesheet" href="https://www.asustor.com//css/top_footer/top_menuV2.css?201709081616" />-->
+  <link rel="stylesheet" type="text/css" href="//cdn.asustor.com/css/style_20201001.css">
+  <!--<link rel="stylesheet" type="text/css" href="//cdn.asustor.com/css/style_20160713.css?20180807" />-->
+
+  <link href="https://www.asustor.com/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+
+  <script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=AW-981033279&amp;l=dataLayer&amp;cx=c"></script><script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="//cdn.asustor.com/js/jquery-1.11.3.min.js"></script>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+  <style>
+    .sub_menu_table h3 { font-size:16px; color:#000; margin-bottom:15px; }
+    .sub_menu_table a { display:block; font-size:14px; line-height:1; margin-bottom:8px; }
+  </style>
+
+  <!-- jQuery -->
+  <!--<script src="//cdn.asustor.com/js/jquery-1.11.3.min.js"></script>
+  <script>window.jQuery || document.write('<script src="https://www.asustor.com/js/jquery-1.11.3.min.js"><\/script>')</script>
+
+  <link rel="stylesheet" type="text/css" href="//cdn.asustor.com/css/bootstrap.min.css">
+  <script>
+      (function($) {
+          $(function() {
+              if ($('body').css('color') !== 'rgb(51, 51, 51)') {
+                  $('head').prepend('<link rel="stylesheet" href="https://www.asustor.com/css/bootstrap.min.css">');
+              }
+          });
+      })(window.jQuery);
+  </script>
+      -->
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.asustor.com/css/font_style.css">
+  <link rel="stylesheet" type="text/css" href="https://www.asustor.com/css/solution/release_notes">
+  <link rel="stylesheet" type="text/css" href="https://www.asustor.com/css/product/template.css">
+  <link rel="canonical" href="https://www.asustor.com/zh-tw/service/release_notes?20181114">
+
+
+
+
+
+
+
+  <style>
+    @font-face { font-family:'Glyphicons Halflings'; src:url('https://www.asustor.com/fonts/glyphicons-halflings-regular.eot'); src:url('https://www.asustor.com/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('https://www.asustor.com/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('https://www.asustor.com/fonts/glyphicons-halflings-regular.woff') format('woff'), url('https://www.asustor.com/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('https://www.asustor.com/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg') }
+    .glyphicon { position:relative; top:1px; display:inline-block; font-family:'Glyphicons Halflings'; font-style:normal; font-weight:normal; line-height:1; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale }
+  </style>
+  <meta http-equiv="origin-trial" content="A727AcAeLCei/ZogJHBlJUS63SxP6AeIROo7qXrkjrxkoxBu0eSSmypAHmGYwk4HjBMQp5nxCFODzfVnUIe31AQAAAB7eyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGV0YWdtYW5hZ2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A727AcAeLCei/ZogJHBlJUS63SxP6AeIROo7qXrkjrxkoxBu0eSSmypAHmGYwk4HjBMQp5nxCFODzfVnUIe31AQAAAB7eyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGV0YWdtYW5hZ2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1RoaXJkUGFydHkiOnRydWV9"><script type="text/javascript" async="" src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/981033279/?random=1680569446237&amp;cv=11&amp;fst=1680569446237&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be3430&amp;u_w=1920&amp;u_h=1080&amp;url=https%3A%2F%2Fwww.asustor.com%2Fsecurity%2Fsecurity_advisory_detail%3Fid%3D9&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=AS-2022-008%3A%20ADM%3A%20DeadBolt%20ransomware%20%7C%20ASUSTOR%20NAS&amp;auid=1760105494.1680569387&amp;uaa=x86&amp;uab=64&amp;uafvl=Google%2520Chrome%3B111.0.5563.111%7CNot(A%253ABrand%3B8.0.0.0%7CChromium%3B111.0.5563.111&amp;uamb=0&amp;uap=Windows&amp;uapv=15.0.0&amp;uaw=0&amp;data=event%3Dgtag.config&amp;rfmt=3&amp;fmt=4"></script></head>
+
+<body class="en " style="overflow-x: hidden">
+<style>
+  #gdpr_wrap
+  {
+    background-color:#000;
+    z-index:9995;
+    padding:20px 0px 10px 0px;
+  }
+  #gdpr_wrap p
+  {
+    color:#FFF;
+  }
+  #gdpr_wrap a
+  {
+    color:#f0ad4e;
+  }
+  #gdpr_wrap a:hover
+  {
+    color:#eea236;
+  }
+  #gdpr_wrap btn
+  {
+    padding-right:15px;
+    padding-left:15px;
+
+  }
+
+  #cn_redirect
+  {
+    position: fixed;
+    right:20px;
+    top:70px;
+    z-index:9005;
+
+  }
+
+</style>
+
+<div id="gdpr_wrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          We use cookies to help us improve our webpage. Please read our <a href="/privacy" target="_blank">
+          Cookie Policy
+        </a>.
+          <button type="button" id="gdpr_confirm" class="btn btn-warning ml15 hidden-xs gdpr_confirm">OK</button>
+        </p><div class="hidden-sm hidden-md hidden-lg mt15">
+        <button type="button" id="gdpr_confirm" class="btn btn-warning gdpr_confirm" style="margin-left:0px;">OK</button>
+      </div>
+        <p></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!---->
+
+
+
+
+
+<!-- mobile menu -->
+
+
+<script>
+  var base_url = 'https://www.asustor.com/';
+
+
+
+
+  $(document).ready(function(){
+
+    $(".gdpr_confirm").click(function()
+    {
+      $("#gdpr_wrap").hide();
+      /*alert("Thank you!");*/
+
+
+      _gdpr = 1;
+      $.ajax({
+        type: "GET",
+        url: base_url,
+        data: {gdpr: _gdpr},
+        dataType: "text",
+        cache:false,
+        success:
+                function(data){
+                  //alert(data);  //as a debugging message.
+                }
+      });// you have missed this bracket
+      return false;
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  });
+
+</script>
+<style>
+  .bt
+  {
+    border-top: thin solid #eee;
+  }
+  .navbar {
+    position: relative;
+    min-height: 60px;
+    padding-top:7px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+    z-index:99;
+  }
+  .navbar-default {
+    background-color: #ffffff;
+    border-color: transparent;
+    border-radius: 0px;
+  }
+  .nav .dropdown-menu
+  {
+    border-top:none !important;
+  }
+  .nav .dropdown-menu {
+    border:none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    margin-top:-4px;
+  }
+  .nav .dropdown-menu  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav .dropdown-menu ul li a {
+    display: block;
+    padding: 0px 0px;
+    clear: both;
+    font-weight: 400;
+    line-height:1.6;
+    color: #333;
+    white-space: break-word;
+  }
+
+  @media(min-width:992px) {
+    .nav>li {
+      position: initial;
+    }
+    .nav .open > .dropdown-menu {
+      width: 102%;
+      width: -webkit-fill-available;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-direction: row;
+      -webkit-flex-direction: row;
+      -ms-flex-pack: justify;
+      flex-wrap: nowrap;
+      margin: 0px -1px;
+    }
+    .nav .dropdown-menu  ul {
+      float: left;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+      -webkit-flex-grow: 1;
+      -webkit-box-flex: 1;
+      /*margin-left:-10px;*/
+      max-width:230px;
+    }
+    .nav .dropdown-menu  ul + ul {
+      margin-left:60px;
+    }
+  }
+  @media (max-width: 991px) {
+    /* collapse on sm size*/
+
+    .navbar-header {
+      float: none;
+    }
+    .navbar-left,
+    .navbar-right {
+      float: none !important;
+    }
+    .navbar-toggle {
+      display: block;
+    }
+    .navbar-collapse {
+      border-top: 1px solid transparent;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .navbar-fixed-top {
+      top: 0;
+      border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+      display: none!important;
+    }
+    .navbar-nav {
+      float: none!important;
+      margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+      float: none;
+    }
+    .navbar-nav>li>a {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .collapse.in {
+      display: block !important;
+    }
+    .nav .dropdown-menu {
+      position: relative;
+      width: 100%;
+      float: left;
+    }
+    .navbar-nav .open .dropdown-menu {
+      position: static;
+      float: none;
+      width: auto;
+      margin-top: 0;
+      background-color: transparent;
+      border: 0;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    /*===============*/
+    .navbar-default .navbar-nav>li>a
+    {
+      font-weight: 600;
+      font-size: larger;
+      color: #4e5453 !important;
+    }
+    .navbar-nav .open .dropdown-menu
+    {
+      background-color: #162533;
+      margin-top: 9px;
+    }
+    .nav .dropdown-menu h4
+    {
+      color: #94b3c5 !important;
+    }
+    .nav .dropdown-menu ul li a
+    {
+      color: #7c9eb1;
+    }
+    .nav .dropdown-menu ul li a:hover
+    {
+      color: #ffffff;
+    }
+    .navbar-nav>li
+    {
+      border-bottom: solid thin #e7e7e7;
+      padding: 10px;
+    }
+  }
+  .navbar-nav li a { -o-transition: .3s; -ms-transition: .3s; -moz-transition: .3s; -webkit-transition: .3s; transition: .3s; }
+  .navbar-nav li a:hover { color:#00a8ff !important; }
+  .navbar-nav li a:hover:before { width:0 }
+  .navbar-nav li a:before { content:""; display:block; position:relative; top:38px; left:0; bottom:0; height:3px; width:0; background:#00a8ff; -webkit-transition:width .25s; -moz-transition:width .25s; -ms-transition:width .25s; -o-transition:width .25s; transition:width .25s }
+  .navbar-nav li.active a:before { width:100% }
+
+
+  .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
+    background-color: #ffffff;
+    color: #00a8ff;
+  }
+  .nav .dropdown-menu h4
+  {
+    font-weight:400;
+    font-size:16px;
+    color:#000;
+  }
+  @media (max-width: 767px) {
+    .search_btn { background:none; border:none; position:relative; top:6px; right:45px }
+    .logoV2
+    {
+      padding: 10px 0px 15px 15px;
+      max-width:120px;
+    }
+    .collapse.in {
+      overflow-y: hidden;
+    }
+    #searchbar
+    {
+      padding-top:10px;
+    }
+    #lan
+    {
+      padding-bottom:20px;
+    }
+
+    .search_input
+    {
+      transition:none;
+
+    }
+    .searchbar input[type=text]
+    {
+      width:inherit;
+      transform:none;
+
+    }
+    .navbar-default {
+      box-shadow:0 2px 2px -1px rgba(0,0,0,0.1);
+    }
+
+  }
+
+  @media (min-width: 768px) {
+    .search_btn { background:none; border:none; position:relative; top:5px; right:-4px }
+    .logoV2
+    {
+      padding: 5px 0px 0px 0px;
+      max-width:120px;
+      margin-right: 30px;
+    }
+    #searchbar, #lan
+    {
+      float:right;
+
+    }
+    .search_input{
+      position: relative;
+      left: 40px;
+    }<ol></ol>
+           .container>.navbar-collapse {
+             margin-right: -30px !important;
+             margin-left: -30px !important;
+           }
+
+
+    .searchbar {
+      margin-top: 10px;
+    }
+
+    .lan {
+      margin-right: -20px;
+    }
+    .bb
+    {
+
+      border-bottom:#eee thin solid;
+      padding-bottom:7px;
+    }
+    .nav>li>a
+    {
+      padding:12px 13px;
+    }
+
+    .searchbar input[type=text]
+    {
+      width:130px;
+
+    }
+
+  }
+
+  #navbar-collapse li a {  -o-transition: .3s; -ms-transition: .3s; -moz-transition: .3s; -webkit-transition: .3s; transition: .3s; }
+  #navbar-collapse li a:hover, #navbar-collapse li a:active { color:#00a8ff }
+  #navbar-collapse li a:hover:before { width:0 }
+  #navbar-collapse li a:before {
+    content:""; display:block;
+    position:relative;
+    top:42px; left:0;
+    bottom:0;
+    height:3px; width:0;
+    background:#00a8ff;
+    -webkit-transition:width .25s;
+    -moz-transition:width .25s;
+    -ms-transition:width .25s;
+    -o-transition:width .25s;
+    transition:width .25s }
+  #navbar-collapse li.open > a:before { width:100%; }
+
+  .navbar-default .navbar-nav>li>a
+  {
+    color:#000;
+
+  }
+  .nav .dropdown-menu h4
+  {
+    margin-top:20px;
+    margin-bottom:6px;
+    font-weight:500;
+
+  }
+  .rotation{
+    -webkit-transition: -webkit-transform .4s ease-in-out;
+    transition: transform .4s ease-in-out;
+  }
+  .rotation:hover
+  {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+  #new_nav
+  {
+    width: 100%;
+
+  }
+  .searchbar
+  {
+    margin-top: 8px;
+  }
+  .lan
+  {
+    margin-top: 0px;
+  }
+  .dark_mode, .dark_mode > div, .dark_mode input, .dark_mode > div *
+  {
+    background-color: #333333 !important;
+    color: #cccccc !important;
+
+  }
+  div.search
+  {
+    background-color: none;
+  }
+
+</style>
+<!---->
+
+
+
+
+
+
+<nav class="navbar navbar-default" id="new_nav">
+  <div class="container bb">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="https://www.asustor.com/en/" class="flow"><img src="https://www.asustor.com//images/asustor-logo.png" class="logoV2" alt="Asustor logo"></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+
+
+        <!--==============TR政府標案之後要刪================-->
+
+
+
+
+
+
+
+        <!--===============================-->
+
+
+
+
+
+
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="a_1">Products <i class="icofont-simple-down"></i></a>
+
+
+
+          <div class="dropdown-menu ">
+            <div class="container ">
+              <div class="row mb45">
+                <div class="col-md-12">
+
+
+
+
+
+                  <ul>
+                    <li>
+                      <h4 class="">Personal to Home</h4>
+
+
+                      <a href="https://www.asustor.com/en/product?p_id=70">DRIVESTOR 2 (AS1102T) </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=71"> DRIVESTOR 4 (AS1104T) </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=72">DRIVESTOR 2 Pro (AS3302T) </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=73"> DRIVESTOR 4 Pro (AS3304T) </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Home to Power User</h4>
+
+
+                      <a href="https://www.asustor.com/en/product?p_id=61">AS5202T </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=62">AS5304T </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Power User to Business</h4>
+
+
+                      <a href="https://www.asustor.com/en/product?p_id=68">LOCKERSTOR 2 (AS6602T)
+                      </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=69">LOCKERSTOR 4 (AS6604T)
+                      </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=76">LOCKERSTOR 2 Gen2 (AS6702T) </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=77">LOCKERSTOR 4 Gen2 (AS6704T) </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=78">LOCKERSTOR 6 Gen2 (AS6706T) </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=63">LOCKERSTOR 8 (AS6508T)
+                      </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=64">LOCKERSTOR 10 (AS6510T)
+                      </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=74">LOCKERSTOR 4RS (AS6504RS) / LOCKERSTOR 4RD (AS6504RD) </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=75">LOCKERSTOR 12RD (AS6512RD) </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Small &amp; Medium Business</h4>
+
+
+                      <a href="https://www.asustor.com/en/product?p_id=65">LOCKERSTOR 10 Pro (AS7110T)
+                      </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=66">LOCKERSTOR 12R Pro (AS7112RDX)
+                      </a>
+
+                      <a href="https://www.asustor.com/en/product?p_id=67">LOCKERSTOR 16R Pro (AS7116RDX)
+                      </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">All Products</h4>
+
+
+                      <a href="https://www.asustor.com/en/product/product_list">Product List/NAS Comparison
+                      </a>
+
+                      <a href="https://www.asustor.com/en/service/nas_selector">NAS Selector </a>
+
+                      <a href="https://www.asustor.com/en/product/legacy_product">Other models </a>
+
+
+
+                      <h4>Accessories</h4>
+
+
+                      <!--跳網址帶語言參數-->
+
+                      <a href="https://www.asustor.com/en/product/AS6004U">Expansion Units </a>
+
+                      <a href="https://www.asustor.com/en/product/accessories?pad_type=1&amp;type_flag=1">Remote control </a>
+
+                      <a href="https://www.asustor.com/en/product/accessories?pad_type=2&amp;type_flag=1">RAM Modules </a>
+
+                      <a href="https://www.asustor.com/en/product/accessories?pad_type=9&amp;type_flag=1">Switch </a>
+
+                      <a href="https://www.asustor.com/en/product/accessories?pad_type=5&amp;type_flag=1">Rail Kits </a>
+
+                      <a href="https://www.asustor.com/en/product/accessories?pad_type=6&amp;type_flag=1">Network interface card </a>
+
+                      <a href="https://www.asustor.com/en/product/accessories?pad_type=7&amp;type_flag=1">Licenses </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </li>
+
+
+        <!--==============TR政府標案之後要刪================-->
+
+
+
+
+
+
+
+        <!--===============================-->
+
+
+
+
+
+
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="a_3">Solutions <i class="icofont-simple-down"></i></a>
+
+
+          <div class="dropdown-menu ">
+            <div class="container ">
+              <div class="row mb45">
+                <div class="col-md-12">
+
+
+
+
+                  <ul>
+                    <li>
+                      <h4 class="">NAS Buying Guide</h4>
+
+
+                      <a href="https://www.asustor.com/en/solution/what_is_nas">What is a NAS? </a>
+
+                      <a href="https://www.asustor.com/en/event/buying_guide#why_asustor_nas">Why ASUSTOR NAS? </a>
+
+
+
+                      <h4>What is ADM</h4>
+
+
+                      <!--跳網址帶語言參數-->
+
+                      <a href="https://www.asustor.com/en/admv3?type=1&amp;subject=101&amp;sub=101">Overview </a>
+
+                      <a href="https://www.asustor.com/en/adm/latest_adm">Latest Version </a>
+
+
+
+                      <h4>NAS Apps</h4>
+
+
+                      <!--跳網址帶語言參數-->
+
+                      <a href="https://www.asustor.com/en/admv2?type=1&amp;subject=3&amp;sub=11">What is App Central </a>
+
+                      <a href="https://www.asustor.com/en/app_central">App Central </a>
+
+                      <a href="https://www.asustor.com/en/third_party_apps">Featured 3rd Party Apps </a>
+
+
+
+                      <h4>Try Now</h4>
+
+
+                      <!--跳網址帶語言參數-->
+
+                      <a href="https://www.asustor.com/en/live_demo">Live Demo </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Features</h4>
+
+
+                      <a href="https://www.asustor.com/en/admv2?type=1&amp;subject=1&amp;sub=5">Simplified Management </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=2&amp;subject=9&amp;sub=34">Storage Management </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=1&amp;subject=2&amp;sub=9">File Management &amp; Sharing </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=2&amp;subject=4&amp;sub=12">Backup &amp; Restore </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=2&amp;subject=10&amp;sub=78">System &amp; Data Security </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=2&amp;subject=8&amp;sub=32">Server Hosting </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=3&amp;subject=12&amp;sub=44">Access Control </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=2&amp;subject=5&amp;sub=23">Easy Connect </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=3&amp;subject=17&amp;sub=62">Virtualization Solutions </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=3&amp;subject=23&amp;sub=99">Optimized Performance </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=2&amp;subject=7&amp;sub=79">Home Entertainment </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=2&amp;subject=6&amp;sub=24">Energy Efficiency </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Applications</h4>
+
+
+                      <a href="https://www.asustor.com/en/applications/business">10 Tips for Business </a>
+
+                      <a href="https://www.asustor.com/en/applications/nas_backup_solutions">Comprehensive Backup Solutions </a>
+
+
+
+
+
+                      <a href="https://www.asustor.com/en/solution/wake_on_wan">Wake on Wan </a>
+
+                      <a href="https://www.asustor.com/en/solution/working_at_home_with_nas">Remote Work </a>
+
+                      <a href="https://www.asustor.com/en/solution/what_is_docker">Docker </a>
+
+                      <a href="https://www.asustor.com/en/solution/ransomware">Ransomware Fighting Tool </a>
+
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Home users / Content Creators</h4>
+
+
+                      <a href="https://www.asustor.com/en/applications/private_multimedia_nas_for_home_personal">Home &amp; SOHO </a>
+
+                      <a href="https://www.asustor.com/en/applications/nas_for_apple_device">For Apple Users </a>
+
+                      <a href="https://www.asustor.com/en/solution/best_nas_for_gaming_and_streaming">Gaming and Live Stream </a>
+
+                      <a href="https://www.asustor.com/en/applications/photography">Best Nas for Photographers </a>
+
+                      <a href="https://www.asustor.com/en/applications/media_server">Roon Server </a>
+
+
+                      <a href="https://www.asustor.com/en/applications/nas_plex_media_server">ASUSTOR and Plex Media Server </a>
+
+                      <a href="https://www.asustor.com/en/solution/best_nas_for_adobe_content_creator">Adobe Video and Audio Solutions </a>
+
+                      <a href="https://www.asustor.com/en/solution/best_nas_for_video_editing">Video Editing with an ASUSTOR NAS
+                      </a>
+
+                      <a href="https://www.asustor.com/en/solution/google_photos_ends_free">Migrating from Google Photos to an ASUSTOR NAS
+
+                        <i class="sprite_layout sprite-new"></i></a>
+
+                      <a href="https://www.asustor.com/en/solution/nas_for_macbook_final_cut_pro">Macbook and Final Cut Pro
+                        <i class="sprite_layout sprite-new"></i></a>
+
+                      <a href="https://www.asustor.com/en/solution/nas_2_5gbe">2.5GbE Universe <i class="sprite_layout sprite-new"></i></a>
+
+                      <a href="https://www.asustor.com/en/solution/backup_rules">3-2-1 Backups <i class="sprite_layout sprite-new"></i></a>
+
+                      <a href="https://www.asustor.com/en/solution/energy_saving">Energy Saving <i class="sprite_layout sprite-new"></i></a>
+
+                      <a href="https://www.asustor.com/en/solution/is_your_nas_secure">Is Your NAS secure? <i class="sprite_layout sprite-new"></i></a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <a href="https://www.asustor.com/en/admv2?type=5&amp;subject=21&amp;sub=90" class="could_link_title"><h4 class="">Desktop Apps</h4></a>
+
+
+                      <a href="https://www.asustor.com/en/admv2?type=5&amp;subject=21&amp;sub=89">ASUSTOR Backup Plan </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=5&amp;subject=21&amp;sub=90">ASUSTOR Control Center </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=5&amp;subject=21&amp;sub=124">ASUSTOR EZ Connect </a>
+
+                      <a href="https://www.asustor.com/en/admv2?type=5&amp;subject=21&amp;sub=136">ASUSTOR EZ Sync </a>
+
+
+
+                      <h4>Mobile Apps</h4>
+
+
+                      <!--跳網址帶語言參數-->
+
+                      <a href="https://www.asustor.com/en/applications/mobile_app_overview">Overview </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </li>
+
+
+        <!--==============TR政府標案之後要刪================-->
+
+
+
+
+
+
+
+        <!--===============================-->
+
+
+
+
+
+
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="a_139">Surveillance <i class="icofont-simple-down"></i></a>
+
+
+          <div class="dropdown-menu ">
+            <div class="container ">
+              <div class="row mb45">
+                <div class="col-md-12">
+
+
+
+
+                  <ul>
+                    <li>
+                      <h4 class="">What's new</h4>
+
+
+                      <a href="https://www.asustor.com/en/nvr2_8">Surveillance Center 2.8 </a>
+
+
+
+                      <h4>What is Surveillance Center</h4>
+
+
+                      <!--跳網址帶語言參數-->
+
+                      <a href="https://www.asustor.com/en/surveillance?sub=104">Overview </a>
+
+
+
+                      <h4>Try Now</h4>
+
+
+                      <!--跳網址帶語言參數-->
+
+                      <a href="https://www.asustor.com/en/live_demo">Live Demo </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Features</h4>
+
+
+                      <a href="https://www.asustor.com/en/surveillance?sub=105">Live View </a>
+
+                      <a href="https://www.asustor.com/en/surveillance?sub=107">Recording &amp; Playback </a>
+
+                      <a href="https://www.asustor.com/en/surveillance?sub=109">Camera &amp; Management </a>
+
+                      <a href="https://www.asustor.com/en/surveillance?sub=111">Mobile apps </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Support</h4>
+
+
+                      <a href="https://www.asustor.com/en/service/nvr_selector">NVR Selector </a>
+
+                      <a href="https://www.asustor.com/en/product/accessories?pad_type=7&amp;type_flag=1">Camera Licenses </a>
+
+                      <a href="https://www.asustor.com/en/service/ipcam?id=ipcam">Compatibility </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </li>
+
+
+        <!--==============TR政府標案之後要刪================-->
+
+
+
+
+
+
+
+        <!--===============================-->
+
+
+
+
+
+
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="a_5">Support <i class="icofont-simple-down"></i></a>
+
+
+
+          <div class="dropdown-menu ">
+            <div class="container ">
+              <div class="row mb45">
+                <div class="col-md-12">
+
+
+
+
+                  <ul>
+                    <li>
+                      <h4 class="">Support</h4>
+
+
+                      <a href="https://support.asustor.com" target="_blank">Tech Support Ticket </a>
+
+                      <!--黑字帶標題-->
+
+                      <a href="https://www.asustor.com/en/service/compatibility">Compatibility </a>
+
+                      <a href="https://www.asustor.com/en/service/downloads">Downloads </a>
+
+                      <a href="https://www.asustor.com/en/product/status">Product Support Status
+                      </a>
+
+                      <a href="https://www.asustor.com/en/knowledge/">FAQ </a>
+
+
+                      <a href="https://www.asustor.com/en/service/warranty">Warranty Information </a>
+
+                      <a href="https://www.asustor.com/en/about/contact_us">Contact Us </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Tools</h4>
+
+
+                      <a href="https://www.asustor.com/en/service/nas_selector">Recommend a NAS </a>
+
+                      <a href="https://www.asustor.com/en/service/nvr_selector">NVR Selector </a>
+
+                      <a href="https://www.asustor.com/en/service/RAID_calculator">RAID Calculator </a>
+
+                      <a href="https://www.asustor.com/getting_start/landing?lan=en" target="_self">Getting Started</a>
+
+
+                      <a href="https://www.ezconnect.to" target="_blank">ezconnect.to </a>
+
+                      <!--黑字帶標題-->
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">ASUSTOR Online</h4>
+
+
+                      <a href="https://developer.asustor.com" target="_blank">ASUSTOR Developer Corner </a>
+
+                      <!--黑字帶標題-->
+
+                      <a href="https://www.asustor.com/en/online/community">Community </a>
+
+                      <a href="https://www.asustor.com/en/online/College">ASUSTOR College - NAS tutorials </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Other Service</h4>
+
+
+                      <a href="https://shop.asustor.com" target="_blank">Accessories Store </a>
+
+                      <!--黑字帶標題-->
+
+                      <a href="https://www.asustor.com/en/service/resource">Marketing Materials </a>
+
+                      <a href="https://www.asustor.com/en/support/ars">Advanced Replacement Service </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Security</h4>
+
+
+                      <a href="https://www.asustor.com/en/security/security_advisory">Product Security Advisory </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </li>
+
+
+        <!--==============TR政府標案之後要刪================-->
+
+
+
+
+
+
+
+        <!--===============================-->
+
+
+
+
+
+
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="a_86">Where to Buy <i class="icofont-simple-down"></i></a>
+
+
+          <div class="dropdown-menu bt">
+            <div class="container ">
+              <div class="row mb45">
+                <div class="col-md-12">
+
+
+
+
+                  <ul>
+                    <li>
+                      <h4 class="">Regions</h4>
+
+
+                      <a href="https://www.asustor.com/en/service/where_to_buy?continent=2">Asia Pacific &amp; Oceania </a>
+
+                      <a href="https://www.asustor.com/en/service/where_to_buy?continent=3">Europe &amp; Russia </a>
+
+                      <a href="https://www.asustor.com/en/service/where_to_buy?continent=4">North America </a>
+
+                      <a href="https://www.asustor.com/en/service/where_to_buy?continent=5">South and Central America </a>
+
+                      <a href="https://www.asustor.com/en/service/where_to_buy?continent=1">Africa </a>
+
+                      <a href="https://www.asustor.com/en/service/where_to_buy?continent=6">Middle East </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Other Service</h4>
+
+
+                      <a href="https://shop.asustor.com" target="_blank">Accessories Store </a>
+
+                      <!--黑字帶標題-->
+
+                      <a href="https://www.asustor.com/en/service/nas_selector">Recommend a NAS </a>
+
+
+
+
+
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h4 class="">Become Our Partner </h4>
+
+
+                      <a href="https://www.asustor.com/en/route/become_our_partner">Project Registration - Global </a>
+
+                      <a href="https://reseller.asustor.com/?lan=en" target="_self">Reseller Partner Program - U.S/Canada</a>
+
+
+
+
+
+
+
+                    </li>
+                  </ul>
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </li>
+
+
+
+
+        <!--<li class="hidden-xs hidden-sm hidden-md">
+            <div >
+
+
+
+
+                    <a href="https://www.instagram.com/p/CmYVhF5tsIR/" target="_blank">
+                                                    <img src="//cdn.asustor.com/images/index/xmas_2022.gif" width="175px" style="margin-top: 5px; margin-left: 20px" alt="ASUSTOR Giveaway Event"/>
+                </a>
+            </div>
+        </li>-->
+
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="javascript: void(0)" class="" data-toggle="modal" data-target="#myModal">
+            <i class="icofont-earth"></i>
+            US English
+          </a></li>
+
+        <li>
+
+          <a href="" id="search_btn" class="" data-toggle="modal" data-target="#search_Modal"> <i class="icofont-search-1"></i></a>
+
+
+        </li>
+
+      </ul>
+
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+
+  <!-- /.container-fluid -->
+</nav>
+
+
+
+
+
+
+<style>
+  .lan_modal a
+  {
+    color:#00a8ff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .lan_modal a:hover
+  {
+    color:#008fd9;
+  }
+
+
+  #close_a
+  {
+    width: 30px; height: 30px; line-height:30px; display: block;
+    background:url(../images/templates/btn/iframe_close.png) no-repeat;
+    background-position: -30px 0px;
+  }
+
+  #close_a:hover
+  {
+    background:url(../images/templates/btn/iframe_close.png) no-repeat;
+    background-position: 0px 0px;
+
+  }
+
+
+  .backimg
+  {
+
+    width:95%;
+    padding:10px;
+    position:absolute;
+    top:150px;
+    left:0px;
+    opacity:0.3;
+
+
+  }
+
+
+
+  .mt20
+  {
+    margin-top:20px;
+  }
+  .lan_modal a
+  {
+    color:#00a8ff !important;
+  }
+  .lan_modal a:hover
+  {
+    color:#337ab7 !important;
+  }
+  .world_map
+  {
+    margin-top:-220px;
+    padding:20px;
+    text-align:center;
+  }
+</style>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog" style="z-index:9999;">
+  <div class="modal-dialog modal-lg" style="z-index:9999;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3 class="modal-title">
+          Select your language
+        </h3>
+      </div>
+      <div class="modal-body">
+
+
+
+        <div class="container lan_modal" style="width:100%; margin:0 auto;">
+          <div class="row">
+            <div class="col-md-4 mt20 ">
+              <a href="javascript:void(0)" onclick="return lang_func(14)">Global English</a>
+            </div>
+            <div class="col-md-4 mt20 ">
+              <a href="javascript:void(0)" onclick="return lang_func(2)">US English</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(11)">Čeština</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(1)">Deutsch</a>
+            </div>
+
+            <div class="col-md-4 mt20">
+              <a href="javascript:return lang_func(12)" onclick="return lang_func(12)">Español</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:return lang_func(3)" onclick="return lang_func(3)">Français</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(4)">Italiano</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(19)">Magyar</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(5)">Nederlands</a>
+            </div>
+
+
+          </div>
+          <div class="row">
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(17)">Polski</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(15)">Português</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(6)">Русский</a>
+            </div>
+
+
+
+
+          </div>
+          <div class="row">
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(16)">Svenska</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(10)">한국어</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(13)">Türkçe</a>
+            </div>
+
+
+
+
+          </div>
+          <div class="row">
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(7)">日本語</a>
+            </div>
+
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(18)">ไทย</a>
+            </div>
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(9)">简体中文</a>
+            </div>
+
+          </div>
+          <div class="row">
+
+            <div class="col-md-4 mt20">
+              <a href="javascript:void(0)" onclick="return lang_func(8)">繁體中文</a>
+            </div>
+          </div>
+
+        </div>
+
+        <div align="center">
+          <img src="//cdn.asustor.com/images/templates/world_map.png" alt="world map" class="world_map img-responsive">
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function lang_func(i)
+  {
+    var _url = 'http://' + location.hostname + location.pathname + location.search;
+
+    var _base_url = "https://www.asustor.com/";
+
+    //_url = _url.replace(/#/, "");
+
+    var _port = ":"+location.port;
+
+
+
+    var	_pathname = location.pathname.replace("/en/", "/").replace("/en-gb/", "/").replace("/th/", "/").replace("/pt-BR/", "/").replace("/sv-SE/", "/").replace("/pl/", "/").replace("/de/", "/").replace("/fr/", "/").replace("/nl/", "/").replace("/ru/", "/").replace("/ja/", "/").replace("/zh-tw/", "/").replace("/zh-cn/", "/").replace("/ko/", "/").replace("/cs/", "/").replace("/es/", "/").replace("/ru/", "/").replace("/it/", "/").replace("/tr/", "/").replace("/hu/", "/");
+
+
+
+
+
+    if(_url.indexOf("news_detail_XXX") != -1)
+    {
+      switch(i)
+      {
+        case 1:
+          //window.close();
+          parent.location.href="https://www.asustor.com/de/news/press";
+          break;
+        case 2:
+          parent.location.href="https://www.asustor.com/en/news/press";
+          //window.close();
+          break;
+        case 3:
+          parent.location.href="https://www.asustor.com/fr/news/press";
+          break;
+        case 4:
+          parent.location.href="https://www.asustor.com/it/news/press";
+          break;
+        case 5:
+          parent.location.href="https://www.asustor.com/nl/news/press";
+          break;
+        case 6:
+          parent.location.href="https://www.asustor.com/ru/news/press";
+          break;
+        case 7:
+          parent.location.href="https://www.asustor.com/ja/news/press";
+          break;
+        case 8:
+          parent.location.href="https://www.asustor.com/zh-tw/news/press";
+          break;
+        case 9:
+          parent.location.href="https://www.asustor.com/zh-cn/news/press";
+          break;
+        case 10:
+          parent.location.href="https://www.asustor.com/ko/news/press";
+          break;
+        case 11:
+          parent.location.href="https://www.asustor.com/cs/news/press";
+          break;
+        case 12:
+          parent.location.href="https://www.asustor.com/es/news/press";
+          break;
+        case 13:
+          parent.location.href="https://www.asustor.com/tr/news/press";
+          break;
+        case 14:
+          parent.location.href="https://www.asustor.com/en-gb/news/press";
+          break;
+        case 15:
+          parent.location.href="https://www.asustor.com/pt-BR/news/press";
+          break;
+        case 16:
+          parent.location.href="https://www.asustor.com/sv-SE/news/press";
+          break;
+        case 17:
+          parent.location.href="https://www.asustor.com/pl/news/press";
+          break;
+        case 18:
+          parent.location.href="https://www.asustor.com/th/news/press";
+          break;
+        case 19:
+          parent.location.href="https://www.asustor.com/hu/news/press";
+          break;
+        default:
+          parent.location.href="https://www.asustor.com/news/press";
+
+      }
+    }
+    else if(_url == 'http://www.asustor.com/admv2?type=2&subject=7&sub=103&lan=jpn')
+    {
+      switch(i)
+      {
+        case 1:
+          //window.close();
+          parent.location.href="https://www.asustor.com/?lan=ger";
+          break;
+        case 2:
+          parent.location.href="https://www.asustor.com/?lan=en";
+          //window.close();
+          break;
+        case 3:
+          parent.location.href="https://www.asustor.com/?lan=fre";
+          break;
+        case 4:
+          parent.location.href="https://www.asustor.com/?lan=ita";
+          break;
+        case 5:
+          parent.location.href="https://www.asustor.com/?lan=dut";
+          break;
+        case 6:
+          parent.location.href="https://www.asustor.com/?lan=rus";
+          break;
+        case 7:
+          parent.location.href="https://www.asustor.com/?lan=jpn";
+          break;
+        case 8:
+          parent.location.href="https://www.asustor.com/?lan=zh_tw";
+          break;
+        case 9:
+          parent.location.href="https://www.asustor.com/?lan=zh_cn";
+          break;
+        case 10:
+          parent.location.href="https://www.asustor.com/?lan=kor";
+          break;
+        case 11:
+          parent.location.href="https://www.asustor.com/?lan=cs";
+          break;
+        case 12:
+          parent.location.href="https://www.asustor.com/?lan=es";
+          break;
+        case 13:
+          parent.location.href="https://www.asustor.com/?lan=tr";
+          break;
+        case 14:
+          parent.location.href="https://www.asustor.com/?lan=eng";
+          break;
+        case 15:
+          parent.location.href="https://www.asustor.com/?lan=pt";
+          //window.close();
+          break;
+        case 16:
+          parent.location.href="https://www.asustor.com/?lan=se";
+          //window.close();
+          break;
+        case 17:
+          parent.location.href="https://www.asustor.com/?lan=pl";
+          //window.close();
+          break;
+        case 18:
+          parent.location.href="https://www.asustor.com/?lan=th";
+              //window.close();
+        case 19:
+          parent.location.href="https://www.asustor.com/?lan=hu";
+          //window.close();
+          break;
+        default:
+          parent.location.href="https://www.asustor.com/";
+
+      }
+
+
+    }
+    else
+    {
+
+      if(location.search.indexOf("?lan") != -1)
+      {
+        var _search = location.search.replace("?lan=ger", "").replace("?lan=eng", "").replace("?lan=pt", "").replace("?lan=se", "").replace("?lan=en", "").replace("?lan=eng", "").replace("?lan=fre", "").replace("?lan=ita", "").replace("?lan=dut", "").replace("?lan=rus", "").replace("?lan=jpn", "").replace("?lan=zh_tw", "").replace("?lan=zh_cn", "").replace("?lan=kor", "").replace("?lan=cs", "").replace("?lan=es", "").replace("?lan=tr", "").replace("?lan=pl", "").replace("?lan=th", "").replace("?lan=hu", "");
+
+
+
+        //alert('code01');
+
+
+
+        if(location.search.substring(0,1) == '&')
+        {
+          _search = '?' + _search.substring(1);
+        }
+
+        if(_search.substring(0,1) == '&')
+        {
+          _search = '?' + _search.substring(1);
+        }
+
+
+        switch(i)
+        {
+
+          case 1:
+            //window.close();
+            // parent.location.href= _url+"?lan=ger";
+            parent.location.href = 'http://' + location.hostname + _port + '/de'+ _pathname + _search;
+            break;
+          case 2:
+            //parent.location.href= _url+"?lan=en";
+            parent.location.href = 'http://' + location.hostname + _port + '/en'+ _pathname + _search;
+            break;
+          case 3:
+            //parent.location.href= _url+"?lan=fre";
+            parent.location.href = 'http://' + location.hostname + _port +'/fr'+ _pathname + _search;
+            break;
+          case 4:
+            //parent.location.href= _url+"?lan=ita";
+            parent.location.href = 'http://' + location.hostname + _port +'/it'+ _pathname + _search;
+            break;
+          case 5:
+            //parent.location.href= _url+"?lan=dut";
+            parent.location.href = 'http://' + location.hostname + _port + '/nl'+ _pathname + _search;
+            break;
+          case 6:
+            //parent.location.href= _url+"?lan=rus";
+            parent.location.href = 'http://' + location.hostname + _port + '/ru'+ _pathname + _search;
+            break;
+          case 7:
+            //parent.location.href= _url+"?lan=jpn";
+            parent.location.href = 'http://' + location.hostname + _port + '/ja'+ _pathname + _search;
+            break;
+          case 8:
+            //parent.location.href= _url+"?lan=zh_tw";
+            parent.location.href = 'http://' + location.hostname + _port + '/zh-tw'+ _pathname + _search;
+            break;
+          case 9:
+            //parent.location.href= _url+"?lan=zh_cn";
+            /*parent.location.href = 'http://http://54.222.187.52:10080/zh-cn'+ _pathname + _search;*/
+            parent.location.href = 'http://' + location.hostname + _port + '/zh-cn'+ _pathname + _search;
+            break;
+          case 10:
+            //parent.location.href= _url+"?lan=kor";
+            parent.location.href = 'http://' + location.hostname + _port + '/ko'+ _pathname + _search;
+            break;
+          case 11:
+            //parent.location.href= _url+"?lan=cs";
+            parent.location.href = 'http://' + location.hostname + _port + '/cs'+ _pathname + _search;
+            break;
+          case 12:
+            //parent.location.href= _url+"?lan=es";
+            parent.location.href = 'http://' + location.hostname + _port + '/es'+ _pathname + _search;
+            break;
+          case 13:
+            //parent.location.href= _url+"?lan=tr";
+            parent.location.href = 'http://' + location.hostname + _port + '/tr'+ _pathname + _search;
+            break;
+          case 14:
+            //parent.location.href= _url+"?lan=en";
+            parent.location.href = 'http://' + location.hostname + _port + '/en-gb'+ _pathname + _search;
+            break;
+          case 15:
+            //parent.location.href= _url+"?lan=en";
+            parent.location.href = 'http://' + location.hostname + _port + '/pt-BR'+ _pathname + _search;
+            break;
+          case 16:
+            //parent.location.href= _url+"?lan=en";
+            parent.location.href = 'http://' + location.hostname + _port + '/sv-SE'+ _pathname + _search;
+            break;
+          case 17:
+            //parent.location.href= _url+"?lan=en";
+            parent.location.href = 'http://' + location.hostname + _port + '/pl'+ _pathname + _search;
+            break;
+          case 18:
+            //parent.location.href= _url+"?lan=en";
+            parent.location.href = 'http://' + location.hostname + _port + '/th'+ _pathname + _search;
+            break;
+          case 19:
+            //parent.location.href= _url+"?lan=en";
+            parent.location.href = 'http://' + location.hostname + _port + '/hu'+ _pathname + _search;
+            break;
+          default:
+            parent.location.href="https://www.asustor.com/";
+        }
+
+
+
+
+      }
+      else if(location.search.indexOf("?") != -1)
+      {
+
+        var _search = location.search.replace("&lan=ger", "").replace("&lan=eng", "").replace("&lan=pt", "").replace("&lan=se", "").replace("&lan=en", "").replace("&lan=fre", "").replace("&lan=ita", "").replace("&lan=dut", "").replace("&lan=rus", "").replace("&lan=jpn", "").replace("&lan=zh_tw", "").replace("&lan=zh_cn", "").replace("&lan=kor", "").replace("&lan=cs", "").replace("&lan=es", "").replace("&lan=tr", "").replace("&lan=pl", "").replace("&lan=th", "").replace("&lan=hu", "");
+
+
+        switch(i)
+        {
+
+
+          case 1:
+            //window.close();
+            // parent.location.href= _url+"&lan=ger";
+            parent.location.href = 'http://' + location.hostname + _port + '/de'+ _pathname + _search;
+            break;
+          case 2:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/en'+ _pathname + _search;
+            break;
+          case 3:
+            //parent.location.href= _url+"&lan=fre";
+            parent.location.href = 'http://' + location.hostname + _port + '/fr'+ _pathname + _search;
+            break;
+          case 4:
+            //parent.location.href= _url+"&lan=ita";
+            parent.location.href = 'http://' + location.hostname + _port + '/it'+ _pathname + _search;
+            break;
+          case 5:
+            //parent.location.href= _url+"&lan=dut";
+            parent.location.href = 'http://' + location.hostname + _port + '/nl'+ _pathname + _search;
+            break;
+          case 6:
+            //parent.location.href= _url+"&lan=rus";
+            parent.location.href = 'http://' + location.hostname + _port + '/ru'+ _pathname + _search;
+            break;
+          case 7:
+            //parent.location.href= _url+"&lan=jpn";
+            parent.location.href = 'http://' + location.hostname + _port + '/ja'+ _pathname + _search;
+            break;
+          case 8:
+            //parent.location.href= _url+"&lan=zh_tw";
+            parent.location.href = 'http://' + location.hostname + _port + '/zh-tw'+ _pathname + _search;
+            break;
+          case 9:
+            //parent.location.href= _url+"&lan=zh_cn";
+            /* parent.location.href = 'http://54.222.187.52:10080/zh-cn'+ _pathname + _search;*/
+            parent.location.href = 'http://' + location.hostname + _port + '/zh-cn'+ _pathname + _search;
+            break;
+          case 10:
+            //parent.location.href= _url+"&lan=kor";
+            parent.location.href = 'http://' + location.hostname + _port + '/ko'+ _pathname + _search;
+            break;
+          case 11:
+            //parent.location.href= _url+"&lan=cs";
+            parent.location.href = 'http://' + location.hostname + _port + '/cs'+ _pathname + _search;
+            break;
+          case 12:
+            //parent.location.href= _url+"&lan=es";
+            parent.location.href = 'http://' + location.hostname + _port + '/es'+ _pathname + _search;
+            break;
+          case 13:
+            //parent.location.href= _url+"&lan=tr";
+            parent.location.href = 'http://' + location.hostname + _port + '/tr'+ _pathname + _search;
+            break;
+          case 14:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/en-gb'+ _pathname + _search;
+            break;
+          case 15:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/pt-BR'+ _pathname + _search;
+            break;
+          case 16:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/sv-SE'+ _pathname + _search;
+            break;
+          case 17:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/pl'+ _pathname + _search;
+            break;
+          case 18:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/th'+ _pathname + _search;
+            break;
+          case 19:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/hu'+ _pathname + _search;
+            break;
+          default:
+            parent.location.href="https://www.asustor.com/";
+        }
+
+      }
+      else
+      {
+
+
+
+
+
+
+        switch(i)
+        {
+
+
+
+
+          case 1:
+            //window.close();
+            // parent.location.href= _url+"&lan=ger";
+            parent.location.href = 'http://' + location.hostname + _port + '/de'+ _pathname + location.search;
+            break;
+          case 2:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/en'+ _pathname + location.search;
+            break;
+          case 3:
+            //parent.location.href= _url+"&lan=fre";
+            parent.location.href = 'http://' + location.hostname + _port + '/fr'+ _pathname + location.search;
+            break;
+          case 4:
+            //parent.location.href= _url+"&lan=ita";
+            parent.location.href = 'http://' + location.hostname + _port + '/it'+ _pathname + location.search;
+            break;
+          case 5:
+            //parent.location.href= _url+"&lan=dut";
+            parent.location.href = 'http://' + location.hostname + _port + '/nl'+ _pathname + location.search;
+            break;
+          case 6:
+            //parent.location.href= _url+"&lan=rus";
+            parent.location.href = 'http://' + location.hostname + _port + '/ru'+ _pathname + location.search;
+            break;
+          case 7:
+            //parent.location.href= _url+"&lan=jpn";
+            parent.location.href = 'http://' + location.hostname + _port + '/ja'+ _pathname + location.search;
+            break;
+          case 8:
+            //parent.location.href= _url+"&lan=zh_tw";
+            parent.location.href = 'http://' + location.hostname + _port + '/zh-tw'+ _pathname + location.search;
+            break;
+          case 9:
+            //parent.location.href= _url+"&lan=zh_cn";
+            /* parent.location.href = 'http://54.222.187.52:10080/zh-cn'+ _pathname + location.search;*/
+            parent.location.href = 'http://' + location.hostname + _port + '/zh-cn'+ _pathname + location.search;
+
+            break;
+          case 10:
+            //parent.location.href= _url+"&lan=kor";
+            parent.location.href = 'http://' + location.hostname + _port + '/ko'+ _pathname + location.search;
+            break;
+          case 11:
+            //parent.location.href= _url+"&lan=cs";
+            parent.location.href = 'http://' + location.hostname + _port + '/cs'+ _pathname + location.search;
+            break;
+          case 12:
+            //parent.location.href= _url+"&lan=es";
+            parent.location.href = 'http://' + location.hostname + _port + '/es'+ _pathname + location.search;
+            break;
+          case 13:
+            //parent.location.href= _url+"&lan=tr";
+            parent.location.href = 'http://' + location.hostname + _port + '/tr'+ _pathname + location.search;
+            break;
+          case 14:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/en-gb'+ _pathname + location.search;
+            break;
+          case 15:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/pt-BR'+ _pathname + location.search;
+            break;
+          case 16:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/sv-SE'+ _pathname + location.search;
+            break;
+          case 17:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/pl'+ _pathname + location.search;
+            break;
+          case 18:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/th'+ _pathname + location.search;
+            break;
+          case 19:
+            //parent.location.href= _url+"&lan=en";
+            //window.close();
+            parent.location.href = 'http://' + location.hostname + _port + '/hu'+ _pathname + location.search;
+            break;
+          default:
+            parent.location.href="https://www.asustor.com/";
+        }
+
+      }
+
+    }
+
+
+    /*console.log(_pathname);*/
+
+  }
+
+
+
+</script>
+<style>
+  .input-group {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    width: 100%;
+  }
+  .input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+  }
+  .modal-body
+  {
+    padding: 15px !important
+
+
+
+  }
+
+  #search_Modal .modal-content
+  {
+    /*	background-color: rgba(255,255,255,0.95);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);*/
+
+  }
+
+
+
+</style>
+
+
+<!-- The Modal -->
+<div class="modal fade" id="search_Modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3 class="modal-title"> Search </h3>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+
+
+
+
+        <form name="cse" action="https://www.asustor.com/services/search" target="_self" class="googlesearch">
+
+
+
+          <div class="mv60">
+
+
+
+            <div class="input-group">
+
+
+
+              <input type="hidden" name="cx" value="008378499620172155393:2uwsxqtj-ym">
+
+              <input name="q" type="text" class="form-control keyword" id="search_input" autofocus="">
+
+
+
+              <span class="input-group-btn">
+														<button class="btn btn-info" type="submit"><i class="icofont-search-1"></i></button>
+													</span>
+            </div>
+
+          </div>
+
+
+
+        </form>
+
+
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!--===================-->
+<div id="bg">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+
+        <div class="mt30">
+          <a href="https://www.asustor.com/security/security_advisory" target="_self" class="text-secondary"><span class="glyphicon glyphicon-chevron-left"></span> ASUSTOR Product Security Advisory
+          </a>
+        </div>
+
+
+
+
+        <div class="content_box mt30 mb60">
+          <div class=" mb60" id="">
+
+            <h2></h2><h1>AS-2022-008: ADM: DeadBolt ransomware</h1>
+            <p>2022-06-14</p>
+
+
+            <!--   	<table border="1" style="border-collapse: collapse; width: 50%; border-style: hidden;">
+                    <tbody>
+                        <tr>
+                        <td style="width: 25%; border-style: hidden;">Severity</td>
+                        <td style="width: 25%; border-style: hidden;">Status</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 25%; border-style: hidden;"><span style="font-size: 18pt;"><strong>Important</strong></span></td>
+                        <td style="width: 25%; border-style: hidden;"><span style="font-size: 18pt;"><strong>Ongoing</strong></span></td>
+                        </tr>
+                    </tbody>
+                </table>-->
+
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <p>Severity</p>
+                <h3><strong>Critical</strong></h3>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <p>Status</p>
+                <h3><strong>Resolved</strong></h3>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-0">
+
+              </div>
+
+
+            </div>
+
+
+
+            <hr>
+
+            <p></p><h3><strong>Statement</strong></h3>
+            <p>An emergency update to ADM is provided in response to new Deadbolt ransomware affecting ASUSTOR devices. ASUSTOR urges all users to install the latest version of ADM as soon as possible to protect themselves and minimize the risk of a Deadbolt infection. ASUSTOR also recommends taking measures to guard against the potential harms of Deadbolt in accordance with the previously announced protective measures.</p>
+            <br>
+            <h3><strong>Affected Products</strong></h3>
+            <table class="table table-striped" border="1" style="width: 85%; border: solid #e0e8f1;">
+              <tbody>
+              <tr style="background: LightSeaGreen; color: white; text-align: left;">
+                <th style="width: 20%;">Product</th>
+                <th style="width: 25%;">Severity</th>
+                <th style="width: 45%;">Fixed Release Availability</th>
+              </tr>
+              <tr style="background: MintCream; text-align: left;">
+                <td style="width: 20%;">ADM 4.0</td>
+                <td style="width: 25%;">Critical</td>
+                <td style="width: 45%;">Upgrade to 4.0.5.RUE3 or above.</td>
+              </tr>
+              <tr style="background: MintCream; text-align: left;">
+                <td style="width: 20%;">ADM 3.5</td>
+                <td style="width: 25%;">Critical</td>
+                <td style="width: 45%;">Upgrade to 3.5.9.RUE3 or above.</td>
+              </tr>
+              </tbody>
+            </table>
+            <br>
+            <div class="alert alert-info">
+              <h3><strong>Recommendation</strong></h3>
+              <p>In response to ransomware attacks, ADM firmware has been upgraded to fix related security issues.</p>
+              <p>ASUSTOR strongly recommends taking the following actions to ensure your data is secure:</p>
+              <ul>
+                <li>Change your password.</li>
+                <li>Use a strong password.</li>
+                <li>Change default HTTP and HTTPS ports. Default ports are 8000 and 8001 respectively.</li>
+                <li>Turn off Terminal/SSH and SFTP services and other services you do not use.</li>
+                <li>Make regular backups and ensure backups are up to date.</li>
+              </ul>
+              <p>Keep your ASUSTOR NAS up to date as updates provide security fixes.</p>
+              <p>Click <a target="_blank" href="https://www.asustor.com/online/College_topic?topic=353" rel="noopener"><span style="color: blue;"><u>here</u></span></a> to read more about how to protect your data from ransomware.</p>
+              <br>
+              <p><span class="glyphicon glyphicon-info-sign"></span> If you've been affected by ransomware, please click <a target="_blank" href="https://www.asustor.com/knowledge/detail/?group_id=630" rel="noopener"><span style="color: blue;"><u>here</u></span></a> to read more about how to update ADM.</p>
+            </div>
+            <br>
+            <h3><strong>Detail</strong></h3>
+            <ul>
+              <li>The new DEADBOLT ransomware started to attack certain ASUSTOR NAS devices on June 10. The ransomware encrypts files, renames them with a .deadbolt extension and hijacks the ADM login page with a ransom note.</li>
+            </ul>
+            <br>
+            <h4><strong>Reference</strong></h4>
+            <ul>
+              <li><a href="https://www.asustor.com/knowledge/detail/?group_id=630" target="_blank" rel="noopener">I've been affected by ransomware. What should I do?</a></li>
+            </ul>
+            <br>
+            <h4><strong>Revision</strong></h4>
+            <table class="table table-striped" style="width: 90%;">
+              <tbody>
+              <tr style="background: LightSeaGreen; color: white; text-align: center; border: solid #e0e8f1;">
+                <th style="width: 10%; border: solid #e0e8f1;">Revision</th>
+                <th style="width: 20%; border: solid #e0e8f1;">Date</th>
+                <th style="width: 70%; border: solid #e0e8f1;">Description</th>
+              </tr>
+              <tr style="vertical-align: top; border: solid #e0e8f1;">
+                <td style="width: 10%; border: solid #e0e8f1;">1</td>
+                <td style="width: 20%; border: solid #e0e8f1;">2022-06-10</td>
+                <td style="width: 70%; border: solid #e0e8f1;">Initial public release.</td>
+              </tr>
+              <tr style="vertical-align: top; border: solid #e0e8f1;">
+                <td style="width: 10%; border: solid #e0e8f1;">2</td>
+                <td style="width: 20%; border: solid #e0e8f1;">2022-06-14</td>
+                <td style="width: 70%; border: solid #e0e8f1;">Release ADM 4.0.5.RUE3 and ADM 3.5.9.RUE3 to fix the issue, quarantine the ransom note and recover the ADM login page.</td>
+              </tr>
+              </tbody>
+            </table><p></p>
+
+
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="//cdn.asustor.com/css/top_footer/footer.css?20210326">
+
+<div id="gotop" style="display: none; opacity: 1;">
+  <i class="sprite_layout sprite-go_to_top"></i>
+</div>
+<div class="footer" id="layout_footer" style="margin-bottom:-23px">
+  <div class="container">
+
+    <div class="row mt15">
+      <div class="col-md-2 col-sm-12 col-xs-12 footet_li">
+        <h3> Support</h3>
+        <div class="footer_sub">
+          <a href="https://www.asustor.com/en/service/downloads">Downloads</a>
+          <a href="https://www.asustor.com/en/service/nas_selector">NAS Selector</a>
+          <a href="https://www.asustor.com/en/service/nvr_selector">NVR Selector</a>
+          <a href="https://www.asustor.com/en/service/compatibility">Compatibility</a>
+          <a href="https://www.asustor.com/en/service/RAID_calculator">RAID Calculator</a>
+          <a href="https://support.asustor.com/">Online Support Form</a>
+          <a href="http://www.asustor.com/getting_start/landing?lan=en">Getting Started</a>
+          <a href="http://www.asustor.com/knowledge">FAQ</a>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-12 col-xs-12 footet_li">
+        <h3> ASUSTOR Online</h3>
+        <div class="footer_sub">
+          <a href="https://www.asustor.com/en/live_demo">Live Demo</a>
+          <a href="https://www.asustor.com/en/online/College">ASUSTOR College</a>
+          <a href="https://www.asustor.com/en/online/community">Community</a>
+          <a href="https://www.asustor.com/en/app_central">From App Central</a>
+          <a href="https://developer.asustor.com/">ASUSTOR Developer Corner</a>
+        </div>
+
+      </div>
+      <div class="col-md-2 col-sm-12 col-xs-12 footet_li">
+        <h3> About Us</h3>
+        <div class="footer_sub">
+          <a href="https://www.asustor.com/en/about/about_asustor">About ASUSTOR</a>
+          <a href="https://www.asustor.com/en/news/sNews?year=2022">News</a>
+          <a href="https://www.asustor.com/en/about/contact_us">Contact Us</a>
+          <a href="https://www.asustor.com/en/news/news_list?year=2023">Press Release</a>
+          <a href="https://www.asustor.com/en/news/review?year=2022">Media Review</a>
+          <a href="https://www.asustor.com/en/news/newsletter?year=2022">Newsletter</a>
+          <a href="https://www.asustor.com/en/success_story/">Success Stories</a>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-12 col-xs-12 footet_li">
+        <h3> Other Services</h3>
+        <div class="footer_sub">
+          <a href="https://www.asustor.com/en/about/hiring">Job Opportunities</a>
+          <a href="https://shop.asustor.com/" target="_blank">Accessories Store</a>
+
+
+          <a href="https://www.asustor.com/en/service/where_to_buy">Where to buy</a>
+          <a href="https://www.asus.com" target="_blank">ASUS</a>
+
+
+          <a href="https://www.asustor.com/en/partners">Partners</a>
+          <a href="https://www.asustor.com/en/support/ars"></a>
+          <a href="https://www.asustor.com/en/support/bot"></a>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-12 col-xs-12 footer_icon_wrap">
+
+
+
+        <div class=" footer_icon">
+          <a href="https://www.facebook.com/ASUSTOR.INC" class="sprite_layout sprite-commun_facebook" title="ASUSTOR Facebook" target="_blank" rel="nofollow"><em></em></a>
+        </div>
+
+
+        <div class=" footer_icon">
+          <a href="https://instagram.com/asustor.official/" class="sprite_layout sprite-commun_instagram" title="ASUSTOR Instagram" target="_blank" rel="nofollow"><em></em></a>
+
+
+        </div>
+
+        <div class="footer_icon">
+          <a href="https://twitter.com/ASUSTOR" class="sprite_layout sprite-twitter_btn" title="ASUSTOR Twittwer" target="_blank" rel="nofollow"><em></em></a>
+        </div>
+
+
+        <div class="footer_icon">
+          <a href="https://www.asustor.com/news/rss?lan=en" class="sprite_layout sprite-rss_btn" title="Rss" target="_blank" rel="nofollow"><em></em></a>
+        </div>
+
+
+
+        <div class="footer_icon">
+          <a href="https://www.youtube.com/user/MarketingASUSTOR" class="sprite_layout sprite-youtube_btn" title="ASUSTOR Youtube" target="_blank" rel="nofollow"><em></em></a>
+        </div>
+
+
+        <div class="footer_icon">
+          <a href="http://forum.asustor.com/" class="sprite_layout sprite-asustor_forum_btn" title="ASUSTOR forum" target="_blank" rel="nofollow"><em></em></a>
+
+
+
+        </div>
+
+
+        <div class="footer_icon">
+        </div>
+
+        <div style="clear:both"></div>
+
+
+
+        <!--                                            	<a href="https://www.facebook.com/ASUSTOR.INC" class="sprite_layout sprite-commun_facebook"  title="Asustor_Facebook" target="_blank"><em></em></a>
+
+
+
+
+                                                        <a href="https://plus.google.com/+Asustor/posts" class="sprite_layout sprite-google_plus_btn" title="google_plus" target="_blank"><em></em></a>
+
+
+
+                                                        <a href="https://twitter.com/ASUSTOR" class="sprite_layout sprite-twitter_btn"  title="Asustor_Twittwer" target="_blank"><em></em></a>
+
+
+
+            <a href="https://www.asustor.com/news/rss?lan=en" class="sprite_layout sprite-rss_btn"  title="Rss" target="_blank"><em></em></a>
+
+
+
+
+
+            <a href="https://www.youtube.com/user/MarketingASUSTOR" sprite_layout sprite-youtube_btn title="Asustor_Youtube" target="_blank"><em></em></a>
+
+
+
+                                                          <a href="http://forum.asustor.com/" class="sprite_layout sprite-asustor_forum_btn" title="Asustor_forum" target="_blank"><em></em></a>
+
+
+
+
+
+            <a href="https://weibo.com/cnasustor?refer_flag=1005050010_&is_hot=1" class="sprite_layout sprite-asustor_weibo"  title="Asustor_weibo" target="_blank"><em></em></a>
+
+
+        <div style="clear:both"></div>-->
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 footer_margin"></div>
+
+      <div class="col-md-6 col-sm-12 col-xs-12 footer_lan">
+
+        <a href="javascript: void(0)" class="" data-toggle="modal" data-target="#myModal" id="bottom_lan_modal">
+          <i class="sprite_layout sprite-earth2b"></i>
+          US English
+        </a>
+      </div>
+      <div class="col-md-6 col-sm-12 col-xs-12 footer_copyright">
+
+        <p>Copyright © 2023 ASUSTOR Inc.</p>
+        <p><a href="https://www.asustor.com/terms_of_use">Terms of Use </a> <span> | </span> <a href="https://www.asustor.com/privacy"> Privacy Policy </a></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Google 再营销代码 -->
+<!--------------------------------------------------
+再营销代码不得与个人身份信息相关联，也不得放置在与敏感类别相关的网页上。有关如何设置代码的详细信息和说明，请访问：http://google.com/ads/remarketingsetup
+--------------------------------------------------->
+
+<!--<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/981033279/?value=0&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>-->
+
+<!--</body>
+</html>-->
+<!--<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 981033279;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js" async="async"></script>-->
+
+
+<script>
+  $(function(){
+    $("#gotop").click(function(){
+      jQuery("html,body").animate({
+        scrollTop:0
+      },1000);
+    });
+    $(window).scroll(function() {
+      if ( $(this).scrollTop() > 300){
+        $('#gotop').fadeIn("fast");
+      } else {
+        $('#gotop').stop().fadeOut("fast");
+      }
+    });
+  });
+</script>
+
+
+<script>
+  $(".footet_li h3").click(function(){
+
+    if($(window).width() <= 992)
+    {
+      //alert('123');
+      var _this = $(this);
+      _this.next().slideToggle('fast');
+      return false;
+
+    }
+
+  });
+
+  $(window).resize(function() {
+    if($(window).width() >= 993)
+    {
+      $(".footer_sub").show();
+      $("#m_menu_first").hide();
+    }
+    else
+    {
+      $(".footer_sub").hide();
+      $(".nav_sub").hide();
+
+    }
+  });
+
+</script>
+<script>
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  /* ga('create', 'UA-79599513-1', 'auto');
+    ga('send', 'pageview');*/
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  ga('create', 'UA-79599513-1', 'auto', {'allowLinker': true});
+  ga('require', 'linker');
+  ga('linker:autoLink', ['myasustor.com', 'http://ezconnect.to/'] );
+  ga('send', 'pageview');
+  gtag('config', 'AW-981033279');
+
+</script>
+
+
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-EMKRTE4BT2"></script>
+<script>
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EMKRTE4BT2');
+
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!--<script async src="https://www.googletagmanager.com/gtag/js?id=GTM-KJ5ZGML"></script>
+<script>
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'GTM-KJ5ZGML');
+
+</script>-->
+<!-- End Google Tag Manager -->
+
+
+
+<script src="https://cdn.asustor.com/js/bootstrap334.min.js"></script>
+<script>window.jQuery.fn.modal || document.write('<script src="js/bootstrap.3.3.4.min.js"><\/script>')</script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
+
+
+<script>
+  $(document).ready(function() {
+
+
+
+
+    $('#menu li').click(function(e)
+    {
+      var _this = $(this),
+              _subnav = _this.children('ul');
+      _subnav_close = _subnav;
+
+
+      //===============重複，關閉===========================
+      if(_this.hasClass("active"))
+      {
+        //alert('YYYY');
+        _this.removeClass("active");
+        _this.find("a").css('color', '');
+        $(this).children('ul').stop(true, true).fadeOut(200);
+
+      }//===============重複，關閉===========================
+      else
+      {
+
+        _this.children("a").css('color', '#00a8ff');
+        /*$(".could_link_title").css('color', '#343434');*/
+        _this.addClass("active");
+
+        _this.siblings().removeClass("active");
+        _this.siblings().find("a").css('color', '');
+        /*$(".could_link_title").css('color', '#343434');*/
+
+
+        _subnav.stop(true, true).fadeIn(200);
+        $(this).siblings().children('ul').stop(true, true).fadeOut(200);
+
+      }
+      e.stopPropagation();
+    });
+
+
+    $(document).click(function(event) {
+
+
+
+      //_subnav_close.stop(true, true).fadeOut(200);
+      //_subnav_close.stop().fadeOut(200);
+      $("#menu ul").stop().fadeOut(200);
+      $("#menu li").removeClass("active");
+      $("#menu li").find("a").css('color', '');
+
+    });
+
+    // 幫 #menu li 加上 hover 事件
+    $('#menu li').hover(function(){
+
+      //alert('123123');
+      // 先找到 li 中的子選單
+      var _this = $(this),
+              _subnav = _this.children('ul');
+
+      // 變更目前母選項的背景顏色
+      // 同時淡入子選單(如果有的話)
+      //_this.children("a").css('color', '#46cab0');
+
+
+      //_this.addClass("active");
+      //_subnav.stop(true, true).fadeIn(200);
+
+
+    } , function(){
+      // 變更目前母選項的背景顏色
+      // 同時淡出子選單(如果有的話)
+      // 也可以把整句拆成上面的寫法
+      //$(this).find("a").css('color', '');
+//		$(this).removeClass("active");
+      //$(this).children('ul').stop(true, true).fadeOut(200);
+    });
+
+    // 取消超連結的虛線框
+    $('a').focus(function(){
+      this.blur();
+    });
+
+  });
+</script>
+<script>
+
+  $(document).ready(function(){
+
+    /*=========search_bar================*/
+    /*=========================*/
+
+    /*$('.search_input').focus(function(){
+         $(".search").addClass("search_active");
+           $("#lan").fadeOut(10);
+
+    }).focusout(function() {
+        $(".search").removeClass("search_active");
+        $("#lan").delay("slow").fadeIn(400);
+    });*/
+
+    /*	$('#search_btn').click(function()
+            {
+                $('#search_input').focus();
+                //console.log('123');
+
+            });*/
+    $('.modal').on('shown.bs.modal', function() {
+      $(this).find('[autofocus]').focus();
+    });
+
+
+
+    $("#menu li").click(function(){
+      var _id = $(this).children("a").attr('id');
+
+      var _active = $(this).attr('class');
+
+
+      $(".nav_sub").hide();
+
+
+      if(_active == 'flow active')
+      {
+        $("#nav_sub"+_id).fadeIn("fast");
+      }
+    });
+
+    $(document).click(function(event)
+    {
+      $(".nav_sub").hide();
+      $("#menu ul").stop().fadeOut(200);
+      $("#menu li").removeClass("active");
+      $("#menu li").find("a").css('color', '');
+    });
+
+  });
+
+</script>
+
+
+
+
+</body></html>
