@@ -57,7 +57,7 @@ export class LoginPanelComponent {
   login(f: NgForm) {
     this.authService.onLogin({
       userName: f.value.username,
-      passwordHash: SHA256(f.value.password).toString(),
+      passwordHash: f.value.password,
     });
   }
 
