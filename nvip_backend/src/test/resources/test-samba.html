@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>Samba - Security Announcement Archive</title>
+</head>
+
+<body>
+
+<h2>CVE-2022-38023.html:</h2>
+
+<p>
+</p><pre>===========================================================
+== Subject:     RC4/HMAC-MD5 NetLogon Secure Channel is weak and should be avoided
+==
+== CVE ID#:     CVE-2022-38023
+==
+== Versions:    All versions of Samba
+==
+== Summary:     The "RC4" protection of the NetLogon Secure channel uses the
+==              same algorithms as rc4-hmac cryptography in Kerberos,
+==              and so must also be assumed to be weak.
+===========================================================
+
+===========
+Description
+===========
+
+This is Samba's response to Microsoft's CVE-2022-38023[1][2].
+
+Following RFC8429 and as has been published for CVE-2022-3938, rc4-hmac
+(also known as arcfour-hmac-md5) cryptography in Kerberos is weak,
+then it follows that the RC4 mode in the NETLOGON Secure Channel
+(DCE/RPC bulk encryption) is also weak, as they are the same cipher
+(essentially).
+
+The weakness on NetLogon Secure channel is that the secure checksum is
+calculated as HMAC-MD5(MD5(DATA),KEY), meaning that an active attacker
+knowing the plaintext data could create a different chosen DATA, with
+the same MD5 checksum, and substitute it into the data stream without
+being detected.
+
+Therefore we must disable this cipher.
+
+In this patch we achive this by setting 'reject md5 clients = yes' and
+'reject md5 servers = yes' by default.
+
+Thankfully this cipher is unused by most modern member servers,
+including Windows 7 / Windows 2008R2 and later, as well as
+Samba 4.0 and later, however public documentation suggests[1]
+that NetApp ONTAP still uses RC4 (HMAC-MD5).
+
+The following smb.conf:
+
+   reject md5 clients = yes   # the new default
+   server reject md5 schannel:TRICERATOPS$ = no
+   server reject md5 schannel:GREYWACKE$ = no
+
+will allow only "TRICERATOPS$" and "GREYWACKE$" to use RC4 (HMAC-MD5)
+crypography.
+
+If you really need to support legacy DES based clients, it is now
+also possible to allow them explicitly:
+
+   allow nt4 crypto = no       # the default
+   reject md5 clients = yes    # the new default
+   allow nt4 crypto:NT4CLIENT$ = yes
+   server reject md5 schannel:NT4CLIENT$ = no
+
+Additionally we extend default to requiring a full encrypted NETLOGON
+secure channel.
+
+Encryption of the secure channel not only provides overall privacy
+(particularly against attacks on the individually encrypted elements
+within the NETLOGON protocol), it also strengthens the RC4 (HMAC-MD5)
+cipher.
+
+Clients that do not support NETLOGON Secure Channel encryption can be
+exempted in a similar way.
+
+The following smb.conf:
+
+   server schannel require seal = yes        # the default
+   server schannel require seal:TRICERATOPS$ = no
+   server schannel require seal:GREYWACKE$ = no
+
+will allow only "TRICERATOPS$" and "GREYWACKE$" to avoid encrypted
+schannel and operate with signing-only schannel.
+
+For clients without any netlogon "sign or seal" transport protection
+you will need something like this:
+
+   server schannel = yes                     # the default
+   server schannel require seal = yes        # the default
+   server require schannel:NT4CLIENT$ = no
+   server schannel require seal:NT4CLIENT$ = no
+
+==================
+Patch Availability
+==================
+
+Patches addressing both these issues have been posted to:
+
+    https://www.samba.org/samba/security/
+
+Additionally, Samba 4.15.13, 4.16.8 and 4.17.4 have been issued
+as security releases to correct the defect.  Samba administrators are
+advised to upgrade to these releases or apply the patch as soon
+as possible.
+
+==================
+CVSSv3 calculation
+==================
+
+CVSS:v3.1:AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H (8.1)
+
+Despite this value, please note that this attack requires:
+ * that the connection not be encrypted (which is the default)
+ * that an active attacker obtains a plaintext value of a packet in the NetLogon Secure Channel
+ * and can find another plaintext value with the same MD5 checksum and
+   replace it undetected.
+
+====================
+Workaround and notes
+====================
+
+Setting 'reject md5 clients = yes' (on DCs) and 'reject md5 servers = yes'
+(on DCs and member servers) will avoid this vulnerable protocol,
+but this will reject legacy clients which have worked before.
+
+'winbind sealed pipes = yes' should also be kept at its default value!
+
+Regarding the encryption requirement, thankfully Samba addressed
+SamLogon NTLM session key disclosure issue in CVE-2016-2111.
+
+In preparation of the update to the new Samba version on an AD DC
+would could try to identify legacy clients from (JSON) audit logs
+(if configured). You can find domain member servers that use
+AES (HMAC-SHA256) vs RC4 (HMAC-MD5) via the passwordType
+element.
+
+Note that un-important keys have been dropped for brevity:
+
+{
+  "type": "Authentication",
+  "Authentication": {
+    "remoteAddress": "ipv4:10.53.57.29:37589",
+    "serviceDescription": "NETLOGON",
+    "authDescription": "ServerAuthenticate",
+    "clientAccount": "LOCALADMEMBER$",
+    "becameSid": "S-1-5-21-626540054-1513162547-2555510494-1114",
+    "passwordType": "HMAC-SHA256"
+  }
+}
+
+{
+  "type": "Authentication",
+  "Authentication": {
+    "remoteAddress": "ipv4:10.53.57.11:37767",
+    "serviceDescription": "NETLOGON",
+    "authDescription": "ServerAuthenticate",
+    "clientAccount": "SAMLOGONTEST$",
+    "becameSid": "S-1-5-21-626540054-1513162547-2555510494-1115",
+    "passwordType": "HMAC-MD5"
+  }
+}
+
+With that information you could pre-add lines like this to
+your smb.conf:
+
+  server reject md5 schannel:SAMLOGONTEST$ = no
+
+
+As alternative or in addition you could explicitly configure
+the insecure (former) defaults for a short grace period (of a few days):
+
+   reject md5 clients = no
+   server schannel require seal = no
+
+Subsequently monitor the log files for messages containing the strings
+"CVE-2022-38023" or "CVE-2020-1472", they contain indications for
+missing explicit per client configuration lines. You should
+copy those lines to your smb.conf on a regular basis.
+After some time, when those messages are no longer logged,
+it is safe to remove the insecure (former) defaults and leave
+the new defaults in place. See 'man smb.conf' for more details.
+
+Even with the new secure defaults it is useful to monitor the
+log files in order to identify clients, which are now rejected.
+
+
+==========
+References
+==========
+
+[1] https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-38023
+[2] https://support.microsoft.com/en-us/topic/kb5021130-how-to-manage-the-netlogon-protocol-changes-related-to-cve-2022-38023-46ea3067-3989-4d40-963c-680fd9e8ee25
+[3] https://kb.netapp.com/Advice_and_Troubleshooting/Data_Storage_Software/ONTAP_OS/Microsoft_Security_Advisory%3A_CVE-2020-1472_impact_on_NetApp_appliance_running_CIFS_NFS_utilizing_Netlogon_servers
+
+=======
+Credits
+=======
+
+Microsoft reported this issue at
+https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-38023
+
+Patches provided by Stefan Metzmacher of SerNet and the Samba team.
+
+Advisory written by Andrew Bartlett of Catalyst and the Samba Team.
+
+==========================================================
+== Our Code, Our Bugs, Our Responsibility.
+== The Samba Team
+==========================================================
+
+
+</pre>
+
+</body></html>
