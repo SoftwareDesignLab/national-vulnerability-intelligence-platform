@@ -30,9 +30,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class TrustWaveParser extends AbstractCveParser {
 
@@ -63,15 +61,20 @@ public class TrustWaveParser extends AbstractCveParser {
         Document doc = Jsoup.parse(sCVEContentHTML);
 
         // get page date at top below title
+        String date = "";
         Element dateEl = doc.select("div.blog-post-date").first();
-        String date = Objects.requireNonNull(dateEl).text().split("access_time")[1];
+        if (dateEl != null) {
+            Element datePubEl = dateEl.children().select("span").first();
+            if (datePubEl != null)
+                date = datePubEl.text();
+        }
 
         // get h3's containing CVE-, if none, chances are this page has 1 or 0 CVEs
         Elements cveHeaders = doc.select("h3:contains(CVE-)");
         // for each header found, extract CVE ID, and loop through description below it
         List<String> foundCVEs = new ArrayList<>();
         for (Element cveHeader : cveHeaders) {
-            List<String> lineSplit = Arrays.asList(cveHeader.text().split(" "));
+            String[] lineSplit = cveHeader.text().split(" ");
             // we can assume this String will init based on the query match from above
             String cveId = "";
             for (String s : lineSplit) {
@@ -84,7 +87,7 @@ public class TrustWaveParser extends AbstractCveParser {
             }
             Element next = cveHeader.nextElementSibling();
             StringBuilder description = new StringBuilder();
-            while(!Objects.requireNonNull(next).tagName().contains("h")) {
+            while(next != null && !next.tagName().contains("h")) {
                 description.append(next.text());
                 next = next.nextElementSibling();
             }
@@ -95,7 +98,8 @@ public class TrustWaveParser extends AbstractCveParser {
         // check to see if CVE in title, if any CVE id found does not match current vulnList, add it
         // with desc being Summary or overview
         Element title = doc.select("h1.blog-post-title").first();
-        String[] titleSplit = Objects.requireNonNull(title).text().split(" ");
+        if (title == null) return vulnList;
+        String[] titleSplit = title.text().split(" ");
         List<String> titleCVEs = new ArrayList<>();
         // get each String in titleSplit that matches "CVE-"
         for (String s : titleSplit) {
@@ -115,14 +119,16 @@ public class TrustWaveParser extends AbstractCveParser {
             // get summary
             Elements summaryEl = doc.select("h3:contains(Summary)");
             if (summaryEl.size() > 0) {
-                Element summaryPara = Objects.requireNonNull(summaryEl.first()).nextElementSibling();
-                description = Objects.requireNonNull(summaryPara).text();
+                Element summaryPara = summaryEl.first().nextElementSibling();
+                if (summaryPara != null)
+                    description = summaryPara.text();
             }
             // if !summary, get overview
             else {
                 Element overview = doc.select("h3:contains(Overview)").first();
-                Element overviewPara = Objects.requireNonNull(overview).nextElementSibling();
-                description = Objects.requireNonNull(overviewPara).text();
+                Element overviewPara = overview.nextElementSibling();
+                if (overviewPara != null)
+                    description = overviewPara.text();
             }
             // add it to vuln list
             for (String remainingCVE : titleCVEs) {
@@ -131,9 +137,7 @@ public class TrustWaveParser extends AbstractCveParser {
                 ));
             }
         }
-
-
-
+        
         return vulnList;
     }
 }
