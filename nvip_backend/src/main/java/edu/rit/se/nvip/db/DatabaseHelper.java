@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -340,6 +341,13 @@ public class DatabaseHelper {
 			return date.substring(0, 10) + " " + date.substring(11, 19);
 		}
 
+		Pattern dateRegex = Pattern.compile("(\\d{4}-\\d{2}-\\d{2}|\\d{2}\\/\\d{2}\\/\\d{4})");
+		Matcher regexMatcher = dateRegex.matcher(date);
+
+		if (regexMatcher.find()) {
+			date = regexMatcher.group() + " 00:00:00";
+		}
+
 		try {
 			try {
 				Date dateObj = new Date(date);
@@ -349,7 +357,7 @@ public class DatabaseHelper {
 				formattedDate = df.format(dateObj);
 			}
 		} catch (Exception e) {
-			logger.info("ERROR: Failed to parse date: {}\n{}", date.substring(0, 10), e.toString());
+			logger.info("ERROR: Failed to parse date: {}\n{}", date, e.toString());
 		}
 		return formattedDate;
 	}
