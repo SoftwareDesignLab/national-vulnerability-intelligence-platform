@@ -63,6 +63,18 @@ https://docs.qualcomm.com/product/publicresources/securitybulletin/
 https://security.paloaltonetworks.com/
 https://www.dell.com/support/kbdoc/en-us/
 https://www.trellix.com/en-us/about/newsroom/stories/research/
+https://amperecomputing.com/products/
+https://www.libreoffice.org/about-us/security/advisories/
+https://www.samba.org/samba/security/
+https://security-advisory.acronis.com/advisories
+https://www.veritas.com/content/support/en_US/security/
+https://cybersecurityworks.com/zerodays/
+https://www.dragos.com/advisory/
+https://labs.cyberark.com/cyberark-labs-security-advisories/
+https://www.dotcms.com/security/
+https://pandorafms.com/en/security/common-vulnerabilities-and-exposures/
+
+
 
 https://www.coresecurity.com/core-labs/advisories
 https://www.esentire.com/resources/security-advisories

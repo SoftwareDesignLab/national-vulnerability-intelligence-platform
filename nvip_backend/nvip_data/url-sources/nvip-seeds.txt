@@ -111,3 +111,14 @@ https://www.securityfocus.com/
 https://securiteam.com/category/exploits/
 https://securiteam.com/advisories/
 https://www.zerodayinitiative.com/advisories/published/
+https://amperecomputing.com/products/product-security
+https://www.libreoffice.org/about-us/security/advisories/
+https://www.samba.org/samba/history/security.html
+https://pandorafms.com/en/security/common-vulnerabilities-and-exposures/
+https://www.dotcms.com/docs/latest/known-security-issues
+https://labs.cyberark.com/cyberark-labs-security-advisories/
+https://www.dragos.com/advisories/
+https://cybersecurityworks.com/zerodays-vulnerability-list/
+https://www.veritas.com/content/support/en_US/security/
+https://security-advisory.acronis.com/advisories
+
