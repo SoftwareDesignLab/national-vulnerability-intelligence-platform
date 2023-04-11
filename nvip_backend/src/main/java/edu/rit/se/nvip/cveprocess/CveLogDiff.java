@@ -75,7 +75,7 @@ public class CveLogDiff {
 	 * @param crawlEndTime
 	 * @param newCVEListMap
 	 */
-	public void logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap) {
+	public void logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap, int countFromCNAs) {
 
 		try {
 
@@ -143,7 +143,7 @@ public class CveLogDiff {
 					dateFormat.format(date),
 					(crawlEndTime - crawlStartTime) / 1000,
 					(System.currentTimeMillis() - crawlEndTime) / 1000,
-					totCount,
+					countFromCNAs,
 					newCVEListMap.get("nvd").size(),
 					newCVEListMap.get("mitre").size(),
 					newCVEListMap.get("nvd-mitre").size()));
