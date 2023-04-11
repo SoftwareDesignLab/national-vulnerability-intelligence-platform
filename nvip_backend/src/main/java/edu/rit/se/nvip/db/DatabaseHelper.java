@@ -349,8 +349,7 @@ public class DatabaseHelper {
 				formattedDate = df.format(dateObj);
 			}
 		} catch (Exception e) {
-			logger.info("ERROR: Failed to parse date: {}\n{}", date, e.toString());
-			e.printStackTrace();
+			logger.info("ERROR: Failed to parse date: {}\n{}", date.substring(0, 10), e.toString());
 		}
 		return formattedDate;
 	}

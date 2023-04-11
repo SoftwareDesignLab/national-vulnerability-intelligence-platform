@@ -119,6 +119,7 @@ public class CveCrawlController {
 
         for (String url: urls) {
             try {
+                logger.info("ADDING {} to SEEDS", url);
                 controller1.addSeed(url);
             } catch (Exception e) {
                 logger.warn("WARNING: Error trying to add {} as a seed URL", url);
@@ -133,6 +134,7 @@ public class CveCrawlController {
         }
 
         logger.info("CURRENT CRAWL DEPTH ----> " + config1.getMaxDepthOfCrawling());
+        logger.info("Whitelist: " + whiteList.toArray().toString());
 
         String finalOutputFile = outputFile;
         CrawlController.WebCrawlerFactory<CveCrawler> factory1 = () -> new CveCrawler(whiteList, finalOutputFile);

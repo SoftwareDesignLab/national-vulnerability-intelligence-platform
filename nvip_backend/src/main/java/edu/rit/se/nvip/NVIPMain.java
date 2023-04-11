@@ -324,7 +324,11 @@ public class NVIPMain {
 		File whiteListFile = properties.getWhiteListURLS();
 		Scanner reader = new Scanner(whiteListFile);
 		while (reader.hasNextLine()) {
-			whiteList.add(reader.nextLine());
+			String domain = reader.nextLine();
+			if (domain.length() > 5) {
+				logger.info("Added {} to whitelist", domain);
+				whiteList.add(domain);
+			}
 		}
 
 		HashMap<String, ArrayList<CompositeVulnerability>> cveHashMapScrapedFromCNAs = crawlerController.crawl(urls, whiteList);

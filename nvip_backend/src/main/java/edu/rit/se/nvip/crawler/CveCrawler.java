@@ -87,11 +87,14 @@ public class CveCrawler extends WebCrawler {
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase(Locale.ROOT);
 		if (FILTERS.matcher(href).matches()) {
+			logger.info("{} not allowd", href);
 			return false;
 		}
 
+		logger.info("Checking if {} is in whitelist", href);
 		for (String crawlDomain : myCrawlDomains) {
-			if (href.contains(crawlDomain)) {
+			if (href.startsWith(crawlDomain)) {
+				logger.info("ACCEPTED DOMAIN: {} FOR URL {}", crawlDomain, href);
 				return true;
 			}
 		}
@@ -105,7 +108,11 @@ public class CveCrawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		String pageURL = page.getWebURL().getURL();
-		if (page.getParseData() instanceof HtmlParseData) {
+
+		if (!shouldVisit(page, page.getWebURL())) {
+			logger.info("Skipping URL: {}", pageURL);
+		} else if (page.getParseData() instanceof HtmlParseData) {
+			logger.info("Parsing {}", pageURL);
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			String html = htmlParseData.getHtml();
 
@@ -131,11 +138,9 @@ public class CveCrawler extends WebCrawler {
 						foundCVEs.put(vulnerability.getCveId(), newList);
 					}
 				}
-
 				nvip_logger.info("{} CVEs found at {}", vulnerabilityList.size(),pageURL);
 			}
 		}
-
 	}
 
 	/**
