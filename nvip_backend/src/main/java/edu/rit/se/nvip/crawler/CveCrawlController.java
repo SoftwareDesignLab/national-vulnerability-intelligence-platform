@@ -90,14 +90,6 @@ public class CveCrawlController {
         CrawlConfig config1 = new CrawlConfig();
         CrawlConfig config2 = new CrawlConfig();
 
-        logger.info("ENVVARS\n{}\n{}\n{}\n{}\n{}\n{}",
-                System.getenv("NVIP_OUTPUT_DIR"),
-                System.getenv("NVIP_CRAWLER_POLITENESS"),
-                System.getenv("NVIP_CRAWLER_MAX_PAGES"),
-                System.getenv("NVIP_CRAWLER_DEPTH"),
-                System.getenv("NVIP_CRAWLER_REPORT_ENABLE"),
-                System.getenv("NVIP_NUM_OF_CRAWLER"));
-
         config1.setCrawlStorageFolder(System.getenv("NVIP_OUTPUT_DIR") + "/crawlers/crawler1");
         config2.setCrawlStorageFolder(System.getenv("NVIP_OUTPUT_DIR") + "/crawlers/crawler2");
 

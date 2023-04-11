@@ -1014,6 +1014,11 @@ public class DatabaseHelper {
 				 */
 				int hours = 0;
 				if (recordTimeGap) {
+					if (createdDateTime == null) {
+						// Just use the current date if the create date isn't provided
+						Date date = new Date();
+						createdDateTime = longDateFormatMySQL.format(date);
+					}
 					hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
 					if (!vulnAlreadyInNvd && vuln.doesExistInNvd()) {
 						// if it did not exist in NVD, but found now, record time gap!
@@ -1059,8 +1064,7 @@ public class DatabaseHelper {
 				return timeGapFound;
 
 			} catch (Exception e) {
-				logger.error("Error in checkTimeGaps() {}! Cve record time {}, Cve data {}", e.toString(), createdDateTime,
-						vuln);
+				logger.error("Error in checkTimeGaps() {}! Cve record time {}", e.toString(), createdDateTime);
 				e.printStackTrace();
 			}
 
