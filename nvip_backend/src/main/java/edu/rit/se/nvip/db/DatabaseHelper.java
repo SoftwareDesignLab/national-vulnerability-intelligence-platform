@@ -1016,8 +1016,7 @@ public class DatabaseHelper {
 				if (recordTimeGap) {
 					if (createdDateTime == null) {
 						// Just use the current date if the create date isn't provided
-						Date date = new Date();
-						createdDateTime = longDateFormatMySQL.format(date);
+						createdDateTime = new Date();
 					}
 					hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
 					if (!vulnAlreadyInNvd && vuln.doesExistInNvd()) {

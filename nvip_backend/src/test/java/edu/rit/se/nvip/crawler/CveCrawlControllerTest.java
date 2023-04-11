@@ -21,12 +21,13 @@ public class CveCrawlControllerTest {
         List<String> urls = new ArrayList<>();
         urls.add("https://www.jenkins.io/security/advisory/2023-03-21/");
 
-        CveCrawlController controller = new CveCrawlController();
-        HashMap<String, ArrayList<CompositeVulnerability>> map = controller.crawlwProps(urls, new ArrayList<>());
+        List<String> whiteList = new ArrayList<>();
+        whiteList.add("https://www.jenkins.io/security/advisory");
 
-        System.out.println(map);
+        CveCrawlController controller = new CveCrawlController();
+        HashMap<String, ArrayList<CompositeVulnerability>> map = controller.crawlwProps(urls, whiteList);
 
         assertTrue(map.size() > 0);
-}
+    }
 
 }
