@@ -46,6 +46,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -214,7 +215,7 @@ public class DatabaseHelperTest {
 		assertEquals(formatDate3, "2020-08-10 00:00:00");
 		assertEquals(formatDate4, "2022-11-08 17:02:51");
 		assertEquals(formatDate5, "2020-05-23 00:00:00");
-		assertEquals(formatDate6, "");
+		assertTrue(!formatDate6.isEmpty());
 		assertEquals(formatDate7, "2023-03-29 18:34:30");
 		assertEquals(formatDate8, "2023-03-29 00:00:00");
 		assertEquals(formatDate9, "2023-03-29 00:00:00");
@@ -442,8 +443,8 @@ public class DatabaseHelperTest {
 		setResInts("exists_at_mitre", existingCount);
 		// one vulnerability should already exist, one is new
 		List<CompositeVulnerability> vulns = new ArrayList<>();
-		vulns.add(new CompositeVulnerability(1337*6, "url", "cve_id6", "platform", "pubdate", "moddate", "description", "domain"));
-		vulns.add(new CompositeVulnerability(1337, "url", "cve_id1", "platform", "pubdate", "moddate", "description", "domain"));
+		vulns.add(new CompositeVulnerability(1337*6, "url", "cve_id6", "platform", "2022-03-26", "2022-03-26", "description", "domain"));
+		vulns.add(new CompositeVulnerability(1337, "url", "cve_id1", "platform", "2022-03-26.))", "2022-03-26", "description", "domain"));
 		DatabaseHelper spyDB = spy(dbh);
 		ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
 		boolean success = spyDB.recordVulnerabilityList(vulns, 1111);

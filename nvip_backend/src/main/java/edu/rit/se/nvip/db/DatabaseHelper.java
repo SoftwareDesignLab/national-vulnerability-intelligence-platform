@@ -333,7 +333,9 @@ public class DatabaseHelper {
 		String formattedDate = "";
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		if (date.isEmpty()) {
+		if (date == null || date.isEmpty()) {
+			Date dateObj = new Date();
+			formattedDate = df.format(dateObj);
 			return formattedDate;
 		}
 
@@ -739,11 +741,11 @@ public class DatabaseHelper {
 						pstmt.setString(2, vuln.getDescription());
 						pstmt.setString(3, vuln.getPlatform());
 						pstmt.setString(4, vuln.getPatch());
-						pstmt.setString(5, vuln.getPublishDate());
+						pstmt.setString(5, formatDate(vuln.getPublishDate()));
 
-						pstmt.setString(6, vuln.getLastModifiedDate()); // during insert create date is last modified date
-						pstmt.setString(7, vuln.getLastModifiedDate());
-						pstmt.setString(8, vuln.getFixDate());
+						pstmt.setString(6, formatDate(vuln.getLastModifiedDate())); // during insert create date is last modified date
+						pstmt.setString(7, formatDate(vuln.getLastModifiedDate()));
+						pstmt.setString(8, formatDate(vuln.getFixDate()));
 						/**
 						 * Bug fix: indexes 9 and 10 were wrong
 						 */
@@ -753,7 +755,7 @@ public class DatabaseHelper {
 						pstmt.setInt(12, vuln.getTimeGapMitre());
 						pstmt.executeUpdate();
 					} catch (Exception e) {
-						logger.error(e.toString());
+						logger.error("ERROR: Failed to insert CVE: {}\n{}", vuln.getCveId(), e.toString());
 						continue; // if you have an error here, skip the rest!
 					}
 
@@ -825,25 +827,9 @@ public class DatabaseHelper {
 			pstmt.setString(1, vuln.getDescription());
 			pstmt.setString(2, vuln.getPlatform());
 			pstmt.setString(3, vuln.getPatch());
-
-			if (vuln.getPublishDate() != null && vuln.getPublishDate().contains("T")) {
-				pstmt.setString(4, vuln.getPublishDate().substring(0, 10) + " " + vuln.getPublishDate().substring(11, 19));
-			} else {
-				pstmt.setString(4, vuln.getPublishDate());
-			}
-
-			if (vuln.getLastModifiedDate() != null && vuln.getLastModifiedDate().contains("T")) {
-				pstmt.setString(5, vuln.getLastModifiedDate().substring(0, 10) + " " + vuln.getLastModifiedDate().substring(11, 19));
-			} else {
-				pstmt.setString(5, vuln.getLastModifiedDate());
-			}
-
-			if (vuln.getFixDate() != null && vuln.getFixDate().contains("T")) {
-				pstmt.setString(6, vuln.getFixDate().substring(0, 10) + " " + vuln.getFixDate().substring(11, 19));
-			} else {
-				pstmt.setString(6, vuln.getFixDate());
-			}
-
+			pstmt.setString(4, formatDate(vuln.getPublishDate()));
+			pstmt.setString(5, formatDate(vuln.getLastModifiedDate()));
+			pstmt.setString(6, formatDate(vuln.getFixDate()));
 			pstmt.setString(7, vuln.getCveId()); // WHERE clause in SQL statement
 
 			pstmt.executeUpdate();
@@ -965,6 +951,11 @@ public class DatabaseHelper {
 				 * skip time gap check
 				 */
 				String[] cveParts = vuln.getCveId().split("-");
+
+				if (cveParts.length <= 1) {
+					return false;
+				}
+
 				int cveYear = Integer.parseInt(cveParts[1]);
 				int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 				boolean calculateGap = (cveYear == currentYear);
@@ -972,7 +963,7 @@ public class DatabaseHelper {
 					recordTimeGap = false;
 
 				if (existingAttribs.getCreateDate() == null || existingAttribs.getCreateDate().isEmpty()) {
-					createdDateTime = new Date(existingAttribs.getCreateDate());
+					createdDateTime = longDateFormatMySQL.parse(formatDate(existingAttribs.getCreateDate()));
 				} else {
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
@@ -980,12 +971,11 @@ public class DatabaseHelper {
 				}
 
 				try {
-					lastModifiedDateTime = new Date(formatDate(lastModifiedDateTime.toString()));
+					lastModifiedDateTime = longDateFormatMySQL.parse(formatDate(lastModifiedDateTime.toString()));
 				} catch (Exception e) {
 					lastModifiedDateTime = new Date();
-					logger.error("ERROR: Could not parse last modified date of Cve: {}, Err: {}\nCve data: {}",
+					logger.warn("WARNING: Could not parse last modified date of Cve: {}, Err: {}\nCve data: {}",
 							vuln.getLastModifiedDate(), e.toString(), vuln.toString());
-					e.printStackTrace();
 					recordTimeGap = false;
 				}
 
@@ -1023,7 +1013,10 @@ public class DatabaseHelper {
 				if (recordTimeGap) {
 					if (createdDateTime == null) {
 						// Just use the current date if the create date isn't provided
-						createdDateTime = new Date();
+						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+						LocalDateTime now = LocalDateTime.now();
+						createdDateTime = new Date(dtf.format(now));
+						logger.info("CreateDateTime: {}", createdDateTime);
 					}
 					hours = (int) ChronoUnit.HOURS.between(createdDateTime.toInstant(), lastModifiedDateTime.toInstant());
 					if (!vulnAlreadyInNvd && vuln.doesExistInNvd()) {
@@ -1071,7 +1064,6 @@ public class DatabaseHelper {
 
 			} catch (Exception e) {
 				logger.error("Error in checkTimeGaps() {}! Cve record time {}", e.toString(), createdDateTime);
-				e.printStackTrace();
 			}
 
 		}
@@ -1112,8 +1104,7 @@ public class DatabaseHelper {
 				logger.warn("WARNING: Failed to parse last modified date: {}", vuln.getLastModifiedDate());
 				pstmt.setTimestamp(9, new java.sql.Timestamp(longDateFormatMySQL.parse(formatDate(vuln.getPublishDate())).getTime()));
 			}
-			pstmt.setTimestamp(10,
-					new java.sql.Timestamp(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
+			pstmt.setTimestamp(10, new java.sql.Timestamp(longDateFormatMySQL.parse(existingAttribs.getCreateDate()).getTime()));
 			pstmt.executeUpdate();
 			logger.info("Recorded CVE status change for CVE {}", vuln.getCveId());
 		} catch (Exception e) {
@@ -1798,7 +1789,7 @@ public class DatabaseHelper {
 			pstmt.setInt(1, exploit.getVulnId());
 			pstmt.setString(2, exploit.getCveId());
 			pstmt.setInt(3, exploit.getPublisherId());
-			pstmt.setString(4, exploit.getPublishDate());
+			pstmt.setString(4, formatDate(exploit.getPublishDate()));
 			pstmt.setString(5, exploit.getPublisherUrl());
 			pstmt.setString(6, exploit.getDescription());
 			pstmt.setString(7, exploit.getExploitCode());
