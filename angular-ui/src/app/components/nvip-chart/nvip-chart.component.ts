@@ -33,11 +33,11 @@ import { ChartsService, ChartType, SingleDatum } from 'src/app/services/Chart/ch
 })
 export class NvipChartComponent implements OnInit, OnDestroy {
   @Input() chartType!: ChartType;
-  @Output() loaded = new EventEmitter<{loaded: boolean}>;
+  @Output() loaded = new EventEmitter<{ loaded: boolean }>;
 
   mySubscription: Subscription | undefined;
 
-  data: SingleDatum[] = [];
+  data: { name: string, series: SingleDatum[] }[] = [{ name: "", series: [] }];
   chartsService: ChartsService;
   options = {
     roundEdges: false,
@@ -65,8 +65,11 @@ export class NvipChartComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
 
-    this.chartsService.getData().subscribe((data) => this.data = data[this.chartType])
-    if(this.chartType == 2){
+    this.chartsService.getData().subscribe((data) => {
+      console.log(data[this.chartType]);
+      this.data = [{ name: this.chartType.toLocaleString(), series: data[this.chartType] }];
+    })
+    if (this.chartType == 2) {
       this.options.yAxisLabel = "Hours"
     }
     this.loaded.emit({ loaded: true })
