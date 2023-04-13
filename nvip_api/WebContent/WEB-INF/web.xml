@@ -22,7 +22,7 @@
     <init-param>
       <param-name>cors.allowed.origins</param-name>
       <param-value>http://nvip-ui.s3-website-us-east-1.amazonaws.com, https://nvip-ui.s3-website-us-east-1.amazonaws.com,
-        https://www.cve.live, https://www-staging.cve.live</param-value>
+        https://www.cve.live, https://www-staging.cve.live, http://www-staging.cve.live.s3-website-us-east-1.amazonaws.com/</param-value>
     </init-param>
   </filter>
   <filter-mapping>
