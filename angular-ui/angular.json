@@ -47,6 +47,14 @@
               ],
               "outputHashing": "all"
             },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ]
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -70,6 +78,10 @@
             "production": {
               "browserTarget": "angular-ui:build:production",
               "proxyConfig": "proxy.conf.json"
+            },
+            "staging": {
+              "browserTarget": "angular-ui:build:staging",
+              "proxyConfig": "proxy.staging.conf.json"
             },
             "development": {
               "browserTarget": "angular-ui:build:development",
