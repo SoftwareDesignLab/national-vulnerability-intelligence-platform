@@ -267,15 +267,15 @@ public class NVIPMain {
 		/**
 		 * Scrape CVE summary pages (frequently updated CVE providers)
 		 */
-		int count = 0;
+		int countCVEsNotInMitreGithub = 0;
 		QuickCveCrawler crawler = new QuickCveCrawler();
 		List<CompositeVulnerability> list = crawler.getCVEsfromKnownSummaryPages();
 		for (CompositeVulnerability vuln : list)
 			if (!cveHashMapGithub.containsKey(vuln.getCveId())) {
-				count++;
+				countCVEsNotInMitreGithub++;
 				cveHashMapGithub.put(vuln.getCveId(), vuln);
 			}
-		logger.info("{} of {} CVEs found in the CNA summary pages did not exist in the Mitre GitHub repo.", count, list.size());
+		logger.info("{} of {} CVEs found in the CNA summary pages did not exist in the Mitre GitHub repo.", countCVEsNotInMitreGithub, list.size());
 
 		/**
 		 * crawl CVE from CNAs
@@ -328,7 +328,7 @@ public class NVIPMain {
 
 		// log .csv files
 		logger.info("Creating output CSV files...");
-		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap);
+		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap, countCVEsNotInMitreGithub + cveHashMapScrapedFromCNAs.size());
 
 		// record additional available stats
 		recordAdditionalStats(databaseHelper, runId, dailyRunStats, crawlStartTime, crawlEndTime, dbTime);

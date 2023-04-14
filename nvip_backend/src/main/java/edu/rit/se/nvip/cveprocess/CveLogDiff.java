@@ -75,10 +75,10 @@ public class CveLogDiff {
 	 * @param crawlEndTime
 	 * @param newCVEListMap
 	 */
-	public void logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap) {
+	public void logAndDiffCVEs(long crawlStartTime, long crawlEndTime, HashMap<String, List<Object>> newCVEListMap, int countFromCNAs) {
 
 		try {
-			
+
 			Calendar cal = Calendar.getInstance();
 			String subDirName = UtilHelper.getPastDayAsShortDate(cal, 0);
 
@@ -135,9 +135,18 @@ public class CveLogDiff {
 			 */
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date date = new Date();
-			String sSummary = "*** NVIP Run ***" + "\nDate: " + dateFormat.format(date) + "\nTotal crawl time (s): " + (crawlEndTime - crawlStartTime) / 1000 + "\nTotal time for analysis & database update (s): "
-					+ (System.currentTimeMillis() - crawlEndTime) / 1000 + "\nTotal # of CVEs: " + totCount + "\nTotal # of CVEs (Not In NVD): " + newCVEListMap.get("nvd").size() + "\nTotal # of CVEs (Not In MITRE): "
-					+ newCVEListMap.get("mitre").size() + "\nTotal # of CVEs (Not In Both): " + newCVEListMap.get("nvd-mitre").size();
+
+			StringBuilder runSummary = new StringBuilder();
+			String runSummaryFormat = "*** NVIP Run ***\nDate: %s\nTotal crawl time (s): %d\nTotal time for analysis & database update (s):%d\nTotal # of CVEs: %d\nTotal # of CVEs (Not In NVD): %d\nTotal # of CVEs (Not In MITRE): %d\nTotal # of CVEs (Not In Both): %d";
+
+			runSummary.append(String.format(runSummaryFormat,
+					dateFormat.format(date),
+					(crawlEndTime - crawlStartTime) / 1000,
+					(System.currentTimeMillis() - crawlEndTime) / 1000,
+					countFromCNAs,
+					newCVEListMap.get("nvd").size(),
+					newCVEListMap.get("mitre").size(),
+					newCVEListMap.get("nvd-mitre").size()));
 
 			// log time gaps for NVD/MITRE if any?
 			int countNvd = 0, countMitre = 0;
@@ -152,13 +161,15 @@ public class CveLogDiff {
 					if (obj instanceof CompositeVulnerability) {
 						CompositeVulnerability vuln = (CompositeVulnerability) obj;
 						if (vuln.getTimeGapNvd() > 0) {
-							line = vuln.getTimeGapNvd() + "\t" + vuln.getCveId() + "\t" + vuln.getLastModifiedDate() + "\t" + Arrays.deepToString(vuln.getSourceURL().toArray()) + "\n";
+							line = vuln.getTimeGapNvd() + "\t" + vuln.getCveId() + "\t" + vuln.getLastModifiedDate() + "\t"
+									+ Arrays.deepToString(vuln.getSourceURL().toArray()) + "\n";
 							sbNvd.append(line);
 							countNvd++;
 						}
 
 						if (vuln.getTimeGapMitre() > 0) {
-							line = vuln.getTimeGapMitre() + "\t" + vuln.getCveId() + "\t" + vuln.getLastModifiedDate() + "\t" + Arrays.deepToString(vuln.getSourceURL().toArray()) + "\n";
+							line = vuln.getTimeGapMitre() + "\t" + vuln.getCveId() + "\t" + vuln.getLastModifiedDate() + "\t"
+									+ Arrays.deepToString(vuln.getSourceURL().toArray()) + "\n";
 							sbMitre.append(line);
 							countMitre++;
 						}
@@ -177,13 +188,14 @@ public class CveLogDiff {
 			}
 
 			// CVEs New Today & CVEs disappeared: In the not in [NVD & MITRE] list
-			sSummary += logCveDifferencesComparedToPrevRun(newCVEListMap.get("nvd-mitre"), csvLogger, subDirName);
-			sSummary += "\nToday " + countNvd + " and " + countMitre + " CVE entries appeared at NVD and MITRE feeds, respectively!";
+			runSummary.append(logCveDifferencesComparedToPrevRun(newCVEListMap.get("nvd-mitre"), csvLogger, subDirName));
+			runSummary.append(String.format("\nToday %d and %d CVE entries appeared at NVD and MITRE feeds, respecively!",
+					countNvd, countMitre));
 
 			// write summary info to file
 			filepath = propertiesNvip.getOutputDir() + "/" + subDirName + "/" + "Readme.txt";
-			FileUtils.writeStringToFile(new File(filepath), sSummary);
-			logger.info(sSummary);
+			FileUtils.writeStringToFile(new File(filepath), runSummary.toString());
+			logger.info(runSummary.toString());
 
 		} catch (Exception e) {
 			logger.error("Error in logAndDiffCVEs(): " + e);
@@ -200,7 +212,8 @@ public class CveLogDiff {
 	 * @param subDirName
 	 * @param dailyRunStats               TODO
 	 */
-	private String logCveDifferencesComparedToPrevRun(List<Object> newCVENotExistAnyWhereToday, CsvUtils csvLogger, String subDirName) {
+	private String logCveDifferencesComparedToPrevRun(List<Object> newCVENotExistAnyWhereToday, CsvUtils csvLogger,
+			String subDirName) {
 		StringBuffer sBuffer = new StringBuffer();
 		try {
 			Calendar cal = Calendar.getInstance();
@@ -211,7 +224,8 @@ public class CveLogDiff {
 			File pathPreviousNvipResults = null;
 			while (days < dayLimit) {
 				String sDate = UtilHelper.getPastDayAsShortDate(cal, days);
-				pathPreviousNvipResults = new File(propertiesNvip.getOutputDir() + "/" + sDate + "/cve_not_in_nvd_and_mitre.csv");
+				pathPreviousNvipResults = new File(
+						propertiesNvip.getOutputDir() + "/" + sDate + "/cve_not_in_nvd_and_mitre.csv");
 				if (pathPreviousNvipResults.exists())
 					break;
 
@@ -238,7 +252,8 @@ public class CveLogDiff {
 				setCveIdToday.add(id);
 			}
 
-			setCveIdToday.removeAll(setCveIdPrevious); // setCveIdToday now contains only the lines which are not in setCveIdPrevious
+			setCveIdToday.removeAll(setCveIdPrevious); // setCveIdToday now contains only the lines which are not in
+																									// setCveIdPrevious
 
 			// filter the ones from yesterdays list that are new!
 			List<Object> cveNewToday = new ArrayList<>();
@@ -258,7 +273,6 @@ public class CveLogDiff {
 
 			} else
 				str = "\nNo new CVEs (not in[nvd and mitre]) today *** !";
-			
 
 			sBuffer.append(str);
 			logger.info(str);
@@ -334,7 +348,8 @@ public class CveLogDiff {
 			FileUtils.writeLines(file, combinedList, false);
 			countCombined = combinedList.size();
 
-			logger.info("Refreshed crawl URL list at: " + crawlUrlSourcesPath + ", # of URLS: Existing: " + countPrev + ", Current: " + countNew + ", Combined: " + countCombined);
+			logger.info("Refreshed crawl URL list at: " + crawlUrlSourcesPath + ", # of URLS: Existing: " + countPrev
+					+ ", Current: " + countNew + ", Combined: " + countCombined);
 
 			String sourceUrlPathNvipResources = "src/main/resources/cvesources/nvip-url-sources.csv";
 			FileUtils.writeLines(new File(sourceUrlPathNvipResources), combinedList, false);
