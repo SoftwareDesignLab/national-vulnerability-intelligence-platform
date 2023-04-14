@@ -25,11 +25,9 @@ package edu.rit.se.nvip.cveprocess;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,10 +44,22 @@ import edu.rit.se.nvip.utils.CsvUtils;
  *
  */
 public class CveProcessor {
+	public static final String ALL_CVE_KEY = "all";
+	public static final String NVD_CVE_KEY = "nvd";
+	public static final String MITRE_CVE_KEY = "mitre";
+	public static final String NVD_MITRE_CVE_KEY = "nvd-mitre";
+
 	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	private final HashMap<String, Integer> hashMapNvdCve = new HashMap<>();
-	private final HashMap<String, Integer> hashMapMitreCve = new HashMap<>();
+
+	private Set<String> cvesInNvd = new HashSet<>();
+	private Set<String> cvesInMitre = new HashSet<>();
+
 	CveReconciler cveUtils = new CveReconciler();
+
+	public CveProcessor(Set<String> nvdCves, Set<String> mitreCves){
+		this.cvesInNvd = nvdCves;
+		this.cvesInMitre = mitreCves;
+	}
 
 	public CveProcessor(String nvdCvePath, String mitreCvePath) {
 		try {
@@ -61,7 +71,7 @@ public class CveProcessor {
 			List<String> arrNVD = FileUtils.readLines(new File(nvdCvePath));
 			for (String cve : arrNVD) {
 				String id = cve.split(csvLogger.getSeparatorCharAsRegex())[0]; // get the first item, i.e. the CVE ID
-				hashMapNvdCve.put(id, 0);
+				cvesInNvd.add(id);
 			}
 
 			/**
@@ -70,30 +80,31 @@ public class CveProcessor {
 			arrNVD = FileUtils.readLines(new File(mitreCvePath));
 			for (String cve : arrNVD) {
 				String id = cve.split(csvLogger.getSeparatorCharAsRegex())[0]; // get the first item, i.e. the CVE ID
-				hashMapMitreCve.put(id, 0);
+				cvesInMitre.add(id);
 			}
 
 		} catch (IOException e) {
 			logger.error("Error while loading NVD/MITRE CVEs!" + e);
 			System.exit(1); // This is a serious error, exit!
 		}
-		logger.info("Loaded cve data for NVD(" + hashMapNvdCve.size() + ") and MITRE(" + hashMapMitreCve.size() + ")");
+		logger.info("Loaded cve data for NVD(" + cvesInNvd.size() + ") and MITRE(" + cvesInNvd.size() + ")");
 	}
 
 	/**
 	 * Process CVEs to identify the ones not in NVD and MITRE
-	 * 
+	 *
 	 * @param hashMapNvipCve
 	 * @return
 	 */
-	public HashMap<String, List<Object>> checkAgainstNvdMitre(HashMap<String, CompositeVulnerability> hashMapNvipCve) {
+	public HashMap<String, List<Object>> checkAgainstNvdMitre(Map<String, CompositeVulnerability> hashMapNvipCve) {
+
 		HashMap<String, List<Object>> newCVEMap = new HashMap<>();
 		logger.info("Comparing with NVD and MITRE");
 		// get list from hash map
-		List<Object> allCveData = new ArrayList<>();
-		List<Object> newCVEDataNotInMitre = new ArrayList<>();
-		List<Object> newCVEDataNotInNvd = new ArrayList<>();
-		List<Object> newCVEDataNotInNvdAndMitre = new ArrayList<>();
+		Set<Object> allCveData = new HashSet<>();
+		Set<Object> newCVEDataNotInMitre = new HashSet<>();
+		Set<Object> newCVEDataNotInNvd = new HashSet<>();
+
 		for (CompositeVulnerability vuln : hashMapNvipCve.values()) {
 			try {
 				// If somehow a wrong CVE id is found, ignore it
@@ -104,54 +115,50 @@ public class CveProcessor {
 					continue;
 				}
 
-				/**
-				 * [CVE does not exist in the NVD] OR [it is reserved etc. in NVD but NVIP found
-				 * a description for it]
-				 */
-				if (!hashMapNvdCve.containsKey(vuln.getCveId()) || vuln.isFoundNewDescriptionForReservedCve()) {
-					//logger.info("CVE: {}, is NOT in NVD", vuln.getCveId());
+				allCveData.add(vuln);
+
+				if(vuln.isFoundNewDescriptionForReservedCve()) {
+					logger.info("CVE: {} has new description for Reserved Cve", vuln.getCveId());
+					vuln.setMitreStatus(1);
+					vuln.setNvdStatus(1);
+					newCVEDataNotInMitre.add(vuln);
+					newCVEDataNotInNvd.add(vuln);
+					continue;
+				}
+
+				if(cvesInNvd.contains(vuln.getCveId())){
+					logger.info("CVE: {} is in NVD: Setting status to 1", vuln.getCveId());
+					vuln.setNvdStatus(1);
+				} else {
+					logger.info("CVE: {}, is NOT in NVD", vuln.getCveId());
 					vuln.setNvdSearchResult("NA");
-					int status = 0;
-//					if (vuln.isFoundNewDescriptionForReservedCve())
-//						status = -1;
-					vuln.setNvdStatus(status);
 					newCVEDataNotInNvd.add(vuln);
 				}
 
-				/**
-				 * [CVE does not exist in the MITRE] OR [it is reserved etc. in MITRE but NVIP
-				 * found a description for it]
-				 */
-				if (!hashMapMitreCve.containsKey(vuln.getCveId()) || vuln.isFoundNewDescriptionForReservedCve()) {
-					//logger.info("CVE: {}, is NOT in MITRE", vuln.getCveId());
+				if(cvesInMitre.contains(vuln.getCveId())){
+					logger.info("CVE: {} is in NVD: Setting status to 1", vuln.getCveId());
+					vuln.setMitreStatus(1);
+				} else {
+					logger.info("CVE: {}, is NOT in NVD", vuln.getCveId());
 					vuln.setNvdSearchResult("NA");
-					int status = 0;
-//					if (vuln.isFoundNewDescriptionForReservedCve())
-//						status = -1;
-					vuln.setMitreStatus(status);
 					newCVEDataNotInMitre.add(vuln);
 				}
 
-				// not in both?
-				if (!vuln.doesExistInNvd() && !vuln.doesExistInMitre()) {
-					//logger.info("CVE: {}, is NOT in either", vuln.getCveId());
-					newCVEDataNotInNvdAndMitre.add(vuln);
-				}
-
-				// add to all CVEs list
-				allCveData.add(vuln);
 			} catch (Exception e) {
 				logger.error("ERROR: Error while checking against NVD/MITRE, CVE: {}", vuln.getCveId());
 			}
 		}
 
-		newCVEMap.put("all", allCveData); // all CVEs
-		newCVEMap.put("mitre", newCVEDataNotInMitre); // CVEs not in Mitre
-		newCVEMap.put("nvd", newCVEDataNotInNvd); // CVEs not in Nvd
-		newCVEMap.put("nvd-mitre", newCVEDataNotInNvdAndMitre); // CVEs not in Nvd and Mitre
+		newCVEMap.put("all", Arrays.asList(allCveData.toArray())); // all CVEs
+		newCVEMap.put("mitre", Arrays.asList(newCVEDataNotInMitre.toArray())); // CVEs not in Mitre
+		newCVEMap.put("nvd", Arrays.asList(newCVEDataNotInNvd.toArray())); // CVEs not in Nvd
+		newCVEMap.put("nvd-mitre", Arrays.asList(SetUtils.intersection(newCVEDataNotInMitre, newCVEDataNotInNvd).toArray())); // CVEs not in Nvd and Mitre
 
-		logger.info("Out of {} total valid CVEs crawled: \n{} do not appear in NVD, \n{} not in MITRE and \n{} not in either!", allCveData.size(), newCVEDataNotInNvd.size(), newCVEDataNotInMitre.size(),
-				newCVEDataNotInNvdAndMitre.size());
+		logger.info("Out of {} total valid CVEs crawled: \n{} does not appear in NVD, \n{} does not appear in MITRE and \n{} are not in either!",
+				newCVEMap.get(ALL_CVE_KEY).size(),
+				newCVEMap.get(NVD_CVE_KEY).size(),
+				newCVEMap.get(MITRE_CVE_KEY).size(),
+				newCVEMap.get(NVD_MITRE_CVE_KEY).size());
 
 		return newCVEMap;
 	}
