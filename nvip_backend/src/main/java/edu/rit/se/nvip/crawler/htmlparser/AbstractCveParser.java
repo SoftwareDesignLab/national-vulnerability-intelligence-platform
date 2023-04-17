@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  */
 public abstract class AbstractCveParser {
 
-	protected final String regexCVEID = "CVE-\\\\d{4}-\\\\d{4,7}";
+	protected final String regexCVEID = "CVE-[0-9]+-[0-9]+";
 	protected final String regexVersionInfo = "(?:(\\d+\\.(?:\\d+\\.)*\\d+))";
 	protected final String regexAllCVERelatedContent = ".*(affect|attack|bypass|cve|execut|fix|flaw|permission|vulnerab|CVE|Mitigat|(?:(\\d+\\.(?:\\d+\\.)*\\d+))).*";
 	protected final String regexDateFormat = "([a-zA-Z]+ [0-9]+, [0-9]+)";
