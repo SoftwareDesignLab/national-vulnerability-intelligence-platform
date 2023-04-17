@@ -335,7 +335,7 @@ public class DatabaseHelper {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		if (date == null || date.isEmpty()) {
-			Date dateObj = new Date();
+			dateObj = new Date();
 			formattedDate = df.format(dateObj);
 			return formattedDate;
 		}

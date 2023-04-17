@@ -150,7 +150,7 @@ public class NVIPMain {
 
 		// log .csv files
 		logger.info("Creating output CSV files...");
-		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap);
+		cveLogger.logAndDiffCVEs(crawlStartTime, crawlEndTime, cveListMap, cveListMap.size());
 
 		// record additional available stats
 		dailyRunStats.setCrawlTimeMin((float) ((crawlEndTime - crawlStartTime) / (1000.0 * 60)));
