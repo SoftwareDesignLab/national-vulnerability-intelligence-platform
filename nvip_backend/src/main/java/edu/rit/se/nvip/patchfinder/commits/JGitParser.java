@@ -125,7 +125,8 @@ public class JGitParser {
 
 			logger.info("Repo " + projectName + " successfully cloned!");
 		} catch (Exception e) {
-			logger.info(e.getMessage());
+			logger.error("ERROR: Failed to clone repo @ {}", remoteLoc);
+			e.printStackTrace();
 		}
 	}
 

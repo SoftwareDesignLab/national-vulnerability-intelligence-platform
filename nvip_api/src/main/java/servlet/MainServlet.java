@@ -81,6 +81,7 @@ public class MainServlet extends HttpServlet {
 			resp.setCharacterEncoding("UTF-8");
 			resp.getWriter().write(jObj);
 		} catch (IOException e) {
+			ServletUtil.setResponse(resp, 500, "Something is wrong!");
 			logger.error(e.toString());
 		}
 	}

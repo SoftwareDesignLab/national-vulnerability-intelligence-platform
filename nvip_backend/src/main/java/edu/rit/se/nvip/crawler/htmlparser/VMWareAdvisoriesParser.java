@@ -33,7 +33,6 @@ import java.util.*;
 
 /**
  * Parse CVEs at VMWare advisory
- * TODO: Extract CVSS Scores from descriptions
  * @author axoeec, aep7128
  *
  */

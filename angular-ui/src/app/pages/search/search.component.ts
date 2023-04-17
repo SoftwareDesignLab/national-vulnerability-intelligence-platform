@@ -198,7 +198,6 @@ export class SearchComponent implements OnInit {
 
       this.searchResults = [];
       this.filteredSearchResults = [];
-      console.log(this.search);
       this.apiService
         .cveSearch({ ...this.search, username: username, token: token })
         .subscribe({
@@ -237,7 +236,6 @@ export class SearchComponent implements OnInit {
    * stored or newly received
    */
   handleRes(res: any) {
-    console.log(res);
     this.resultTotalCount = res[res.length - 1];
     this.searchResults = res;
     this.searchSuccess = true;

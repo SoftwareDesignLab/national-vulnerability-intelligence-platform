@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style=""><!--<![endif]--><head>
+  <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+  <title>CVE-2019-9850 | LibreOffice - Free Office Suite - Based on OpenOffice - Compatible with Microsoft</title>
+  <meta name="generator" content="SilverStripe - http://silverstripe.org">
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+
+  <base href="https://www.libreoffice.org/"><!--[if lte IE 6]></base><![endif]-->
+  <meta name="flattr:id" content="mr7ne2">
+  <meta name="twitter:dnt" content="on">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--        <link href='//fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'> -->
+  <link rel="shortcut icon" href="/themes/libreofficenew/favicon.ico">
+
+  <link href="/themes/libreofficenew/css/Lato2-new.css" rel="stylesheet" type="text/css">
+  <link href="/themes/libreofficenew/css/LocalisationAvailableNotification.css" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+  <script type="text/javascript" defer="" async="" src="https://piwik.documentfoundation.org/piwik.js"></script><script src="themes/libreofficenew/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/themes/libreofficenew/css/bootstrap.min.css?m=1396490701">
+  <link rel="stylesheet" type="text/css" href="/themes/libreofficenew/css/font-awesome.min.css?m=1389089681">
+  <link rel="stylesheet" type="text/css" href="/themes/libreofficenew/css/main.css?m=1603987327">
+  <link rel="stylesheet" type="text/css" href="/themes/libreofficenew/css/flexslider.css?m=1390320474">
+  <link rel="stylesheet" type="text/css" href="/themes/libreofficenew/css/LocalisationAvailableNotification.css?m=1581345458">
+</head>
+<body class="Page" id="cve-2019-9850" style="">
+
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> or <a href="https://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+
+
+  <div class="localisation_available_notification">
+    <p>
+      <a href="//www.libreoffice.org">English</a> | <a href="//zh-cn.libreoffice.org">中文 (简体)</a> | <a href="//de.libreoffice.org">Deutsch</a> | <a href="//es.libreoffice.org">Español</a> | <a href="//fr.libreoffice.org">Français</a> | <a href="//it.libreoffice.org">Italiano</a> |
+      <a href="//www.libreoffice.org/community/nlc">More...</a>
+    </p>
+  </div>
+
+
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand img-responsive" href="/"><img style="width:230px; height:auto;" src="themes/libreofficenew/img/logo.png" alt="logo"></a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+
+        <li>
+
+          <a href="/discover/libreoffice/" class="link dropdown-toggle" data-toggle="dropdown">Discover<b class="caret"></b></a>
+          <ul class="dropdown-menu"><li><a href="/discover/libreoffice/" class="link">What is LibreOffice?</a></li><li><a href="/discover/libreoffice-technology/" class="link">LibreOffice Technology</a></li><li><a href="/discover/new-features/" class="link">New Features</a></li><li><a href="/discover/writer/" class="link">Writer – word processor</a></li><li><a href="/discover/calc/" class="link">Calc – spreadsheet</a></li><li><a href="/discover/impress/" class="link">Impress – presentations</a></li><li><a href="/discover/draw/" class="link">Draw –&nbsp;diagrams</a></li><li><a href="/discover/base/" class="link">Base –&nbsp;database</a></li><li><a href="/discover/math/" class="link">Math –&nbsp;formula editor</a></li><li><a href="/discover/charts/" class="link">Charts</a></li><li><a href="/discover/what-is-opendocument/" class="link">What is OpenDocument?</a></li><li><a href="/discover/libreoffice-vs-openoffice/" class="link">LibreOffice vs OpenOffice</a></li><li><a href="/discover/templates-and-extensions/" class="link">Templates &amp; Extensions</a></li><li><a href="/discover/who-uses-libreoffice/" class="link">Who uses LibreOffice?</a></li><li><a href="/discover/screenshots/" class="link">Screenshots</a></li></ul>
+
+        </li>
+
+        <li>
+
+          <a href="/download/download-libreoffice/" class="link dropdown-toggle" data-toggle="dropdown">Download<b class="caret"></b></a>
+          <ul class="dropdown-menu"><li><a href="/download/download-libreoffice/" class="link">Download LibreOffice</a></li><li><a href="/download/libreoffice-in-business/" class="link">Business users: click here</a></li><li><a href="/download/android-and-ios/" class="link">LibreOffice for Android and iOS</a></li><li><a href="/download/libreoffice-from-microsoft-and-mac-app-stores/" class="link">App Stores and Chromebooks</a></li><li><a href="/download/release-notes/" class="link">Release Notes</a></li><li><a href="/download/pre-releases/" class="link">Development versions</a></li><li><a href="/download/portable-versions/" class="link">Portable versions</a></li><li><a href="/download/flatpak/" class="link">LibreOffice as Flatpak</a></li><li><a href="/download/snap/" class="link">LibreOffice as Snap</a></li><li><a href="/download/appimage/" class="link">LibreOffice as AppImage</a></li><li><a href="/download/impress-remote-2/" class="link">LibreOffice Impress Remote</a></li><li><a href="/download/libreoffice-online/" class="link">LibreOffice Online</a></li></ul>
+
+        </li>
+
+        <li>
+
+          <a href="/get-help/feedback/" class="link dropdown-toggle" data-toggle="dropdown">Get Help<b class="caret"></b></a>
+          <ul class="dropdown-menu"><li><a href="/get-help/feedback/" class="link">Feedback</a></li><li><a href="/get-help/community-support/" class="link">Community Assistance</a></li><li><a href="https://documentation.libreoffice.org/en/english-documentation/" class="link">Documentation</a></li><li><a href="/get-help/install-howto/" class="link">Installation Instructions</a></li><li><a href="/get-help/professional-support/" class="link">Professional Support</a></li><li><a href="/get-help/system-requirements/" class="link">System Requirements</a></li><li><a href="/get-help/accessibility/" class="link">Accessibility</a></li><li><a href="/get-help/mailing-lists/" class="link">Mailing Lists</a></li><li><a href="/get-help/frequently-asked-questions/" class="link">Frequently Asked Questions</a></li></ul>
+
+        </li>
+
+        <li>
+
+          <a href="/community/get-involved/" class="link dropdown-toggle" data-toggle="dropdown">Improve it<b class="caret"></b></a>
+          <ul class="dropdown-menu"><li><a href="/community/get-involved/" class="link">Join us – start here!</a></li><li><a href="https://whatcanidoforlibreoffice.org" class="link">What can you do for LibreOffice?</a></li><li><a href="https://wiki.documentfoundation.org/Design" class="link">Design</a></li><li><a href="/community/developers/" class="link">Developers</a></li><li><a href="/community/docs-team/" class="link">Docs Team</a></li><li><a href="/community/infrastructure/" class="link">Infrastructure</a></li><li><a href="/community/localization/" class="link">Localization</a></li><li><a href="/community/marketing/" class="link">Marketing</a></li><li><a href="/community/nlc/" class="link">Native-Lang Projects</a></li><li><a href="/community/qa/" class="link">Testing - QA</a></li><li><a href="https://wiki.documentfoundation.org" class="link">Wiki</a></li><li><a href="/community/community-map/" class="link">Community map</a></li><li><a href="https://www.documentfoundation.org/foundation/grant-request/" class="link">Grant Request</a></li></ul>
+
+        </li>
+
+        <li>
+
+          <a href="/events/" class="link">Events</a>
+
+        </li>
+
+        <li>
+
+          <a href="/about-us/who-are-we/" class="section dropdown-toggle" data-toggle="dropdown">About Us<b class="caret"></b></a>
+          <ul class="dropdown-menu"><li><a href="/about-us/who-are-we/" class="link">Who are we?</a></li><li><a href="/about-us/governance/" class="link">Governance</a></li><li><a href="https://www.documentfoundation.org/governance/advisory-board/" class="link">Advisory Board Members</a></li><li><a href="/about-us/certification/" class="link">LibreOffice Certification</a></li><li><a href="/about-us/licenses/" class="link">Licenses</a></li><li><a href="/about-us/source-code/" class="link">Source Code</a></li><li><a href="/about-us/security/" class="section">Security</a></li><li><a href="/about-us/imprint/" class="link">Imprint</a></li><li><a href="/about-us/credits/" class="link">Credits</a></li><li><a href="/about-us/libreoffice-timeline/" class="link">LibreOffice Timeline</a></li><li><a href="/about-us/privacy/" class="link">Privacy Policy</a></li><li><a href="https://www.documentfoundation.org/foundation/financials/" class="link">Foundation's Reports</a></li><li><a href="/about-us/merchandise/" class="link">Merchandise</a></li><li><a href="https://blog.documentfoundation.org" class="link">Read our blog</a></li></ul>
+
+        </li>
+
+        <li>
+
+          <a href="/donate/" class="link">Donate</a>
+
+        </li>
+
+        <li><div class="search-bar">
+          <form id="SearchForm_SearchForm" class="navbar-form pull-right" action="/home/SearchForm" method="get" enctype="application/x-www-form-urlencoded">
+            <!-- <fieldset> -->
+            <!-- <div id="Search" class="field text nolabel"> -->
+            <!-- <div class="middleColumn"> -->
+            <input type="text" placeholder="Search" name="Search" value="" id="SearchForm_SearchForm_Search">
+            <!-- </div> -->
+            <!-- </div> -->
+            <input type="submit" name="action_results" value="Go" class="action btn" id="SearchForm_SearchForm_action_results">
+            <!-- </fieldset> -->
+          </form>
+
+        </div></li>
+
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+<section id="content1" class="section">
+  <div class="container">
+
+    <article>
+
+      <div class="row col-sm-10 margin-20">
+
+
+
+
+
+
+
+
+        <ul class="breadcrumb">
+
+
+          <li><a href="/about-us/who-are-we/">About Us</a> <span class="divider"> / </span></li>
+
+          <li><a href="/about-us/security/">Security</a> <span class="divider"> / </span></li>
+
+          <li><a href="/about-us/security/advisories/">Security Advisories</a> <span class="divider"> / </span></li>
+
+          <li></li><li class="active">CVE-2019-9850</li>
+
+
+        </ul>
+
+
+        <h3>CVE-2019-9850</h3>
+
+        <p><strong><span class="label" data-mce-mark="1">Title:</span></strong>&nbsp;CVE-2019-9850 Insufficient url validation allowing LibreLogo script execution</p><p><strong>Announced:</strong> August 15, 2019</p><p><strong>Fixed in:</strong> 6.2.6/6.3.0<br><br><strong>Description</strong>:</p><p>LibreOffice is typically bundled with LibreLogo, a programmable turtle vector graphics script, which can execute arbitrary python commands contained with the document it is launched from.<br><br>LibreOffice also has a feature where documents can specify that pre-installed scripts can be executed on various document script events such as mouse-over, etc<br><br>Protection was added, to address CVE-2019-9848, to block calling LibreLogo from script event handers. However an insufficient url validation vulnerability in LibreOffice allowed malicious to bypass that protection and again trigger calling LibreLogo from script event handlers.</p><p><span><span>In the fixed versions, script urls are correctly decoded before validation<br></span></span></p><p><span><span><strong>Credits</strong>:</span></span></p><p>Thanks to alex (@insertscript) for reporting this issue</p><p><strong>References</strong>:<br><br>&nbsp;&nbsp;&nbsp; <a title="CVE-2019-9850" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-9850" target="_blank">CVE-2019-9850</a></p>
+
+      </div>
+
+
+      <div class="col-sm-2">
+        <aside>
+
+          <nav class="secondary">
+
+            <h3>
+              About Us
+            </h3>
+            <ul class="list-unstyled side-links">
+
+
+
+              <li>
+                <a href="/about-us/who-are-we/" class="link" title="Who are we?">
+                  Who are we?
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/governance/" class="link" title="Governance">
+                  Governance
+                </a>
+
+              </li>
+
+              <li>
+                <a href="https://www.documentfoundation.org/governance/advisory-board/" class="link" title="Advisory Board Members">
+                  Advisory Board Members
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/certification/" class="link" title="LibreOffice Certification">
+                  LibreOffice Certification
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/licenses/" class="link" title="Licenses">
+                  Licenses
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/source-code/" class="link" title="Source Code">
+                  Source Code
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/security/" class="section" title="Security">
+                  Security
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/imprint/" class="link" title="Imprint">
+                  Imprint
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/credits/" class="link" title="Credits">
+                  Credits
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/libreoffice-timeline/" class="link" title="LibreOffice Timeline">
+                  LibreOffice Timeline
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/privacy/" class="link" title="Privacy Policy">
+                  Privacy Policy
+                </a>
+
+                <!-- <ul>
+
+
+
+           <li>
+               <a href="/about-us/privacy/privacy-policy-en/" class="link" title="Privacy Policy (english)">
+                   Privacy Policy (english)
+               </a>
+
+           </li>
+
+           <li>
+               <a href="/about-us/privacy/impress-remote/" class="link" title="LibreOffice Impress Remote – Privacy Policy">
+                   LibreOffice Impress Remote – Privacy Policy
+               </a>
+
+           </li>
+
+
+
+               </ul>-->
+
+              </li>
+
+              <li>
+                <a href="https://www.documentfoundation.org/foundation/financials/" class="link" title="Foundation's Reports">
+                  Foundation's Reports
+                </a>
+
+              </li>
+
+              <li>
+                <a href="/about-us/merchandise/" class="link" title="Merchandise">
+                  Merchandise
+                </a>
+
+              </li>
+
+              <li>
+                <a href="https://blog.documentfoundation.org" class="link" title="Read our blog">
+                  Read our blog
+                </a>
+
+              </li>
+
+
+
+            </ul>
+
+          </nav>
+          <!--
+          <p>Who are we?</p>
+
+          <p>Governance</p>
+
+          <p>Advisory Board Members</p>
+
+          <p>LibreOffice Certification</p>
+
+          <p>Licenses</p>
+
+          <p>Source Code</p>
+
+          <p>Security</p>
+
+          <p>Imprint</p>
+
+          <p>Credits</p>
+
+          <p>LibreOffice Timeline</p>
+
+          <p>Privacy Policy</p>
+
+          <p>Foundation&#039;s Reports</p>
+
+          <p>Merchandise</p>
+
+          <p>Read our blog</p>
+          -->
+
+        </aside>
+
+      </div>
+
+    </article>
+  </div>
+</section>
+
+
+
+<!-- Section Social-->
+<section id="social">
+  <div class="container">
+
+    <!-- Row -->
+    <div class="row">
+      <div class="col-sm-12 text-center dark-gray">
+
+        <div class="margin-20">
+          <h3>Follow Us</h3>
+        </div>
+        <!--Social links-->
+        <ul class="social-icons">
+          <li><a class="btn btn-libre_office_green" href="https://blog.documentfoundation.org" target="_blank"><i class="fa fa-comment fa-2x"></i> Our blog</a></li>
+          <li><a class="btn btn-libre_office_green" href="https://twitter.com/tdforg" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-2x"></i>@tdforg</a></li>
+          <li><a class="btn btn-libre_office_green" href="https://twitter.com/libreoffice" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-2x"></i>@libreoffice</a></li>
+          <li><a class="btn btn-libre_office_green" href="https://www.facebook.com/libreoffice.org" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook fa-2x"></i></a></li>
+          <li><a class="btn btn-libre_office_green" href="https://fosstodon.org/@libreoffice" target="_blank" rel="noopener noreferrer"><i class="fa fa-comments fa-2x"></i> Mastodon</a></li>
+          <li><a class="btn btn-libre_office_green" href="//www.youtube.com/channel/UCQAClQkZEm2rkWvU5bvCAXQ" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-play fa-2x"></i></a></li>
+          <li><a class="btn btn-libre_office_green" href="https://twitter.com/AskLibreOffice" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-2x"></i>@AskLibreOffice</a>
+          </li><li><a class="btn btn-libre_office_green" href="https://twitter.com/LibreOfficeBugs" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-2x"></i>@LibreOfficeBugs</a></li>
+
+          <li><a class="btn btn-libre_office_green" href="https://www.reddit.com/r/libreoffice" target="_blank" rel="noopener noreferrer"><img src="themes/libreofficenew/img/reddit.png" width="36" alt="Reddit"></a></li>
+        </ul>
+        <!-- end Social links-->
+        <!-- Mastodon verification: -->
+        <a rel="me" href="https://fosstodon.org/@libreoffice">Mastodon</a>
+      </div>
+    </div>
+    <!-- End Row -->
+  </div>
+</section>
+<!-- end Section Social-->
+
+
+
+
+<!--Footer -->
+
+<section id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <p><a href="https://www.libreoffice.org/imprint" target="_blank">Impressum (Legal Info)</a> | <a href="https://www.libreoffice.org/privacy" target="_blank">Datenschutzerklärung (Privacy Policy)</a> | <a href="https://www.documentfoundation.org/statutes.pdf" target="_blank">Statutes (non-binding English translation)</a> - <a href="https://www.documentfoundation.org/satzung.pdf" target="_blank">Satzung (binding German version)</a> | Copyright information: Unless otherwise specified, all text and images on this website are licensed under the <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution-Share Alike 3.0 License</a>. This does not include the source code of LibreOffice, which is licensed under the <a href="https://www.libreoffice.org/download/license/" target="_blank">Mozilla Public License v2.0</a>. “LibreOffice” and “The Document Foundation” are registered trademarks of their corresponding registered owners or are in actual use as trademarks in one or more countries. Their respective logos and icons are also subject to international copyright laws. Use thereof is explained in our <a href="https://wiki.documentfoundation.org/TradeMark_Policy" target="_blank">trademark policy</a>. LibreOffice was based on OpenOffice.org.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Start Piwik Code -->
+<script type="text/javascript" src="/themes/libreofficenew/js/jquery-1.10.1.min.js?m=1388425220"></script><script type="text/javascript" src="/themes/libreofficenew/js/bootstrap.min.js?m=1390226302"></script><script type="text/javascript" src="/themes/libreofficenew/js/jquery.flexslider.js?m=1389807992"></script><script type="text/javascript" src="/themes/libreofficenew/js/jquery.tablesorter.min.js?m=1400150227"></script><script type="text/javascript">
+  var _paq = _paq || [];
+
+  _paq.push(["disableCookies"]);
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.documentfoundation.org/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "2"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+
+
+    var classes = [".swap", ".swap-developer", ".swap-migration", ".swap-training"];
+    for (var classIndex = 0; classIndex < classes.length; classIndex++) {
+      var swapable = document.querySelectorAll(classes[classIndex]);
+      var random = [];
+      for (var i = 0;i < swapable.length; i++) {
+        swapable[i].setAttribute('sortKey', Math.random());
+        random[i] = swapable[i].cloneNode(true);
+      }
+      random.sort(function(a,b) { return a.getAttribute('sortKey') - b.getAttribute('sortKey'); });
+
+      for (var i = 0;i < swapable.length; i++) {
+        swapable[i].parentNode.replaceChild(random[i], swapable[i]);
+      }
+    }
+    var ul = document.querySelector('ul.shuffle');
+    for (var i = ul.children.length; i >= 0; i--) {
+      ul.appendChild(ul.children[Math.random() * i | 0]);
+    }
+  })();
+</script><!-- let's see how many visitors have js disabled -->
+<noscript><img src="https://piwik.documentfoundation.org/piwik.php?idsite=2&amp;rec=1&action_name=nojs" style="border:0" alt="" /></noscript>
+<!-- End Piwik Code -->
+
+
+
+<script type="text/javascript">
+  !function ($) {
+    $(function(){
+      $('#header').carousel()
+    })
+  }(window.jQuery)
+
+  $(window).load(function() {
+
+    $('.flexslider').flexslider({
+      animation: "slide"
+    });
+  });
+  $(document).ready(function()
+          {
+            $('.tablesorter').each(function() {
+              $(this).tablesorter();
+            });
+          }
+  );
+  jQuery('#gotoplainhome').click(function(){
+    jQuery("#jumppage, #blurme").removeClass("enabled");
+    return false;//Some code
+  });
+
+</script>
+
+
+
+
+</body><!-- 0 --></html>

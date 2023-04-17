@@ -106,7 +106,7 @@ public class PatchFinder {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private void parseMassURLs(Map<String, ArrayList<String>> cpes) throws IOException, InterruptedException {
+	public void parseMassURLs(Map<String, ArrayList<String>> cpes) throws IOException, InterruptedException {
 
 		advanceSearchCount = 0;
 		int i = 0;
