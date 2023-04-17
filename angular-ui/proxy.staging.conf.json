@@ -1,0 +1,9 @@
+{
+  "/nvip_ui-1.0/*": {
+    "target": "http://nvip-api-dev.eba-cvdj355w.us-east-1.elasticbeanstalk.com/",
+    "pathRewrite": { "^/nvip_ui-1.0": "" },
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}
