@@ -50,7 +50,7 @@ public class CveReconciler {
 			if (year >= 1999 && year <= (currentYear + 1))
 				rangeOk = true;
 			if (lengthOk && rangeOk) {
-				logger.info("PASS: CVE with ID {} is correct!", cveId);
+				//logger.info("PASS: CVE with ID {} is correct!", cveId);
 			} else {
 				logger.info("FAIL: CVE with ID {} is incorrect!", cveId);
 			}

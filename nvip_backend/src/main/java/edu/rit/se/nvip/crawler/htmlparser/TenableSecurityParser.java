@@ -41,10 +41,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
+ *
  * @author axoeec
  *
- * Ex: https://www.tenable.com/security/research/tra-2023-5
+ * Ex: <a href="https://www.tenable.com/security/research/tra-2023-5">Source</a>
  */
 public class TenableSecurityParser extends AbstractCveParser  {
 	
@@ -96,7 +96,7 @@ public class TenableSecurityParser extends AbstractCveParser  {
 					}
 				}
 			} else if (e.text().toLowerCase().toLowerCase().equals("affected products")) {
-				products.addAll(getProducts(e.parent().getElementsByClass("field-items").get(0)));
+				products.addAll(getProducts(e.parent().getElementsByClass("field__items").get(0)));
 				foundProducts = true;
 			}
 		}

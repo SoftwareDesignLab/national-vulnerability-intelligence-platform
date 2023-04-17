@@ -133,7 +133,7 @@ public final class JGitCVEPatchDownloader {
 		File dir = new File(clonePath);
 		FileUtils.delete(dir, 1);
 
-		int maxThreads = Runtime.getRuntime().availableProcessors();
+		int maxThreads = Integer.parseInt(System.getenv("PATCHFINDER_MAX_THREADS"));
 
 		logger.info(maxThreads + " available processors found");
 

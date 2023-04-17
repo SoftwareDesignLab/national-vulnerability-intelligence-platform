@@ -27,9 +27,7 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ArubaParser extends AbstractCveParser {
 
@@ -47,8 +45,8 @@ public class ArubaParser extends AbstractCveParser {
     private String getSection(List<String> sections, String title) {
         String sectionText = "";
         for (int i = 0 ; i < sections.size() ; i++ ) {
-            String section = sections.get(i);
-            if (section.contains("\r\n" + title + "\r\n")) {
+            String section = sections.get(i).replace("\r", "");
+            if (section.contains("\n" + title + "\n")) {
                 String nextSection = sections.get(i + 1);
                 nextSection = nextSection.split("\n\n")[0];
                 sectionText = nextSection;
@@ -68,8 +66,8 @@ public class ArubaParser extends AbstractCveParser {
         for (int i = 0 ; i < detailsSections.size() ; i++) {
             String thisDetailHeader = detailsSections.get(i);
             if (thisDetailHeader.contains(cve)) {
-                String detailText = detailsSections.get(i + 1);
-                detailText = detailText.split("\r\n\r\n\r\n")[0];
+                String detailText = detailsSections.get(i + 1).replace("\r", "");
+                detailText = detailText.split("\n\n\n")[0];
                 thisCveDetails = detailText;
             }
         }
@@ -98,16 +96,7 @@ public class ArubaParser extends AbstractCveParser {
         String docText = doc.text();
 
         // get CVE IDs
-        ArrayList<String> cves = new ArrayList<>();
-        String cvesText = docText.split("CVE: ")[1];
-        // cut off rest of text when we see another category
-        cvesText = cvesText.split("==")[0];
-        // cut by spaces, extract each CVE- string, get rid of any commas
-        String[] cvesTextSplit = cvesText.replace("\r", " ").split(" ");
-        for (String s : cvesTextSplit)
-            if (s.contains("CVE-"))
-                cves.add(s.trim().replace(",", ""));
-        if (cves.size() == 0) return vulnList;
+        Set<String> cves = getCVEs(sCVEContentHTML);
 
         // get publication date from the top
         String publishDate = "";
@@ -116,14 +105,22 @@ public class ArubaParser extends AbstractCveParser {
         String topCategorySplit = sections.get(1);
         if (topCategorySplit.contains("Publication Date")) {
             String dateSplit = topCategorySplit.split("Publication Date: ")[1];
-            publishDate = dateSplit.split("\r")[0];
+            publishDate = dateSplit
+                    .replace("\n", " ")
+                    .replace("\r", "")
+                    .split(" ")[0]
+                    .trim();
         }
 
         // get last updated from top, if not there, use publication date
         String lastUpdated = publishDate;
         if (topCategorySplit.contains("Last Update")) {
             String updateSplit = topCategorySplit.split("Last Update: ")[1];
-            lastUpdated = updateSplit.split("\r")[0];
+            lastUpdated = updateSplit
+                    .replace("\n", " ")
+                    .replace("\r", "")
+                    .split(" ")[0]
+                    .trim();
         }
 
         // get description by combining 'Overview' and 'Details' sections
@@ -144,8 +141,9 @@ public class ArubaParser extends AbstractCveParser {
         }
         else {
             description = overviewSection + detailsSection;
+            ArrayList<String> cveList = new ArrayList<>(cves);
             vulnList.add(new CompositeVulnerability(
-                    0, sSourceURL, cves.get(0), null, publishDate, lastUpdated, description, sourceDomainName
+                    0, sSourceURL, cveList.get(0), null, publishDate, lastUpdated, description, sourceDomainName
             ));
         }
 

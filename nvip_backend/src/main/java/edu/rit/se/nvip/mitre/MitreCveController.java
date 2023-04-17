@@ -156,7 +156,7 @@ public class MitreCveController {
 			}
 		}
 
-		logger.info("Parsed " + jsonList.size() + " CVEs in " + folder);
+		//logger.info("Parsed " + jsonList.size() + " CVEs in " + folder);
 		return jsonList;
 	}
 
