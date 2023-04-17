@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -34,13 +33,13 @@ public class ABBParser extends AbstractCveParser {
         }
         // the given url is a PDF link, download and parse it
         String pdfString = pdfToString(sSourceURL);
-        if (pdfString != null && pdfString != "") {
+        if (pdfString != null && !pdfString.equals("")) {
             // get CVE id from String
             Set<String> cves = getCVEs(pdfString);
 
             // date sometimes differs in location but there is always 1 date in the form yyyy-mm-dd
             String date = "";
-            Pattern cvePattern = Pattern.compile("\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])*");
+            Pattern cvePattern = Pattern.compile(regexDateYearMonthDay);
             Matcher cveMatcher = cvePattern.matcher(pdfString);
             if (cveMatcher.find())
                 date = cveMatcher.group();
@@ -49,7 +48,7 @@ public class ABBParser extends AbstractCveParser {
             String description = "";
             pdfString = pdfString.replace("\r", "");
             String[] summarySplit = pdfString.split("Summary \n");
-            // get the entire string as description by default - some of the old ones don't have a different formats
+            // get the entire string as description by default - some old ones don't have a different formats
             if (summarySplit.length > 1) {
                 String summary = summarySplit[1];
                 String[] endSplit = summary.split("© Copyright");
