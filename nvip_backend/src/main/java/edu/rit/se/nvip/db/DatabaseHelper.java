@@ -87,7 +87,7 @@ public class DatabaseHelper {
 	 * Database needs its own date formats for concurrent execution.
 	 */
 	private final DateFormat longDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	private final DateFormat longDateFormatMySQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public final DateFormat longDateFormatMySQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	/**
 	 * SQL sentences. Please include the INSERT/UPDATE/DELETE SQL sentences of each
@@ -330,6 +330,7 @@ public class DatabaseHelper {
 	 * @return
 	 */
 	public String formatDate(String date) {
+		Date dateObj;
 		String formattedDate = "";
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -340,7 +341,7 @@ public class DatabaseHelper {
 		}
 
 		if (date.contains("T")) {
-			return date.substring(0, 10) + " " + date.substring(11, 19);
+			date = date.substring(0, 10) + " " + date.substring(11, 19);
 		}
 
 		Pattern dateRegex = Pattern.compile("(\\d{4}-\\d{2}-\\d{2}|\\d{2}\\/\\d{2}\\/\\d{4})");
@@ -352,10 +353,10 @@ public class DatabaseHelper {
 
 		try {
 			try {
-				Date dateObj = new Date(date);
+				dateObj = new Date(date);
 				formattedDate = df.format(dateObj);
 			} catch (IllegalArgumentException e) {
-				Date dateObj = df.parse(date);
+				dateObj = df.parse(date);
 				formattedDate = df.format(dateObj);
 			}
 		} catch (Exception e) {
@@ -963,15 +964,15 @@ public class DatabaseHelper {
 					recordTimeGap = false;
 
 				if (existingAttribs.getCreateDate() == null || existingAttribs.getCreateDate().isEmpty()) {
-					createdDateTime = longDateFormatMySQL.parse(formatDate(existingAttribs.getCreateDate()));
-				} else {
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					createdDateTime = new Date(dtf.format(now));
+					createdDateTime = longDateFormatMySQL.parse(formatDate(now.toString()));
+				} else {
+					createdDateTime = longDateFormatMySQL.parse(existingAttribs.getCreateDate());
 				}
 
 				try {
-					lastModifiedDateTime = longDateFormatMySQL.parse(formatDate(lastModifiedDateTime.toString()));
+					lastModifiedDateTime = longDateFormatMySQL.parse(formatDate(vuln.getLastModifiedDate()));
 				} catch (Exception e) {
 					lastModifiedDateTime = new Date();
 					logger.warn("WARNING: Could not parse last modified date of Cve: {}, Err: {}\nCve data: {}",

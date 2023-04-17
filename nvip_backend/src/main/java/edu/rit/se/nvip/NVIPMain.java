@@ -453,7 +453,6 @@ public class NVIPMain {
 	private List<CompositeVulnerability> reconcileCVEs(HashMap<String, List<Object>> cveListMap) {
 		List<CompositeVulnerability> crawledVulnerabilityList = cveListMap.get("all").stream().map(e -> (CompositeVulnerability) e).collect(Collectors.toList());
 		identifyNewOrUpdatedCve(crawledVulnerabilityList, databaseHelper, properties);
-
 		return crawledVulnerabilityList;
 	}
 
@@ -500,13 +499,11 @@ public class NVIPMain {
 				vuln.setCveReconcileStatus(CveReconcileStatus.INSERT); // does not exist, need to insert CVE
 				countInsert++;
 			}
-
 			crawledVulnerabilityList.set(index, vuln); // update list
 		}
 		double minutes = (System.currentTimeMillis() - startTime) / 60.0 * 60 * 1000; // get elapsed minutes
 		logger.info("Reconciling done! Identified {} new CVEs. {} and {} CVEs will be inserted and updated on the DB, respectively. Time{min} elapsed: {} ",
 				(countInsert + countUpdate), countInsert, countUpdate, minutes);
-
 		return crawledVulnerabilityList;
 	}
 

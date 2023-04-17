@@ -46,8 +46,9 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.Date;
 
 
 import static org.junit.Assert.*;
@@ -219,6 +220,13 @@ public class DatabaseHelperTest {
 		assertEquals(formatDate7, "2023-03-29 18:34:30");
 		assertEquals(formatDate8, "2023-03-29 00:00:00");
 		assertEquals(formatDate9, "2023-03-29 00:00:00");
+	}
+
+	@Test
+	public void testMySQLDateformat() throws ParseException {
+		LocalDateTime now = LocalDateTime.now();
+		this.dbh.longDateFormatMySQL.parse(this.dbh.formatDate(now.toString()));
+		assertTrue(true);
 	}
 
 	@Test
