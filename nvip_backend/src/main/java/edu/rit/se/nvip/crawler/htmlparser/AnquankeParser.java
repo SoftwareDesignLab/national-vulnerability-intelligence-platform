@@ -27,11 +27,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import edu.rit.se.nvip.model.CompositeVulnerability;
@@ -46,44 +49,70 @@ import edu.rit.se.nvip.utils.UtilHelper;
  */
 public class AnquankeParser extends AbstractCveParser  {
 	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
-	
+
+	/**
+	 * Parse advisories listed to anquanke.com
+	 * @param domainName - anquanke.com domain, like: https://www.anquanke.com/post/id/210200 for example
+	 */
 	public AnquankeParser(String domainName) {
 		sourceDomainName = domainName;
 	}
 
+	/**
+	 * Parse CVEs from anquanke.com
+	 * @param sSourceURL - URL to parse
+	 * @param sCVEContentHTML - HTML content to parse
+	 * @return - List of CVEs
+	 */
 	@Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulnerabilities = new ArrayList<>();
-
-		return vulnerabilities;
-	}
-
-	/**
-	 * Parse pages like: https://www.anquanke.com/post/id/210200
-	 *
-	 * TODO: 1/18/23 --> Change this to a parseWebPage method (if we still want to use it)
-	 *
-	 * @param sSourceURL
-	 * @param sCVEContentHTML
-	 * @return
-	 */
-	private List<CompositeVulnerability> parseVulnPage(Set<String> uniqueCves, String sSourceURL, String sCVEContentHTML) {
-		List<CompositeVulnerability> vulnerabilities = new ArrayList<CompositeVulnerability>();
 		try {
 			Document document = Jsoup.parse(sCVEContentHTML);
 
-			String description = "";
-			String publishDate = null;
-			String platform = "";
-			String lastModifiedDate = UtilHelper.longDateFormat.format(new Date());
+			// get CVE from title h1 tag
+			Element cveEl = document.select("h1:contains(CVE-)").first();
+			if (cveEl == null) return vulnerabilities;
+			// extract CVE from h1 tag using regex
+			Pattern cvePattern = Pattern.compile(regexCVEID);
+			Matcher cveMatcher = cvePattern.matcher(cveEl.text());
+			String cve = "";
+			if (cveMatcher.find())
+				cve = cveMatcher.group();
+			if (cve.isEmpty()) return vulnerabilities;
 
-			Elements elements = document.select("title");
-			/**
-			 * Ignore for now! The content is in Chinese
-			 */
+			// get date from publish p tag above
+			String date = "";
+			Element dateEl = document.select("p.publish").first();
+			if (dateEl != null) {
+				date = dateEl.text().split("发布时间 : ")[1];
+			}
 
-			for (String cveId : uniqueCves)
-				vulnerabilities.add(new CompositeVulnerability(0, sSourceURL, cveId, platform, publishDate, lastModifiedDate, description, null));
+			// get description from a combination of title and blog post
+			// at this point we already know the title is CVE-XXXX-XXXX : [Title details]
+			StringBuilder description = new StringBuilder();
+			description.append(cveEl.text().replace(cve, "").replace("：", "").trim());
+
+			// for rest of desc. blog post varies either h2 comes first or there is text before it,
+			// thus go until we see the second h2 tag under js-article div
+			Element jsArticle = document.select("div#js-article").first();
+			if (jsArticle != null) {
+				int h2Count = 0;
+				for (Element e : jsArticle.children()) {
+					if (e.tagName().equals("h2")) {
+						h2Count++;
+						if (h2Count == 2) break;
+					}
+					if (h2Count == 1) {
+						description.append(e.text());
+					}
+				}
+			}
+
+			vulnerabilities.add(new CompositeVulnerability(
+					0, sSourceURL, cve, null, date, date, description.toString(), sourceDomainName
+			));
+
 		} catch (Exception e) {
 			logger.error("An error occurred while parsing Anquanke URL: " + sSourceURL);
 		}

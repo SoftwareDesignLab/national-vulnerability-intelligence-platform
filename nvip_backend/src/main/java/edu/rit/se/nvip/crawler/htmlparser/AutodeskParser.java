@@ -24,7 +24,6 @@
 package edu.rit.se.nvip.crawler.htmlparser;
 
 import com.google.common.collect.Iterables;
-import edu.rit.se.nvip.model.AffectedRelease;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,7 +33,6 @@ import org.jsoup.select.Elements;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +47,7 @@ public class AutodeskParser extends AbstractCveParser {
         Document doc = Jsoup.parse(sCVEContentHTML);
         // get publish/revision dates from the summary info near the top
         Element pSummary = doc.select("p:contains(Original Publish)").last();
+        if (pSummary == null) return retVal;
         String[] pText = pSummary.html().split("<br>");
         String pubDate = parseDateFromRow(pText[4]);
         String revDate = parseDateFromRow(pText[5]);
@@ -58,11 +57,15 @@ public class AutodeskParser extends AbstractCveParser {
         Elements h3s = doc.select("h3");
         String summary = "";
         for (Element h3 : h3s) {
+            Element h3Next = h3.nextElementSibling();
             if (h3.text().equals("Summary")) {
-                summary = h3.nextElementSibling().text();
+                if (h3Next != null)
+                    summary = h3Next.text();
             }
-            if (h3.text().equals("Description")) {
-                Element descriptionParent = h3.nextElementSibling().nextElementSibling();
+            if (h3.text().equals("Description") ) {
+                if (h3Next == null) continue;
+                Element descriptionParent = h3Next.nextElementSibling();
+                if (descriptionParent == null) continue;
                 // in this case the page just lists CVEs and the libraries they impact
                 if (descriptionParent.tagName().equals("table")) {
                     Elements rows = descriptionParent.getElementsByTag("tr");
