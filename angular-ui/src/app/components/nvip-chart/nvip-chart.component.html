@@ -1,5 +1,5 @@
 <div class="nvip-chart-container">
-  <ngx-charts-bar-vertical
+  <ngx-charts-line-chart
     [scheme]="colorScheme"
     [results]="data"
     [gradient]="options.gradient"
@@ -9,10 +9,9 @@
     [showXAxisLabel]="options.showXAxisLabel"
     [showYAxisLabel]="options.showYAxisLabel"
     [yAxisLabel]="options.yAxisLabel"
-    [roundEdges]="options.roundEdges"
     (select)="onSelect($event)"
     (activate)="onActivate($event)"
     (deactivate)="onDeactivate($event)"
   >
-  </ngx-charts-bar-vertical>
+  </ngx-charts-line-chart>
 </div>

@@ -1,0 +1,1329 @@
+No CVEs found at https://www.boschsecurity.com/xc/en/support/product-security/security-advisories.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-sa-553243.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/!
+Crawler error when parsing https://curl.se/docs/security.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/security.html!
+Crawler error when parsing https://www.atlassian.com/trust/security/advisories --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.atlassian.com/trust/security/advisories!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0404.html!
+Crawler error when parsing https://curl.se/docs/sslcerts.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/sslcerts.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.58.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.58.0.html!
+Crawler error when parsing https://confluence.atlassian.com/security/july-2022-atlassian-security-advisories-overview-1142446703.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/july-2022-atlassian-security-advisories-overview-1142446703.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.46.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.46.0.html!
+Crawler error when parsing https://www.jenkins.io/security/advisories/ --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.jenkins.io/security/advisories/!
+Crawler error when parsing https://curl.se/docs/vuln-7.40.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.40.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.11.1.html --> java.lang.NullPointerException
+Crawler error when parsing https://curl.se/docs/vuln-7.51.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.11.1.html!
+No CVEs found at https://curl.se/docs/vuln-7.51.0.html!
+Crawler error when parsing https://confluence.atlassian.com/security/cve-2021-26073-broken-authentication-in-atlassian-connect-express-ace-1051986099.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/cve-2021-26073-broken-authentication-in-atlassian-connect-express-ace-1051986099.html!
+Crawler error when parsing https://curl.se/docs/vuln-6.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-6.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.42.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.42.0.html!
+Crawler error when parsing https://confluence.atlassian.com/security/january-2023-security-advisories-overview-1207183418.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/january-2023-security-advisories-overview-1207183418.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.7.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.7.html!
+Crawler error when parsing https://confluence.atlassian.com/security/cve-2021-42574-unrendered-unicode-bidirectional-override-characters-in-cloud-sites-1086420599.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/cve-2021-42574-unrendered-unicode-bidirectional-override-characters-in-cloud-sites-1086420599.html!
+Crawler error when parsing https://confluence.atlassian.com/security/november-2022-atlassian-security-advisories-overview-1167844594.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/november-2022-atlassian-security-advisories-overview-1167844594.html!
+Crawler error when parsing https://curl.se/docs/vulnerabilities.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vulnerabilities.html!
+Crawler error when parsing https://curl.se/docs/manpage.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/manpage.html!
+Crawler error when parsing https://www.intel.com/content/www/us/en/security-center/default.html --> java.lang.NullPointerException
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/default.html!
+Crawler error when parsing https://confluence.atlassian.com/security/cve-2021-26077-broken-authentication-in-atlassian-connect-spring-boot-acsb-1063555147.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/cve-2021-26077-broken-authentication-in-atlassian-connect-spring-boot-acsb-1063555147.html!
+Crawler error when parsing https://www.mozilla.org/en-US/security/advisories/ --> java.lang.NullPointerException
+No CVEs found at https://www.mozilla.org/en-US/security/advisories/!
+Crawler error when parsing https://msrc.microsoft.com/update-guide/vulnerability --> java.lang.NullPointerException
+No CVEs found at https://msrc.microsoft.com/update-guide/vulnerability!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8624.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8624.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.39.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.39.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.84.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.84.0.html!
+Crawler error when parsing https://curl.se/docs/protdocs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/protdocs.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.6.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.6.html!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0403.html!
+No CVEs found at https://www.trendmicro.com/vinfo/us/threat-encyclopedia/vulnerability!
+Crawler error when parsing https://curl.se/docs/bugbounty.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/bugbounty.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.82.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.82.0.html!
+Crawler error when parsing https://curl.se/docs/manual.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/manual.html!
+Crawler error when parsing https://confluence.atlassian.com/security/local-privilege-escalation-via-dll-hijack-in-confluence-server-on-windows-installations-1063567712.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/local-privilege-escalation-via-dll-hijack-in-confluence-server-on-windows-installations-1063567712.html!
+Crawler error when parsing https://confluence.atlassian.com/security/august-2022-atlassian-security-advisories-overview-1155155092.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/august-2022-atlassian-security-advisories-overview-1155155092.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.14.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.14.1.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-9594.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-9594.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0402.html!
+Crawler error when parsing https://confluence.atlassian.com/security/atlassian-products-services-and-cve-2018-11235-cve-2018-11233-951406113.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/atlassian-products-services-and-cve-2018-11235-cve-2018-11233-951406113.html!
+Crawler error when parsing https://source.android.com/docs/security/bulletin --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin!
+Crawler error when parsing https://curl.se/docs/vuln-7.7.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.7.html!
+Crawler error when parsing https://curl.se/docs/copyright.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/copyright.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.80.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.80.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.16.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.16.0.html!
+Crawler error when parsing https://confluence.atlassian.com/security/cve-2019-20903-xss-in-atlaskit-editor-core-1021244735.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/cve-2019-20903-xss-in-atlaskit-editor-core-1021244735.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.73.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.73.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.35.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.35.0.html!
+Crawler error when parsing https://curl.se/docs/governance.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/governance.html!
+Crawler error when parsing https://confluence.atlassian.com/security/cve-2021-26074-broken-authentication-in-atlassian-connect-spring-boot-acsb-1051986106.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/cve-2021-26074-broken-authentication-in-atlassian-connect-spring-boot-acsb-1051986106.html!
+No CVEs found at https://huntr.dev/bounties/hacktivity/!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8622.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8622.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.4.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.86.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.86.0.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8615.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8615.html!
+Crawler error when parsing https://confluence.atlassian.com/security/articles-951406100.html --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://confluence.atlassian.com/security/articles-951406100.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.24.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.24.0.html!
+Crawler error when parsing https://curl.se/docs/http2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/http2.html!
+No CVEs found at https://jvn.jp/!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2018-1202.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.70.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.70.0.html!
+Crawler error when parsing https://curl.se/docs/hsts.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/hsts.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.27.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.27.0.html!
+Crawler error when parsing https://curl.se/docs/http3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/http3.html!
+Crawler error when parsing https://curl.se/docs/knownbugs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/knownbugs.html!
+No CVEs found at https://github.com/advisories!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-sa-710832.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.64.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.64.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-4.9.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-4.9.html!
+Crawler error when parsing https://curl.se/docs/ssl-compared.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/ssl-compared.html!
+Crawler error when parsing https://curl.se/docs/reldocs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/reldocs.html!
+Crawler error when parsing https://www.kb.cert.org/vuls/ --> java.lang.NullPointerException
+No CVEs found at https://www.kb.cert.org/vuls/!
+Crawler error when parsing https://curl.se/docs/thanks.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/thanks.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.4.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.5.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.5.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.83.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.83.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.42.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.42.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.16.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.16.3.html!
+Crawler error when parsing https://curl.se/docs/CVE-2017-7407.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2017-7407.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.85.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.85.0.html!
+No CVEs found at https://www.tenable.com/security!
+Crawler error when parsing https://curl.se/docs/vuln-7.37.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.37.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.50.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.50.3.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-sa-804652.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.30.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.30.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.3.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.49.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.49.0.html!
+No CVEs found at https://cloud.google.com/support/bulletins!
+No CVEs found at https://www.jenkins.io/security/advisory/2012-03-05/!
+No CVEs found at https://www.jenkins.io/security/advisory/2012-01-12/!
+Crawler error when parsing https://curl.se/docs/vuln-7.20.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.20.0.html!
+Crawler error when parsing https://curl.se/docs/companies.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/companies.html!
+Crawler error when parsing https://curl.se/docs/whodocs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/whodocs.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0401.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-7167.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-7167.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-10-11/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-10-11/!
+No CVEs found at https://www.jenkins.io/security/advisory/2012-01-24/!
+Crawler error when parsing https://curl.se/docs/vuln-7.1.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.1.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.78.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.78.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.62.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.62.0.html!
+Crawler error when parsing https://curl.se/docs/CVE-2014-0139.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2014-0139.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.14.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.14.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.65.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.65.3.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-sa-425803.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-10-23/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-10-23/!
+Crawler error when parsing https://curl.se/docs/http-cookies.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/http-cookies.html!
+Crawler error when parsing https://curl.se/docs/history.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/history.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.16.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.16.4.html!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-sa-844044.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-12-14/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-12-14/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-11-16/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-11-16/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-04-26/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-04-26/!
+Crawler error when parsing https://curl.se/docs/vuln-7.22.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.22.0.html!
+Crawler error when parsing https://curl.se/docs/install.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/install.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.83.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.83.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.12.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.12.3.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.23.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.23.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.38.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.38.0.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2013-11-20/!
+Crawler error when parsing https://curl.se/docs/code-of-conduct.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/code-of-conduct.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.36.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.36.0.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2016-11-16/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2016-11-16/!
+No CVEs found at https://psirt.bosch.com/security-advisories/bosch-2019-0101.html!
+Crawler error when parsing https://www.tenable.com/cve --> java.lang.NullPointerException
+No CVEs found at https://www.tenable.com/cve!
+Crawler error when parsing https://curl.se/docs/vuln-7.52.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.52.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.56.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.56.1.html!
+Crawler error when parsing https://curl.se/docs/bugs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/bugs.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2016-02-24/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2016-02-24/!
+Crawler error when parsing https://curl.se/docs/vuln-7.53.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.53.1.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8618.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8618.html!
+Crawler error when parsing https://curl.se/docs/httpscripting.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/httpscripting.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2019-07-11/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2019-07-11/!
+No CVEs found at https://www.jenkins.io/security/advisory/2021-04-20/!
+No CVEs found at https://security.gentoo.org/!
+No CVEs found at https://access.redhat.com/security/security-updates/!
+Crawler error when parsing https://curl.se/docs/vuln-7.12.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.12.2.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.60.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.60.0.html!
+Crawler error when parsing https://curl.se/docs/versions.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/versions.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2017-08-08/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-12-06/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-12-06/!
+Crawler error when parsing https://bugs.gentoo.org/buglist.cgi?quicksearch=CVE --> java.lang.NullPointerException
+No CVEs found at https://bugs.gentoo.org/buglist.cgi?quicksearch=CVE!
+Crawler error when parsing https://curl.se/docs/vuln-7.11.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.11.2.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.19.7.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.19.7.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.3.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-04-27/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-04-27/!
+Crawler error when parsing https://curl.se/docs/vuln-7.17.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.17.1.html!
+Crawler error when parsing https://curl.se/docs/websocket.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/websocket.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-04-10/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-04-10/!
+Crawler error when parsing https://curl.se/docs/CVE-2017-2629.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2017-2629.html!
+No CVEs found at https://bugzilla.redhat.com/buglist.cgi?quicksearch=CVE!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/pandora-fms-community-multiple-vulnerabilities --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/pandora-fms-community-multiple-vulnerabilities!
+Crawler error when parsing https://curl.se/docs/vuln-7.34.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.34.0.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8621.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8621.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-03-20/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-03-20/!
+Crawler error when parsing https://curl.se/docs/vuln-7.59.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.59.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.31.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.31.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.32.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.32.0.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/opsview-monitor-multiple-vulnerabilities --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/opsview-monitor-multiple-vulnerabilities!
+Crawler error when parsing https://curl.se/docs/vuln-7.15.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.15.2.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.19.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.19.4.html!
+Crawler error when parsing https://curl.se/docs/ --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/!
+Crawler error when parsing https://curl.se/docs/mqtt.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/mqtt.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-9952.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-9952.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.37.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.37.0.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/open-redirect-opencart --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/open-redirect-opencart!
+Crawler error when parsing https://curl.se/docs/vuln-5.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-5.0.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-12-05/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-12-05/!
+Crawler error when parsing https://curl.se/docs/vuln-7.12.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.12.0.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8625.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8625.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-9586.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-9586.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.61.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.61.0.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2016-04-11/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2016-04-11/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-06-06/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-06-06/!
+Crawler error when parsing https://curl.se/docs/vuln-7.88.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.88.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.13.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.13.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.19.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.19.3.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.63.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.63.0.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=10 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=10!
+No CVEs found at https://www.jenkins.io/security/advisory/2012-09-17/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2015-10-12/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2015-10-12/!
+No CVEs found at https://www.jenkins.io/security/advisory/2015-03-23/!
+Crawler error when parsing https://curl.se/docs/vuln-6.5.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-6.5.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.88.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.88.1.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/qnap-qcenter-virtual-appliance-multiple-vulnerabilities --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/qnap-qcenter-virtual-appliance-multiple-vulnerabilities!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8619.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8619.html!
+Crawler error when parsing https://curl.se/docs/vuln-4.5.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-4.5.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.61.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.61.1.html!
+Crawler error when parsing https://curl.se/docs/releases.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/releases.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2015-11-11/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2015-11-11/!
+Crawler error when parsing https://curl.se/docs/vuln-7.50.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.50.2.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8616.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8616.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.55.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.55.1.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/unified-office-total-connect-sql-injection --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/unified-office-total-connect-sql-injection!
+Crawler error when parsing https://curl.se/docs/vuln-7.50.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.50.0.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/quest-dr-series-disk-backup-multiple-vulnerabilities --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/quest-dr-series-disk-backup-multiple-vulnerabilities!
+Crawler error when parsing https://curl.se/docs/vuln-7.48.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.48.0.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2014-10-15/!
+No CVEs found at https://www.jenkins.io/security/advisory/2013-01-04/!
+Crawler error when parsing https://curl.se/docs/vuln-7.53.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.53.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.4.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/cisco-anyconnect-posture-hostscan-security-service-local-privilege-escalation --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/cisco-anyconnect-posture-hostscan-security-service-local-privilege-escalation!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-12-11/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-12-11/!
+Crawler error when parsing https://curl.se/docs/vuln-7.77.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.77.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.54.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.54.1.html!
+Crawler error when parsing https://curl.se/docs/caextract.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/caextract.html!
+Crawler error when parsing https://curl.se/docs/vuln-4.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-4.0.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=8 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=8!
+Crawler error when parsing https://curl.se/docs/vuln-7.65.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.65.0.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-02-01/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-02-01/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2016-05-11/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2016-05-11/!
+Crawler error when parsing https://curl.se/docs/vuln-7.56.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.56.0.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2013-05-02/!
+Crawler error when parsing https://curl.se/docs/vuln-7.28.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.28.1.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8620.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8620.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2015-10-01/!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/softnas-cloud-os-command-injection --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/softnas-cloud-os-command-injection!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/quest-kace-system-management-appliance-multiple-vulnerabilities --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/quest-kace-system-management-appliance-multiple-vulnerabilities!
+Crawler error when parsing https://curl.se/docs/vuln-7.54.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.54.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.71.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.71.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.71.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.71.0.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2015-02-27/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2015-12-09/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2015-12-09/!
+Crawler error when parsing https://curl.se/docs/vuln-7.26.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.26.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.16.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.16.1.html!
+Crawler error when parsing https://curl.se/docs/features.html --> java.lang.NullPointerException
+Crawler error when parsing https://curl.se/docs/CVE-2016-8623.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/features.html!
+No CVEs found at https://curl.se/docs/CVE-2016-8623.html!
+Crawler error when parsing https://curl.se/docs/tooldocs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/tooldocs.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2014-02-14/!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=1 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=1!
+Crawler error when parsing https://curl.se/docs/vuln-7.50.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.50.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.18.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.18.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.52.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.52.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.6.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.6.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.19.6.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.19.6.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-08-07/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-08-07/!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=2 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=2!
+Crawler error when parsing https://curl.se/docs/vuln-7.87.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.87.0.html!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=3 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=3!
+Crawler error when parsing https://curl.se/docs/CVE-2016-8617.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-8617.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.41.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.41.0.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2011-11-08/!
+Crawler error when parsing https://curl.se/docs/vuln-5.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-5.4.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2011-10-20/!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=4 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=4!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=5 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=5!
+No CVEs found at https://www.jenkins.io/security/advisory/2011-10-28/!
+Crawler error when parsing https://curl.se/docs/mk-ca-bundle.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/mk-ca-bundle.html!
+Crawler error when parsing https://curl.se/docs/thename.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/thename.html!
+Crawler error when parsing https://curl.se/docs/todo.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/todo.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2016-06-20/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2016-06-20/!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=6 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=6!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories?page=7 --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories?page=7!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-03-07/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-03-07/!
+Crawler error when parsing https://curl.se/docs/vuln-7.69.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.69.0.html!
+Crawler error when parsing https://curl.se/docs/alt-svc.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/alt-svc.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2012-11-20/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2018-02-05/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2018-02-05/!
+Crawler error when parsing https://www.coresecurity.com/core-labs/advisories/mikrotik-routeros-smb-buffer-overflow --> java.lang.NullPointerException
+No CVEs found at https://www.coresecurity.com/core-labs/advisories/mikrotik-routeros-smb-buffer-overflow!
+Crawler error when parsing https://curl.se/docs/vuln-7.65.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.65.1.html!
+Crawler error when parsing https://curl.se/docs/libs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/libs.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2017-09-27/!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00121.html!
+Crawler error when parsing https://curl.se/docs/projdocs.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/projdocs.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.15.4.html --> java.lang.NullPointerException
+Crawler error when parsing https://curl.se/docs/vuln-7.75.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.15.4.html!
+No CVEs found at https://curl.se/docs/vuln-7.75.0.html!
+Crawler error when parsing https://curl.se/docs/url-syntax.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/url-syntax.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.33.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.33.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.29.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.29.0.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-07-10/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-07-10/!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00116.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2014-10-30/!
+Crawler error when parsing https://curl.se/docs/comparison-table.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/comparison-table.html!
+Crawler error when parsing https://curl.se/docs/faq.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/faq.html!
+Crawler error when parsing https://curl.se/docs/CVE-2016-9953.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/CVE-2016-9953.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00048.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.15.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.15.0.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2016-07-27/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2016-07-27/!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2017-03-09/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2017-03-09/!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.19.5.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.19.5.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00129.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.76.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.76.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.57.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.57.0.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00020.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00112.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2013-02-16/!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00065.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00086.html!
+Crawler error when parsing https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00319.html --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00319.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00055.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00084.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00038.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00151.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00027.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2010-07-05/!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00056.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00006.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00082.html!
+No CVEs found at https://www.jenkins.io/security/advisory/2014-10-01/!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00051.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00073.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00041.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00031.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00034.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00016.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00030.html!
+Crawler error when parsing https://www.jenkins.io/security/advisory/2018-01-22/ --> java.lang.NullPointerException
+No CVEs found at https://www.jenkins.io/security/advisory/2018-01-22/!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00089.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00071.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00095.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00158.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00077.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00068.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00075.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00050.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00122.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00159.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00088.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00106.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00100.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00108.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00160.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00005.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00079.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00117.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00104.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00118.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00036.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00046.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00092.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00076.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00035.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00266.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00052.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00128.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00163.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00069.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00021.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00053.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00017.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00040.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00074.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00047.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00115.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00044.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00161.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00023.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00188.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00114.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00136.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00080.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00028.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00081.html!
+Crawler error when parsing https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00368.html --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00368.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00109.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00061.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00043.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00049.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00062.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00152.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00026.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00134.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00157.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00004.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00024.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00018.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00064.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00025.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00093.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00063.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00078.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00033.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00045.html!
+Crawler error when parsing https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00241.html --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00241.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00001.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00042.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00072.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00087.html!
+Crawler error when parsing https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00401.html --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00401.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00126.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00039.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00135.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00110.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00054.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00140.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00037.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00101.html!
+Crawler error when parsing https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/trustwave-action-response-zero-day-vulnerability-in-citrix-adc-cve-2022-27518/ --> java.lang.NullPointerException
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/trustwave-action-response-zero-day-vulnerability-in-citrix-adc-cve-2022-27518/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/a-noteworthy-threat-how-cybercriminals-are-abusing-onenote-part-2/!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00066.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00769.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00012.html!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2015-11-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2015-11-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2023-04-01!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00070.html!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/asb-overview --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/asb-overview!
+No CVEs found at https://github.com/advisories?query=severity%3Alow!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2019-12-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2019-12-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2015-12-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2015-12-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2022 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2022!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00145.html!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00127.html!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Ago!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2015-08-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2015-08-01!
+No CVEs found at https://github.com/advisories?query=credit%3Aquadespresso!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2020 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2020!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/pixel --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00029.html!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2019-05-01!
+No CVEs found at https://github.com/advisories?query=credit%3Adominikg!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2023-03-01!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00059.html!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2019-04-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2016-04-02 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2016-04-02!
+No CVEs found at https://github.com/advisories?query=credit%3Aakerouanton!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2015-10-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2015-10-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2021 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2021!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00022.html!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2022-04-01!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Arust!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00060.html!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2022-09-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-05-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2020-10-01!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00130.html!
+No CVEs found at https://github.com/advisories?query=sort%3Apublished-asc!
+No CVEs found at https://github.com/advisories?query=credit%3Acpuguy83!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00067.html!
+No CVEs found at https://github.com/advisories?query=sort%3Aupdated-asc!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2019-0779!
+No CVEs found at https://github.com/advisories?query=credit%3Adellalibera!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/pixel/2019 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2019!
+No CVEs found at https://github.com/advisories?query=severity%3Acritical!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-03-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2019 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2019!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-07-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/pixel/2018 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2018!
+No CVEs found at https://github.com/advisories?query=credit%3Alaurazard!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2022-08-01!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00032.html!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2019-0757!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/advisory --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/advisory!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/pixel/2017 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2017!
+No CVEs found at https://github.com/advisories?query=type%3Aunreviewed!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-08-01!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1239!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Aerlang!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/aaos --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00057.html!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2017 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2017!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2022-01-01 --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2022-01-01!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm!
+No CVEs found at https://github.com/advisories?query=credit%3Athibaudcolas!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2018 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2018!
+No CVEs found at https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00019.html!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/rilide-a-new-malicious-browser-extension-for-stealing-cryptocurrencies/!
+No CVEs found at https://github.com/advisories?query=credit%3Acorhere!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/a-noteworthy-threat-how-cybercriminals-are-abusing-onenote-part-1/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/trustwave-action-response-supply-chain-attack-using-3cx-pbax-software/!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2015-09-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2015-09-01!
+Crawler error when parsing https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/cve-2022-43704-capture-replay-vulnerability-in-sinilink-xy-wft1-thermostat/ --> java.lang.NullPointerException
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/cve-2022-43704-capture-replay-vulnerability-in-sinilink-xy-wft1-thermostat/!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2019-03-01!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apub!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2016-02-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2016-02-01!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/chatgpt-emerging-ai-threat-landscape/!
+No CVEs found at https://github.com/advisories?query=credit%3ARealOrangeOne!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2015 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2015!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/vulnerability-causing-deletion-of-all-users-in-crushftp-admin-area/!
+Crawler error when parsing https://jvn.jp/vu/index.html --> java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://jvn.jp/vu/index.html!
+No CVEs found at https://github.com/advisories?query=credit%3Av1ktor0t!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2019-07-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-06-01!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/2022-year-in-review-ransomware/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/onenote-spear-phishing-campaign/!
+No CVEs found at https://github.com/advisories?query=severity%3Ahigh!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2016 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/2016!
+No CVEs found at https://github.com/advisories?query=credit%3Atianon!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/anonymous-sudan-religious-hacktivists-or-russian-front-group/!
+No CVEs found at https://jvn.jp/vu/JVNVU90813125/index.html!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/malicious-macros-adapt-to-use-microsoft-publisher-to-push-ekipa-rat/!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-11-01!
+No CVEs found at https://github.com/advisories?query=credit%3Atommcclymont!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/meta-phish-facebook-infrastructure-used-in-phishing-attack-chain/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/deobfuscating-the-recent-emotet-epoch-4-macro/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/html-smuggling-the-hidden-threat-in-your-inbox/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/chatgpt-the-right-tool-for-the-job/!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2022-06-01!
+No CVEs found at https://github.com/advisories?query=credit%3AConduitry!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/going-mobile-bec-attacks-are-moving-beyond-email/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/money-lover-app-vulnerability-exposes-personal-info/!
+No CVEs found at https://github.com/advisories?query=credit%3Acupc4k3!
+No CVEs found at https://github.com/advisories?query=credit%3As3812497!
+No CVEs found at https://source.android.com/docs/security/bulletin/advisory/2016-03-18!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/network-map-nmap-meets-chatgpt/!
+No CVEs found at https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/2023-tax-scam-emails-exposed-unmasking-deceptive-trends/!
+No CVEs found at https://github.com/advisories?query=credit%3Abenmccann!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-01-01!
+No CVEs found at https://github.com/advisories?query=credit%3Aneersighted!
+No CVEs found at https://github.com/advisories?query=sort%3Aupdated-desc!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Aactions!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed!
+No CVEs found at https://github.com/advisories?query=severity%3Amoderate!
+No CVEs found at https://source.android.com/docs/security/bulletin/chromecast/2022-12-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2022-11-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/chromecast --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/chromecast!
+No CVEs found at https://github.com/advisories?query=type%3Areviewed+ecosystem%3Acomposer!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2022-03-01!
+No CVEs found at https://github.com/advisories/GHSA-2qv5-7mw5-j3cg!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2018-10-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2016-11-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2016-11-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-02-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2019-06-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-04-01!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1240!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2016-03-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2016-03-01!
+No CVEs found at https://source.android.com/docs/security/bulletin/chromecast/2022-10-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2020-01-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2020-01-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/pixel/2021 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2021!
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2019-02-01!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/pixel/2020 --> java.lang.NullPointerException
+No CVEs found at https://source.android.com/docs/security/bulletin/pixel/2020!
+No CVEs found at https://source.android.com/docs/security/bulletin/aaos/2021-09-01!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1052!
+Crawler error when parsing https://source.android.com/docs/security/bulletin/2016-01-01 --> java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+No CVEs found at https://source.android.com/docs/security/bulletin/2016-01-01!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1347!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1344!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2019-0969!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1340!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1341!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1060!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1064!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1034!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1036!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1035!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1038!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1037!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1039!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2019-0813!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1309!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1141!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-12!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-13 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-13!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-05!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-05!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-04!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-05!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=it!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-04!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=pt-br!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-03!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=ja!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-07!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=ko!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-15 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-15!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-05!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-14 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-14!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-13 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-13!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-04!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1311!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-12!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-19 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-19!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-12!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-18 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-18!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-02!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1310!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-17 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-17!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1173!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-01-0 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-01-0!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-16 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-16!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-16 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-16!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-16 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-16!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-15 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-15!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-15 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-15!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-14 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-14!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-05!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1174!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-13 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-13!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-13 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-13!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-17 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-17!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1131!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-12!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-16 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-16!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1130!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-14 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-14!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-15 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-15!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-09!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1133!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-14 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-14!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-13 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-13!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2011-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2011-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-13 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-13!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-12!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-19 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-19!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-12!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2021-1339!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1134!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-18 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-18!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-18 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-18!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-17 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-17!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-04!
+Crawler error when parsing https://www.tenable.com/security/tns-2017-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2017-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-17 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-17!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-22 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-22!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-05!
+No CVEs found at https://talosintelligence.com/vulnerability_reports/TALOS-2020-1139!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-16 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-16!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-21 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-21!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-15 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-15!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-20 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-20!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-26 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-26!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-02/!
+Crawler error when parsing https://www.tenable.com/security/tns-2019-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2019-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-12!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-25 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-25!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-02!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-26/!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-24 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-24!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-05!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-10!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-23 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-23!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2015-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2015-11!
+No CVEs found at https://packetstormsecurity.com/files/tags/rootkit/!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-28 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-28!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-04!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-27 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-27!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-05!
+Crawler error when parsing https://www.tenable.com/security/tns-2020-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2020-04!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-22/!
+Crawler error when parsing https://www.tenable.com/security/tns-2010-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2010-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-21 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-21!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2010-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2010-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2016-20 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2016-20!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2010-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2010-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-10 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-10!
+No CVEs found at https://packetstormsecurity.com/files/171695/FedEx-Ship-Manager-FSM-3704-Insecure-.NET-Remoting.html!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-04!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-05!
+Crawler error when parsing https://www.tenable.com/security/tns-2013-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2013-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-09!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-04!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-11 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-11!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-02!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-25/!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-30/!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-03 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-03!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-06!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-16/!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-12 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-12!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-01 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-01!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-02 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-02!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-13 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-13!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-07!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-13/!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-09 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-09!
+No CVEs found at https://packetstormsecurity.com/files/171714/Bus-Pass-Management-System-1.0-Cross-Site-Scripting.html!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-14 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-14!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-04 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-04!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-08 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-08!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-15 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-15!
+Crawler error when parsing https://www.tenable.com/security/tns-2014-05 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2014-05!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-07/!
+Crawler error when parsing https://www.tenable.com/security/tns-2022-06 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2022-06!
+Crawler error when parsing https://www.tenable.com/security/tns-2023-07 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2023-07!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-16 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-16!
+Crawler error when parsing https://www.tenable.com/security/tns-2021-04-0 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2021-04-0!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-01/!
+Crawler error when parsing https://curl.se/docs/vuln-7.13.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.13.2.html!
+Crawler error when parsing https://www.tenable.com/security/tns-2018-17 --> java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+No CVEs found at https://www.tenable.com/security/tns-2018-17!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-28/!
+No CVEs found at https://www.tenable.com/security/report!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=zh-cn!
+Crawler error when parsing https://curl.se/docs/vuln-7.65.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.65.2.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-21/!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-19/!
+Crawler error when parsing https://curl.se/docs/vuln-7.66.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.66.0.html!
+No CVEs found at https://packetstormsecurity.com/files/directory/!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=es-419!
+Crawler error when parsing https://curl.se/docs/vuln-7.4.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.4.1.html!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=fr!
+No CVEs found at https://packetstormsecurity.com/files/171708/projectSend-r1605-Remote-Code-Execution.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.17.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.17.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.7.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.7.html!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=zh-tw!
+No CVEs found at https://bugs.gentoo.org/!
+Crawler error when parsing https://curl.se/docs/vuln-7.23.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.23.0.html!
+No CVEs found at https://cloud.google.com/support/bulletins?hl=he!
+No CVEs found at https://packetstormsecurity.com/files/171716/Citrix-22.2.1.103-23.1.1.11-Local-Privilege-Escalation.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.49.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.49.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.55.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.55.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.45.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.45.0.html!
+Crawler error when parsing https://curl.se/docs/help-us.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/help-us.html!
+No CVEs found at https://packetstormsecurity.com/files/tags/!
+Crawler error when parsing https://curl.se/docs/vuln-7.47.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.47.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.12.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.12.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.11.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.11.0.html!
+Crawler error when parsing https://bugs.gentoo.org/show_bug.cgi?id=494086 --> java.lang.NullPointerException
+No CVEs found at https://bugs.gentoo.org/show_bug.cgi?id=494086!
+Crawler error when parsing https://curl.se/docs/vuln-5.11.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-5.11.html!
+Crawler error when parsing https://curl.se/docs/vuln-6.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-6.1.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-24/!
+No CVEs found at https://packetstormsecurity.com/files/os/!
+Crawler error when parsing https://curl.se/docs/vuln-7.10.8.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.10.8.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.79.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.79.1.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-20/!
+Crawler error when parsing https://curl.se/docs/vuln-7.81.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.81.0.html!
+No CVEs found at https://bugs.gentoo.org/show_bug.cgi?id=753956!
+Crawler error when parsing https://curl.se/docs/vuln-7.76.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.76.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.72.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.72.0.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-12/!
+Crawler error when parsing https://curl.se/docs/vuln-8.0.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-8.0.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.79.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.79.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-8.0.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-8.0.1.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-27/!
+No CVEs found at https://packetstormsecurity.com/files/author/16616/!
+Crawler error when parsing https://curl.se/docs/vulnall.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vulnall.html!
+No CVEs found at https://bugs.gentoo.org/show_bug.cgi?id=819891!
+Crawler error when parsing https://curl.se/docs/vuln-7.74.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.74.0.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-15/!
+Crawler error when parsing https://curl.se/docs/vuln-7.7.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.7.1.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-18/!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-23/!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-06/!
+Crawler error when parsing https://curl.se/docs/vuln-7.6.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.6.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.15.5.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.15.5.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.5.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.5.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.3.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.3.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-11/!
+Crawler error when parsing https://bugs.gentoo.org/show_bug.cgi?id=628916 --> java.lang.IndexOutOfBoundsException: Index 8 out of bounds for length 8
+No CVEs found at https://bugs.gentoo.org/show_bug.cgi?id=628916!
+No CVEs found at https://packetstormsecurity.com/files/os/unixware/!
+Crawler error when parsing https://curl.se/docs/vuln-7.25.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.25.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.69.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.69.1.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-09/!
+Crawler error when parsing https://curl.se/docs/vuln-7.20.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.20.1.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.28.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.28.0.html!
+No CVEs found at https://packetstormsecurity.com/files/tags/bbs/!
+No CVEs found at https://packetstormsecurity.com/files/authors/16549!
+Crawler error when parsing https://curl.se/docs/vuln-7.64.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.64.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-4.8.4.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-4.8.4.html!
+Crawler error when parsing https://curl.se/docs/vuln-4.10.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-4.10.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.43.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.43.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.16.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.16.2.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.2.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.2.1.html!
+No CVEs found at https://packetstormsecurity.com/files/author/15128/!
+Crawler error when parsing https://curl.se/docs/vuln-7.21.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.21.2.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.67.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.67.0.html!
+No CVEs found at https://bugs.gentoo.org/show_bug.cgi?id=621258!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-10/!
+Crawler error when parsing https://curl.se/docs/vuln-7.68.0.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.68.0.html!
+Crawler error when parsing https://curl.se/docs/vuln-7.1.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.1.html!
+No CVEs found at https://packetstormsecurity.com/files/tags/intrusion_detection/!
+Crawler error when parsing https://curl.se/docs/vuln-7.2.html --> java.lang.NullPointerException
+No CVEs found at https://curl.se/docs/vuln-7.2.html!
+No CVEs found at https://packetstormsecurity.com/files/date/!
+No CVEs found at https://packetstormsecurity.com/files/tags/trojan/!
+No CVEs found at https://packetstormsecurity.com/files/171700/Ubuntu-Security-Notice-USN-5855-3.html!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-14/!
+No CVEs found at https://packetstormsecurity.com/files/author/16613/!
+No CVEs found at https://packetstormsecurity.com/files/tags/scanner/!
+No CVEs found at https://packetstormsecurity.com/files/tags/conference/!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-08/!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-29/!
+No CVEs found at https://packetstormsecurity.com/files/date/2023-04-17/!
+No CVEs found at https://packetstormsecurity.com/files/authors/9391!
+No CVEs found at https://packetstormsecurity.com/files/tags/magazine/!
+No CVEs found at https://packetstormsecurity.com/files/tags/firewall/!
