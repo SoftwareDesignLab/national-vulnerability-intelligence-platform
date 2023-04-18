@@ -23,6 +23,7 @@
  */
 package edu.rit.se.nvip.crawler.htmlparser;
 
+import edu.rit.se.nvip.crawler.QuickCveCrawler;
 import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.junit.Test;
 
@@ -56,4 +57,31 @@ public class TenableSecurityParserTest extends AbstractParserTest {
         assertTrue(vuln.getDescription().contains("A network misconfiguration is present"));
         assertFalse(vuln.getDescription().contains("View More Research Advisories"));
     }
+
+    @Test
+    public void testTenableSecurityParserMultiple() {
+        QuickCveCrawler q = new QuickCveCrawler();
+        String html = q.getContentFromUrl("https://www.tenable.com/security/tns-2015-03");
+        List<CompositeVulnerability> list = new TenableSecurityParser("tenable").parseWebPage("tenable", html);
+        assertEquals(4, list.size());
+        CompositeVulnerability vuln = getVulnerability(list, "CVE-2014-3570");
+        assertNotNull(vuln);
+        assertEquals("2015/02/03 00:00:00", vuln.getPublishDate());
+        assertEquals("2017/02/28 00:00:00", vuln.getLastModifiedDate());
+        assertTrue(vuln.getDescription().contains("OpenSSL contains a flaw in the dtls1_buffer_record"));
+    }
+
+    @Test
+    public void testTenableSecurityParserMultiple2() {
+        QuickCveCrawler q = new QuickCveCrawler();
+        String html = q.getContentFromUrl("https://www.tenable.com/security/tns-2015-04");
+        List<CompositeVulnerability> list = new TenableSecurityParser("tenable").parseWebPage("tenable", html);
+        assertEquals(9, list.size());
+        CompositeVulnerability vuln = getVulnerability(list, "CVE-2015-0204");
+        assertNotNull(vuln);
+        assertEquals("2015/03/30 00:00:00", vuln.getPublishDate());
+        assertEquals("2017/02/28 00:00:00", vuln.getLastModifiedDate());
+        assertTrue(vuln.getDescription().contains("OpenSSL contains an invalid read flaw in"));
+    }
+
 }

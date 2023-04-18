@@ -49,12 +49,15 @@ public class GoogleCloudParser extends AbstractCveParser  {
     @Override
 	public List<CompositeVulnerability> parseWebPage(String sSourceURL, String sCVEContentHTML) {
 		List<CompositeVulnerability> vulns = new ArrayList<>();
+		Document doc = Jsoup.parse(sCVEContentHTML);
+        Element htmlTag = doc.select("html").first();
+        if (htmlTag == null || !htmlTag.attr("lang").equals("en"))
+            return vulns;
 
         Set<String> uniqueCves = getCVEs(sCVEContentHTML);
         if (uniqueCves.size() == 0)
             return vulns;
 
-		Document doc = Jsoup.parse(sCVEContentHTML);
         Pattern pattern = Pattern.compile(regexCVEID);
         Elements bulletin = doc.getElementsByClass("bulletins");
 
