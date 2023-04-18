@@ -127,7 +127,7 @@ public class EmailDailyCveList {
 
 			// Apply HTML for every CVE
 			for (String cveId : newCves.keySet()) {
-				if (i >= 20) {
+				if (i >= 10) {
 					break;
 				}
 				Element cveList = doc.select(".cve_list").first();
