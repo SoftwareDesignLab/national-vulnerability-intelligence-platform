@@ -51,7 +51,7 @@ public class PrepareDataForWebUi {
 		) {
 
 			stmt.setTimestamp(1, Timestamp.valueOf(today.minusHours(168))); // 7 days
-			stmt.setTimestamp(2, Timestamp.valueOf(today));
+			stmt.setTimestamp(2, Timestamp.valueOf(today.plusHours(24)));
 
 			stmt.registerOutParameter(3, java.sql.Types.INTEGER);
 
