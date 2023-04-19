@@ -31,7 +31,7 @@ public class SambaParser extends AbstractCveParser {
         // each page has a title h2 with the rest being text
         Element titleEl = doc.select("h2").first();
         if (titleEl == null) return vulnList; // no CVEs found, return empty list, we aren't on a CVE page
-        String cve = titleEl.text().replace(".html:", "").trim();
+        String cve = getCVEID(titleEl.text());
 
         Element textEl = doc.select("pre").first();
         if (textEl == null) return vulnList;
