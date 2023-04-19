@@ -226,12 +226,12 @@ public class EmailDailyCveList {
 			// load nvip config file
 			MyProperties propertiesNvip = new MyProperties();
 			propertiesNvip = new PropertyLoader().loadConfigFile(propertiesNvip);
-			props.put("email_from", propertiesNvip.getProperty("email_from"));
-			props.put("email_user", propertiesNvip.getProperty("email_user"));
-			props.put("email_password", propertiesNvip.getProperty("email_password"));
-			props.put("email_port", propertiesNvip.getProperty("email_port"));
-			props.put("email_url", propertiesNvip.getProperty("email_url"));
-			props.put("email_host", propertiesNvip.getProperty("email_host"));
+			props.put("email_from", System.getenv("NVIP_EMAIL_FROM"));
+			props.put("email_user", System.getenv("NVIP_EMAIL_USER"));
+			props.put("email_password", System.getenv("NVIP_EMAIL_PASSWORD"));
+			props.put("email_port", System.getenv("NVIP_EMAIL_PORT"));
+			props.put("email_url", System.getenv("NVIP_EMAIL_URL"));
+			props.put("email_host", System.getenv("NVIP_EMAIL_HOST"));
 		} catch (Exception e) {
 			logger.error("ERROR: Failed to grab properties for NVIP Email\n{}", e.toString());
 			e.printStackTrace();
