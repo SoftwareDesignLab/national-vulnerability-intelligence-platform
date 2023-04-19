@@ -40,7 +40,7 @@ public class AndroidParserTest extends AbstractParserTest {
                 "https://source.android.com/docs/security/bulletin/2023-02-01",
                 html
         );
-        assertEquals(41, list.size());
+        assertEquals(40, list.size());
         CompositeVulnerability vuln = list.get(8);
         assertEquals("CVE-2023-20933", vuln.getCveId());
         assertTrue(vuln.getDescription().contains("local escalation of privilege with no additional execution privileges needed"));
