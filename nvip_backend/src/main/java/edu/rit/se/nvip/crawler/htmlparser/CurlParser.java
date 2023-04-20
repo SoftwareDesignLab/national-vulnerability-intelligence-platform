@@ -27,6 +27,7 @@ import edu.rit.se.nvip.model.CompositeVulnerability;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,10 +53,13 @@ public class CurlParser extends AbstractCveParser {
         StringBuilder descriptionBuilder = new StringBuilder();
         StringBuilder timelineBuilder = new StringBuilder();
         String date = "";
-        for (Element e : Objects.requireNonNull(doc.selectFirst("div.contents")).children()) {
+        Element content = doc.selectFirst("div.contents");
+        if (content == null) return retVal;
+        for (Element e : content.children()) {
             if (e.tagName().equals("h1")) {
                 cves = getCVEs(e.text());
-                date = parseDateFromAdvisoryLine(Objects.requireNonNull(e.nextElementSibling()).text());
+                if (e.nextElementSibling() != null)
+                    date = parseDateFromAdvisoryLine(e.nextElementSibling().text());
             }
             if (e.tagName().equals("h2")) {
                 if (e.id().contains("vulnerability")) {
@@ -93,6 +97,7 @@ public class CurlParser extends AbstractCveParser {
         // this means we didn't find one in the title, so we'll grab anything on the page
         if (cves.size() == 0) {
             cves = getCVEs(doc.text());
+            if (cves.size() == 0) return retVal;
         }
 
         for (String cve : cves) {
@@ -152,8 +157,9 @@ public class CurlParser extends AbstractCveParser {
             match = String.join(" ", pieces);
             try {
                 date = sdf_in.parse(match);
+                return sdf_out.format(date);
             } catch (ParseException ignored) {}
         }
-        return sdf_out.format(date);
+        return "";
     }
 }
